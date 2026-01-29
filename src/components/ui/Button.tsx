@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost";
 
 type ButtonProps = {
   variant?: Variant;
-  href?: LinkProps<string>["href"];
+  href?: LinkProps<string>["href"] | string;
   className?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -23,13 +23,23 @@ const variants: Record<Variant, string> = {
 
 export const Button = ({ variant = "primary", href, className, children, ...props }: ButtonProps) => {
   if (href) {
-    const hrefValue = href;
-    const isExternal = typeof hrefValue === "string" && hrefValue.startsWith("http");
+    const isExternal = typeof href === "string" && href.startsWith("http");
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          className={clsx(baseClasses, variants[variant], className)}
+          {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {children}
+        </a>
+      );
+    }
     return (
       <Link
-        href={hrefValue}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noreferrer" : undefined}
+        href={href as LinkProps<string>["href"]}
         className={clsx(baseClasses, variants[variant], className)}
         {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
       >
