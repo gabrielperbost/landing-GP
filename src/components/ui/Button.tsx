@@ -1,12 +1,12 @@
 import clsx from "clsx";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 
 type Variant = "primary" | "secondary" | "ghost";
 
 type ButtonProps = {
   variant?: Variant;
-  href?: string;
+  href?: LinkProps["href"];
   className?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -23,10 +23,11 @@ const variants: Record<Variant, string> = {
 
 export const Button = ({ variant = "primary", href, className, children, ...props }: ButtonProps) => {
   if (href) {
-    const isExternal = href.startsWith("http");
+    const hrefValue = href;
+    const isExternal = typeof hrefValue === "string" && hrefValue.startsWith("http");
     return (
       <Link
-        href={href}
+        href={hrefValue}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noreferrer" : undefined}
         className={clsx(baseClasses, variants[variant], className)}
