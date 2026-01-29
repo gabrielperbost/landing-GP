@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost";
 
 type ButtonProps = {
   variant?: Variant;
-  href?: LinkProps["href"];
+  href?: LinkProps<string>["href"];
   className?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   AnchorHTMLAttributes<HTMLAnchorElement>;
