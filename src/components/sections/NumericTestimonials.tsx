@@ -12,26 +12,11 @@ export const NumericTestimonials = () => (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {NUMERIC_TESTIMONIALS.map((item) => (
         <Card key={item.quote} className="p-5">
-          {item.full ? (
-            <details className="space-y-2">
-              <p className="text-sm font-semibold text-ink flex items-center gap-1">
-                {item.name}
-                <span aria-label="5 étoiles" className="text-amber-500">★★★★★</span>
-              </p>
-              <summary className="cursor-pointer text-xl font-semibold text-ink list-none">
-                {item.quote}
-              </summary>
-              <p className="text-sm text-muted leading-relaxed">{item.full}</p>
-            </details>
-          ) : (
-            <>
-              <p className="text-sm font-semibold text-ink flex items-center gap-1">
-                {item.name}
-                <span aria-label="5 étoiles" className="text-amber-500">★★★★★</span>
-              </p>
-              <p className="text-xl font-semibold text-ink">{item.quote}</p>
-            </>
-          )}
+          <p className="text-sm font-semibold text-ink flex items-center gap-1">
+            {item.name}
+            <span aria-label="5 étoiles" className="text-amber-500">★★★★★</span>
+          </p>
+          <p className="text-xl font-semibold text-ink">{item.quote}</p>
         </Card>
       ))}
     </div>
