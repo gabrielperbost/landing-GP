@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import Script from "next/script";
 import "../styles/globals.css";
-import { CONFIG } from "@/content/site";
+import { CONFIG, FAQ_ITEMS } from "@/content/site";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -11,9 +11,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "GP Finances — Économisez sur votre assurance emprunteur",
+  title: "Assurance emprunteur : changez grâce à la loi Lemoine | RDV gratuit – GP Finances",
   description:
-    "GP Finances, courtier spécialisé Loi Lemoine, vous fait économiser jusqu’à 23 000 € sur votre assurance emprunteur sans changer de banque."
+    "Changez d’assurance de prêt à tout moment (loi Lemoine). Diagnostic gratuit : estimation des économies, garanties équivalentes, démarches gérées par Gabriel Perbost, courtier indépendant."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -49,6 +49,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `}
           </Script>
         )}
+        <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ_ITEMS.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a }
+            }))
+          })}
+        </Script>
         {children}
       </body>
     </html>

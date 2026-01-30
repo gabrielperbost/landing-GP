@@ -14,6 +14,8 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { Footer } from "@/components/sections/Footer";
 import { MobileStickyCTA } from "@/components/sections/MobileStickyCTA";
 import { InlineCTA } from "@/components/sections/InlineCTA";
+import { RoleSection } from "@/components/sections/RoleSection";
+import { ServiceBar } from "@/components/sections/ServiceBar";
 
 export default function Page() {
   const [heroProgress, setHeroProgress] = useState(0);
@@ -24,9 +26,9 @@ export default function Page() {
       <Header highlightRDV={highlightRDV} />
       <main className="flex flex-col gap-6">
         <Hero onHeroProgress={setHeroProgress} highlightRDV={highlightRDV} />
-        <InlineCTA label="Un expert GP Finances vous rappelle en 24h pour valider vos garanties." />
+        <ServiceBar />
         <WhySection />
-        <InlineCTA label="Calculez vos économies avant d’informer votre banque." />
+        <RoleSection />
         <BeforeAfter />
         <HowItWorks />
         <NumericTestimonials />

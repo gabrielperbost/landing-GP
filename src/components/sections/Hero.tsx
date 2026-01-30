@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { HERO_COPY, CONFIG } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { LazyVideo } from "@/components/video/LazyVideo";
 import { trackCTA, trackRDV } from "@/lib/tracking";
+import heroPoster from "@/components/video/video1.webp";
 
 type Props = {
   onHeroProgress: (pct: number) => void;
@@ -14,70 +15,126 @@ type Props = {
 };
 
 export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
-  const headline = useMemo(() => {
-    const idx = Math.floor(Math.random() * HERO_COPY.headlines.length);
-    return HERO_COPY.headlines[idx];
+  // SEO note: keep ONE deterministic H1 with a keyword-rich default (no empty badge, no duplicate copy).
+  // You can still randomize among headlines as long as every option stays keyword-rich.
+  const [headline, setHeadline] = useState(HERO_COPY.headlines[0]);
+
+  useEffect(() => {
+    if (HERO_COPY.headlines.length > 1) {
+      const idx = Math.floor(Math.random() * HERO_COPY.headlines.length);
+      setHeadline(HERO_COPY.headlines[idx]);
+    }
   }, []);
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="container grid gap-8 py-12 lg:grid-cols-2 lg:items-center">
-        <div className="flex flex-col gap-6">
-          <Badge tone="info" className="w-fit">
-            Jusqu’à 23 000 € d’économies possibles
-          </Badge>
-          <div className="space-y-4">
-            <h1 className="text-3xl font-extrabold leading-tight text-ink sm:text-4xl lg:text-5xl">{headline}</h1>
-            <p className="text-lg text-muted">{HERO_COPY.subtitle}</p>
-            <ul className="grid grid-cols-1 gap-2 text-sm text-ink sm:grid-cols-2">
-              {HERO_COPY.bullets.map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-primary" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-wrap gap-3">
+    <section
+      className="relative overflow-hidden"
+      aria-label="Renégociation assurance emprunteur"
+    >
+      <div className="container grid gap-8 py-10 lg:grid-cols-2 lg:items-center">
+        {/* LEFT */}
+        <div className="flex flex-col gap-5">
+        {/* H1 + subtitle (SEO: keyword in H1 + supportive H2-ish paragraph) */}
+        <header className="space-y-3">
+          <h1 className="text-3xl font-extrabold leading-tight text-ink sm:text-4xl lg:text-5xl">
+            {headline}
+          </h1>
+
+            <p className="max-w-xl text-base text-muted sm:text-lg">
+              {HERO_COPY.subtitle}
+            </p>
+          </header>
+
+          {/* Benefits (SEO: keep real text, avoid fluff; mobile-friendly) */}
+          <ul className="grid grid-cols-1 gap-2 text-sm text-ink">
+            {HERO_COPY.bullets.map((item) => (
+              <li key={item} className="flex items-start gap-2">
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA row */}
+          <div className="grid gap-3 sm:flex sm:flex-wrap">
             <Button
               variant={highlightRDV ? "secondary" : "primary"}
-              href="#estimation"
-              onClick={() => trackCTA("hero_estimation")}
+              href="tel:+33651224213"
+              className="w-full sm:w-auto"
+              onClick={() => trackCTA("hero_call")}
+              aria-label="Appeler Gabriel pour renégocier mon assurance emprunteur"
             >
-              Estimer mes économies
+              J'appelle
             </Button>
+
             <Button
               variant={highlightRDV ? "primary" : "secondary"}
               href={CONFIG.CALENDLY_URL}
+              className="w-full sm:w-auto"
               onClick={() => trackRDV("hero")}
+              aria-label="Prendre rendez-vous pour renégocier mon assurance de prêt"
             >
-              Prendre RDV
+              Prendre RDV Calendly
+            </Button>
+            <Button
+              variant="secondary"
+              href="#contact"
+              className="w-full sm:w-auto"
+              onClick={() => trackCTA("hero_contact_form")}
+              aria-label="Demander à être rappelé via formulaire"
+            >
+              Me faire rappeler
             </Button>
           </div>
-          <p className="text-sm text-muted">{HERO_COPY.microcopy}</p>
+
         </div>
 
+        {/* RIGHT */}
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Étape 1 · Regarder</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+              Étape 1 · Regarder
+            </p>
+
             <div className="aspect-video overflow-hidden rounded-xl">
-              <LazyVideo id="hero" src={CONFIG.HERO_VIDEO_URL} onProgress={onHeroProgress} />
+              <LazyVideo
+                id="hero"
+                src={CONFIG.HERO_VIDEO_URL}
+                poster={heroPoster.src}
+                onProgress={onHeroProgress}
+              />
             </div>
-            <p className="mt-3 text-sm text-muted">Comprenez en 90s pourquoi la loi Lemoine vous permet d’économiser.</p>
+
+            <p className="mt-3 text-sm text-muted">
+              Tout comprendre sur l'assurance de prêt en 2 minutes.
+            </p>
           </Card>
 
-          <Card className="p-4 border-primary/40 shadow-soft bg-gradient-to-br from-white to-blue-50">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Étape 2 · Agir</p>
-            <h3 className="text-lg font-semibold text-ink">Planifiez votre rendez-vous</h3>
-            <p className="text-sm text-muted mb-4">Un expert vous répond en moins de 24h.</p>
+          <Card className="border-primary/40 bg-gradient-to-br from-white to-blue-50 p-4 shadow-soft">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+              Étape 2 · Agir
+            </p>
+
+            <h2 className="text-lg font-semibold text-ink">
+              Rendez-vous gratuit pour renégocier votre assurance de prêt
+            </h2>
+
+            <p className="mb-4 text-sm text-muted">
+              Réponse en moins de 24h · Étude personnalisée · Sans engagement
+            </p>
+
             <Button
               href={CONFIG.CALENDLY_URL}
               className="w-full"
               onClick={() => trackRDV("hero_card")}
+              aria-label="Réserver un rendez-vous gratuit"
             >
               Prendre RDV
             </Button>
-            <p className="mt-2 text-xs text-muted">Offert · Sans engagement · Données sécurisées</p>
+
+            <p className="mt-2 text-xs text-muted">
+              Offert · Sans engagement · Données sécurisées
+            </p>
           </Card>
         </div>
       </div>

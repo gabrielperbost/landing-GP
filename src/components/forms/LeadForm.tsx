@@ -6,18 +6,22 @@ import { trackLead } from "@/lib/tracking";
 import { Button } from "../ui/Button";
 
 export const LeadForm = () => {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!phone) return;
     setStatus("loading");
     try {
       await fetch(CONFIG.LEAD_FORM_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name,
+          phone,
           email,
           source: "landing",
           timestamp: new Date().toISOString()
@@ -33,21 +37,37 @@ export const LeadForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      <label className="sr-only" htmlFor="lead-email">
-        Email
-      </label>
+    <form id="contact" onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-[1fr_1fr] lg:grid-cols-[1.1fr_0.9fr_0.9fr_auto] sm:items-center">
+      <input
+        id="lead-name"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Nom (optionnel)"
+        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-soft focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+        aria-label="Nom"
+      />
+      <input
+        id="lead-phone"
+        type="tel"
+        required
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="Téléphone (obligatoire)"
+        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-soft focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+        aria-label="Téléphone"
+      />
       <input
         id="lead-email"
         type="email"
-        required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Votre email pro"
+        placeholder="Email (optionnel)"
         className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base shadow-soft focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+        aria-label="Email"
       />
       <Button type="submit" disabled={status === "loading"} className="w-full sm:w-auto">
-        {status === "success" ? "Envoyé" : status === "loading" ? "Envoi..." : "Lancer l’estimation gratuite"}
+        {status === "success" ? "Envoyé" : status === "loading" ? "Envoi..." : "Être rappelé"}
       </Button>
       {status === "error" && <p className="text-sm text-red-600">Une erreur est survenue. Réessayez.</p>}
       {status === "success" && <p className="text-sm text-emerald-600">Merci ! Nous revenons vers vous.</p>}

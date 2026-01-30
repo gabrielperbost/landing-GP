@@ -1,5 +1,5 @@
 export const CONFIG = {
-  HERO_VIDEO_URL: "https://cdn.example.com/videos/hero.mp4",
+  HERO_VIDEO_URL: "https://d1yei2z3i6k35z.cloudfront.net/10942363/6787d9e7c2ca0_VSLGab-VEED.mp4",
   PROCESS_VIDEOS: [
     "https://cdn.example.com/videos/process-1.mp4",
     "https://cdn.example.com/videos/process-2.mp4",
@@ -7,17 +7,17 @@ export const CONFIG = {
     "https://cdn.example.com/videos/process-4.mp4"
   ],
   TESTIMONIAL_VIDEOS: [
-    "https://cdn.example.com/videos/testimonial-1.mp4",
+    "/videos/temoignage1.mp4",
     "https://cdn.example.com/videos/testimonial-2.mp4",
-    "https://cdn.example.com/videos/testimonial-3.mp4"
+    "/videos/temoignage3.mp4"
   ],
   INSTAGRAM_REELS: [
-    "https://www.instagram.com/reel/example1",
-    "https://www.instagram.com/reel/example2",
-    "https://www.instagram.com/reel/example3",
-    "https://www.instagram.com/reel/example4"
+    "/videos/video5.mp4",
+    "/videos/video6.mp4",
+    "/videos/video7.mp4",
+    "/videos/video8.mp4"
   ],
-  CALENDLY_URL: "https://calendly.com/gp-finances/rdv",
+  CALENDLY_URL: "https://calendly.com/gabriel-perbost-gp-finances/economies",
   LEAD_FORM_ENDPOINT: "https://api.example.com/leads",
   META_PIXEL_ID: "YOUR_META_PIXEL_ID",
   GA4_ID: "G-XXXXXXX"
@@ -25,13 +25,15 @@ export const CONFIG = {
 
 export const HERO_COPY = {
   headlines: [
-    "Vous êtes à un clic d’économiser jusqu’à 23 000 € sur votre assurance de prêt",
-    "Changez d’assurance emprunteur, gardez vos garanties, gagnez jusqu’à 23 000 €",
-    "Loi Lemoine : activez jusqu’à 23 000 € d’économies sans changer de banque"
+    "Économisez en moyenne 23 000 € en changeant votre assurance emprunteur grâce à la loi Lemoine"
   ],
   subtitle: "Sans changer de banque. Sans paperasse. Avec les mêmes garanties.",
-  bullets: ["Aucune démarche", "Économies immédiates", "Mêmes garanties"],
-  microcopy: "Offert – Sans engagement – Données sécurisées"
+  bullets: [
+    "Je prends en charge 100% des démarches",
+    "Économies immédiates",
+    "Garanties équivalentes ou supérieures"
+  ],
+  microcopy: "Offert – Sans engagement – Données sécurisées – Gabriel Perbost"
 };
 
 export const WHY_POINTS = [
@@ -51,26 +53,26 @@ export const WHY_POINTS = [
 
 export const BEFORE_AFTER = {
   oldLabel: "Ancienne assurance banque",
-  newLabel: "Nouvelle assurance GP Finances",
-  oldCost: "72 300 €",
-  newCost: "48 900 €",
-  savings: "23 400 €"
+  newLabel: "Nouvelle assurance proposée par notre cabinet",
+  oldCost: "32 710 €",
+  newCost: "11 510 €",
+  savings: "21 200 €"
 };
 
 export const TIMELINE = [
   {
     title: "Analyse gratuite",
-    desc: "Étude express de votre dossier et de vos garanties.",
+    desc: "J’analyse votre dossier et vos garanties en express.",
     video: CONFIG.PROCESS_VIDEOS[0]
   },
   {
     title: "Mise en concurrence",
-    desc: "51 assureurs challengés pour maximiser vos économies.",
+    desc: "Je challenge 51 assureurs pour maximiser vos économies.",
     video: CONFIG.PROCESS_VIDEOS[1]
   },
   {
     title: "Démarches complètes",
-    desc: "On gère banque et assureur, zéro paperasse pour vous.",
+    desc: "Je gère la banque et l’assureur, zéro paperasse pour vous.",
     video: CONFIG.PROCESS_VIDEOS[2]
   },
   {
@@ -81,10 +83,10 @@ export const TIMELINE = [
 ];
 
 export const NUMERIC_TESTIMONIALS = [
-  { quote: "J’ai économisé 14 000 €", name: "Sophie M." },
   { quote: "J’ai économisé 17 549 €", name: "Karim L." },
   { quote: "J’ai économisé 23 690 €", name: "Camille R." },
-  { quote: "J’ai économisé 38 651 €", name: "Thomas D." }
+  { quote: "J’ai économisé 38 651 €", name: "Thomas D." },
+  { quote: "J’ai économisé 12 500 €", name: "J. Nguyen" }
 ];
 
 export const FAQ_ITEMS = [
@@ -94,7 +96,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Dois-je prévenir ma banque ?",
-    a: "Nous nous chargeons de toute la notification et du formalisme pour vous."
+    a: "Je m’occupe de prévenir la banque et de tout le formalisme."
   },
   {
     q: "Est-ce risqué ?",
@@ -102,7 +104,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Les garanties changent-elles ?",
-    a: "Nous ne proposons que des contrats avec équivalence ou supériorité de garanties."
+    a: "Je ne propose que des contrats avec équivalence ou supériorité de garanties."
   },
   {
     q: "Combien de temps ?",
@@ -118,7 +120,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Locatif / Pro ?",
-    a: "Nous traitons les prêts résidence principale, locatif et professionnels."
+    a: "Je traite les prêts résidence principale, locatif et professionnels."
   }
 ];
 
@@ -134,3 +136,15 @@ export const LEGAL = {
     { label: "RGPD", href: "#rgpd" }
   ]
 };
+
+export const ROLE_POINTS = [
+  "Je compare 50+ assureurs.",
+  "Je gère tout le dossier et l’administratif.",
+  "Je négocie avec votre banque pour vous."
+];
+
+export const ROLE_BENEFITS = [
+  "Du temps gagné (je gère démarches et relances).",
+  "De la tranquillité (tout est fait dans les délais).",
+  "Des économies maximisées sur votre assurance emprunteur."
+];

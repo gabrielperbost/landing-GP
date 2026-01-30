@@ -24,10 +24,10 @@ export const MobileStickyCTA = () => {
       <div className="container flex gap-3">
         <Button
           className="flex-1"
-          href="#estimation"
-          onClick={() => trackCTA("sticky_estimation")}
+          href="tel:+33651224213"
+          onClick={() => trackCTA("sticky_call")}
         >
-          Estimer mes économies
+          Appeler
         </Button>
         <Button
           variant="secondary"
@@ -35,8 +35,15 @@ export const MobileStickyCTA = () => {
           onClick={() => trackRDV("sticky")}
           className="flex-1"
         >
-          Prendre RDV
+          Calendly
         </Button>
+        <a
+          href="#contact"
+          className="flex-1 text-center text-sm font-semibold text-primary underline-offset-4 hover:underline self-center"
+          onClick={() => trackCTA("sticky_contact_form")}
+        >
+          Rappel
+        </a>
       </div>
     </div>
   );

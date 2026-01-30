@@ -2,6 +2,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CONFIG } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { LazyVideo } from "@/components/video/LazyVideo";
 
 export const InstagramGrid = () => (
   <section className="container py-12 space-y-8">
@@ -13,9 +14,15 @@ export const InstagramGrid = () => (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {CONFIG.INSTAGRAM_REELS.map((url, idx) => (
         <Card key={url} className="p-4 flex flex-col gap-3">
-          <div className="aspect-[9/16] rounded-xl bg-gradient-to-br from-primary/10 to-emerald-100 grid place-items-center text-sm text-muted">
-            Reel #{idx + 1}
-          </div>
+          {url.endsWith(".mp4") ? (
+            <div className="aspect-[9/16] overflow-hidden rounded-xl">
+              <LazyVideo id={`reel-${idx + 1}`} src={url} />
+            </div>
+          ) : (
+            <div className="aspect-[9/16] rounded-xl bg-gradient-to-br from-primary/10 to-emerald-100 grid place-items-center text-sm text-muted">
+              Reel #{idx + 1}
+            </div>
+          )}
           <a
             href={url}
             target="_blank"

@@ -11,14 +11,19 @@ export const VideoTestimonials = () => (
       subtitle="Preuves sociales vérifiables : économies constatées et clients accompagnés."
     />
     <div className="grid gap-4 md:grid-cols-3">
-      {CONFIG.TESTIMONIAL_VIDEOS.map((video, idx) => (
-        <Card key={video} className="p-4 space-y-3">
-          <div className="aspect-video">
-            <LazyVideo id={`testimonial-${idx + 1}`} src={video} />
-          </div>
-          <p className="text-sm text-muted">Économie constatée : {["14 000 €", "23 690 €", "17 549 €"][idx] ?? "—"}</p>
-        </Card>
-      ))}
+      {CONFIG.TESTIMONIAL_VIDEOS.map((video, idx) => {
+        const amounts = ["17 200 €", "23 690 €", "14 100 €"];
+        return (
+          <Card key={video} className="p-4 space-y-3">
+            <div className="aspect-video w-full overflow-hidden">
+              <LazyVideo id={`testimonial-${idx + 1}`} src={video} />
+            </div>
+            <p className="text-sm text-muted">
+              Économie constatée : <span className="font-semibold text-ink">{amounts[idx] ?? "—"}</span>
+            </p>
+          </Card>
+        );
+      })}
     </div>
   </section>
 );

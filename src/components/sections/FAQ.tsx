@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/Card";
 
 export const FAQ = () => (
   <section className="container py-12 space-y-8" id="faq">
-    <SectionHeader kicker="Questions fréquentes" title="FAQ Loi Lemoine" />
+    <SectionHeader kicker="Questions fréquentes" title="FAQ Loi Lemoine : les 8 questions qui bloquent le RDV" />
     <div className="grid gap-4 md:grid-cols-2">
       {FAQ_ITEMS.map((item) => (
         <Card key={item.q} className="p-4">

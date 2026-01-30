@@ -6,8 +6,8 @@ export const WhySection = () => (
   <section className="container py-12 space-y-8">
     <SectionHeader
       kicker="Cadre légal"
-      title="Pourquoi vous pouvez économiser légalement"
-      subtitle="La loi Lemoine vous autorise à changer d’assurance emprunteur à tout moment, avec équivalence de garanties."
+      title="Pourquoi changer d’assurance emprunteur maintenant ?"
+      subtitle="Loi Lemoine : résiliation à tout moment, équivalence de garanties et marché ouvert pour faire baisser vos coûts."
     />
     <div className="grid gap-4 md:grid-cols-3">
       {WHY_POINTS.map((item) => (

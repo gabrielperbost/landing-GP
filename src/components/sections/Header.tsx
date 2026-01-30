@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { trackCTA, trackRDV } from "@/lib/tracking";
 import { CONFIG } from "@/content/site";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import avatar from "@/components/video/image1.webp";
 
 type Props = {
   highlightRDV: boolean;
@@ -28,10 +30,19 @@ export const Header = ({ highlightRDV }: Props) => {
     >
       <div className="container flex items-center justify-between py-3">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-primary text-white grid place-items-center font-bold">GP</div>
+          <div className="h-10 w-10 rounded-full overflow-hidden border border-white/60 shadow-soft">
+            <Image
+              src={avatar}
+              alt="Portrait Gabriel Perbost"
+              width={40}
+              height={40}
+              className="h-full w-full object-cover object-top"
+              priority
+            />
+          </div>
           <div>
-            <p className="text-sm font-semibold text-ink">GP Finances</p>
-            <p className="text-xs text-muted">Courtier assurance emprunteur</p>
+            <p className="text-sm font-semibold text-ink">Gabriel Perbost</p>
+            <p className="text-xs text-muted">GP Finances · Courtier indépendant</p>
           </div>
           <Badge tone="info" className="ml-3 hidden sm:inline-flex">
             Loi Lemoine 2022
@@ -40,10 +51,10 @@ export const Header = ({ highlightRDV }: Props) => {
         <div className="hidden gap-3 sm:flex">
           <Button
             variant={highlightRDV ? "secondary" : "primary"}
-            href="#estimation"
-            onClick={() => trackCTA("header_estimation")}
+            href="tel:+33651224213"
+            onClick={() => trackCTA("header_call")}
           >
-            Estimer mes économies
+            Appeler le 06 51 22 42 13
           </Button>
           <Button
             variant={highlightRDV ? "primary" : "secondary"}

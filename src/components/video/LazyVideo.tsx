@@ -17,26 +17,15 @@ type Props = {
 export const LazyVideo = ({ src, poster, id, onProgress, autoPlay, loop, muted = true, className }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const started = useRef(false);
   const midway = useRef(false);
   const completed = useRef(false);
+  const [generatedPoster, setGeneratedPoster] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    const node = containerRef.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+    // Render immediately (no intersection observer).
+    setVisible(true);
   }, []);
 
   useEffect(() => {
@@ -71,25 +60,58 @@ export const LazyVideo = ({ src, poster, id, onProgress, autoPlay, loop, muted =
     };
   }, [id, onProgress]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || poster || generatedPoster || !visible) return;
+
+    const handleLoaded = () => {
+      try {
+        const targetTime = video.duration ? Math.min(0.1, video.duration / 10) : 0.1;
+        const capture = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            const width = video.videoWidth || 1280;
+            const height = video.videoHeight || 720;
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            ctx.drawImage(video, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+            setGeneratedPoster(dataUrl);
+          } catch (err) {
+            console.error("poster-capture", err);
+          }
+        };
+        video.addEventListener("seeked", capture, { once: true });
+        video.currentTime = targetTime;
+      } catch (err) {
+        console.error("poster-init", err);
+      }
+    };
+
+    video.addEventListener("loadeddata", handleLoaded, { once: true });
+    return () => {
+      video.removeEventListener("loadeddata", handleLoaded);
+    };
+  }, [poster, generatedPoster, visible]);
+
   return (
     <div ref={containerRef} className={className}>
-      {visible ? (
-        <video
-          ref={videoRef}
-          className="h-full w-full rounded-xl border border-slate-200 object-cover shadow-soft"
-          poster={poster}
-          controls
-          playsInline
-          muted={muted}
-          loop={loop}
-          autoPlay={autoPlay}
-          preload="metadata"
-        >
-          <source src={src} />
-        </video>
-      ) : (
-        <div className="h-full w-full rounded-xl border border-slate-200 bg-slate-100 shimmer" />
-      )}
+      <video
+        ref={videoRef}
+        className="h-full w-full rounded-xl object-cover bg-black"
+        poster={poster ?? generatedPoster}
+        controls
+        playsInline
+        muted={muted}
+        loop={loop}
+        autoPlay={autoPlay}
+        preload="metadata"
+        crossOrigin="anonymous"
+      >
+        <source src={src} />
+      </video>
     </div>
   );
 };
