@@ -2,7 +2,7 @@ import { LeadForm } from "@/components/forms/LeadForm";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CONFIG } from "@/content/site";
-import { trackRDV } from "@/lib/tracking";
+import { trackRDV, trackCTA } from "@/lib/tracking";
 
 export const FinalCTA = () => (
   <section className="container py-12 space-y-8" id="estimation">
