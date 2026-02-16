@@ -44,6 +44,17 @@ body {
   }
 }
 
+@keyframes before-after-grow {
+  0% {
+    transform: scaleX(0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
 .sticky-cta {
   position: fixed;
   inset-inline: 0;

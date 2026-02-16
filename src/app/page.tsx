@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { WhySection } from "@/components/sections/WhySection";
+import { SavingsCounter } from "@/components/sections/SavingsCounter";
 import { BeforeAfter } from "@/components/sections/BeforeAfter";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { NumericTestimonials } from "@/components/sections/NumericTestimonials";
 import { VideoTestimonials } from "@/components/sections/VideoTestimonials";
 import { InstagramGrid } from "@/components/sections/InstagramGrid";
 import { FAQ } from "@/components/sections/FAQ";
@@ -28,10 +28,10 @@ export default function Page() {
         <Hero onHeroProgress={setHeroProgress} highlightRDV={highlightRDV} />
         <ServiceBar />
         <WhySection />
+        <SavingsCounter />
         <RoleSection />
         <BeforeAfter />
         <HowItWorks />
-        <NumericTestimonials />
         <VideoTestimonials />
         <InstagramGrid />
         <FAQ />
