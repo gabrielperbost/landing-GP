@@ -5,7 +5,7 @@ import { CONFIG } from "@/content/site";
 import { trackRDV, trackCTA } from "@/lib/tracking";
 
 export const FinalCTA = () => (
-  <section className="container py-12 space-y-8" id="estimation">
+  <section className="container scroll-mt-24 py-12 space-y-8" id="estimation">
     <SectionHeader
       kicker="Prise de RDV"
       title="Prendre RDV gratuit / sans engagement"

@@ -10,9 +10,15 @@ const prototypeLegends = [
   { label: "COMPLIQUÉ ?", value: "Je m’occupe de tout" },
   { label: "COMMENT ?", value: "L’assurance est indépendante" }
 ];
+const reelPosters = [
+  "/videos/posters/video5-poster.png",
+  "/videos/posters/video6-poster.png",
+  "/videos/posters/video7-poster.png",
+  "/videos/posters/video8-poster.png"
+];
 
 export const InstagramGrid = () => (
-  <section className="container py-12 space-y-8">
+  <section id="reels-clients" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
       kicker="Preuve sociale"
       title="Des milliers d’emprunteurs suivent déjà nos conseils"
@@ -22,6 +28,7 @@ export const InstagramGrid = () => (
       <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:pb-0 lg:grid-cols-4">
         {CONFIG.INSTAGRAM_REELS.map((url, idx) => {
           const legend = prototypeLegends[idx % prototypeLegends.length];
+          const poster = reelPosters[idx % reelPosters.length];
           return (
             <Card
               key={url}
@@ -32,8 +39,9 @@ export const InstagramGrid = () => (
                   <LazyVideo
                     id={`reel-${idx + 1}`}
                     src={url}
+                    poster={poster}
                     fit="contain"
-                    preload="auto"
+                    preload="metadata"
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-2.5 sm:p-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80">

@@ -19,7 +19,7 @@ const items = [
 ];
 
 export const ServiceBar = () => (
-  <section className="container mt-4 sm:mt-6" aria-label="Points clés GP Finances">
+  <section id="points-cles" className="container mt-4 scroll-mt-24 sm:mt-6" aria-label="Points clés GP Finances">
     {/*
       - 3 cases distinctes (pas de fond commun)
       - Mobile-friendly : stack + grands touch targets

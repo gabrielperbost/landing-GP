@@ -70,11 +70,11 @@ export const SavingsCounter = () => {
   }, [targetValue]);
 
   return (
-    <section className="container py-7" aria-label="Compteur global des économies clients">
+    <section id="compteur-economies" className="container scroll-mt-24 py-7" aria-label="Compteur global des économies clients">
       <Card className="overflow-hidden border-primary/20 bg-gradient-to-r from-white via-blue-50/85 to-cyan-50/80 p-3.5 sm:p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/90">Preuve sociale</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/90">Compteur global</p>
             <p className="mt-1 text-sm font-semibold text-ink sm:text-base">
               Déjà économisés par les clients GP Finances
             </p>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import avatar from "@/components/video/image1.webp";
 
 export const RoleSection = () => (
-  <section className="container py-12 space-y-8">
+  <section id="accompagnement" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
       kicker="Mon rôle"
       title="Je prends tout en charge pour vous"

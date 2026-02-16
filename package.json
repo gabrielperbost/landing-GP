@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:posters": "bash scripts/generate-video-posters.sh"
   },
   "dependencies": {
     "clsx": "2.1.1",

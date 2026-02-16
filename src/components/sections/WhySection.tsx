@@ -3,7 +3,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { WHY_POINTS } from "@/content/site";
 
 export const WhySection = () => (
-  <section className="container py-12 space-y-8">
+  <section id="cadre-legal" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
       kicker="Cadre légal"
       title="Pourquoi changer d’assurance emprunteur maintenant ?"

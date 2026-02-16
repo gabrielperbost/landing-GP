@@ -19,7 +19,7 @@ const newBarStyle = {
 } as CSSProperties;
 
 export const BeforeAfter = () => (
-  <section className="container py-12 space-y-8">
+  <section id="avant-apres" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
       kicker="Avant / Après"
       title="Visualisez clairement le gain sur votre assurance de prêt"

@@ -28,6 +28,7 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
 
   return (
     <section
+      id="accueil"
       className="relative overflow-hidden"
       aria-label="Renégociation assurance emprunteur"
     >

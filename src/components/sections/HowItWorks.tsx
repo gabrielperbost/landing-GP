@@ -7,7 +7,7 @@ import { trackRDV } from "@/lib/tracking";
 import poster from "@/components/video/photo1.webp";
 
 export const HowItWorks = () => (
-  <section className="container py-12 space-y-8">
+  <section id="process-gp" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
       kicker="Process GP Finances"
       title="Comment ça se passe avec GP Finances"
