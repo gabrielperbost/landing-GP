@@ -96,7 +96,7 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
               Étape 1 · Regarder
             </p>
 
-            <div className="mx-auto w-full max-w-[340px] aspect-[9/16] overflow-hidden rounded-xl sm:max-w-none sm:aspect-video">
+            <div className="w-full aspect-video overflow-hidden rounded-xl">
               <LazyVideo
                 id="hero"
                 src={CONFIG.HERO_VIDEO_URL}
