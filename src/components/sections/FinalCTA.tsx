@@ -9,7 +9,7 @@ export const FinalCTA = () => (
     <SectionHeader
       kicker="Prise de RDV"
       title="Prendre RDV gratuit / sans engagement"
-      subtitle="Laissez votre téléphone (obligatoire). Je vous rappelle et vous pouvez aussi réserver Calendly."
+      subtitle="Laissez votre téléphone (obligatoire). Je vous rappelle et vous pouvez aussi réserver un créneau."
     />
     <LeadForm />
     <div className="flex flex-wrap gap-3">
@@ -17,7 +17,7 @@ export const FinalCTA = () => (
         Appeler le 06 51 22 42 13
       </Button>
       <Button href={CONFIG.CALENDLY_URL} variant="secondary" onClick={() => trackRDV("final_cta")}>
-        Prendre RDV Calendly
+        Prendre RDV
       </Button>
       <p className="text-xs text-muted">Offert · Sans engagement · Données sécurisées</p>
     </div>

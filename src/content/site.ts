@@ -9,7 +9,8 @@ export const CONFIG = {
   TESTIMONIAL_VIDEOS: [
     "/videos/temoignage1.mp4",
     "https://cdn.example.com/videos/testimonial-2.mp4",
-    "/videos/temoignage3.mp4"
+    "/videos/temoignage3.mp4",
+    "/videos/temoignage2.mp4"
   ],
   INSTAGRAM_REELS: [
     "/videos/video5.mp4",

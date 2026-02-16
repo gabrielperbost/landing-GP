@@ -12,9 +12,24 @@ type Props = {
   loop?: boolean;
   muted?: boolean;
   className?: string;
+  fit?: "cover" | "contain";
+  videoClassName?: string;
+  preload?: "none" | "metadata" | "auto";
 };
 
-export const LazyVideo = ({ src, poster, id, onProgress, autoPlay, loop, muted = true, className }: Props) => {
+export const LazyVideo = ({
+  src,
+  poster,
+  id,
+  onProgress,
+  autoPlay,
+  loop,
+  muted = true,
+  className,
+  fit = "cover",
+  videoClassName,
+  preload = "metadata"
+}: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [visible, setVisible] = useState(true);
@@ -97,17 +112,23 @@ export const LazyVideo = ({ src, poster, id, onProgress, autoPlay, loop, muted =
   }, [poster, generatedPoster, visible]);
 
   return (
-    <div ref={containerRef} className={className}>
+    <div ref={containerRef} className={["h-full w-full", className].filter(Boolean).join(" ")}>
       <video
         ref={videoRef}
-        className="h-full w-full rounded-xl object-cover bg-black"
+        className={[
+          "h-full w-full rounded-xl bg-black object-center",
+          fit === "contain" ? "object-contain" : "object-cover",
+          videoClassName
+        ]
+          .filter(Boolean)
+          .join(" ")}
         poster={poster ?? generatedPoster}
         controls
         playsInline
         muted={muted}
         loop={loop}
         autoPlay={autoPlay}
-        preload="metadata"
+        preload={preload}
         crossOrigin="anonymous"
       >
         <source src={src} />

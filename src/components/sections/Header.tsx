@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { trackCTA, trackRDV } from "@/lib/tracking";
 import { CONFIG } from "@/content/site";
@@ -44,9 +43,6 @@ export const Header = ({ highlightRDV }: Props) => {
             <p className="text-sm font-semibold text-ink">Gabriel Perbost</p>
             <p className="text-xs text-muted">GP Finances · Courtier indépendant</p>
           </div>
-          <Badge tone="info" className="ml-3 hidden sm:inline-flex">
-            Loi Lemoine 2022
-          </Badge>
         </div>
         <div className="hidden gap-3 sm:flex">
           <Button
@@ -64,9 +60,6 @@ export const Header = ({ highlightRDV }: Props) => {
             Prendre RDV
           </Button>
         </div>
-        <Badge tone="info" className="sm:hidden">
-          Loi Lemoine 2022
-        </Badge>
       </div>
     </header>
   );

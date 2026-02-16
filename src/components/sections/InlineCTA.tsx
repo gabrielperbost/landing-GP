@@ -10,7 +10,7 @@ export const InlineCTA = ({ label }: { label: string }) => (
         Appeler
       </Button>
       <Button href={CONFIG.CALENDLY_URL} onClick={() => trackRDV("inline")}>
-        Prendre RDV Calendly
+        Prendre RDV
       </Button>
       <a
         href="#contact"

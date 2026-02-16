@@ -35,7 +35,7 @@ export const MobileStickyCTA = () => {
           onClick={() => trackRDV("sticky")}
           className="flex-1"
         >
-          Calendly
+          Prendre RDV
         </Button>
         <a
           href="#contact"

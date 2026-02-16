@@ -74,7 +74,7 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
               onClick={() => trackRDV("hero")}
               aria-label="Prendre rendez-vous pour renégocier mon assurance de prêt"
             >
-              Prendre RDV Calendly
+              Prendre RDV
             </Button>
             <Button
               variant="secondary"
@@ -96,12 +96,13 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
               Étape 1 · Regarder
             </p>
 
-            <div className="aspect-video overflow-hidden rounded-xl">
+            <div className="mx-auto w-full max-w-[340px] aspect-[9/16] overflow-hidden rounded-xl sm:max-w-none sm:aspect-video">
               <LazyVideo
                 id="hero"
                 src={CONFIG.HERO_VIDEO_URL}
                 poster={heroPoster.src}
                 onProgress={onHeroProgress}
+                fit="cover"
               />
             </div>
 

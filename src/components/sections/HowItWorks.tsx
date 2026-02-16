@@ -13,9 +13,9 @@ export const HowItWorks = () => (
       title="Comment ça se passe avec GP Finances"
       subtitle="Les 3 étapes expliquées en vidéo (1 min 30)."
     />
-    <Card className="p-3 sm:p-4 flex justify-center">
-      <div className="aspect-[9/16] max-w-[180px] w-full overflow-hidden rounded-xl">
-        <LazyVideo id="process-main" src="/videos/video9.mp4" poster={poster.src} />
+    <Card className="mx-auto w-full max-w-[300px] p-2.5 sm:max-w-[364px] sm:p-3">
+      <div className="aspect-[9/16] w-full overflow-hidden rounded-xl">
+        <LazyVideo id="process-main" src="/videos/video9.mp4" poster={poster.src} fit="contain" />
       </div>
     </Card>
     <div className="flex justify-center">

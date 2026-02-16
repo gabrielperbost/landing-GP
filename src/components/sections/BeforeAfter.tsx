@@ -15,9 +15,9 @@ export const BeforeAfter = () => (
         <p className="mt-2 text-3xl font-bold text-ink">{BEFORE_AFTER.oldCost}</p>
         <p className="text-xs text-muted mt-1">Tarif bancaire d’origine</p>
       </Card>
-      <Card tone="accent" className="p-6">
-        <p className="text-sm text-muted">{BEFORE_AFTER.newLabel}</p>
-        <p className="mt-2 text-3xl font-bold text-ink">{BEFORE_AFTER.newCost}</p>
+      <Card className="p-6 bg-emerald-50 border-emerald-100">
+        <p className="text-sm font-semibold text-emerald-700">{BEFORE_AFTER.newLabel}</p>
+        <p className="mt-2 text-3xl font-bold text-emerald-700">{BEFORE_AFTER.newCost}</p>
       </Card>
       <Card className="p-6 bg-emerald-50 border-emerald-100">
         <p className="text-sm font-semibold text-emerald-700">Économie estimée</p>
