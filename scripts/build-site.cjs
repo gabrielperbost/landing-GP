@@ -46,13 +46,60 @@ execFileSync('node', [path.join(SRC, 'generer.cjs')], { env: { ...process.env, G
 
 for (const item of SHARED) fs.cpSync(path.join(SRC, item), path.join(OUT, item), { recursive: true });
 
+
+// Images de témoignages : PNG de 0,5 à 1,1 Mo -> JPEG légers (affichées à ~330 px, 2x pour les écrans Retina)
+const { execFileSync: run } = require('node:child_process');
+const swapped = [];
+for (const file of fs.readdirSync(path.join(OUT, 'assets'))) {
+  const full = path.join(OUT, 'assets', file);
+  if (/^temoignage-.*\.png$/.test(file) && fs.statSync(full).size > 150 * 1024) {
+    const jpg = full.replace(/\.png$/, '.jpg');
+    run('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '78', '-Z', '760', full, '--out', jpg], { stdio: 'ignore' });
+    fs.rmSync(full);
+    swapped.push(file);
+  }
+}
+
 const errors = [];
-const existsInSite = rel => fs.existsSync(path.join(OUT, rel.split('?')[0].split('#')[0]));
+const existsInSite = rel => {
+  const clean = rel.split('?')[0].split('#')[0];
+  return fs.existsSync(path.join(OUT, clean)) || (swapped.includes(path.basename(clean)) && fs.existsSync(path.join(OUT, clean.replace(/\.png$/, '.jpg'))));
+};
+
+// Titres et descriptions optimisés pour le référencement (le design des pages ne change pas).
+const SEO = {
+  index: ['GP Finances · Courtier en assurance de prêt, PER et épargne', 'Courtier indépendant à Issy-les-Moulineaux : assurance de prêt, PER, assurance-vie, prévoyance, mutuelle et regroupement de crédits. Étude sans engagement.'],
+  'assurance-emprunteur': ['Assurance emprunteur : changez et économisez | GP Finances', 'Changez d’assurance de prêt à tout moment (loi Lemoine). Estimez votre économie en 2 minutes : je compare, je m’occupe des démarches et de la résiliation.'],
+  per: ['PER : simulation d’économie d’impôt et conseil | GP Finances', 'Simulez l’économie d’impôt d’un Plan Épargne Retraite selon votre situation. Étude personnalisée avec un courtier indépendant, sans engagement.'],
+  'assurance-vie': ['Assurance-vie : simuler et choisir avec un courtier | GP Finances', 'Simulez la croissance de votre capital en assurance-vie et faites-vous conseiller par un courtier indépendant : supports, frais, retraits, clause bénéficiaire.'],
+  prevoyance: ['Prévoyance : protéger vos revenus et votre famille | GP Finances', 'Arrêt de travail, invalidité, décès : une prévoyance étudiée pour votre situation par un courtier indépendant. Étude personnalisée, sans engagement.'],
+  mutuelle: ['Mutuelle santé : trouver la couverture adaptée | GP Finances', 'Trouvez l’équilibre entre vos besoins de santé, vos garanties et votre budget, avec un courtier indépendant. Étude personnalisée, sans engagement.'],
+  'regroupement-credits': ['Regroupement de crédits : rééquilibrer votre budget | GP Finances', 'Faites étudier vos crédits et vos charges pour comprendre les possibilités de regroupement et leurs conséquences sur votre budget. Sans engagement.'],
+  'mentions-legales': ['Mentions légales | GP Finances', 'Mentions légales du site gp-finances.fr : éditeur, immatriculations ORIAS, hébergement, propriété intellectuelle.'],
+  confidentialite: ['Politique de confidentialité | GP Finances', 'Comment GP Finances traite vos données personnelles : finalités, base légale, destinataires, durées de conservation, cookies et droits.']
+};
+const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'regroupement-credits': 'Regroupement de crédits' };
+const SAME_AS = [
+  'https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z',
+  'https://www.cncef.org/annuaire/perbost-gabriel/', 'https://www.linkedin.com/in/gabriel-perbost/', 'https://www.instagram.com/gabriel_perbost/'
+];
+const stripTags = v => v.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const faqSchema = html => {
+  const items = [...html.matchAll(/<details><summary>(.*?)<span>\+<\/span><\/summary><p>(.*?)<\/p><\/details>/gs)]
+    .map(m => ({ '@type': 'Question', name: stripTags(m[1]), acceptedAnswer: { '@type': 'Answer', text: stripTags(m[2]) } }))
+    .filter(q => q.name && q.acceptedAnswer.text);
+  return items.length >= 2 ? JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items }) : '';
+};
+const breadcrumbSchema = (name, route) => name && route !== '/' ? JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name, item: ORIGIN + route }] }) : '';
+
 const ld = (title, description, route) => JSON.stringify({
   '@context': 'https://schema.org', '@type': 'FinancialService', name: 'GP FINANCES',
   url: ORIGIN + route, description, telephone: '+33651224213', email: 'gabriel.perbost@gp-finances.fr',
   address: { '@type': 'PostalAddress', streetAddress: '24 rue du Gouverneur Général Éboué', postalCode: '92130', addressLocality: 'Issy-les-Moulineaux', addressCountry: 'FR' },
-  areaServed: 'FR', founder: { '@type': 'Person', name: 'Gabriel Perbost' }
+  areaServed: 'FR', founder: { '@type': 'Person', name: 'Gabriel Perbost' },
+  identifier: 'ORIAS 23003789', sameAs: SAME_AS, hasMap: SAME_AS[0], geo: { '@type': 'GeoCoordinates', latitude: 48.8266378, longitude: 2.2708441 },
+  image: ORIGIN + '/site/assets/gabriel-perbost.jpeg', knowsAbout: ['assurance emprunteur', 'plan épargne retraite', 'assurance-vie', 'prévoyance', 'mutuelle', 'regroupement de crédits']
 });
 
 const built = {};
@@ -72,10 +119,14 @@ for (const [name, route] of Object.entries(ROUTES)) {
     return `${attr}="/site/${value}"`;
   });
 
+  // titre et description optimisés
+  if (SEO[name]) {
+    html = html.replace(/<title>[^<]*<\/title>/, `<title>${SEO[name][0]}</title>`).replace(/(<meta name="description" content=")[^"]*(")/, `$1${SEO[name][1]}$2`);
+  }
   // adresse canonique, partage et données structurées
   const title = (/<title>([^<]*)<\/title>/.exec(html) || [])[1] || 'GP Finances';
   const description = (/<meta name="description" content="([^"]*)"/.exec(html) || [])[1] || '';
-  const head = `<link rel="canonical" href="${ORIGIN}${route}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="GP Finances"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${ORIGIN}${route}"><script type="application/ld+json">${ld(title, description, route)}</script>`;
+  const head = `<link rel="canonical" href="${ORIGIN}${route}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="GP Finances"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${ORIGIN}${route}"><script type="application/ld+json">${ld(title, description, route)}</script>${breadcrumbSchema(NAMES[name], route) ? `<script type="application/ld+json">${breadcrumbSchema(NAMES[name], route)}</script>` : ''}${faqSchema(html) ? `<script type="application/ld+json">${faqSchema(html)}</script>` : ''}`;
   html = html.replace('</head>', head + '</head>');
   if (/Maquette|Aperçu privé|noindex/.test(html)) errors.push(`${name}: reste une trace de la maquette (Maquette / Aperçu privé / noindex)`);
 
@@ -83,6 +134,7 @@ for (const [name, route] of Object.entries(ROUTES)) {
   for (const m of html.matchAll(/data-video="https:\/\/gp-finances\.fr\/videos\/([^"]+)"/g)) {
     if (!fs.existsSync(path.join(ROOT, 'public', 'videos', m[1]))) errors.push(`${name}: vidéo manquante public/videos/${m[1]}`);
   }
+  for (const file of swapped) html = html.split('/site/assets/' + file).join('/site/assets/' + file.replace(/\.png$/, '.jpg'));
   fs.writeFileSync(path.join(PAGES, name + '.html'), html);
   built[name] = html;
 }

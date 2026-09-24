@@ -17,6 +17,14 @@ const nextConfig = {
   images: {
     domains: []
   },
+  async headers() {
+    return [
+      // Les fichiers sources des pages restent accessibles mais ne doivent jamais être indexés (les vraies adresses sont les URL propres).
+      { source: "/site/pages/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }] },
+      // Ressources du site : cache long (les fichiers changent de nom via ?v=).
+      { source: "/site/assets/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }
+    ];
+  },
   async redirects() {
     return [
       {

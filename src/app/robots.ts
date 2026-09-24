@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/espace-client/", "/depot/", "/previews/", "/tarificateur-gp/"]
+      disallow: ["/api/", "/espace-client/", "/depot/", "/previews/", "/tarificateur-gp/", "/site/pages/", "/estimation-assurance-pret"]
     },
     sitemap: "https://gp-finances.fr/sitemap.xml",
     host: "https://gp-finances.fr"

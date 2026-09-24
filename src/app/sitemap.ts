@@ -4,7 +4,8 @@ import { CITIES_92 } from "@/content/localSeo92";
 const BASE_URL = "https://gp-finances.fr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Date de dernière mise à jour réelle du contenu (à modifier quand le contenu change), et non « maintenant ».
+  const now = new Date("2026-09-24");
 
   return [
     { url: BASE_URL, lastModified: now, changeFrequency: "daily", priority: 1 },
