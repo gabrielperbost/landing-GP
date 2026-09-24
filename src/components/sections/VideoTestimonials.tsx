@@ -3,10 +3,11 @@ import { LazyVideo } from "@/components/video/LazyVideo";
 import { Card } from "@/components/ui/Card";
 
 const testimonialCards = [
-  { id: "testimonial-1", src: "/videos/Tem1.mp4", amount: "21 200 €", poster: "/videos/posters/Tem1-poster.png" },
+  { id: "testimonial-1", src: "/videos/Tem1.mp4", amount: "21 200 €", poster: "/videos/posters/Tem1-poster-v3.png" },
   { id: "testimonial-2", src: "/videos/Tem2.mp4", amount: "17 000 €", poster: "/videos/posters/Tem2-poster.png" },
   { id: "testimonial-3", src: "/videos/Tem3.mp4", amount: "8 000 €", poster: "/videos/posters/Tem3-poster.png" },
-  { id: "testimonial-4", src: "/videos/Tem4.mp4", amount: "14 100 €", poster: "/videos/posters/Tem4-poster.png" }
+  { id: "testimonial-4", src: "/videos/Tem4.mp4", amount: "14 100 €", poster: "/videos/posters/Tem4-poster.png" },
+  { id: "testimonial-5", src: "/videos/Tem5.mp4", amount: "9 000 €", poster: "/videos/posters/Tem5-poster.png" }
 ];
 
 export const VideoTestimonials = () => (

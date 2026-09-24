@@ -1,0 +1,124 @@
+{
+  "checkedAt": "2026-09-22T13:50:01.406Z",
+  "checks": [
+    {
+      "width": 320,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 320,
+      "chartWidth": 260,
+      "hasInvalidPath": false,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 390,
+      "chartWidth": 330,
+      "hasInvalidPath": false,
+      "pass": true
+    },
+    {
+      "width": 768,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 768,
+      "chartWidth": 674,
+      "hasInvalidPath": false,
+      "pass": true
+    },
+    {
+      "width": 1024,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 1024,
+      "chartWidth": 497.328125,
+      "hasInvalidPath": false,
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 1440,
+      "chartWidth": 706.140625,
+      "hasInvalidPath": false,
+      "pass": true
+    },
+    {
+      "width": 1920,
+      "capital": "93 733 €",
+      "hero": "93 733 €",
+      "rows": 20,
+      "scrollWidth": 1920,
+      "chartWidth": 793.25,
+      "hasInvalidPath": false,
+      "pass": true
+    }
+  ],
+  "behavior": {
+    "plus": "225",
+    "minus": "200",
+    "forty": 40,
+    "one": 1,
+    "noReturn": {
+      "capital": 2178,
+      "fees": 22
+    },
+    "loss": {
+      "capital": 9405,
+      "loss": true
+    },
+    "range": "30",
+    "keyboard": true,
+    "invalid": true,
+    "largeFits": true
+  },
+  "after": {
+    "reset": true,
+    "callback": true,
+    "storage": 0
+  },
+  "pass": true,
+  "runtimeErrors": [],
+  "external": [],
+  "mobileSummaryChecks": [
+    {
+      "width": 320,
+      "capital": "102 738 €",
+      "main": "102 738 €",
+      "barTop": 78,
+      "headerBottom": 79,
+      "barVisible": true,
+      "overflow": false,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "capital": "102 738 €",
+      "main": "102 738 €",
+      "barTop": 78,
+      "headerBottom": 79,
+      "barVisible": true,
+      "overflow": false,
+      "pass": true
+    },
+    {
+      "width": 768,
+      "capital": "102 738 €",
+      "main": "102 738 €",
+      "barTop": 208.21875,
+      "headerBottom": 79,
+      "barVisible": true,
+      "overflow": false,
+      "pass": true
+    }
+  ],
+  "mobileSummaryRuntimeErrors": []
+}

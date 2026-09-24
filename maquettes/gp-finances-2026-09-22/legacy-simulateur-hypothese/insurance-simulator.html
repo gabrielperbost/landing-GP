@@ -1,0 +1,59 @@
+<section class="section insurance-simulator" id="simuler-assurance" aria-labelledby="ins-title" data-insurance-simulator>
+  <div class="container">
+    <div class="ins-heading"><div><p class="eyebrow"><span></span>Votre assurance, vos chiffres</p><h2 id="ins-title">Et si vous payiez moins&nbsp;?</h2></div><p>Quelques chiffres.<br>Une économie qui devient concrète.</p></div>
+    <div class="ins-layout">
+      <form class="ins-form" novalidate>
+        <p class="ins-example" data-ins-example>Exemple prérempli · À vous de personnaliser.</p>
+        <div class="ins-field">
+          <div class="ins-label"><label for="ins-current-monthly" data-ins-current-label>Votre assurance actuelle</label><button type="button" class="ins-help" aria-expanded="false" aria-controls="ins-help-current" aria-label="Aide : coût de votre assurance">?</button></div>
+          <p id="ins-help-current" class="ins-help-panel" hidden>Indiquez uniquement le coût de l’assurance, pas le remboursement du crédit. Pour deux emprunteurs, additionnez leurs cotisations. Si elles varient, utilisez les coûts restants dans « Affiner mon calcul ».</p>
+          <div data-ins-basis="monthly" class="ins-money"><button type="button" data-ins-step="currentMonthly" data-delta="-5" aria-label="Diminuer la cotisation actuelle de 5 euros">−</button><input id="ins-current-monthly" name="currentMonthly" type="number" inputmode="decimal" min="0" max="5000" step="0.01" value="60" aria-describedby="ins-current-hint"><span>€/mois</span><button type="button" data-ins-step="currentMonthly" data-delta="5" aria-label="Augmenter la cotisation actuelle de 5 euros">+</button></div>
+          <div data-ins-basis="total" class="ins-money ins-money-simple" hidden><input id="ins-current-total" name="currentTotal" type="number" inputmode="decimal" min="0" max="1000000" step="0.01" placeholder="Ex. : 10 800" disabled aria-describedby="ins-current-hint"><span>€</span></div>
+          <p class="ins-hint" id="ins-current-hint">Le montant d’assurance prélevé chaque mois.</p>
+        </div>
+        <div class="ins-field">
+          <div class="ins-label"><label for="ins-years">Durée restante de votre prêt</label><button type="button" class="ins-help" aria-expanded="false" aria-controls="ins-help-years" aria-label="Aide : durée restante">?</button></div>
+          <p id="ins-help-years" class="ins-help-panel" hidden>Le temps qu’il vous reste à rembourser, à partir d’aujourd’hui. Vous pouvez préciser les mois supplémentaires dans « Affiner mon calcul ». La comparaison porte sur cette même durée pour les deux contrats.</p>
+          <div class="ins-duration"><div class="ins-money"><button type="button" data-ins-step="years" data-delta="-1" aria-label="Diminuer la durée d’un an">−</button><input id="ins-years" name="years" type="number" inputmode="numeric" min="0" max="35" step="1" value="15"><span>ans</span><button type="button" data-ins-step="years" data-delta="1" aria-label="Augmenter la durée d’un an">+</button></div><input name="yearsRange" type="range" min="0" max="35" step="1" value="15" aria-label="Régler les années restantes"></div>
+        </div>
+        <div class="ins-field" data-ins-mode="scenario">
+          <div class="ins-label"><label for="ins-reduction">Et si votre assurance baissait de…</label><button type="button" class="ins-help" aria-expanded="false" aria-controls="ins-help-reduction" aria-label="Aide : hypothèse de baisse">?</button></div>
+          <p id="ins-help-reduction" class="ins-help-panel" hidden>Choisissez une hypothèse pour voir son effet. Les pourcentages proposés ne sont ni une moyenne du marché, ni une promesse de GP Finances. Seule une étude de votre dossier permet de savoir quelle baisse est possible.</p>
+          <div class="ins-rate-row"><div class="ins-presets" role="group" aria-label="Exemples d’hypothèses de baisse"><button type="button" data-ins-rate="20" aria-pressed="false">20 %</button><button type="button" data-ins-rate="30" aria-pressed="true">30 %</button><button type="button" data-ins-rate="50" aria-pressed="false">50 %</button></div><div class="ins-rate-value"><input id="ins-reduction" name="reduction" type="number" inputmode="decimal" min="0" max="70" step="1" value="30"><span>%</span></div></div>
+          <input type="range" name="reductionRange" min="0" max="70" step="1" value="30" aria-label="Régler l’hypothèse de baisse"><div class="ins-range-limits"><span>0 %</span><span>70 %</span></div>
+          <p class="ins-hint">Hypothèse libre, à confirmer par une étude.</p>
+        </div>
+        <div class="ins-field" data-ins-mode="quote" hidden>
+          <div class="ins-label"><label for="ins-quote-monthly" data-ins-quote-label>La cotisation de votre devis</label><button type="button" class="ins-help" aria-expanded="false" aria-controls="ins-help-quote" aria-label="Aide : coût du devis">?</button></div>
+          <p id="ins-help-quote" class="ins-help-panel" hidden>Comparez la même durée, les mêmes personnes et les mêmes quotités (parts du prêt assurées). Les garanties doivent être vérifiées. Si la cotisation varie, saisissez le coût total sur la durée restante dans « Affiner mon calcul ».</p>
+          <div data-ins-basis="monthly" class="ins-money ins-money-simple"><input id="ins-quote-monthly" name="quoteMonthly" type="number" inputmode="decimal" min="0" max="5000" step="0.01" placeholder="Montant du devis" disabled><span>€/mois</span></div>
+          <div data-ins-basis="total" class="ins-money ins-money-simple" hidden><input id="ins-quote-total" name="quoteTotal" type="number" inputmode="decimal" min="0" max="1000000" step="0.01" placeholder="Coût sur la durée restante" disabled><span>€</span></div>
+        </div>
+        <button type="button" class="ins-mode-switch" data-ins-toggle-mode aria-pressed="false">J’ai déjà un devis à comparer <span aria-hidden="true">↗</span></button>
+        <details class="ins-details"><summary>Affiner mon calcul <span aria-hidden="true">+</span></summary><div class="ins-advanced">
+          <label class="ins-checkbox"><input type="checkbox" name="useTotals"><span>Mes cotisations varient : utiliser les coûts totaux restants</span></label><p class="ins-hint">Reprenez les échéanciers à partir d’aujourd’hui. N’incluez pas les cotisations déjà payées.</p>
+          <div class="ins-advanced-grid"><div><label for="ins-months">Mois supplémentaires</label><div class="ins-money ins-money-simple"><input id="ins-months" name="months" type="number" min="0" max="11" step="1" inputmode="numeric" value="0"><span>mois</span></div></div><div><label for="ins-fees">Frais du nouveau contrat</label><div class="ins-money ins-money-simple"><input id="ins-fees" name="fees" type="number" min="0" max="10000" step="0.01" inputmode="decimal" value="0"><span>€</span></div></div></div><p class="ins-hint">Frais de dossier, de courtage ou d’adhésion éventuels, s’ils ne sont pas déjà inclus. Par défaut, aucun frais supplémentaire n’est supposé.</p>
+        </div></details>
+        <p class="ins-error" data-ins-error role="status" hidden></p>
+      </form>
+      <aside class="ins-result" aria-label="Résultat de la simulation">
+        <div data-ins-empty hidden><span class="small-caps">Votre estimation</span><h3>À vous de jouer.</h3><p>Complétez les montants pour voir le résultat.</p></div>
+        <div data-ins-result>
+          <span class="ins-scenario" data-ins-scenario>Hypothèse : baisse de 30 %</span>
+          <p class="ins-result-label" data-ins-result-label>Économie simulée sur 15 ans</p>
+          <output class="ins-total" data-ins-total>—</output>
+          <p class="ins-monthly" data-ins-monthly></p>
+          <div class="ins-bars" aria-label="Comparaison des coûts restants"><div><p><span>Votre contrat actuel</span><strong data-ins-before>—</strong></p><div class="ins-bar-track"><span data-ins-bar-before></span></div></div><div><p><span data-ins-after-label>Avec cette hypothèse</span><strong data-ins-after>—</strong></p><div class="ins-bar-track"><span data-ins-bar-after></span></div></div></div>
+          <p class="ins-fees-note" data-ins-fees-note></p>
+          <p class="ins-verdict" data-ins-verdict></p>
+        </div>
+        <div class="ins-result-footer"><button type="button" class="button button-gold" data-ins-contact data-project="Assurance emprunteur">Faire étudier mon assurance <span aria-hidden="true">→</span></button><p>Étude personnalisée · Sans engagement</p></div>
+      </aside>
+    </div>
+    <p class="ins-assumptions" data-ins-assumptions>Estimation illustrative, sans tarif d’assureur. Cotisations supposées constantes sur la durée restante. Le montant réel dépend du dossier et des garanties.</p>
+    <details class="ins-method"><summary>Comment est calculé ce montant ?</summary><p>L’économie correspond au coût restant de votre contrat actuel, moins le coût du nouveau contrat et les frais supplémentaires renseignés. En mode hypothèse, la baisse choisie s’applique au coût de l’assurance. Le résultat n’est pas un devis et peut être nul ou négatif.</p><p>Les cotisations peuvent varier au fil du prêt : utilisez alors les coûts totaux des échéanciers, sur la même période. Vérifiez aussi les personnes couvertes, les quotités, les exclusions et l’équivalence des garanties.</p><p>Repères : <a href="https://www.abe-infoservice.fr/fr/assurance/assurance-emprunteur/que-faut-il-savoir-sur-lassurance-emprunteur" target="_blank" rel="noopener">ABE Infoservice : cotisations et garanties</a> · <a href="https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/achat-immobilier-pouvez-vous-changer-dassurance-emprunteur" target="_blank" rel="noopener">Ministère de l’Économie : changer d’assurance</a>.</p></details>
+    <p class="ins-privacy">Vos chiffres restent dans votre navigateur. Aucun envoi de données pour cette simulation.</p>
+    <p class="sr-only" role="status" aria-live="polite" data-ins-announcement></p>
+    <noscript><p>Activez JavaScript pour utiliser le simulateur. Vous pouvez aussi demander une étude à Gabriel.</p></noscript>
+  </div>
+</section>

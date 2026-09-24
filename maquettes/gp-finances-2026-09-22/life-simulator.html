@@ -1,0 +1,57 @@
+<section class="section life-sim-section" id="simuler-assurance-vie" aria-labelledby="life-sim-title">
+  <div class="container">
+    <div class="life-section-heading"><div><p class="eyebrow"><span></span>Donnez forme à vos projets</p><h2 id="life-sim-title">Un petit geste aujourd’hui.<br><em>Et dans quelques années ?</em></h2></div><p>Faites glisser les curseurs.<br>Votre projection évolue sous vos yeux.</p></div>
+    <a class="life-mobile-summary" href="#life-results-card"><span>Capital projeté<span>Dans <span data-life-horizon>20 ans</span></span></span><strong id="life-mobile-capital">—</strong><span class="life-mobile-arrow" aria-hidden="true">↓</span><span class="sr-only">Voir la courbe et le détail</span></a>
+    <div class="life-sim-layout">
+      <form class="life-controls" id="life-form" novalidate>
+        <div class="life-controls-top"><span class="small-caps">Votre scénario</span><button type="reset" id="life-reset">Réinitialiser ↺</button></div>
+        <div class="life-control" data-life-control="initial">
+          <div class="life-control-heading"><label for="life-initial">Je démarre avec</label><span class="life-control-number">01</span></div>
+          <div class="life-stepper"><button type="button" data-life-step="initial" data-direction="-1" aria-label="Diminuer le versement initial de 500 euros">−</button><div class="life-number-wrap"><input id="life-initial" name="initial" type="number" min="0" max="500000" step="1" value="10000" inputmode="decimal" aria-label="Versement initial en euros"><span aria-hidden="true">€</span></div><button type="button" data-life-step="initial" data-direction="1" aria-label="Augmenter le versement initial de 500 euros">+</button></div>
+          <input id="life-initial-range" type="range" min="0" max="500000" step="500" value="10000" data-life-range="initial" aria-label="Ajuster le versement initial">
+          <div class="life-range-ends" aria-hidden="true"><span>0 €</span><span>500 000 €</span></div>
+        </div>
+        <div class="life-control" data-life-control="monthly">
+          <div class="life-control-heading"><label for="life-monthly">Puis, chaque mois</label><span class="life-control-number">02</span></div>
+          <div class="life-stepper"><button type="button" data-life-step="monthly" data-direction="-1" aria-label="Diminuer l’épargne mensuelle de 25 euros">−</button><div class="life-number-wrap"><input id="life-monthly" name="monthly" type="number" min="0" max="10000" step="1" value="200" inputmode="decimal" aria-label="Versement mensuel en euros"><span aria-hidden="true">€/mois</span></div><button type="button" data-life-step="monthly" data-direction="1" aria-label="Augmenter l’épargne mensuelle de 25 euros">+</button></div>
+          <input id="life-monthly-range" type="range" min="0" max="10000" step="25" value="200" data-life-range="monthly" aria-label="Ajuster l’épargne mensuelle">
+          <div class="life-range-ends" aria-hidden="true"><span>0 €</span><span>10 000 €/mois</span></div>
+        </div>
+        <div class="life-control" data-life-control="years">
+          <div class="life-control-heading"><label for="life-years">Je me projette sur</label><span class="life-control-number">03</span></div>
+          <div class="life-stepper"><button type="button" data-life-step="years" data-direction="-1" aria-label="Diminuer la durée d’un an">−</button><div class="life-number-wrap"><input id="life-years" name="years" type="number" min="1" max="40" step="1" value="20" inputmode="numeric" aria-label="Durée de la projection en années"><span aria-hidden="true">ans</span></div><button type="button" data-life-step="years" data-direction="1" aria-label="Augmenter la durée d’un an">+</button></div>
+          <input id="life-years-range" type="range" min="1" max="40" step="1" value="20" data-life-range="years" aria-label="Ajuster la durée de 1 à 40 ans">
+          <div class="life-range-ends" aria-hidden="true"><span>1 an</span><span>40 ans</span></div>
+          <div class="life-duration-presets" aria-label="Choisir une durée"><button type="button" data-life-years="5" aria-pressed="false">5 ans</button><button type="button" data-life-years="10" aria-pressed="false">10 ans</button><button type="button" data-life-years="20" aria-pressed="true">20 ans</button><button type="button" data-life-years="40" aria-pressed="false">40 ans</button></div>
+        </div>
+        <div class="life-control" data-life-control="rate">
+          <div class="life-control-heading"><label for="life-rate">Hypothèse de rendement annuel</label><span class="life-control-number">04</span></div>
+          <div class="life-stepper"><button type="button" data-life-step="rate" data-direction="-1" aria-label="Diminuer le rendement hypothétique de 0,1 point">−</button><div class="life-number-wrap"><input id="life-rate" name="rate" type="number" min="-5" max="10" step="0.1" value="4" inputmode="decimal" aria-label="Rendement annuel hypothétique en pourcentage"><span aria-hidden="true">%/an</span></div><button type="button" data-life-step="rate" data-direction="1" aria-label="Augmenter le rendement hypothétique de 0,1 point">+</button></div>
+          <input id="life-rate-range" type="range" min="-5" max="10" step="0.1" value="4" data-life-range="rate" aria-label="Ajuster le rendement annuel hypothétique">
+          <div class="life-range-ends" aria-hidden="true"><span>−5 %</span><span>+10 %</span></div>
+          <p class="life-control-help">Taux supposé net des frais annuels de gestion et des supports. Ce n’est pas un rendement garanti.</p>
+        </div>
+        <div class="life-fee-note"><span aria-hidden="true">1 %</span><p>de frais sur chaque versement,<br>déjà intégrés à votre projection.</p></div>
+        <p class="life-form-error" id="life-error" role="alert" hidden></p>
+      </form>
+      <div class="life-results-column">
+        <div class="life-results-card" id="life-results-card">
+          <div class="life-result-top"><span class="small-caps">Votre horizon prend forme</span><span class="life-horizon-chip">Dans <span data-life-horizon>20 ans</span></span></div>
+          <p class="life-capital-label">Capital projeté après frais de versement</p>
+          <p class="life-capital" id="life-capital">—</p>
+          <p class="life-result-subtitle" id="life-result-subtitle">Avant fiscalité et prélèvements sociaux.</p>
+          <div class="life-chart-legend"><span><i class="life-legend-capital"></i>Capital projeté</span><span><i class="life-legend-paid"></i>Vos versements cumulés</span></div>
+          <figure class="life-chart" aria-label="Évolution du capital et des versements"><svg id="life-chart" viewBox="0 0 660 300" role="img" tabindex="0" aria-label="Courbe de votre projection. Flèches gauche et droite pour explorer les années." aria-describedby="life-chart-readout"></svg><figcaption id="life-chart-readout">Ajustez votre scénario pour explorer la courbe.</figcaption></figure>
+          <div class="life-result-metrics"><div><span>Vous aurez versé</span><strong id="life-paid">—</strong></div><div><span>Frais de versement</span><strong id="life-fees">—</strong></div><div><span id="life-performance-label">Performance simulée</span><strong id="life-performance">—</strong></div></div>
+          <p class="life-capital-equation">Votre capital = sommes versées − frais + performance simulée.</p>
+          <div class="life-next-step"><button class="button button-gold" type="button" data-project="Assurance-Vie">Parlons de ce projet <span aria-hidden="true">↗</span></button><span>Un échange pour affiner vos choix.</span></div>
+          <p class="life-results-limit">Projection illustrative, sans garantie de performance ni de capital. Les marchés ne progressent pas de façon régulière.</p>
+        </div>
+        <details class="life-yearly"><summary>Voir le détail année par année <span aria-hidden="true">+</span></summary><div class="life-table-wrap"><table><caption>Projection après les frais de versement de 1 %, avant fiscalité.</caption><thead><tr><th scope="col">Année</th><th scope="col">Versé</th><th scope="col">Frais</th><th scope="col">Capital projeté</th></tr></thead><tbody id="life-year-rows"></tbody></table></div></details>
+      </div>
+    </div>
+    <div class="life-method"><details><summary>Les hypothèses de votre simulation</summary><p>Les valeurs affichées au départ sont un exemple modifiable, sans recommandation de placement. Un prélèvement de 1 % est appliqué au versement initial et à chaque versement mensuel. Les versements mensuels interviennent en fin de mois. Le taux annuel saisi est converti en un taux mensuel équivalent et appliqué de façon constante aux sommes investies.</p><p>Le rendement saisi est supposé net de tous les frais récurrents de gestion et des supports ; ceux-ci ne sont donc pas soustraits une seconde fois. Seuls les frais de versement de 1 % sont prélevés séparément dans ce calcul. Les retraits, la fiscalité, les prélèvements sociaux et l’inflation ne sont pas modélisés. Le capital réel peut être inférieur aux sommes versées.</p><p>Pour comprendre l’effet des frais : <a href="https://www.amf-france.org/fr/espace-epargnants/lexique-simulateurs-et-outils-pratiques/nos-simulateurs" target="_blank" rel="noopener">les repères de l’AMF</a>.</p></details><p>Calcul local · Aucune donnée personnelle transmise ni enregistrée.</p></div>
+    <p class="sr-only" id="life-live-status" role="status" aria-live="polite"></p>
+    <noscript><p>Activez JavaScript pour ajuster les montants et afficher votre projection.</p></noscript>
+  </div>
+</section>

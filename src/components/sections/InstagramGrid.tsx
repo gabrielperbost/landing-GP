@@ -3,9 +3,10 @@ import { CONFIG } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { LazyVideo } from "@/components/video/LazyVideo";
+import { trackCTA } from "@/lib/tracking";
 
 const prototypeLegends = [
-  { label: "POURQUOI ?", value: "Tu n’est pas au courant" },
+  { label: "POURQUOI ?", value: "Tu n’es pas au courant" },
   { label: "C’EST QUOI ?", value: "La délégation d’assurance" },
   { label: "COMPLIQUÉ ?", value: "Je m’occupe de tout" },
   { label: "COMMENT ?", value: "L’assurance est indépendante" }
@@ -20,7 +21,7 @@ const reelPosters = [
 export const InstagramGrid = () => (
   <section id="reels-clients" className="container scroll-mt-24 py-12 space-y-8">
     <SectionHeader
-      kicker="Preuve sociale"
+      kicker="COMMENT ÇA MARCHE ?"
       title="Des milliers d’emprunteurs suivent déjà nos conseils"
       subtitle="Découvrez nos reels pédagogiques et cas clients en continu."
     />
@@ -62,7 +63,7 @@ export const InstagramGrid = () => (
       <p className="text-xs text-muted md:hidden">Faites glisser pour voir tous les reels.</p>
     </div>
     <div className="flex justify-center">
-      <Button href="https://www.instagram.com/gabriel_perbost/" variant="secondary">
+      <Button href="https://www.instagram.com/gabriel_perbost/" variant="secondary" onClick={() => trackCTA("instagram_click")}>
         Voir Instagram
       </Button>
     </div>

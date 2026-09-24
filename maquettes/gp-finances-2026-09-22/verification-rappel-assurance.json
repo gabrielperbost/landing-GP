@@ -1,0 +1,189 @@
+{
+  "checks": [
+    {
+      "file": "index.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/index.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "assurance-emprunteur.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/assurance-emprunteur.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "per.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/per.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "prevoyance.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/prevoyance.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "mutuelle.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/mutuelle.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "regroupement-credits.html",
+      "width": 390,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/regroupement-credits.html",
+      "scrollWidth": 390
+    },
+    {
+      "file": "index.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/index.html",
+      "scrollWidth": 1440
+    },
+    {
+      "file": "assurance-emprunteur.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/assurance-emprunteur.html",
+      "scrollWidth": 1440
+    },
+    {
+      "file": "per.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/per.html",
+      "scrollWidth": 1440
+    },
+    {
+      "file": "prevoyance.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/prevoyance.html",
+      "scrollWidth": 1440
+    },
+    {
+      "file": "mutuelle.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/mutuelle.html",
+      "scrollWidth": 1440
+    },
+    {
+      "file": "regroupement-credits.html",
+      "width": 1440,
+      "pass": true,
+      "callbackOpen": true,
+      "bookingClosed": true,
+      "project": "Assurance emprunteur",
+      "href": "#rappel",
+      "target": null,
+      "perUrl": "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale",
+      "pageUrl": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/regroupement-credits.html",
+      "scrollWidth": 1440
+    }
+  ],
+  "runtimeErrors": [],
+  "externalRequests": [],
+  "extraPageTabs": 0,
+  "browserTargets": [
+    {
+      "type": "service_worker",
+      "url": "chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/service_worker.js"
+    },
+    {
+      "type": "page",
+      "url": "about:blank"
+    },
+    {
+      "type": "browser_ui",
+      "url": "chrome://omnibox-popup.top-chrome/omnibox_popup_aim.html"
+    },
+    {
+      "type": "browser_ui",
+      "url": "chrome://omnibox-popup.top-chrome/"
+    },
+    {
+      "type": "background_page",
+      "url": "chrome-extension://nkeimhogjdpnpccoofpliimaahmaaome/background.html"
+    },
+    {
+      "type": "page",
+      "url": "file:///Users/gabrielperbost/Desktop/LandingPage/maquettes/gp-finances-2026-09-22/index.html"
+    }
+  ]
+}

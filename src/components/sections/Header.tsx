@@ -18,9 +18,9 @@ const siteNavLinks = [
   { href: "#compteur-economies", label: "Compteur" },
   { href: "#accompagnement", label: "Mon rôle" },
   { href: "#avant-apres", label: "Avant / Après" },
-  { href: "#process-gp", label: "Process" },
   { href: "#avis-video", label: "Avis vidéo" },
-  { href: "#reels-clients", label: "Reels clients" },
+  { href: "#process-gp", label: "Process" },
+  { href: "#reels-clients", label: "Éducation" },
   { href: "#faq", label: "FAQ" },
   { href: "#estimation", label: "Estimation" }
 ];
@@ -142,7 +142,10 @@ export const Header = ({ highlightRDV }: Props) => {
                   key={item.href}
                   href={item.href}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-ink transition hover:border-primary/40 hover:text-primary"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => {
+                    trackCTA(`nav_mobile_${item.href.replace("#", "")}`);
+                    setMenuOpen(false);
+                  }}
                 >
                   {item.label}
                 </a>
@@ -182,6 +185,7 @@ export const Header = ({ highlightRDV }: Props) => {
               key={`desktop-${item.href}`}
               href={item.href}
               className="whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted transition hover:bg-slate-100 hover:text-primary"
+              onClick={() => trackCTA(`nav_desktop_${item.href.replace("#", "")}`)}
             >
               {item.label}
             </a>

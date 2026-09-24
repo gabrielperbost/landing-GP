@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-09-22T13:10:19.760Z",
+  "checks": [
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "wordFits": true,
+      "spacing": "4.5px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 148.5,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "wordFits": true,
+      "spacing": "4.8px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 105.59375,
+      "pass": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "wordFits": true,
+      "spacing": "6.1px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 206.765625,
+      "pass": true
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "wordFits": true,
+      "spacing": "6.1px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 137.84375,
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "wordFits": true,
+      "spacing": "7.8px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 176.25,
+      "pass": true
+    },
+    {
+      "width": 1920,
+      "scrollWidth": 1920,
+      "wordFits": true,
+      "spacing": "8.6px",
+      "ligatures": "none",
+      "text": "Vos financesméritent mieux.",
+      "titleHeight": 194.34375,
+      "pass": true
+    }
+  ],
+  "runtimeErrors": []
+}

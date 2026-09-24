@@ -2,6 +2,7 @@
 node_modules
 .env
 .env.local
+.env.local.backup-*
 .env.development.local
 .env.test.local
 .env.production.local
@@ -10,3 +11,19 @@ package-lock.json
 yarn.lock
 dist
 .DS_Store
+.vercel
+
+# Local service runtime files
+.codex-work/
+services/monday-webhook/.env
+services/monday-webhook/data/
+services/monday-webhook/logs/
+services/monday-webhook/node_modules/
+
+# Fichiers locaux non versionnés
+.next_corrupt_*/
+.tmp-site-build/
+data/leads.csv
+/*.mp4
+*.mov
+tsconfig.tsbuildinfo

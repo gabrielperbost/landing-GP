@@ -1,0 +1,122 @@
+.page {
+  --blue: #3047ee;
+  min-height: 100dvh;
+  padding: 17px 24px 26px;
+  background: #fff;
+  color: #090909;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 auto 16px;
+  font-size: clamp(28px, 2.34vw, 36px);
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  letter-spacing: -.45px;
+}
+
+.title > span { display: block; }
+.title strong { color: var(--blue); font-weight: 700; }
+.arrow { font-size: .88em; white-space: nowrap; }
+
+.videoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #080808;
+  border: 1px solid #dedede;
+}
+
+.video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.placeholder { display: grid; grid-template-columns: 32% 68%; height: 100%; }
+.portrait { position: relative; min-width: 0; overflow: hidden; }
+.portraitImage { object-fit: cover; object-position: 52% center; }
+.speaker {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  gap: 5px;
+  padding: 65px 20px 24px;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .8));
+}
+.speaker span:first-child { font-size: 19px; font-weight: 700; }
+.speaker span:last-child { font-size: 10px; letter-spacing: 2.2px; }
+.slide { display: grid; align-items: center; padding: 9% 0; background: #070707; }
+.slideContent {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 20px;
+  background: #fff;
+  text-align: center;
+}
+.slideEyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #666; }
+.slideTitle { margin: 0; font-size: clamp(22px, 2.8vw, 40px); line-height: 1.16; font-weight: 700; letter-spacing: -.8px; }
+.slideTitle span { color: var(--blue); }
+.playSymbol { display: grid; place-items: center; width: 76px; height: 76px; margin-top: 23px; border-radius: 50%; background: var(--blue); color: #fff; }
+.playSymbol svg { width: 46px; height: 46px; }
+.comingSoon { margin: 11px 0 0; color: #6a6a6a; font-size: 13px; }
+
+.booking { margin: 34px auto 0; text-align: center; }
+.cta {
+  display: block;
+  width: min(100%, 676px);
+  margin: 0 auto;
+  padding: 24px 20px;
+  border-radius: 5px;
+  border-bottom: 3px solid #18266f;
+  background: var(--blue);
+  color: #fff;
+  font-size: clamp(27px, 3.2vw, 44px);
+  line-height: 1.15;
+  font-weight: 400;
+  text-decoration: none;
+  transition: background-color .15s ease, transform .15s ease;
+}
+.cta:hover { background: #263bd8; }
+.cta:active { transform: translateY(1px); }
+.cta:focus-visible, .footer a:focus-visible, .legal summary:focus-visible { outline: 3px solid #101010; outline-offset: 5px; }
+.reassurance { margin: 13px 0 0; font-size: 13px; color: #737373; }
+
+.footer { max-width: 900px; margin: 51px auto 0; text-align: center; }
+.disclosure { max-width: 760px; margin: 0 auto; font-size: 11px; line-height: 1.65; color: #777; }
+.footerLinks { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 11px; color: #777; }
+.footerLinks a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.legal summary { cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.legal p { margin-top: 12px; line-height: 1.8; }
+.legal[open] { flex-basis: 100%; order: 1; }
+
+@media (max-width: 640px) {
+  .page { padding: 22px 16px 24px; }
+  .title { margin-bottom: 21px; font-size: clamp(23px, 6.65vw, 30px); line-height: 1.3; letter-spacing: -.45px; }
+  .title > span { display: inline; }
+  .slide { padding: 9% 0; }
+  .slideContent { padding: 4px 8px; }
+  .slideEyebrow { display: none; }
+  .slideTitle { font-size: clamp(16px, 4.65vw, 28px); letter-spacing: -.4px; }
+  .playSymbol { width: 32px; height: 32px; margin-top: 7px; }
+  .playSymbol svg { width: 24px; height: 24px; }
+  .comingSoon { margin-top: 6px; font-size: 11px; }
+  .speaker { gap: 3px; padding: 30px 8px 11px; }
+  .speaker span:first-child { font-size: 10px; }
+  .speaker span:last-child { font-size: 6px; letter-spacing: 1px; }
+  .booking { margin-top: 25px; }
+  .cta { padding: 21px 12px; font-size: clamp(22px, 6.3vw, 34px); }
+  .reassurance { margin-top: 12px; font-size: 11px; }
+  .footer { margin-top: 40px; }
+  .disclosure { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta { transition: none; }
+}

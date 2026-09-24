@@ -1,0 +1,100 @@
+.insurance-simulator{background:#f1f2ee;border-block:1px solid var(--border);scroll-margin-top:110px}
+.insurance-simulator [hidden]{display:none!important}
+.ins-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:34px}
+.ins-heading>p{font-size:16px;line-height:1.65}.ins-heading .eyebrow{margin-bottom:16px}
+.ins-layout{display:grid;grid-template-columns:1.08fr 1fr;gap:22px;align-items:start}
+.ins-form{background:white;border:1px solid var(--border);border-radius:24px;padding:30px 36px;min-width:0}
+.ins-example{font-size:12px;color:#596879;margin-bottom:24px}.ins-example:before{content:'';display:inline-block;width:6px;height:6px;background:var(--gold);border-radius:50%;margin-right:9px;vertical-align:middle}
+.ins-field+.ins-field{margin-top:22px}.ins-label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.ins-label label{font-size:15px;font-weight:600;line-height:1.5}
+.ins-help{flex-shrink:0;background:#fffdf5;border:1px solid #bea048;color:#80651d;width:30px;height:30px;border-radius:50%;font-weight:600;display:grid;place-items:center;padding:0}
+.ins-help:hover,.ins-help[aria-expanded=true]{background:var(--gold-pale)}
+.ins-help-panel{padding:14px 16px;background:var(--blue-pale);border-radius:10px;font-size:13px;line-height:1.6;color:var(--ink);margin-bottom:12px}
+.ins-money{display:flex;align-items:center;border:1px solid #c9d1d9;border-radius:12px;overflow:hidden;background:#fff;min-width:0}
+.ins-money input{width:100%;min-width:0;border:0;background:transparent;color:var(--navy);font-size:25px;line-height:1.3;padding:12px 6px;text-align:center;font-weight:500;-moz-appearance:textfield}
+.ins-money input::-webkit-inner-spin-button,.ins-rate-value input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ins-money input::placeholder{font-size:15px;font-weight:400;color:#6b7786}
+.ins-money>span{font-size:13px;white-space:nowrap;padding-right:14px;color:#4d6177}
+.ins-money>button{background:#f1f4f7;align-self:stretch;min-width:44px;font-size:24px;color:var(--navy)}
+.ins-money>button:hover{background:#e5ebf1}.ins-money>button:disabled{color:#a8afb8;cursor:default}.ins-money input:focus-visible{outline-offset:-3px}
+.ins-money-simple input{text-align:left;padding-left:16px}.ins-hint{font-size:12px;line-height:1.6;margin-top:7px}
+.ins-duration{display:grid;grid-template-columns:minmax(140px,1fr) 1fr;align-items:center;gap:20px}
+.insurance-simulator input[type=range]{width:100%;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;height:32px;margin:12px 0 0;padding:0;--ins-fill:0%}
+.insurance-simulator input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(to right,#b48f2d var(--ins-fill),#e1e6eb var(--ins-fill))}
+.insurance-simulator input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:20px;width:20px;margin-top:-7px;background:#b48f2d;border:3px solid white;border-radius:50%;box-shadow:0 1px 5px #0d1f3c25}
+.insurance-simulator input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:#e1e6eb}.insurance-simulator input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:#b48f2d}.insurance-simulator input[type=range]::-moz-range-thumb{height:14px;width:14px;background:#b48f2d;border:3px solid white;border-radius:50%;box-shadow:0 1px 5px #0d1f3c25}
+.ins-duration input[type=range]{margin:0}.ins-rate-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ins-presets{display:flex;gap:8px}.ins-presets button{border:1px solid #dde1dd;border-radius:10px;min-height:43px;min-width:62px;background:#f7f8f5;padding:7px 12px;font-size:14px}
+.ins-presets button[aria-pressed=true]{background:#edf2f8;border-color:var(--navy);color:var(--navy)}
+.ins-rate-value{display:flex;align-items:center;border:1px solid #c9d1d9;border-radius:10px;overflow:hidden;max-width:92px;padding-right:12px;font-size:14px}
+.ins-rate-value input{min-width:0;width:100%;text-align:center;border:0;background:white;padding:8px 0;font-size:19px;color:var(--navy);-moz-appearance:textfield}.ins-rate-value input:focus-visible{outline-offset:-3px}
+.ins-range-limits{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-3px}
+.ins-mode-switch{margin-top:18px;display:flex;gap:10px;align-items:center;background:transparent;border:0;padding:4px 0;font-size:13px;color:var(--navy);text-decoration:underline;text-underline-offset:4px}
+.ins-details{border-top:1px solid var(--border);margin-top:21px;padding-top:15px;font-size:13px}
+.ins-details summary,.ins-method summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--ink)}
+.ins-details summary::-webkit-details-marker{display:none}.ins-details summary>span{font-size:20px;color:#8c7130}.ins-details[open] summary>span{transform:rotate(45deg)}
+.ins-advanced{padding-top:18px}.ins-checkbox{display:flex;align-items:flex-start;gap:10px;line-height:1.5;font-weight:500}.ins-checkbox input{accent-color:var(--navy);width:17px;height:17px;flex-shrink:0;margin:2px 0 0}
+.ins-advanced-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}.ins-advanced-grid label{font-size:12px;display:block;margin-bottom:8px}.ins-advanced-grid input{font-size:19px}
+.ins-error{border-left:3px solid #ad4f36;color:#913b27;background:#fff4f0;padding:10px 12px;margin-top:16px;font-size:13px}.insurance-simulator input[aria-invalid=true]{background:#fff4f0}
+.ins-result{background:var(--navy);color:white;padding:36px;border-radius:24px;min-width:0;position:sticky;top:116px}
+.ins-result p{color:#bdc9da}.ins-scenario{display:inline-flex;border:1px solid #d9bf764a;border-radius:30px;background:#e8c97a0a;padding:6px 12px;color:#ead18a;font-size:12px;line-height:1.5;margin-bottom:26px}
+.ins-result .ins-result-label{color:#e8edf5;font-size:16px}.ins-total{display:block;color:var(--gold-light);font-family:var(--serif);font-size:clamp(44px,5.2vw,72px);line-height:1.3;letter-spacing:-.04em;margin:9px 0 10px;overflow-wrap:anywhere}
+.ins-result .ins-monthly{font-size:15px;color:#dce4ee}.ins-bars{margin-top:32px;display:grid;gap:20px}.ins-bars p{display:flex;justify-content:space-between;gap:16px;font-size:13px;align-items:baseline;margin-bottom:9px}.ins-bars strong{color:white;font-size:14px;font-weight:500;white-space:nowrap}
+.ins-bar-track{height:8px;border-radius:8px;background:#ffffff10;overflow:hidden}.ins-bar-track span{display:block;height:100%;background:#758ca5;border-radius:inherit;transition:width .18s ease}.ins-bar-track [data-ins-bar-after]{background:var(--gold-light)}
+.ins-result .ins-fees-note{font-size:11px;margin-top:13px;color:#acbbce}.ins-verdict{font-size:13px;line-height:1.7;margin-top:22px;border-top:1px solid #ffffff20;padding-top:19px}.ins-result[data-outcome=cost] .ins-total{color:#ffc5a3}
+.ins-result-footer{margin-top:25px}.ins-result-footer .button{width:100%}.ins-result-footer p{font-size:11px;text-align:center;margin-top:10px}.ins-result [data-ins-empty]{padding:12px 0 28px}.ins-result [data-ins-empty] h3{font-size:34px;color:white;margin:22px 0 14px}.ins-result [data-ins-empty] .small-caps{color:var(--gold-light)}
+.ins-assumptions{font-size:12px;line-height:1.7;margin-top:22px;max-width:940px}.ins-method{font-size:12px;color:var(--muted);max-width:940px;margin-top:10px}.ins-method summary{justify-content:flex-start;text-decoration:underline;text-underline-offset:3px}.ins-method p{margin-top:10px}.ins-method a{text-decoration:underline;text-underline-offset:3px}.ins-privacy{font-size:11px;color:#61705c;margin-top:16px}
+@media(max-width:1000px){.ins-heading>p{display:none}.ins-layout{grid-template-columns:1fr 1fr;gap:18px}.ins-form,.ins-result{padding:26px}.ins-duration{grid-template-columns:1fr;gap:0}.ins-total{font-size:56px}.ins-presets button{min-width:52px;padding-inline:9px}}
+@media(max-width:760px){.insurance-simulator{padding-block:48px}.ins-layout{grid-template-columns:1fr}.ins-result{position:static}.ins-heading{margin-bottom:24px}.ins-form,.ins-result{padding:24px;border-radius:20px}.ins-total{font-size:62px}.ins-duration{grid-template-columns:1fr;gap:8px}.ins-heading h2{font-size:36px}.ins-result .ins-result-label{font-size:15px}}
+@media(max-width:380px){.ins-form,.ins-result{padding:20px}.ins-duration{grid-template-columns:1fr}.ins-rate-row{gap:8px}.ins-presets{gap:5px}.ins-presets button{min-width:46px;padding-inline:7px}.ins-rate-value{max-width:72px}.ins-total{font-size:50px}.ins-advanced-grid{grid-template-columns:1fr}.ins-bars p{font-size:12px}.ins-bars strong{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.ins-bar-track span{transition:none}}
+/* Estimation par la route serveur (top 3 solutions) */
+.insurance-simulator .ins-form{padding:34px 38px}
+.bq-step{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:24px;font-weight:500;color:var(--navy);margin:38px 0 18px}
+.bq-step:first-of-type{margin-top:10px}.bq-grid+.bq-yn{margin-top:22px}.bq-yn:last-of-type{border-bottom:0}
+.bq-step span{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--gold-light);font:600 14px/1 var(--sans,inherit)}
+.bq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}.bq-grid .ins-field,.bq-grid .ins-field+.ins-field{margin:0;min-width:0}.bq-wide{grid-column:1/-1}
+.insurance-simulator .bq-grid label,.insurance-simulator .ins-label label,.insurance-simulator [data-bq-other]>label{display:block;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--navy);margin:0 0 8px;line-height:1.4}
+.insurance-simulator .ins-label{margin-bottom:8px}.insurance-simulator .ins-label label{margin:0}
+.insurance-simulator select,.insurance-simulator input[type=date],.insurance-simulator input[name$=professionQuery],.insurance-simulator input[name=postCode],.insurance-simulator input[name=city]{display:block;width:100%;height:52px;box-sizing:border-box;border:1.5px solid #cfd6de;border-radius:12px;background:#fbfcfd;color:var(--navy);font:inherit;font-size:16px;padding:0 16px;transition:border-color .15s,box-shadow .15s,background .15s;appearance:none;-webkit-appearance:none}
+.insurance-simulator select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%230d1f3c' stroke-width='1.8'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:42px;text-overflow:ellipsis}
+.insurance-simulator select:hover,.insurance-simulator input[type=date]:hover,.insurance-simulator input[name$=professionQuery]:hover,.insurance-simulator input[name=postCode]:hover,.insurance-simulator input[name=city]:hover,.insurance-simulator .ins-money-simple:hover{border-color:#a8b3bf}
+.insurance-simulator select:focus,.insurance-simulator input[type=date]:focus,.insurance-simulator input[name$=professionQuery]:focus,.insurance-simulator input[name=postCode]:focus,.insurance-simulator input[name=city]:focus,.insurance-simulator .ins-money-simple:focus-within{outline:0;border-color:var(--navy);background:#fff;box-shadow:0 0 0 4px #0d1f3c14}
+.insurance-simulator input::placeholder{color:#8a96a3;font-size:15px}
+.insurance-simulator .bq-grid .ins-money-simple,.insurance-simulator [data-bq-other] .ins-money-simple{height:52px;border:1.5px solid #cfd6de;border-radius:12px;background:#fbfcfd;transition:border-color .15s,box-shadow .15s}
+.insurance-simulator .ins-money-simple input{height:100%;font-size:18px;font-weight:500;padding:0 6px 0 16px}
+.insurance-simulator .ins-money-simple>span{padding:0 16px 0 4px;font-weight:600;color:#6b7b8d}
+.bq-profession{position:relative}.bq-suggest{position:absolute;z-index:6;left:0;right:0;top:calc(100% + 4px);margin:0;padding:6px;list-style:none;max-height:280px;overflow:auto;background:#fff;border:1.5px solid #cfd6de;border-radius:14px;box-shadow:0 18px 40px #0d1f3c26}
+.bq-suggest button{width:100%;text-align:left;background:transparent;border:0;border-radius:9px;padding:11px 12px;font-size:14px;color:var(--ink);cursor:pointer}.bq-suggest button:hover,.bq-suggest button:focus-visible{background:var(--blue-pale)}
+.bq-yn{display:flex;align-items:center;justify-content:space-between;gap:18px;border:0;border-bottom:1px solid #eef0f3;padding:14px 0;margin:0;min-width:0}
+.bq-yn legend{float:left;width:calc(100% - 170px);padding:0;margin:0;font-size:14px;font-weight:500;line-height:1.5;color:var(--ink)}
+.bq-yn .bq-pills{margin-left:auto}
+.bq-pills{display:inline-flex;flex:none;background:#eef1f5;border-radius:12px;padding:4px;gap:4px}
+.bq-pill{position:relative;display:block;margin:0!important}
+.bq-pill input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.bq-pill span{display:grid;place-items:center;min-width:64px;height:38px;padding:0 14px;border-radius:9px;font-size:14px;font-weight:600;color:#5b6b7c;transition:background .15s,color .15s,box-shadow .15s}
+.bq-pill:hover span{color:var(--navy)}
+.bq-pill input:checked+span{background:var(--navy);color:#fff;box-shadow:0 2px 8px #0d1f3c33}
+.bq-pill input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.bq-yn:has(input:invalid.bq-touched){border-color:#ad4f36}
+[data-bq-other]{margin-top:16px}
+.bq-submit{width:100%;margin-top:28px;min-height:56px;font-size:16px}.bq-submit:disabled{opacity:.6;cursor:wait}
+.bq-solutions{display:grid;gap:14px;margin-top:18px}.bq-solution{border:1px solid #ffffff24;border-radius:16px;padding:18px 20px;background:#ffffff08}.bq-solution.is-best{border-color:#d9bf76;background:#e8c97a12}
+.bq-rank{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#ead18a!important;margin:0 0 4px}.bq-total{display:block;font-family:var(--serif);font-size:38px;line-height:1.25;color:var(--gold-light);letter-spacing:-.02em}
+.bq-line{font-size:13px;margin-top:4px}.bq-basis{font-size:12px;margin-top:8px;color:#acbbce!important}.bq-phone{font-family:var(--serif);font-size:30px;color:var(--gold-light)}
+[data-bq-call] h3,[data-bq-loading] h3{font-size:34px;color:white;margin:14px 0}
+@media(max-width:760px){.insurance-simulator .ins-form{padding:24px 20px}.bq-grid{grid-template-columns:1fr}.bq-total{font-size:34px}.bq-yn{flex-direction:column;align-items:stretch;gap:10px}.bq-yn legend{float:none;width:auto}.bq-yn .bq-pills{margin:0;display:flex}.bq-pill{flex:1}.bq-pill span{min-width:0;width:100%}}
+
+.bq-avg{font-size:15px;margin:2px 0 10px;color:#dce4ee!important}.bq-avg strong{color:#fff;font-weight:600;font-size:17px}
+
+.bq-optional{font-weight:400;color:#6b7b8d}
+.bq-address{margin-top:20px}.bq-share{max-width:180px}
+.bq-co{margin-top:6px;padding:20px 20px 4px;border:1.5px dashed #cfd6de;border-radius:16px;background:#fbfcfd}
+.bq-co-note{font-size:13px;line-height:1.6;color:#4d6177;margin:0 0 18px}
+.bq-co .bq-grid{margin-bottom:6px}.bq-both{font-size:13px!important;color:var(--gold-light)!important;margin-top:14px}
+.bq-step+.bq-yn{margin-top:0}[data-bq-slot=main-profile] .bq-yn:first-child,[data-bq-slot=co-profile] .bq-yn:first-child{margin-top:18px}
+@media(max-width:760px){.bq-co{padding:16px 14px 2px}}
+
+.bq-has-co{margin-top:18px}
+.bq-co-title{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--navy);margin:0 0 8px}
+[data-bq-co=profile]{margin-top:26px}[data-bq-co=profile] [data-bq-slot=co-profile] .bq-yn:first-child{margin-top:10px}

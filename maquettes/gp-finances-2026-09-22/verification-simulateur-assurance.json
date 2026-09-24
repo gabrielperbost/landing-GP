@@ -1,0 +1,236 @@
+{
+  "checkedAt": "2026-09-23T10:57:04.836Z",
+  "unitTestsPassed": 13,
+  "checks": [
+    {
+      "name": "Exemple exact : 3 240 euros",
+      "pass": true,
+      "detail": {
+        "valid": true,
+        "basis": "monthly",
+        "mode": "scenario",
+        "years": 15,
+        "months": 0,
+        "duration": 180,
+        "reduction": 30,
+        "currentTotal": 10800,
+        "newPremiumTotal": 7560,
+        "fees": 0,
+        "newTotal": 7560,
+        "savings": 3240,
+        "monthlyEquivalent": 18,
+        "currentMonthly": 60,
+        "newMonthly": 42,
+        "savingsPercent": 30
+      }
+    },
+    {
+      "name": "Lien du hero vers le simulateur",
+      "pass": true
+    },
+    {
+      "name": "Aide explique le caractère hypothétique",
+      "pass": true
+    },
+    {
+      "name": "Escape ferme l’aide et restaure le focus",
+      "pass": true
+    },
+    {
+      "name": "Molette + et recalcul",
+      "pass": true
+    },
+    {
+      "name": "Curseur durée et scénario synchronisés",
+      "pass": true
+    },
+    {
+      "name": "Valeur vide : résultat masqué, erreur explicite",
+      "pass": true
+    },
+    {
+      "name": "Correction efface l’erreur",
+      "pass": true
+    },
+    {
+      "name": "Hypothèse nulle ne crée aucune économie",
+      "pass": true
+    },
+    {
+      "name": "Durée courte et mois supplémentaires",
+      "pass": true
+    },
+    {
+      "name": "Frais supérieurs au gain affichent un surcoût",
+      "pass": true
+    },
+    {
+      "name": "Durée supérieure à 35 ans refusée",
+      "pass": true
+    },
+    {
+      "name": "Devis vierge ne produit pas un gain artificiel",
+      "pass": true
+    },
+    {
+      "name": "Comparaison d’un devis 40€/mois",
+      "pass": true
+    },
+    {
+      "name": "Ancienne hypothèse inactive ignorée en mode devis",
+      "pass": true
+    },
+    {
+      "name": "Devis plus cher affiche le surcoût",
+      "pass": true
+    },
+    {
+      "name": "Coûts totaux doivent être saisis",
+      "pass": true
+    },
+    {
+      "name": "Coûts variables : pas de multiplication erronée",
+      "pass": true
+    },
+    {
+      "name": "Labels associés aux champs visibles",
+      "pass": true
+    },
+    {
+      "name": "Coûts totaux indépendants de la durée saisie",
+      "pass": true
+    },
+    {
+      "name": "Retour mensuel conserve les coûts mensuels antérieurs",
+      "pass": true
+    },
+    {
+      "name": "Retour scénario et validation",
+      "pass": true
+    },
+    {
+      "name": "CTA ouvre le rappel Assurance emprunteur",
+      "pass": true
+    },
+    {
+      "name": "Montage idempotent, hook sans données et nettoyage",
+      "pass": true,
+      "detail": {
+        "same": true,
+        "hook": true,
+        "destroyed": true
+      }
+    },
+    {
+      "name": "Disposition et contrôles à 320px",
+      "pass": true,
+      "detail": {
+        "body": 320,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 320px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 320px",
+      "pass": true
+    },
+    {
+      "name": "Disposition et contrôles à 390px",
+      "pass": true,
+      "detail": {
+        "body": 390,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 390px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 390px",
+      "pass": true
+    },
+    {
+      "name": "Disposition et contrôles à 768px",
+      "pass": true,
+      "detail": {
+        "body": 768,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 768px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 768px",
+      "pass": true
+    },
+    {
+      "name": "Disposition et contrôles à 1024px",
+      "pass": true,
+      "detail": {
+        "body": 1024,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 1024px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 1024px",
+      "pass": true
+    },
+    {
+      "name": "Disposition et contrôles à 1440px",
+      "pass": true,
+      "detail": {
+        "body": 1440,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 1440px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 1440px",
+      "pass": true
+    },
+    {
+      "name": "Disposition et contrôles à 1920px",
+      "pass": true,
+      "detail": {
+        "body": 1920,
+        "controls": true
+      }
+    },
+    {
+      "name": "Valeur de durée lisible à 1920px",
+      "pass": true
+    },
+    {
+      "name": "Options et grands nombres à 1920px",
+      "pass": true
+    },
+    {
+      "name": "Pas de requête de calcul ni service tiers",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "Module assurance absent de la page PER",
+      "pass": true
+    },
+    {
+      "name": "Aucune erreur JavaScript",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "runtimeErrors": []
+}

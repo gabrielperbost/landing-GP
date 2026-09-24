@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-09-22T13:39:12.654Z",
+  "checks": [
+    {
+      "width": 320,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "width": 390,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "width": 768,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "width": 1024,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "width": 1920,
+      "initial": {
+        "saving": "—",
+        "overflow": false,
+        "form": true
+      },
+      "sample": {
+        "saving": "3 900 €",
+        "tmi": "30 %",
+        "cap": "13 000 €",
+        "netIncome": "",
+        "overflow": false
+      },
+      "pass": true
+    }
+  ],
+  "actions": {
+    "crossing": 1140,
+    "limited": 1000,
+    "older": 0,
+    "unsupported": "—",
+    "missing": "—",
+    "validation": true,
+    "noPro": "—",
+    "cap": 5000,
+    "zeroNet": 0,
+    "range": "3000",
+    "storage": 0
+  },
+  "rangeSaving": 900,
+  "actionsPass": true,
+  "runtimeErrors": [],
+  "externalRequests": []
+}

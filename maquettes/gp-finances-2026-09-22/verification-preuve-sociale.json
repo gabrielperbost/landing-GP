@@ -1,0 +1,466 @@
+{
+  "checkedAt": "2026-09-24T09:54:05.098Z",
+  "checks": [
+    {
+      "page": "index",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 320,
+      "scrollWidth": 320,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 390,
+      "scrollWidth": 390,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 768,
+      "scrollWidth": 768,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 1920,
+      "scrollWidth": 1920,
+      "googleCards": 5,
+      "heroProof": true,
+      "h1": 1,
+      "brokenImages": [],
+      "pass": true
+    },
+    {
+      "name": "Automatic carousel advances when visible",
+      "pass": true
+    },
+    {
+      "name": "Pause remains stationary",
+      "pass": true
+    },
+    {
+      "name": "Next arrow moves cards",
+      "pass": true
+    },
+    {
+      "name": "Keyboard navigation",
+      "pass": true
+    },
+    {
+      "name": "Reduced motion disables autoplay",
+      "pass": true
+    },
+    {
+      "name": "Mobile horizontal scroll remains contained and stops autoplay",
+      "pass": true
+    },
+    {
+      "name": "Four insurance videos including Johanna and John",
+      "pass": true
+    },
+    {
+      "name": "John opens correct video dialog",
+      "pass": true
+    },
+    {
+      "name": "Closing video releases media",
+      "pass": true
+    },
+    {
+      "name": "PER testimony order and labels preserved",
+      "pass": true
+    }
+  ],
+  "runtimeErrors": []
+}

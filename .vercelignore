@@ -1,0 +1,19 @@
+node_modules
+.next
+.next_corrupt_*
+.next_stale_20260216-212408
+tsconfig.tsbuildinfo
+.DS_Store
+
+# Local raw assets not used by the app runtime
+Témoignage John RAVELLO.mp4
+WhatsApp Video 2026-03-01 at 19.39.50.mp4
+temoignageV1.jpg
+temoignageV2.jpeg
+
+# Local docs / tooling
+docs
+scripts
+
+# Local visual mockups; publication requires separate user approval
+maquettes

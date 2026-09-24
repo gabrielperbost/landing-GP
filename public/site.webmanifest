@@ -1,0 +1,19 @@
+{
+  "name": "GP Finances",
+  "short_name": "GP Finances",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0B264B",
+  "background_color": "#0B264B",
+  "display": "standalone"
+}

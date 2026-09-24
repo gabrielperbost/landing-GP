@@ -20,7 +20,7 @@ export const HowItWorks = () => (
     </Card>
     <div className="flex justify-center">
       <Button href={CONFIG.CALENDLY_URL} onClick={() => trackRDV("process_cta")}>
-        J'appelle maintenant
+        J&apos;appelle maintenant
       </Button>
     </div>
   </section>

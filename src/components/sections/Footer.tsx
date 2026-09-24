@@ -1,6 +1,11 @@
 import { LEGAL } from "@/content/site";
+import Link from "next/link";
 
-export const Footer = () => (
+type FooterProps = {
+  includeLoan92Link?: boolean;
+};
+
+export const Footer = ({ includeLoan92Link = true }: FooterProps) => (
   <footer className="bg-white border-t border-slate-200 mt-12" id="mentions-legales">
     <div className="container py-8 grid gap-3 md:grid-cols-3 text-sm text-muted">
       <div>
@@ -9,7 +14,7 @@ export const Footer = () => (
       </div>
       <div className="space-y-1">
         <p>{LEGAL.rcs}</p>
-        <p>ORIAS {LEGAL.orias}</p>
+        <p>{LEGAL.orias}</p>
         <p>Siège social : {LEGAL.hq}</p>
       </div>
       <div className="flex flex-wrap gap-3">
@@ -18,6 +23,11 @@ export const Footer = () => (
             {link.label}
           </a>
         ))}
+        {includeLoan92Link && (
+          <Link href="/assurance-de-pret/hauts-de-seine" className="text-primary hover:underline">
+            Assurance de prêt 92
+          </Link>
+        )}
       </div>
     </div>
   </footer>

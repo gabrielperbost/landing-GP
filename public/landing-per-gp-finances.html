@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan Épargne Retraite — Réduisez vos impôts dès cette année | GP Finances</title>
+  <meta name="description" content="Grâce au PER, certains de nos clients économisent jusqu'à 9 000€ d'impôts par an. Simulation gratuite et personnalisée par Gabriel Perbost, courtier indépendant." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0d1f3c;
+      --navy-light: #162d52;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-pale: #fdf6e3;
+      --cream: #fafaf7;
+      --white: #ffffff;
+      --text: #1a1a2e;
+      --text-mid: #4a5568;
+      --text-light: #718096;
+      --green: #1a7a4a;
+      --green-light: #e8f5ee;
+      --red-light: #fff0f0;
+      --border: #e8e4d9;
+      --shadow: 0 4px 32px rgba(13,31,60,0.10);
+      --shadow-lg: 0 12px 60px rgba(13,31,60,0.16);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,31,60,0.97);
+      backdrop-filter: blur(12px);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 16px; color: var(--navy);
+    }
+    .nav-brand { font-size: 15px; font-weight: 600; color: var(--white); letter-spacing: 0.02em; }
+    .nav-brand span { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 13px; font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-bg-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      top: -100px; right: -200px;
+      pointer-events: none;
+    }
+    .hero-bg-glow2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,122,74,0.08) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative; z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--gold);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 19px);
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 36px;
+      font-weight: 300;
+      max-width: 560px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+    .hero-bullets {
+      list-style: none;
+      margin-bottom: 40px;
+      display: flex; flex-direction: column; gap: 10px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.45s forwards;
+    }
+    .hero-bullets li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 15px; color: rgba(255,255,255,0.85);
+    }
+    .hero-bullets li::before {
+      content: '✓';
+      width: 22px; height: 22px;
+      background: rgba(26,122,74,0.2);
+      border: 1px solid rgba(26,122,74,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #4ade80;
+      flex-shrink: 0;
+      line-height: 22px; text-align: center;
+    }
+    .hero-ctas {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 15px; font-weight: 700;
+      padding: 16px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.25s;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--white);
+      font-size: 15px; font-weight: 500;
+      padding: 16px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); }
+
+    .hero-trust {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; gap: 16px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
+    }
+    .hero-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: var(--navy-light);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 32%;
+      display: block;
+    }
+    .hero-trust-text { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .hero-trust-text strong { color: var(--white); display: block; font-size: 14px; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── STATS BAND ── */
+    .stats-band {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+    .stats-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+    }
+    .stat-item {
+      padding: 42px 30px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+    }
+    .stat-number.gold { color: var(--gold); }
+    .stat-number.no-wrap { white-space: nowrap; }
+    .stat-label { font-size: 13px; color: var(--text-light); margin-top: 4px; line-height: 1.4; }
+
+    /* ── COUNTER ── */
+    .counter-section {
+      background: var(--navy);
+      padding: 56px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .counter-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    }
+    .counter-label {
+      font-size: 13px; font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .counter-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .counter-number span { color: var(--gold); }
+    .counter-sub { font-size: 15px; color: rgba(255,255,255,0.55); margin-top: 8px; }
+    .counter-cta { margin-top: 28px; }
+
+    /* ── SECTIONS COMMUNES ── */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 860px; margin: 0 auto; }
+    .section-tag {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--text-mid);
+      max-width: 580px;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ── PROBLÈME ── */
+    .problem-section { background: var(--cream); }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 48px;
+    }
+    .problem-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .problem-card.bad::before { background: #e53e3e; }
+    .problem-card.good::before { background: var(--green); }
+    .problem-card-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+    }
+    .problem-card.bad .problem-card-tag { color: #e53e3e; }
+    .problem-card.good .problem-card-tag { color: var(--green); }
+    .problem-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 600;
+      color: var(--navy); margin-bottom: 10px;
+    }
+    .problem-card p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ── COMMENT ÇA MARCHE ── */
+    .how-section { background: var(--white); }
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: grid; grid-template-columns: 64px 1fr;
+      gap: 24px; padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 52px; height: 52px;
+      background: var(--navy);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--navy); margin-bottom: 8px;
+    }
+    .step p { font-size: 15px; color: var(--text-mid); line-height: 1.7; }
+
+    /* ── AVANT / APRÈS ── */
+    .avantapres-section { background: var(--cream); }
+    .avantapres-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .avantapres-header {
+      background: var(--navy);
+      padding: 20px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .avantapres-header-text {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      font-weight: 500;
+    }
+    .avantapres-header-text strong { color: var(--white); display: block; font-size: 15px; }
+    .avantapres-body { padding: 32px 28px; }
+    .avantapres-rows { display: flex; flex-direction: column; gap: 20px; }
+    .avantapres-row { display: flex; flex-direction: column; gap: 8px; }
+    .avantapres-row-label { font-size: 12px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; }
+    .avantapres-bars { display: flex; flex-direction: column; gap: 8px; }
+    .avantapres-bar-wrap { display: flex; align-items: center; gap: 12px; }
+    .avantapres-bar-label { font-size: 12px; color: var(--text-mid); width: 80px; flex-shrink: 0; }
+    .avantapres-bar-bg { flex: 1; height: 12px; background: #f0f0f0; border-radius: 6px; overflow: hidden; }
+    .avantapres-bar-fill { height: 100%; border-radius: 6px; }
+    .avantapres-bar-fill.before { background: #e53e3e; width: 100%; }
+    .avantapres-bar-fill.after  { background: var(--green); width: 45%; }
+    .avantapres-bar-val { font-size: 13px; font-weight: 700; color: var(--navy); width: 72px; text-align: right; flex-shrink: 0; }
+    .avantapres-saving {
+      margin-top: 28px;
+      background: var(--green-light);
+      border: 1px solid rgba(26,122,74,0.2);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+    }
+    .avantapres-saving-label { font-size: 14px; color: var(--green); font-weight: 600; }
+    .avantapres-saving-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: var(--green);
+    }
+    .avantapres-disclaimer { font-size: 11px; color: var(--text-light); margin-top: 16px; font-style: italic; }
+
+    /* ── OBJECTION ── */
+    .objection-section { background: var(--white); }
+    .objection-box {
+      background: var(--gold-pale);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    .objection-q {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700; color: var(--navy);
+      margin-bottom: 20px;
+    }
+    .objection-a { font-size: 16px; color: var(--text-mid); line-height: 1.8; margin-bottom: 24px; }
+    .deblocage-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .deblocage-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--text);
+    }
+    .deblocage-list li::before {
+      content: '→';
+      color: var(--gold);
+      font-weight: 700; flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── TÉMOIGNAGES ── */
+    .temoignages-section { background: var(--cream); }
+    .temoignages-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .temo-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .temo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .temo-video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9/16;
+      background: var(--navy);
+      object-fit: cover;
+    }
+    .temo-footer {
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .temo-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .temo-saving {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-weight: 700; color: var(--green);
+    }
+    .temo-saving-label { font-size: 10px; color: var(--text-light); }
+
+    /* ── GABRIEL ── */
+    .gabriel-section { background: var(--navy); padding: 80px 24px; }
+    .gabriel-inner {
+      max-width: 860px; margin: 0 auto;
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 48px; align-items: start;
+    }
+    .gabriel-photo {
+      width: 180px; height: 180px;
+      border-radius: 20px;
+      background: var(--navy-light);
+      border: 2px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 48px; font-weight: 700; color: var(--gold);
+      overflow: hidden;
+    }
+    .gabriel-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+    }
+    .gabriel-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: block; }
+    .gabriel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 700; color: var(--white);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .gabriel-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; font-weight: 300; }
+    .gabriel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .gabriel-col h4 { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .gabriel-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .gabriel-col ul li { font-size: 14px; color: rgba(255,255,255,0.7); display: flex; gap: 8px; align-items: flex-start; }
+    .gabriel-col ul li::before { content: '·'; color: var(--gold); font-size: 18px; line-height: 1.2; flex-shrink: 0; }
+    .gabriel-orias { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.35); }
+
+    /* ── PROCESS ── */
+    .process-section { background: var(--cream); }
+    .process-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .process-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+    }
+    .process-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px; font-weight: 900;
+      color: rgba(13,31,60,0.06);
+      position: absolute; top: 12px; right: 20px;
+    }
+    .process-icon {
+      width: 44px; height: 44px;
+      background: var(--gold-pale);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+    .process-card h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .process-card p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .faq-section { background: var(--white); }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      background: none; border: none;
+      padding: 20px 24px;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 600; color: var(--navy);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .faq-q:hover { background: var(--cream); }
+    .faq-icon { font-size: 20px; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      padding: 0 24px;
+      font-size: 15px; color: var(--text-mid); line-height: 1.7;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      background: var(--navy);
+      padding: 96px 24px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    }
+    .cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 5vw, 48px);
+      font-weight: 700; color: var(--white);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .cta-title em { font-style: normal; color: var(--gold); }
+    .cta-sub { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 40px; font-weight: 300; }
+    .cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .cta-pills {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 32px;
+    }
+    .cta-pill {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px; color: rgba(255,255,255,0.6);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #07111f;
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 860px; margin: 0 auto;
+    }
+    .footer-top {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      justify-content: space-between; align-items: flex-start;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 24px;
+    }
+    .footer-brand { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.9); }
+    .footer-brand span { color: var(--gold); }
+    .footer-legal { font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-disclaimer {
+      font-size: 11px; color: rgba(255,255,255,0.25);
+      line-height: 1.8; font-style: italic;
+    }
+
+    /* ── STICKY CTA MOBILE ── */
+    .sticky-cta {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+      background: var(--navy);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      padding: 12px 20px;
+      gap: 10px;
+    }
+    .sticky-cta a { flex: 1; text-align: center; }
+
+    /* ── MERCI OVERLAY ── */
+    body.thankyou-open { overflow: hidden; }
+    .thankyou-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(7, 17, 31, 0.55);
+      backdrop-filter: blur(6px);
+    }
+    .thankyou-overlay.is-open { display: flex; }
+    .thankyou-modal {
+      width: 100%;
+      max-width: 860px;
+      border-radius: 24px;
+      border: 1px solid #dce3ef;
+      background: #ffffff;
+      box-shadow: 0 22px 64px rgba(13, 31, 60, 0.28);
+      padding: 42px 30px 34px;
+      text-align: center;
+      position: relative;
+    }
+    .thankyou-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #d0d8e6;
+      background: #ffffff;
+      color: #5f6b84;
+      font-size: 28px;
+      line-height: 36px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .thankyou-close:hover { background: #f5f7fb; }
+    .thankyou-tag {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2150d6;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .thankyou-title {
+      font-size: clamp(34px, 5vw, 66px);
+      line-height: 1.05;
+      color: #121e40;
+      font-weight: 600;
+      margin-bottom: 18px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .thankyou-text {
+      margin: 0 auto;
+      max-width: 700px;
+      font-size: clamp(19px, 2.2vw, 28px);
+      line-height: 1.45;
+      color: #4a5a74;
+      font-weight: 400;
+    }
+    .thankyou-actions {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+    .thankyou-btn {
+      min-width: 250px;
+      border-radius: 16px;
+      padding: 14px 22px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .thankyou-btn.primary {
+      background: #2150d6;
+      color: #ffffff;
+    }
+    .thankyou-btn.primary:hover { background: #1c45bc; }
+    .thankyou-btn.secondary {
+      border: 1px solid #c5d0e0;
+      color: #33435f;
+      background: #ffffff;
+    }
+    .thankyou-btn.secondary:hover { background: #f8fafe; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat-item { padding: 34px 22px; border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .temoignages-grid { grid-template-columns: 1fr 1fr; }
+      .gabriel-inner { grid-template-columns: 1fr; }
+      .gabriel-photo { width: 100px; height: 100px; font-size: 32px; }
+      .gabriel-cols { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .avantapres-saving { flex-direction: column; align-items: flex-start; }
+      .step { grid-template-columns: 52px 1fr; }
+      .sticky-cta { display: flex; }
+      body { padding-bottom: 80px; }
+      .objection-box { padding: 28px 20px; }
+      .thankyou-modal { padding: 34px 20px 24px; border-radius: 20px; }
+      .thankyou-actions { flex-direction: column; }
+      .thankyou-btn { width: 100%; min-width: 0; }
+      .thankyou-title { font-size: clamp(30px, 8vw, 42px); }
+      .thankyou-text { font-size: clamp(17px, 4.6vw, 22px); }
+    }
+    @media (max-width: 480px) {
+      .temoignages-grid { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .cta-buttons { flex-direction: column; }
+      .cta-buttons a { width: 100%; text-align: center; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">G</div>
+    <div class="nav-brand">GP <span>Finances</span></div>
+  </div>
+  <a href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale" class="nav-cta" target="_blank" rel="noopener">RDV gratuit →</a>
+</nav>
+
+<!-- MERCI OVERLAY -->
+<div id="thankyou-overlay" class="thankyou-overlay" aria-hidden="true">
+  <section class="thankyou-modal" role="dialog" aria-modal="true" aria-labelledby="thankyou-title">
+    <button type="button" class="thankyou-close" data-thankyou-close aria-label="Fermer">&times;</button>
+    <p class="thankyou-tag">Questionnaire PER</p>
+    <h1 id="thankyou-title" class="thankyou-title">Merci pour votre demande PER</h1>
+    <p class="thankyou-text">
+      Votre questionnaire a bien été reçu. Gabriel PERBOST va vous contacter rapidement pour finaliser votre étude personnalisée.
+    </p>
+    <div class="thankyou-actions">
+      <a
+        class="thankyou-btn primary"
+        href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale"
+        target="_blank"
+        rel="noopener"
+      >
+        Prendre un rendez-vous
+      </a>
+      <a class="thankyou-btn secondary" href="/per">Retour à l'accueil</a>
+    </div>
+  </section>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Plan Épargne Retraite · Optimisation fiscale</div>
+    <h1>Réduisez vos impôts <em>dès cette année</em> — légalement et sans effort</h1>
+    <p class="hero-sub">Certains de nos clients économisent jusqu'à 9 000€ d'impôts par an grâce au PER. Découvrez ce que ça représente pour votre profil.</p>
+    <ul class="hero-bullets">
+      <li>Simulation gratuite et personnalisée selon votre situation</li>
+      <li>Accompagnement complet par Gabriel Perbost, courtier indépendant</li>
+      <li>Frais parmi les plus bas du marché — aucun frais caché</li>
+    </ul>
+    <div class="hero-ctas">
+      <a href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale" class="btn-primary" target="_blank" rel="noopener">
+        Prendre mon RDV gratuit →
+      </a>
+      <a href="tel:+33651224213" class="btn-secondary">
+        📞 06 51 22 42 13
+      </a>
+    </div>
+    <div class="hero-trust">
+      <div class="hero-avatar">
+        <img src="/images/gabriel-per-avatar.jpeg" alt="Gabriel Perbost" loading="lazy" />
+      </div>
+      <div class="hero-trust-text">
+        <strong>Gabriel Perbost — Courtier indépendant</strong>
+        ORIAS n° 23003789 · RCS Nanterre 899 363 907
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <span class="stat-number gold no-wrap">Jusqu’à 9&nbsp;000&nbsp;€</span>
+      <div class="stat-label">d’impôts en moins par an<br/>selon votre revenu, votre TMI et votre plafond PER disponible</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <span class="stat-number">100% légal</span>
+      <div class="stat-label">Dispositif encadré<br/>par l'État français</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <span class="stat-number">48h</span>
+      <div class="stat-label">Simulation personnalisée<br/>après votre RDV</div>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTER -->
+<div class="counter-section">
+  <div class="counter-label">Depuis le 1er janvier 2026</div>
+  <div class="counter-number"><span id="counter">0</span> €</div>
+  <div class="counter-sub">Déjà économisés en impôts par les nouveaux clients GP Finances</div>
+  <div class="counter-cta">
+    <a href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale" class="btn-primary" target="_blank" rel="noopener" style="margin: 0 auto; display: inline-flex;">
+      Je calcule mes économies →
+    </a>
+  </div>
+</div>
+
+<!-- TÉMOIGNAGES -->
+<section class="temoignages-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Ils l&apos;ont fait</span>
+    <h2 class="section-title reveal">Nos clients témoignent</h2>
+    <p class="section-sub reveal">Des économies fiscales réelles, constatées, vérifiables.</p>
+    <div class="temoignages-grid">
+      <div class="temo-card reveal">
+        <video class="temo-video" controls preload="metadata" playsinline poster="/videos/posters/per-temoignage-1.png">
+          <source src="/videos/PER/temoignage-1-dorothee.mp4" type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture video.
+        </video>
+        <div class="temo-footer">
+          <div>
+            <div class="temo-name">Dorothée</div>
+            <div class="temo-saving-label">Économie constatée</div>
+          </div>
+          <div class="temo-saving">17 000€</div>
+        </div>
+      </div>
+      <div class="temo-card reveal reveal-delay-1">
+        <video class="temo-video" controls preload="metadata" playsinline poster="/videos/posters/per-temoignage-2.png">
+          <source src="/videos/PER/temoignage-2-anaelle.mp4" type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture video.
+        </video>
+        <div class="temo-footer">
+          <div>
+            <div class="temo-name">Anaëlle</div>
+            <div class="temo-saving-label">Économie constatée</div>
+          </div>
+          <div class="temo-saving">8 000€</div>
+        </div>
+      </div>
+      <div class="temo-card reveal reveal-delay-2">
+        <video class="temo-video" controls preload="metadata" playsinline poster="/videos/posters/per-temoignage-3.png">
+          <source src="/videos/PER/temoignage-3-ya-ambhandn.mp4" type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture video.
+        </video>
+        <div class="temo-footer">
+          <div>
+            <div class="temo-name">Fréderic</div>
+            <div class="temo-saving-label">Économie constatée</div>
+          </div>
+          <div class="temo-saving">4 000€</div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:20px;font-style:italic;">Résultats variables selon la situation personnelle de chaque client.</p>
+  </div>
+</section>
+
+<!-- PROBLÈME -->
+<section class="problem-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Le constat</span>
+    <h2 class="section-title reveal">Vous payez des impôts. Beaucoup. Et personne ne vous a expliqué comment en récupérer une partie.</h2>
+    <p class="section-sub reveal">Chaque année, des milliers de Français imposés laissent des milliers d'euros au fisc — non par manque de revenus, mais par manque d'information.</p>
+    <div class="problem-grid">
+      <div class="problem-card bad reveal">
+        <div class="problem-card-tag">✕ Sans PER</div>
+        <h3>Vous versez 100% de vos impôts</h3>
+        <p>Votre base imposable reste inchangée. Vous payez votre tranche marginale en intégralité, chaque année, sans levier d'optimisation.</p>
+      </div>
+      <div class="problem-card good reveal reveal-delay-1">
+        <div class="problem-card-tag">✓ Avec PER</div>
+        <h3>Vous réduisez votre base imposable</h3>
+        <p>Ce que vous versez sur votre PER vient directement en déduction de vos revenus imposables. Vous payez moins d'impôts dès cette année — et votre épargne fructifie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="how-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Le mécanisme</span>
+    <h2 class="section-title reveal">Comment fonctionne le PER en 3 étapes</h2>
+    <p class="section-sub reveal">Pas de jargon. Pas de complexité inutile. Voici exactement ce qui se passe.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Vous versez ce que vous souhaitez</div>
+          <p>Il n'y a pas de montant minimum imposé. Vous choisissez librement combien vous placez sur votre PER, en fonction de votre situation et de vos objectifs fiscaux. Chaque euro versé compte.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Ce montant réduit vos revenus imposables</div>
+          <p>Les versements sur un PER sont déductibles de votre revenu imposable, dans la limite du plafond légal. Moins de revenus imposables signifie directement moins d'impôts à payer — dès cette année, pas dans 20 ans.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Votre épargne travaille et fructifie</div>
+          <p>Votre argent est investi selon votre profil de risque sur des supports sélectionnés. Il fructifie jusqu'à la retraite. Et des cas de déblocage anticipé sont prévus par la loi si vous en avez besoin avant.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVANT / APRÈS -->
+<section class="avantapres-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Cas client concret</span>
+    <h2 class="section-title reveal">Visualisez concrètement l'impact sur votre fiscalité</h2>
+    <p class="section-sub reveal">Exemple basé sur un profil type. Les résultats varient selon votre situation personnelle.</p>
+    <div class="avantapres-card reveal">
+      <div class="avantapres-header">
+        <div class="avantapres-header-text">
+          <strong>Profil type · Salarié cadre</strong>
+          85 000€ de revenus imposables · TMI 30%
+        </div>
+        <div style="font-size:12px;color:rgba(201,168,76,0.7);">Versement PER : 13 000€/an</div>
+      </div>
+      <div class="avantapres-body">
+        <div class="avantapres-rows">
+          <div class="avantapres-row">
+            <div class="avantapres-row-label">Impôts payés sur le revenu</div>
+            <div class="avantapres-bars">
+              <div class="avantapres-bar-wrap">
+                <div class="avantapres-bar-label">Sans PER</div>
+                <div class="avantapres-bar-bg"><div class="avantapres-bar-fill before"></div></div>
+                <div class="avantapres-bar-val" style="color:#e53e3e;">18 200€</div>
+              </div>
+              <div class="avantapres-bar-wrap">
+                <div class="avantapres-bar-label">Avec PER</div>
+                <div class="avantapres-bar-bg"><div class="avantapres-bar-fill after"></div></div>
+                <div class="avantapres-bar-val" style="color:var(--green);">14 300€</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="avantapres-saving">
+          <div>
+            <div class="avantapres-saving-label">Économie fiscale réalisée cette année</div>
+            <div style="font-size:13px;color:var(--text-light);margin-top:2px;">En plus de l'épargne constituée</div>
+          </div>
+          <div class="avantapres-saving-amount">− 3 900€</div>
+        </div>
+        <div class="avantapres-disclaimer">Simulation indicative. Ne constitue pas un engagement contractuel. Les économies fiscales dépendent de la situation personnelle de chaque client et sont soumises aux plafonds légaux en vigueur.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTION -->
+<section class="objection-section">
+  <div class="section-inner">
+    <div class="objection-box reveal">
+      <div class="objection-q">"Et mon argent — il est bloqué ?"</div>
+      <p class="objection-a">C'est la question que tout le monde pose. La réponse honnête : le PER est conçu pour la retraite. Mais la loi prévoit plusieurs cas de déblocage anticipé :</p>
+      <ul class="deblocage-list">
+        <li>Achat de votre résidence principale</li>
+        <li>Invalidité (vous ou votre conjoint ou vos enfants)</li>
+        <li>Décès du conjoint ou partenaire de PACS</li>
+        <li>Fin de droits au chômage après licenciement</li>
+        <li>Surendettement constaté par une commission</li>
+        <li>Expiration des droits aux allocations chômage</li>
+      </ul>
+      <p style="margin-top:20px;font-size:15px;color:var(--text-mid);">Et à terme, vous récupérez votre capital — sous forme de rente, de capital, ou les deux. Votre argent ne disparaît pas : il travaille.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GABRIEL -->
+<section class="gabriel-section">
+  <div class="gabriel-inner">
+    <div>
+      <div class="gabriel-photo">
+        <img src="/images/gabriel-per-avatar.jpeg" alt="Gabriel Perbost" loading="lazy" />
+      </div>
+    </div>
+    <div>
+      <span class="gabriel-tag">Votre conseiller</span>
+      <h2 class="gabriel-title">Je m'occupe de tout.<br/>Vous payez moins d'impôts.</h2>
+      <p class="gabriel-sub">Courtier indépendant, je ne suis lié à aucune banque, aucun assureur. Mon seul objectif : trouver la solution la plus adaptée à votre situation, avec les frais les plus bas du marché.</p>
+      <div class="gabriel-cols">
+        <div class="gabriel-col">
+          <h4>Ce que je fais</h4>
+          <ul>
+            <li>J'analyse votre situation fiscale en détail</li>
+            <li>Je calcule le montant optimal à verser</li>
+            <li>Je sélectionne le contrat le plus performant</li>
+            <li>Je gère l'ouverture et le suivi de A à Z</li>
+          </ul>
+        </div>
+        <div class="gabriel-col">
+          <h4>Ce que vous gagnez</h4>
+          <ul>
+            <li>Une économie d'impôts dès cette année</li>
+            <li>Une épargne qui travaille pour vous</li>
+            <li>Zéro démarche administrative</li>
+            <li>Frais parmi les plus bas du marché</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gabriel-orias">
+        Gabriel Perbost · GP Finances · Courtier en assurance et opérations de banque<br/>
+        ORIAS n° 23003789 · RCS Nanterre 899 363 907 · Siège : Issy-les-Moulineaux
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Comment ça se passe</span>
+    <h2 class="section-title reveal">3 étapes. C'est tout.</h2>
+    <p class="section-sub reveal">Simple, rapide, sans engagement. Vous repartez avec des chiffres clairs.</p>
+    <div class="process-steps">
+      <div class="process-card reveal">
+        <div class="process-num">1</div>
+        <div class="process-icon">📹</div>
+        <h3>RDV visio de découverte</h3>
+        <p>30 minutes en visioconférence. On partage l'écran. J'analyse votre situation : revenus, impôts, objectifs, épargne existante.</p>
+      </div>
+      <div class="process-card reveal reveal-delay-1">
+        <div class="process-num">2</div>
+        <div class="process-icon">📊</div>
+        <h3>Simulation personnalisée</h3>
+        <p>Sous 48h, je vous prépare une simulation chiffrée : montant à verser, économie d'impôts estimée, projection à long terme.</p>
+      </div>
+      <div class="process-card reveal reveal-delay-2">
+        <div class="process-num">3</div>
+        <div class="process-icon">✅</div>
+        <h3>Mise en place clé en main</h3>
+        <p>Vous validez, j'ouvre votre PER et gère toutes les démarches. Vous n'avez rien à faire. C'est actif dès cette année.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Questions fréquentes</span>
+    <h2 class="section-title reveal">Ce qui retient les gens — et les réponses honnêtes</h2>
+    <div class="faq-list reveal" style="margin-top:40px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Faut-il être très imposé pour que ça soit intéressant ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">À partir de 3 000€ d'impôts par an, le PER commence à générer des économies significatives. Sur un profil à 8 000€ d'impôts, l'économie peut représenter 1 500 à 3 000€ dès la première année. On calcule ensemble ce que ça représente pour vous.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          J'ai déjà un PER. Est-ce que ça vaut le coup quand même ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Très probablement. La grande majorité des PER ouverts en banque ont des frais sur versements entre 2 et 5%. Sur notre contrat, ces frais sont parmi les plus bas du marché. On compare ensemble — si votre contrat actuel est meilleur, je vous le dis clairement.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Le PER est-il compatible avec mon assurance-vie ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Tout à fait — et c'est souvent la combinaison optimale. Le PER réduit vos impôts aujourd'hui, l'assurance-vie optimise votre transmission. On définit ensemble la répartition la plus pertinente selon votre profil.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Combien de temps pour ouvrir un PER ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Quelques jours une fois le dossier validé. La simulation est disponible dès notre premier rendez-vous. Pour que les versements soient déductibles cette année, l'ouverture doit intervenir avant le 31 décembre.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Quels sont vos honoraires ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">L'accompagnement est sans frais pour vous. Je suis rémunéré par les établissements partenaires sous forme de commission, sans que cela n'impacte les conditions de votre contrat. Transparence totale sur les frais dès notre premier échange.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Je peux vraiment débloquer mon argent avant la retraite ?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Oui, dans les cas prévus par la loi : achat de résidence principale, invalidité, décès du conjoint, fin de droits au chômage, surendettement. Ces cas couvrent la majorité des situations de vie imprévues. Je vous explique tout en détail lors du RDV.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-title">Prenez 30 minutes.<br/>Découvrez ce que vous <em>laissez sur la table</em>.</h2>
+    <p class="cta-sub">RDV gratuit · Sans engagement · Simulation personnalisée sous 48h</p>
+    <div class="cta-pills">
+      <span class="cta-pill">✓ Offert</span>
+      <span class="cta-pill">✓ Sans engagement</span>
+      <span class="cta-pill">✓ Données sécurisées</span>
+      <span class="cta-pill">✓ Réponse sous 48h</span>
+    </div>
+    <div class="cta-buttons">
+      <a href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale" class="btn-primary" target="_blank" rel="noopener">
+        Prendre mon RDV gratuit →
+      </a>
+      <a href="tel:+33651224213" class="btn-secondary">
+        📞 06 51 22 42 13
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">GP <span>Finances</span></div>
+        <div class="footer-legal" style="margin-top:8px;">
+          Courtier en assurance et opérations de banque<br/>
+          RCS Nanterre 899 363 907 · ORIAS n° 23003789<br/>
+          Siège social : Issy-les-Moulineaux
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">RGPD</a>
+      </div>
+    </div>
+    <div class="footer-disclaimer">
+      Les simulations présentées sur ce site sont fournies à titre indicatif et ne constituent pas un engagement contractuel. Les économies fiscales dépendent de la situation personnelle de chaque client et sont soumises aux plafonds légaux de déductibilité en vigueur. Le Plan Épargne Retraite est un produit d'épargne à long terme. Les sommes versées sur un PER sont en principe bloquées jusqu'à la retraite, sous réserve des cas de déblocage anticipé prévus par la loi. Les performances des supports d'investissement ne sont pas garanties et les performances passées ne préjugent pas des performances futures. GP Finances est un courtier indépendant immatriculé à l'ORIAS sous le numéro 23003789, consultable sur www.orias.fr.
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY CTA MOBILE -->
+<div class="sticky-cta">
+  <a href="https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale" class="btn-primary" target="_blank" rel="noopener" style="font-size:14px;padding:13px 16px;">RDV gratuit →</a>
+  <a href="tel:+33651224213" class="btn-secondary" style="font-size:14px;padding:13px 16px;">📞 Appeler</a>
+</div>
+
+<script>
+  // ── COUNTER ANIMATION
+  function formatWithSpaceThousands(value) {
+    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function animateCounter(target, duration) {
+    const el = document.getElementById('counter');
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = formatWithSpaceThousands(Math.floor(current));
+    }, 16);
+  }
+
+  // ── SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Trigger counter when counter section visible
+        if (e.target.closest && e.target.id === 'counter-trigger') {
+          animateCounter(112800, 2000);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Trigger counter on page load after delay
+  setTimeout(() => animateCounter(112800, 2200), 800);
+
+  // ── FAQ TOGGLE
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ── MERCI OVERLAY (?merci=1)
+  (function initThankYouOverlay() {
+    const overlay = document.getElementById('thankyou-overlay');
+    if (!overlay) return;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('merci') !== '1') return;
+
+    function closeOverlay() {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('thankyou-open');
+
+      params.delete('merci');
+      const queryString = params.toString();
+      const nextUrl =
+        window.location.pathname +
+        (queryString ? `?${queryString}` : '') +
+        window.location.hash;
+      window.history.replaceState({}, '', nextUrl);
+    }
+
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('thankyou-open');
+
+    overlay.querySelectorAll('[data-thankyou-close]').forEach((closeBtn) => {
+      closeBtn.addEventListener('click', closeOverlay);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeOverlay();
+    });
+  })();
+</script>
+
+</body>
+</html>

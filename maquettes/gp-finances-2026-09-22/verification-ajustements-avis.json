@@ -1,0 +1,266 @@
+{
+  "checkedAt": "2026-09-24T12:16:54.843Z",
+  "checks": [
+    {
+      "page": "index",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 320,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 390,
+      "overflow": false,
+      "padding": "34px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 768,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "index",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-emprunteur",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "per",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "assurance-vie",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "prevoyance",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "mutuelle",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "page": "regroupement-credits",
+      "width": 1440,
+      "overflow": false,
+      "padding": "48px",
+      "wrongPhotos": false,
+      "reviewCount": 5,
+      "pass": true
+    },
+    {
+      "name": "Resume starts while the button retains focus and pointer",
+      "left": 424,
+      "focused": true,
+      "hovered": true,
+      "pass": true
+    }
+  ],
+  "runtimeErrors": [],
+  "googleRetrieval": "Blocked by limited unauthenticated Maps view and Google search anti-bot check; no missing reviews or profile photos invented."
+}

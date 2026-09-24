@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { trackVideoComplete, trackVideoMid, trackVideoStart } from "@/lib/tracking";
+import { trackVideoComplete, trackVideoMid, trackVideoProgress, trackVideoStart, trackVideoWatchMark } from "@/lib/tracking";
 
 type Props = {
   src: string;
@@ -36,6 +36,8 @@ export const LazyVideo = ({
   const started = useRef(false);
   const midway = useRef(false);
   const completed = useRef(false);
+  const quartilesSent = useRef(new Set<number>());
+  const watchMarksSent = useRef(new Set<number>());
   const [generatedPoster, setGeneratedPoster] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -54,6 +56,8 @@ export const LazyVideo = ({
     };
     const handleTime = () => {
       const pct = video.duration ? video.currentTime / video.duration : 0;
+      const progressPct = Math.min(100, Math.max(0, Math.round(pct * 100)));
+      const currentSec = Math.floor(video.currentTime);
       if (pct >= 0.5 && !midway.current) {
         trackVideoMid(id);
         midway.current = true;
@@ -62,6 +66,21 @@ export const LazyVideo = ({
         trackVideoComplete(id);
         completed.current = true;
       }
+
+      [25, 50, 75, 100].forEach((quartile) => {
+        if (progressPct >= quartile && !quartilesSent.current.has(quartile)) {
+          quartilesSent.current.add(quartile);
+          trackVideoProgress(id, quartile, currentSec);
+        }
+      });
+
+      [10, 30, 60].forEach((watchMark) => {
+        if (currentSec >= watchMark && !watchMarksSent.current.has(watchMark)) {
+          watchMarksSent.current.add(watchMark);
+          trackVideoWatchMark(id, watchMark);
+        }
+      });
+
       onProgress?.(pct);
     };
     video.addEventListener("play", handlePlay);

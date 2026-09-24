@@ -12,19 +12,24 @@ import heroPoster from "@/components/video/video1.webp";
 type Props = {
   onHeroProgress: (pct: number) => void;
   highlightRDV?: boolean;
+  cityName?: string;
 };
 
-export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
+export const Hero = ({ onHeroProgress, highlightRDV = false, cityName }: Props) => {
+  const cityHeadline = cityName
+    ? `Assurance emprunteur à ${cityName} : économisez en moyenne 23 000 € grâce à la loi Lemoine`
+    : null;
+
   // SEO note: keep ONE deterministic H1 with a keyword-rich default (no empty badge, no duplicate copy).
   // You can still randomize among headlines as long as every option stays keyword-rich.
-  const [headline, setHeadline] = useState(HERO_COPY.headlines[0]);
+  const [headline, setHeadline] = useState(cityHeadline ?? HERO_COPY.headlines[0]);
 
   useEffect(() => {
-    if (HERO_COPY.headlines.length > 1) {
+    if (!cityHeadline && HERO_COPY.headlines.length > 1) {
       const idx = Math.floor(Math.random() * HERO_COPY.headlines.length);
       setHeadline(HERO_COPY.headlines[idx]);
     }
-  }, []);
+  }, [cityHeadline]);
 
   return (
     <section
@@ -65,7 +70,7 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
               onClick={() => trackCTA("hero_call")}
               aria-label="Appeler Gabriel pour renégocier mon assurance emprunteur"
             >
-              J'appelle
+              J&apos;appelle
             </Button>
 
             <Button
@@ -108,7 +113,7 @@ export const Hero = ({ onHeroProgress, highlightRDV = false }: Props) => {
             </div>
 
             <p className="mt-3 text-sm text-muted">
-              Tout comprendre sur l'assurance de prêt en 2 minutes.
+              Tout comprendre sur l&apos;assurance de prêt en 2 minutes.
             </p>
           </Card>
 

@@ -1,12 +1,16 @@
-import { promises as fs } from "fs";
-import path from "path";
+/**
+ * Compteur global d'économies.
+ *
+ * Chaque jour écoulé depuis la date d'ancrage ajoute entre 100 € et 1 000 €.
+ * L'incrément de chaque jour est calculé de façon déterministe à partir du numéro du jour :
+ * la valeur est donc la même pour tous les visiteurs et sur toutes les instances du serveur,
+ * sans fichier ni base de données (le disque d'un hébergement serverless ne persiste pas),
+ * et elle progresse toute seule, sans tâche planifiée obligatoire.
+ */
 
-type CounterState = {
+export type CounterReadResult = {
   value: number;
   lastUpdated: string;
-};
-
-export type CounterReadResult = CounterState & {
   periodsApplied: number;
   appliedIncrements: number[];
 };
@@ -14,106 +18,44 @@ export type CounterReadResult = CounterState & {
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MIN_INCREMENT = 100;
 const MAX_INCREMENT = 1000;
+// Valeur affichée à la date d'ancrage (minuit UTC). Ne pas modifier sans raison :
+// changer ces deux constantes déplace tout l'historique du compteur.
+const ANCHOR_VALUE = 3_126_375;
+const ANCHOR_MS = Date.UTC(2026, 5, 15);
 const START_VALUE = 3_058_072;
-const COUNTER_PATH = path.join(process.cwd(), "data", "counter.json");
 
-let writeQueue: Promise<unknown> = Promise.resolve();
-
-const withFileLock = async <T>(task: () => Promise<T>): Promise<T> => {
-  const run = writeQueue.then(task, task);
-  writeQueue = run.then(
-    () => undefined,
-    () => undefined
-  );
-  return run;
+/** Entier pseudo-aléatoire stable pour un numéro de jour donné (mélange 32 bits). */
+const hashDay = (dayIndex: number): number => {
+  let x = (dayIndex + 0x9e3779b9) | 0;
+  x = Math.imul(x ^ (x >>> 16), 0x85ebca6b);
+  x = Math.imul(x ^ (x >>> 13), 0xc2b2ae35);
+  x ^= x >>> 16;
+  return x >>> 0;
 };
 
-const randomIncrement = () => Math.floor(Math.random() * (MAX_INCREMENT - MIN_INCREMENT + 1)) + MIN_INCREMENT;
+export const incrementForDay = (dayIndex: number): number =>
+  MIN_INCREMENT + (hashDay(dayIndex) % (MAX_INCREMENT - MIN_INCREMENT + 1));
 
-const isValidState = (value: unknown): value is CounterState => {
-  if (!value || typeof value !== "object") return false;
-  const state = value as CounterState;
-  if (typeof state.value !== "number" || !Number.isFinite(state.value) || state.value < 0) return false;
-  if (typeof state.lastUpdated !== "string") return false;
-  return !Number.isNaN(Date.parse(state.lastUpdated));
-};
-
-const createDefaultState = (): CounterState => ({
-  value: START_VALUE,
-  lastUpdated: new Date().toISOString()
-});
-
-const ensureCounterFile = async (): Promise<void> => {
-  await fs.mkdir(path.dirname(COUNTER_PATH), { recursive: true });
-  try {
-    await fs.access(COUNTER_PATH);
-  } catch {
-    await fs.writeFile(COUNTER_PATH, JSON.stringify(createDefaultState(), null, 2), "utf8");
-  }
-};
-
-const readState = async (): Promise<CounterState> => {
-  await ensureCounterFile();
-  try {
-    const raw = await fs.readFile(COUNTER_PATH, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
-    if (isValidState(parsed)) {
-      return parsed;
-    }
-  } catch {
-    // ignore read/parse errors and reset below
-  }
-
-  const fallback = createDefaultState();
-  await fs.writeFile(COUNTER_PATH, JSON.stringify(fallback, null, 2), "utf8");
-  return fallback;
-};
-
-const writeState = async (state: CounterState): Promise<void> => {
-  await fs.writeFile(COUNTER_PATH, JSON.stringify(state, null, 2), "utf8");
-};
-
-const applyElapsedPeriods = (state: CounterState, nowMs: number): CounterReadResult => {
-  const previousUpdateMs = Date.parse(state.lastUpdated);
-  const safePreviousMs = Number.isNaN(previousUpdateMs) ? nowMs : previousUpdateMs;
-  const elapsedMs = Math.max(0, nowMs - safePreviousMs);
-  const periodsApplied = Math.floor(elapsedMs / DAY_MS);
-
-  if (periodsApplied <= 0) {
-    return { ...state, periodsApplied: 0, appliedIncrements: [] };
-  }
-
+export const computeCounter = (nowMs: number): CounterReadResult => {
+  const days = Math.max(0, Math.floor((nowMs - ANCHOR_MS) / DAY_MS));
   const appliedIncrements: number[] = [];
-  let nextValue = state.value;
-
-  for (let i = 0; i < periodsApplied; i += 1) {
-    const increment = randomIncrement();
+  let value = ANCHOR_VALUE;
+  for (let day = 1; day <= days; day += 1) {
+    const increment = incrementForDay(day);
     appliedIncrements.push(increment);
-    nextValue += increment;
+    value += increment;
   }
-
-  const nextUpdatedAtMs = safePreviousMs + periodsApplied * DAY_MS;
-
   return {
-    value: nextValue,
-    lastUpdated: new Date(nextUpdatedAtMs).toISOString(),
-    periodsApplied,
+    value,
+    lastUpdated: new Date(ANCHOR_MS + days * DAY_MS).toISOString(),
+    periodsApplied: days,
     appliedIncrements
   };
 };
 
-export const getSavingsCounter = async (): Promise<CounterReadResult> =>
-  withFileLock(async () => {
-    const current = await readState();
-    const next = applyElapsedPeriods(current, Date.now());
+export const getSavingsCounter = async (): Promise<CounterReadResult> => computeCounter(Date.now());
 
-    if (next.periodsApplied > 0) {
-      await writeState({ value: next.value, lastUpdated: next.lastUpdated });
-    }
-
-    return next;
-  });
-
+/** Conservé pour la route de mise à jour planifiée : rien à écrire, la valeur est calculée. */
 export const updateSavingsCounter = async (): Promise<CounterReadResult> => getSavingsCounter();
 
 export const COUNTER_START_VALUE = START_VALUE;

@@ -1,0 +1,321 @@
+{
+  "checkedAt": "2026-09-22T13:08:26.419Z",
+  "checks": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "visible": false,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "visible": false,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 0,
+          "height": 0,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1101,
+      "scrollWidth": 1101,
+      "visible": true,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 65.96875,
+          "height": 17.046875,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1261,
+      "scrollWidth": 1261,
+      "visible": true,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "visible": true,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 65.203125,
+          "height": 18.59375,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1550,
+      "scrollWidth": 1550,
+      "visible": true,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    },
+    {
+      "width": 1920,
+      "scrollWidth": 1920,
+      "visible": true,
+      "links": [
+        {
+          "label": "Assurance emprunteur",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "PER & Retraite",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Prévoyance",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Mutuelle",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Regroupement de crédits",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        },
+        {
+          "label": "Conseils",
+          "top": 69.15625,
+          "height": 21.6875,
+          "breaks": 0
+        }
+      ],
+      "overlap": false,
+      "pass": true
+    }
+  ],
+  "runtimeErrors": []
+}

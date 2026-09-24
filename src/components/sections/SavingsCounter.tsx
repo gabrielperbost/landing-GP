@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { CONFIG } from "@/content/site";
+import { trackRDV } from "@/lib/tracking";
 
 type CounterPayload = {
   value: number;
@@ -86,6 +87,7 @@ export const SavingsCounter = () => {
           <a
             href={CONFIG.CALENDLY_URL}
             className="inline-flex w-full items-center justify-center rounded-full border border-primary/30 bg-white px-4 py-2 text-sm font-semibold text-primary transition duration-200 hover:border-primary hover:bg-blue-50 sm:w-auto"
+            onClick={() => trackRDV("counter_cta")}
           >
             Estimez vos économies gratuitement
           </a>

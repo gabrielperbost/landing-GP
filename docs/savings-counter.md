@@ -8,7 +8,7 @@
 - Planification quotidienne ajoutee dans `vercel.json` (03:00 UTC).
 
 ## Regles metier implementees
-- Valeur initiale: `3 058 072 €`.
+- Valeur initiale: `3 058 000 €`.
 - A chaque periode complete de 24h ecoulee, un increment aleatoire entre `100 €` et `1 000 €` est ajoute.
 - Si plusieurs jours se sont ecoules, tous les increments sont rattrapes.
 - Valeur commune a tous les visiteurs car stockee cote serveur.

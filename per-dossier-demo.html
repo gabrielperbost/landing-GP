@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Espace PER - Démo GP Finances</title>
+    <style>
+      :root {
+        --blue: #1a3c5c;
+        --gold: #c8a86b;
+        --slate: #101828;
+        --muted: #5b6577;
+        --border: #d9e2f2;
+        --bg: #eef3fb;
+        --ok: #166534;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(1200px 500px at 10% -10%, rgba(26, 60, 92, 0.18), transparent),
+          radial-gradient(900px 460px at 90% -20%, rgba(200, 168, 107, 0.18), transparent),
+          var(--bg);
+        color: var(--slate);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(8px);
+      }
+      .bar,
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .bar {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--blue), var(--gold));
+      }
+      .pill {
+        border: 1px solid #d9c99f;
+        background: #fff8e8;
+        color: #6b5520;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      main {
+        padding-top: 24px;
+        padding-bottom: 70px;
+      }
+      section {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 16px;
+      }
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+      h1 {
+        margin-bottom: 8px;
+        font-size: clamp(25px, 4vw, 30px);
+        line-height: 1.2;
+      }
+      h2 {
+        margin-bottom: 14px;
+        font-size: 19px;
+      }
+      p {
+        color: #4b5565;
+        line-height: 1.55;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #cfd8ea;
+        border-radius: 12px;
+        padding: 0 14px;
+        min-height: 48px;
+        font: inherit;
+        background: white;
+      }
+      textarea {
+        margin-top: 12px;
+        min-height: 86px;
+        padding: 14px;
+        resize: vertical;
+      }
+      .drop {
+        position: relative;
+        display: block;
+        border: 1.5px dashed #cfd8ea;
+        border-radius: 14px;
+        padding: 14px 16px;
+        background: #fbfcff;
+        cursor: pointer;
+      }
+      .drop.done {
+        border-style: solid;
+        border-color: #9ce6c1;
+        background: #f0fff5;
+      }
+      .drop input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .drop-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        pointer-events: none;
+      }
+      .tag {
+        border-radius: 999px;
+        font-size: 10px;
+        padding: 3px 8px;
+        background: #fff3d6;
+        color: #8b5a00;
+        display: inline-block;
+      }
+      .tag.optional {
+        background: #eaf2ff;
+        color: #2e5fa8;
+      }
+      .tag.ok {
+        background: #dcfce7;
+        color: var(--ok);
+        border: 1px solid #86efac;
+      }
+      .helper {
+        margin-top: 4px;
+        color: #64748b;
+        font-size: 12px;
+      }
+      .file-list {
+        margin-top: 12px;
+        border: 1px solid #dce8ff;
+        border-radius: 12px;
+        background: #f7faff;
+        padding: 12px;
+        display: none;
+      }
+      .file-list.visible {
+        display: block;
+      }
+      button {
+        width: 100%;
+        min-height: 52px;
+        border: 0;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--blue), var(--gold));
+        color: white;
+        font-weight: 800;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+      }
+      .download {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, var(--blue), var(--gold));
+        color: white;
+        font-weight: 800;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      .videos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 14px;
+      }
+      .video-card {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #f8fbff;
+      }
+      .video-card video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        background: #0f172a;
+      }
+      .video-caption {
+        padding: 10px 12px;
+      }
+      .video-caption strong {
+        display: block;
+        color: var(--blue);
+        font-size: 13px;
+      }
+      .video-caption span {
+        display: block;
+        margin-top: 2px;
+        color: #64748b;
+        font-size: 12px;
+      }
+      .success {
+        display: none;
+        border-color: #9ce6c1;
+      }
+      .success.visible {
+        display: block;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        z-index: 50;
+        border-radius: 999px;
+        padding: 11px 16px;
+        color: var(--ok);
+        background: #dcfce7;
+        border: 1px solid #86efac;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+        display: none;
+      }
+      .toast.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div class="brand">
+          <div class="logo">GP</div>
+          <div>
+            <strong>GP Finances</strong>
+            <div style="font-size: 12px; color: var(--muted)">Dépôt sécurisé • Plan Épargne Retraite</div>
+          </div>
+        </div>
+        <div class="pill">Espace PER</div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h1>Bonjour <span style="color: var(--blue)">Client démo</span>, déposez vos documents</h1>
+        <p>
+          Merci de transmettre votre <strong>avis d'imposition de cette année sur les revenus de l'année dernière</strong>.
+        </p>
+      </section>
+
+      <section id="success" class="success">
+        <h2>✅ Dossier PER transmis</h2>
+        <p>Votre dossier est bien reçu. Vous pouvez consulter vos documents ci-dessous et en ajouter d'autres si nécessaire.</p>
+      </section>
+
+      <section>
+        <h2>1. Déposez les fichiers</h2>
+        <div style="display: grid; gap: 10px">
+          <label id="avisDrop" class="drop">
+            <input id="avisInput" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+            <div class="drop-row">
+              <div>
+                <strong>Avis d'imposition</strong>
+                <span class="tag">Obligatoire</span>
+                <span id="avisOk" class="tag ok" style="display: none">Document reçu</span>
+                <div class="helper">Avis d'imposition de cette année sur les revenus de l'année dernière.</div>
+                <div id="avisName" class="helper">Cliquez pour ajouter un fichier</div>
+              </div>
+              <span id="avisIcon" style="font-size: 22px">📄</span>
+            </div>
+          </label>
+
+          <label id="otherDrop" class="drop">
+            <input id="otherInput" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+            <div class="drop-row">
+              <div>
+                <strong>Autre document</strong>
+                <span class="tag optional">Optionnel</span>
+                <div class="helper">Ajoutez un document complémentaire si nous vous l'avons demandé.</div>
+                <div id="otherName" class="helper">Ajoutez un document complémentaire</div>
+              </div>
+              <span style="font-size: 22px">📄</span>
+            </div>
+          </label>
+        </div>
+
+        <div id="fileList" class="file-list">
+          <strong>Documents déjà transmis</strong>
+          <ul id="files"></ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>2. Finaliser l'envoi</h2>
+        <p>L'envoi sera activé dès que l'avis d'imposition obligatoire sera déposé.</p>
+        <button id="send" disabled>Envoyer mon dossier PER</button>
+      </section>
+
+      <section>
+        <h2>Qui sommes-nous ?</h2>
+        <p>
+          Retrouvez la présentation du cabinet, mon rôle, notre méthode d'accompagnement et ce que nous faisons pour vos dossiers.
+        </p>
+        <a class="download" href="public/plaquettes/plaquette-gp-finances.pdf" download>
+          Télécharger la plaquette GP Finances
+        </a>
+      </section>
+
+      <section>
+        <h2>Avis clients PER</h2>
+        <p>Quelques retours clients pour découvrir l'accompagnement GP Finances autour du Plan Épargne Retraite.</p>
+        <div class="videos">
+          <article class="video-card">
+            <video
+              src="public/videos/PER/temoignage-1-dorothee.mp4"
+              poster="public/videos/posters/per-temoignage-1.png"
+              controls
+              preload="metadata"
+              playsinline
+            ></video>
+            <div class="video-caption">
+              <strong>Dorothée - 17 000 € économisés sur 3 ans</strong>
+              <span>Avis client</span>
+            </div>
+          </article>
+          <article class="video-card">
+            <video
+              src="public/videos/PER/temoignage-2-anaelle.mp4"
+              poster="public/videos/posters/per-temoignage-2.png"
+              controls
+              preload="metadata"
+              playsinline
+            ></video>
+            <div class="video-caption">
+              <strong>Anaëlle - 8 000 € économisés sur 1 an</strong>
+              <span>Avis client</span>
+            </div>
+          </article>
+          <article class="video-card">
+            <video
+              src="public/videos/temoignage-3-frederic.mp4"
+              poster="public/videos/posters/per-temoignage-3.png"
+              controls
+              preload="metadata"
+              playsinline
+            ></video>
+            <div class="video-caption">
+              <strong>Frédéric - 4 000 € économisés sur 1 an</strong>
+              <span>Avis client</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast">Document ajouté en mode démo.</div>
+
+    <script>
+      const avisInput = document.getElementById("avisInput");
+      const otherInput = document.getElementById("otherInput");
+      const avisDrop = document.getElementById("avisDrop");
+      const avisOk = document.getElementById("avisOk");
+      const avisName = document.getElementById("avisName");
+      const avisIcon = document.getElementById("avisIcon");
+      const otherName = document.getElementById("otherName");
+      const send = document.getElementById("send");
+      const files = document.getElementById("files");
+      const fileList = document.getElementById("fileList");
+      const success = document.getElementById("success");
+      const toast = document.getElementById("toast");
+      let hasAvis = false;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("visible");
+        setTimeout(() => toast.classList.remove("visible"), 2400);
+      }
+
+      function addFile(label, file) {
+        const li = document.createElement("li");
+        li.textContent = label + " : " + file.name;
+        files.prepend(li);
+        fileList.classList.add("visible");
+      }
+
+      avisInput.addEventListener("change", () => {
+        const file = avisInput.files[0];
+        if (!file) return;
+        hasAvis = true;
+        avisDrop.classList.add("done");
+        avisOk.style.display = "inline-block";
+        avisName.textContent = file.name;
+        avisIcon.textContent = "✅";
+        send.disabled = false;
+        addFile("Avis d'imposition", file);
+        showToast("Avis d'imposition ajouté en mode démo.");
+      });
+
+      otherInput.addEventListener("change", () => {
+        const file = otherInput.files[0];
+        if (!file) return;
+        otherName.textContent = file.name;
+        addFile("Autre document", file);
+        showToast("Document complémentaire ajouté.");
+      });
+
+      send.addEventListener("click", () => {
+        if (!hasAvis) return;
+        success.classList.add("visible");
+        send.textContent = "Dossier transmis";
+        send.disabled = true;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
+  </body>
+</html>

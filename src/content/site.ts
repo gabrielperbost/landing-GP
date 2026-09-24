@@ -19,9 +19,9 @@ export const CONFIG = {
     "/videos/video8.mp4"
   ],
   CALENDLY_URL: "https://calendly.com/gabriel-perbost-gp-finances/economies",
-  LEAD_FORM_ENDPOINT: "https://api.example.com/leads",
-  META_PIXEL_ID: "YOUR_META_PIXEL_ID",
-  GA4_ID: "G-XXXXXXX"
+  LEAD_FORM_ENDPOINT: "/api/callback",
+  META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "YOUR_META_PIXEL_ID",
+  GA4_ID: process.env.NEXT_PUBLIC_GA4_ID ?? "G-XXXXXXX"
 };
 
 export const HERO_COPY = {

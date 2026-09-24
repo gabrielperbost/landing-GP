@@ -1,0 +1,441 @@
+{
+  "checkedAt": "2026-09-23T09:22:13.395Z",
+  "checks": [
+    {
+      "name": "Only situation is visible at start",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Empty situation is stopped before next step",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Help is open by click",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Escape closes help and returns focus",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Missing income prevents calculation",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Invalid projection duration stays on payment step",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Example tax saving is 3900 euros",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Optional capital uses fee-adjusted annual payments",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Annual projection has years 0 through 20",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Tax table and graph toggle",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "RFR mode ignores hidden old taxable income and calculates across tax bands",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Capital results disappear if projection is unchecked",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "70+ flow works without a ceiling and gives no deduction",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Special family cases are directed to a personal study",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Married couple receives at least two shares",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Individual estimated cap deducts reductions and used amount",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Cap shortcut chooses remaining limit",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Age 40 pre-fills 24 years until 64",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Children and mixed custody pre-fill 3.5 shares for a couple",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Custom retirement target updates duration",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Manual tax-notice correction remains explicit",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Automatic family shares can be restored",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Duration can be edited independently",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Retirement duration can be restored",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Negative returns cannot be submitted",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Each risk preset has an accessible explanation",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Valid rate preset clears a previous validation error",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk help does not change the selected return",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Changing family data recomputes shares and young-adult horizon",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Shared custody cannot exceed the child count",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Reached retirement target has a zero-year projection, no misleading line chart",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 320",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 390",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 768",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 1024",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 1440",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No horizontal overflow at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Expanded help fits at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Fiscal fields fit at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Payment and projection controls fit at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Risk explanations fit at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Results fit at 1920",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No persistent browser storage",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Module can be unmounted and remounted once",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Reusable contact hook works without opening demo dialog",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Destroy removes event listeners",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "Correct testimonials in assurance-emprunteur.html",
+      "actual": [
+        {
+          "name": "21 200 € économisés",
+          "src": "https://gp-finances.fr/videos/Tem1.mp4",
+          "img": "assets/temoignage-assurance.png",
+          "subject": "Assurance emprunteur"
+        },
+        {
+          "name": "Dorothée",
+          "src": "https://gp-finances.fr/videos/PER/temoignage-1-dorothee.mp4",
+          "img": "assets/temoignage-dorothee.png",
+          "subject": "Plan Épargne Retraite"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "Correct testimonials in per.html",
+      "actual": [
+        {
+          "name": "Anaëlle",
+          "src": "https://gp-finances.fr/videos/PER/temoignage-2-anaelle.mp4",
+          "img": "assets/temoignage-anaelle.png"
+        },
+        {
+          "name": "Dorothée",
+          "src": "https://gp-finances.fr/videos/PER/temoignage-1-dorothee.mp4",
+          "img": "assets/temoignage-dorothee.png"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "Correct testimonials in index.html",
+      "actual": [
+        {
+          "name": "21 200 € économisés",
+          "src": "https://gp-finances.fr/videos/Tem1.mp4",
+          "img": "assets/temoignage-assurance.png",
+          "subject": "Assurance emprunteur"
+        },
+        {
+          "name": "Dorothée",
+          "src": "https://gp-finances.fr/videos/PER/temoignage-1-dorothee.mp4",
+          "img": "assets/temoignage-dorothee.png",
+          "subject": "Plan Épargne Retraite"
+        },
+        {
+          "name": "Anaëlle",
+          "src": "https://gp-finances.fr/videos/PER/temoignage-2-anaelle.mp4",
+          "img": "assets/temoignage-anaelle.png",
+          "subject": "Plan Épargne Retraite"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "PER also works under an HTTP subdirectory",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No failed styles or scripts after relocation",
+      "pass": true,
+      "actual": true
+    },
+    {
+      "name": "No external requests during simulation",
+      "pass": true,
+      "actual": []
+    }
+  ],
+  "runtimeErrors": [],
+  "packaging": {
+    "generationReproducible": true,
+    "canonicalGeneratorSynced": true,
+    "duplicateIds": false,
+    "missingScriptsOrImages": false,
+    "unitTestsPassed": 34
+  }
+}
