@@ -26,6 +26,12 @@ const nextConfig = {
         permanent: true
       },
       {
+        // Ancienne page de test du simulateur : le simulateur du nouveau site remplace celle-ci.
+        source: "/estimation-assurance-pret",
+        destination: "/assurance-emprunteur#simuler-assurance",
+        permanent: false
+      },
+      {
         source: "/tarificateur-gp/index.html",
         destination: "/tarificateur-gp",
         permanent: true
@@ -46,7 +52,10 @@ const nextConfig = {
         },
         // Site GP FINANCES (pages construites par `node scripts/build-site.cjs`, voir public/site/routes.json).
         // « /per » reste l'ancienne page de campagne PER : la nouvelle page PER est /per-retraite.
-        ...SITE_PAGES.map(([source, page]) => ({ source, destination: `/site/pages/${page}.html` }))
+        ...SITE_PAGES.map(([source, page]) => ({ source, destination: `/site/pages/${page}.html` })),
+        // Pages locales Hauts-de-Seine : même page « assurance emprunteur », contenu propre à chaque ville
+        { source: "/assurance-de-pret/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
+        { source: "/assurance-de-pret/hauts-de-seine/:ville", destination: "/site/pages/villes/:ville.html" }
       ]
     };
   }

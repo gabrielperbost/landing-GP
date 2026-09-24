@@ -95,3 +95,11 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 @media(max-width:700px){.legal-table,.legal-table tbody,.legal-table tr,.legal-table td,.legal-table th{display:block;width:100%;box-sizing:border-box}.legal-table thead{display:none}.legal-table tr{margin-bottom:12px;border:1px solid var(--border);border-radius:10px;overflow:hidden}.legal-table td{border:0;border-bottom:1px solid var(--border)}.legal-table td:last-child{border-bottom:0;background:#fafaf7}}
 .footer-legal{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
 .consent-line{display:flex!important;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.55;color:#4d6177;font-weight:400}.consent-line input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--navy)}.consent-line a{text-decoration:underline;text-underline-offset:3px}
+
+/* Pages locales (villes) */
+.local-seo{padding-block:56px}.city-links-label{font-size:14px;color:var(--muted);margin:22px 0 8px}
+.city-links{display:flex;flex-wrap:wrap;gap:8px 10px;margin:14px 0 0}
+.city-links a,.city-links span{display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:30px;background:#fff;font-size:14px;color:var(--navy);text-decoration:none}
+.city-links a:hover{border-color:var(--gold);background:#fffdf5}
+
+.simple-explainer .city-links{justify-content:center}.simple-explainer .city-links-label{text-align:center}
