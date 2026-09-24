@@ -8,8 +8,8 @@ Fiche Google : **Gabriel PERBOST - GP FINANCES - Courtage en prêts & assurances
 
 Le lien exact est conservé dans `avis-google.json`, champ `profileUrl`.
 
-- Note affichée lors du relevé : **5/5, 15 avis**.
-- Cinq commentaires : julien menier, Johanna Djian, Duarte Joao, Didier DORVILLE et Edouard Ballout.
+- Note affichée lors du relevé du 24 septembre 2026 (mise à jour le soir même) : **5/5, 17 avis**. Premier relevé : 15 avis.
+- Six commentaires : Hadrien Costesec (regroupement de prêt, extrait), julien menier, Johanna Djian, Duarte Joao, Didier DORVILLE et Edouard Ballout.
 - Textes reproduits à l’identique. Les passages abrégés de Johanna et Didier portent la mention « Extrait de l’avis ». Chaque carte donne accès à Google pour consulter les avis à la source.
 - Google indiquait « il y a une semaine » ou « il y a 2 semaines » lors du relevé du 24 septembre : seul le mois de septembre 2026 est affiché. La date de visite, parfois ancienne, n’a pas été confondue avec celle de publication.
 - La vérification concerne la source publique et la fidélité de la transcription ; aucun badge « achat vérifié » ou autre certification de Google n’est ajouté.

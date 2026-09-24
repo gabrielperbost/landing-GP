@@ -1,9 +1,18 @@
 {
   "profileUrl": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr",
   "rating": 5,
-  "reviewCount": 15,
+  "reviewCount": 17,
   "verifiedAt": "2026-09-24",
   "reviews": [
+    {
+      "id": "hadrien-costesec-2026-09",
+      "author": "Hadrien Costesec",
+      "rating": 5,
+      "text": "Bon conseil pour mon regroupement de prêt. Mensualité -10% incluant l’achat de voiture. Je recommande fortement !",
+      "excerpt": true,
+      "publishedAt": "2026-09",
+      "url": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr"
+    },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2psTFMyZERUa05PTWxFeFNFNVJOVFZmV0RsaFQwRRAB",
       "author": "julien menier",
