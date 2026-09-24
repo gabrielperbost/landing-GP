@@ -47,4 +47,14 @@
   function renderComparison(type){const c=comparisons[type],card=$('[data-comparison-card]');if(!card)return;card.dataset.comparisonCard=type;card.innerHTML=`<div class="comparison-top"><span>${c.kicker}</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></div><div class="comparison-body"><div class="comparison-row"><div><p>${c.before}</p><strong>${c.old}</strong></div><div class="comparison-track"><span style="width:100%"></span></div></div><div class="comparison-row after"><div><p>${c.after}</p><strong>${c.value}</strong></div><div class="comparison-track"><span style="width:${c.width}%"></span></div></div><div class="saving-box"><span>${c.label}</span><strong>${c.saving}</strong></div><p class="comparison-note">${c.note}</p></div>`;}
   if($('[data-comparison-card]'))renderComparison($('[data-comparison-card]').dataset.comparisonCard);
   $$('[data-comparison]').forEach((b,i,all)=>{b.addEventListener('click',()=>{all.forEach(t=>{t.setAttribute('aria-selected',String(t===b));t.tabIndex=t===b?0:-1;});renderComparison(b.dataset.comparison);});b.tabIndex=i===0?0:-1;b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const j=e.key==='Home'?0:e.key==='End'?all.length-1:(i+(e.key==='ArrowRight'?1:-1)+all.length)%all.length;all[j].click();all[j].focus();});});
+  // Assurance de prêt : tout bouton de rendez-vous ou d'étude ouvre directement l'agenda de Gabriel.
+  const CALENDLY_LOAN='https://calendly.com/gabriel-perbost/30min';
+  if(document.body.dataset.service==='assurance-emprunteur'){
+    document.addEventListener('click',e=>{
+      const b=e.target.closest('[data-book],[data-project="Assurance emprunteur"]');
+      if(!b)return;
+      e.preventDefault();e.stopPropagation();
+      window.open(CALENDLY_LOAN,'_blank','noopener');
+    },true);
+  }
 })();
