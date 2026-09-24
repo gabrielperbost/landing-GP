@@ -103,3 +103,9 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .city-links a:hover{border-color:var(--gold);background:#fffdf5}
 
 .simple-explainer .city-links{justify-content:center}.simple-explainer .city-links-label{text-align:center}
+
+/* Portrait de Gabriel en rond */
+.hero-visual .hero-portrait{height:auto;aspect-ratio:1/1;border-radius:50%}
+.hero-visual .hero-portrait img{object-position:center 22%}
+.hero-visual .photo-frame{border-radius:50%}
+.hero-visual .portrait-caption{justify-content:center;text-align:left}
