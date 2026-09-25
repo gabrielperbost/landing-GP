@@ -4,7 +4,7 @@ module.exports = [
 {
   slug: 'prevoyance-independants-arret-de-travail',
   service: 'prevoyance',
-  published: false,
+  published: true,
   title: 'Prévoyance des indépendants : que se passe-t-il en cas d’arrêt de travail ?',
   seoTitle: 'Prévoyance des indépendants : arrêt de travail et invalidité',
   description: 'Indépendant, dirigeant, profession libérale : que se passe-t-il si vous ne pouvez plus travailler ? Ce que couvre une prévoyance et comment la choisir.',
@@ -57,7 +57,7 @@ module.exports = [
 {
   slug: 'prevoyance-protection-famille-capital-deces',
   service: 'prevoyance',
-  published: false,
+  published: true,
   title: 'Prévoyance : de quelle protection votre famille a-t-elle vraiment besoin ?',
   seoTitle: 'Prévoyance : quelle protection pour votre famille ?',
   description: 'Capital décès, rente éducation, invalidité : comment évaluer la protection dont votre famille a besoin, avec une méthode simple et un exemple chiffré.',
@@ -112,7 +112,7 @@ module.exports = [
 {
   slug: 'mutuelle-comment-choisir-niveau-de-garanties',
   service: 'mutuelle',
-  published: false,
+  published: true,
   title: 'Mutuelle santé : comment choisir son niveau de garanties',
   seoTitle: 'Mutuelle santé : choisir son niveau de garanties',
   description: 'Taux de remboursement, 100 % Santé, contrat responsable : comprendre les garanties d’une mutuelle et choisir le niveau adapté à vos besoins.',
@@ -160,7 +160,7 @@ module.exports = [
 {
   slug: 'mutuelle-changer-resiliation-infra-annuelle',
   service: 'mutuelle',
-  published: false,
+  published: true,
   title: 'Changer de mutuelle à tout moment : la résiliation infra-annuelle',
   seoTitle: 'Changer de mutuelle à tout moment : mode d’emploi',
   description: 'Depuis 2020, vous pouvez résilier votre mutuelle à tout moment après un an de contrat. Les conditions, les démarches et les erreurs à éviter.',
@@ -209,7 +209,7 @@ module.exports = [
 {
   slug: 'regroupement-de-credits-quand-est-ce-interessant',
   service: 'regroupement-credits',
-  published: false,
+  published: true,
   title: 'Regroupement de crédits : quand est-ce vraiment intéressant ?',
   seoTitle: 'Regroupement de crédits : quand est-ce intéressant ?',
   description: 'Regrouper ses crédits fait baisser la mensualité, mais pas toujours le coût total. Les situations où c’est utile, celles à éviter et les frais à connaître.',
@@ -262,7 +262,7 @@ module.exports = [
 {
   slug: 'regroupement-de-credits-calcul-avant-de-signer',
   service: 'regroupement-credits',
-  published: false,
+  published: true,
   title: 'Regroupement de crédits : le calcul à faire avant de signer (exemple chiffré)',
   seoTitle: 'Regroupement de crédits : le calcul avant de signer',
   description: 'Un exemple chiffré pour comprendre pourquoi une mensualité plus basse peut coûter plus cher, et la liste de contrôle avant de signer un regroupement.',

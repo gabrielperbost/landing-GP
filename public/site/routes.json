@@ -8,5 +8,18 @@
   "regroupement-credits": "/regroupement-credits",
   "nous-trouver": "/nous-trouver",
   "mentions-legales": "/mentions-legales",
-  "confidentialite": "/politique-de-confidentialite"
+  "confidentialite": "/politique-de-confidentialite",
+  "conseils": "/conseils",
+  "conseil-changer-assurance-de-pret-loi-lemoine": "/conseils/changer-assurance-de-pret-loi-lemoine",
+  "conseil-capital-initial-ou-capital-restant-du": "/conseils/capital-initial-ou-capital-restant-du",
+  "conseil-per-impots-combien-economiser": "/conseils/per-impots-combien-economiser",
+  "conseil-per-sortie-capital-rente-deblocage": "/conseils/per-sortie-capital-rente-deblocage",
+  "conseil-assurance-vie-fonctionnement-fonds-euros-unites-de-compte": "/conseils/assurance-vie-fonctionnement-fonds-euros-unites-de-compte",
+  "conseil-clause-beneficiaire-assurance-vie-transmission": "/conseils/clause-beneficiaire-assurance-vie-transmission",
+  "conseil-prevoyance-independants-arret-de-travail": "/conseils/prevoyance-independants-arret-de-travail",
+  "conseil-prevoyance-protection-famille-capital-deces": "/conseils/prevoyance-protection-famille-capital-deces",
+  "conseil-mutuelle-comment-choisir-niveau-de-garanties": "/conseils/mutuelle-comment-choisir-niveau-de-garanties",
+  "conseil-mutuelle-changer-resiliation-infra-annuelle": "/conseils/mutuelle-changer-resiliation-infra-annuelle",
+  "conseil-regroupement-de-credits-quand-est-ce-interessant": "/conseils/regroupement-de-credits-quand-est-ce-interessant",
+  "conseil-regroupement-de-credits-calcul-avant-de-signer": "/conseils/regroupement-de-credits-calcul-avant-de-signer"
 }

@@ -4,7 +4,7 @@ module.exports = [
 {
   slug: 'per-impots-combien-economiser',
   service: 'per',
-  published: false,
+  published: true,
   title: 'PER et impôts : combien pouvez-vous vraiment économiser ?',
   seoTitle: 'PER et impôts : combien pouvez-vous économiser ?',
   description: 'Le Plan Épargne Retraite permet de déduire vos versements de votre revenu imposable. Comment calculer l’économie d’impôt, le plafond et les limites.',
@@ -61,7 +61,7 @@ module.exports = [
 {
   slug: 'per-sortie-capital-rente-deblocage',
   service: 'per',
-  published: false,
+  published: true,
   title: 'PER : comment récupérer son épargne (capital, rente, déblocage anticipé)',
   seoTitle: 'PER : récupérer son épargne (capital, rente, déblocage)',
   description: 'À la retraite, en capital ou en rente ? Et avant, dans quels cas peut-on débloquer son PER ? Les règles, la fiscalité et les questions à se poser.',
@@ -127,7 +127,7 @@ module.exports = [
 {
   slug: 'assurance-vie-fonctionnement-fonds-euros-unites-de-compte',
   service: 'assurance-vie',
-  published: false,
+  published: true,
   title: 'Assurance-vie : comment ça marche ? Fonds euros, unités de compte et frais',
   seoTitle: 'Assurance-vie : fonds euros, unités de compte et frais',
   description: 'Fonds euros, unités de compte, frais : les bases de l’assurance-vie expliquées simplement, avec les points à comparer avant de choisir un contrat.',
@@ -187,7 +187,7 @@ module.exports = [
 {
   slug: 'clause-beneficiaire-assurance-vie-transmission',
   service: 'assurance-vie',
-  published: false,
+  published: true,
   title: 'Clause bénéficiaire de l’assurance-vie : bien la rédiger pour protéger vos proches',
   seoTitle: 'Clause bénéficiaire assurance-vie : bien la rédiger',
   description: 'La clause bénéficiaire décide qui reçoit votre capital. Clause standard ou personnalisée, fiscalité au décès, erreurs à éviter : le guide.',

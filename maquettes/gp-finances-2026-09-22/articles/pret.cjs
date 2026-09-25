@@ -4,7 +4,7 @@ module.exports = [
 {
   slug: 'changer-assurance-de-pret-loi-lemoine',
   service: 'assurance-emprunteur',
-  published: false,
+  published: true,
   title: 'Changer d’assurance de prêt à tout moment : le mode d’emploi (loi Lemoine)',
   seoTitle: 'Changer d’assurance de prêt : mode d’emploi (loi Lemoine)',
   description: 'Depuis la loi Lemoine, vous pouvez changer d’assurance de prêt immobilier à tout moment et sans frais. Les étapes, les délais et les pièges à éviter.',
@@ -64,7 +64,7 @@ module.exports = [
 {
   slug: 'capital-initial-ou-capital-restant-du',
   service: 'assurance-emprunteur',
-  published: false,
+  published: true,
   title: 'Assurance de prêt : capital initial ou capital restant dû, quelle cotisation choisir ?',
   seoTitle: 'Assurance de prêt : capital initial ou capital restant dû ?',
   description: 'Cotisation constante (capital initial) ou dégressive (capital restant dû) : la différence, le coût total et la méthode pour bien comparer deux contrats.',

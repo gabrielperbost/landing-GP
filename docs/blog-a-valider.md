@@ -1,6 +1,6 @@
 # Rubrique « Conseils » : 12 articles à valider avant publication
 
-État au 25 septembre 2026 : les 12 articles sont rédigés mais **non publiés** (`published: false`). Ils sont visibles dans l'aperçu de la maquette (`conseils.html`), avec un bandeau « Brouillon à valider ». Rien n'est en ligne.
+État au 25 septembre 2026 : les 12 articles ont été **publiés à la demande de Gabriel** (`published: true`), après la vérification décrite ci-dessous. Pour retirer un article : passer `published: false`, reconstruire et redéployer.
 
 Les règles décrites sont celles **connues au début de 2026**. Elles doivent être **revérifiées à la date de publication**, notamment les chiffres et les seuils, qui changent parfois d'une année à l'autre.
 
