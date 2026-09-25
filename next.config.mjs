@@ -7,6 +7,7 @@ const SITE_PAGES = [
   ["/prevoyance", "prevoyance"],
   ["/mutuelle", "mutuelle"],
   ["/regroupement-credits", "regroupement-credits"],
+  ["/nous-trouver", "nous-trouver"],
   ["/mentions-legales", "mentions-legales"],
   ["/politique-de-confidentialite", "confidentialite"]
 ];
