@@ -13,7 +13,28 @@ Les règles décrites sont celles **connues au début de 2026**. Elles doivent �
 
 Un article publié apparaît sur `/conseils/<nom-de-l-article>`, dans la page `/conseils`, dans le plan du site, avec ses données structurées (article, fil d'Ariane, questions-réponses).
 
-## Points de fait à vérifier, article par article
+## Vérification du 25 septembre 2026 (recherche sur les sites officiels)
+
+**Confirmé par une source officielle** (economie.gouv.fr, impots.gouv.fr, Bofip, Trésor, service-public.fr) :
+- Loi Lemoine : changement à tout moment pour tous les emprunteurs depuis le 1er septembre 2022, garanties équivalentes exigées, réponse de la banque sous 10 jours ouvrés (souvent non respectée en pratique).
+- La banque retient au maximum 11 critères parmi la liste CCSF ; questionnaire de santé supprimé sous 200 000 € par personne et prêt terminé avant les 60 ans ; droit à l'oubli à 5 ans (protocole terminé, sans rechute).
+- PER : plafond de déduction = 10 % des revenus d'activité N-1 (retenus dans la limite de 8 PASS), minimum 10 % du PASS ; frais de transfert 1 % maximum avant 5 ans, gratuit ensuite ; déblocages anticipés (résidence principale, accidents de la vie dont invalidité et surendettement).
+- Assurance-vie au décès : 152 500 € par bénéficiaire (primes avant 70 ans), 20 % jusqu'à 700 000 €, 31,25 % au-delà ; 30 500 € pour les primes après 70 ans.
+- Mutuelle : résiliation infra-annuelle depuis le 1er décembre 2020, après un an, effet un mois après réception ; complémentaire collective obligatoire pour les salariés du privé depuis 2016 ; 100 % Santé dans les contrats responsables.
+- Crédit à la consommation : indemnité de remboursement anticipé de 1 % (0,5 % sous un an), seulement au-delà de 10 000 € remboursés sur 12 mois ; crédit immobilier à taux fixe : six mois d'intérêts, dans la limite de 3 % du capital restant dû ; délai de réflexion de 10 jours avant d'accepter une offre de crédit immobilier, sans rétractation après acceptation.
+
+**Erreurs corrigées après cette vérification :**
+1. Article PER (impôts) : la formulation laissait croire que la déduction elle-même était limitée à 8 PASS ; ce sont les revenus retenus qui sont limités à 8 PASS.
+2. Article regroupement (calcul) : je présentais les « 10 jours de réflexion » du crédit immobilier comme un délai de rétractation après signature. C'est faux : il n'y a pas de rétractation après acceptation.
+3. Article regroupement (quand est-ce intéressant) : plafonds des indemnités de remboursement anticipé précisés (seuil de 10 000 € pour le crédit à la consommation ; « dans la limite de 3 % » pour l'immobilier).
+4. Article Lemoine : j'avais écrit que la loi s'appliquait au 1er juin 2022 pour les nouveaux contrats ; je n'ai retenu que la date confirmée (1er septembre 2022, tous contrats). Formulation du droit à l'oubli alignée sur la source (5 ans, sans rechute, sous conditions).
+
+**Non confirmé, à vérifier avec vous :**
+- Barème de l'impôt sur le revenu (tranches 0, 11, 30, 41, 45 %) pour l'année en cours ; le texte invite déjà à vérifier sur l'avis d'imposition.
+- Articles prévoyance : formulations volontairement générales (régimes des indépendants, déductibilité Madelin) : à adapter selon votre expérience.
+- Contenu des exemples d'assurance-vie (frais) : calcul d'illustration, sans garantie de rendement.
+
+## Points de fait, article par article (détail initial)
 
 ### Assurance de prêt
 **Changer d'assurance de prêt à tout moment (loi Lemoine)**

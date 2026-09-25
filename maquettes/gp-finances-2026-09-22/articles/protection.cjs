@@ -152,8 +152,8 @@ module.exports = [
   ],
   cta: { kind: 'call', project: 'Mutuelle', label: 'Faire étudier ma mutuelle', text: 'Une comparaison à partir de vos dépenses réelles de santé, pour choisir le juste niveau.' },
   sources: [
-    { label: 'Ameli : le 100 % Santé', url: 'https://www.ameli.fr' },
-    { label: 'Service-public.fr : complémentaire santé', url: 'https://www.service-public.fr' }
+    { label: 'Ministère de l’Économie : tout savoir sur les complémentaires santé', url: 'https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/tout-savoir-sur-les-complementaires-sante-mutuelle' },
+    { label: 'Ministère de l’Économie : complémentaire santé obligatoire en entreprise', url: 'https://www.economie.gouv.fr/entreprises/entreprises-vous-avez-lobligation-de-proposer-une-mutuelle-de-sante-vos-salaries' }
   ],
   related: ['mutuelle-changer-resiliation-infra-annuelle', 'prevoyance-independants-arret-de-travail']
 },
@@ -201,8 +201,8 @@ module.exports = [
   ],
   cta: { kind: 'call', project: 'Mutuelle', label: 'Comparer avant de changer', text: 'Je compare des mutuelles à garanties équivalentes et je m’occupe de la résiliation de l’ancienne.' },
   sources: [
-    { label: 'Service-public.fr : résilier sa complémentaire santé', url: 'https://www.service-public.fr' },
-    { label: 'Ameli : la complémentaire santé', url: 'https://www.ameli.fr' }
+    { label: 'Ministère de l’Économie : résiliation infra-annuelle des complémentaires santé (1er décembre 2020)', url: 'https://presse.economie.gouv.fr/407-ouverture-de-la-resiliation-infra-annuelle-des-contrats-de-complementaire-sante-sans-frais-ni-penalite-a-compter-du-1er-decembre-2020/' },
+    { label: 'Ministère de l’Économie : comment résilier son contrat ?', url: 'https://www.economie.gouv.fr/particuliers/resiliation-assurance' }
   ],
   related: ['mutuelle-comment-choisir-niveau-de-garanties', 'changer-assurance-de-pret-loi-lemoine']
 },
@@ -230,7 +230,7 @@ module.exports = [
     { h2: 'Les frais à connaître', html: `
 <ul>
 <li>Les <strong>frais de dossier</strong> du nouveau prêt.</li>
-<li>Les <strong>indemnités de remboursement anticipé</strong> des crédits soldés : pour un crédit à la consommation, elles sont plafonnées à 1 % du capital remboursé par anticipation si plus d’un an de durée restante (0,5 % sinon) ; pour un crédit immobilier, à 6 mois d’intérêts ou 3 % du capital restant dû.</li>
+<li>Les <strong>indemnités de remboursement anticipé</strong> des crédits soldés : pour un crédit à la consommation, elles sont plafonnées à 1 % du capital remboursé par anticipation si la durée restante dépasse un an (0,5 % sinon), et ne peuvent être réclamées que si les remboursements anticipés dépassent 10 000 € sur 12 mois ; pour un crédit immobilier à taux fixe, elles ne peuvent pas dépasser six mois d’intérêts, dans la limite de 3 % du capital restant dû.</li>
 <li>Le <strong>coût de l’assurance</strong> et de la garantie éventuelle.</li>
 </ul>` },
     { h2: 'Quand le regroupement est utile', html: `
@@ -254,8 +254,8 @@ module.exports = [
   ],
   cta: { kind: 'call', project: 'Regroupement de crédits', label: 'Faire étudier mes crédits', text: 'Une étude de vos crédits actuels pour savoir si un regroupement est vraiment utile.' },
   sources: [
-    { label: 'Banque de France : le regroupement de crédits', url: 'https://www.banque-france.fr' },
-    { label: 'Service-public.fr : remboursement anticipé d’un crédit', url: 'https://www.service-public.fr' }
+    { label: 'Ministère de l’Économie : rembourser son crédit immobilier avant le terme', url: 'https://www.economie.gouv.fr/particuliers/rembourser-credit-immobilier-avant-terme-anticipation' },
+    { label: 'Service-public.fr : crédit à la consommation, obligations de la banque', url: 'https://www.service-public.fr/particuliers/vosdroits/F2440' }
   ],
   related: ['regroupement-de-credits-calcul-avant-de-signer', 'capital-initial-ou-capital-restant-du']
 },
@@ -300,18 +300,18 @@ module.exports = [
 <li>Avez-vous comparé le <strong>coût total</strong> avec et sans regroupement ?</li>
 <li>Le <strong>TAEG</strong> et le coût de l’assurance sont-ils clairement indiqués ?</li>
 <li>Avez-vous regardé les <strong>garanties demandées</strong> (caution, hypothèque) et leur coût ?</li>
-<li>Connaissez-vous vos <strong>délais de rétractation</strong> ? Ils sont de 14 jours pour un crédit à la consommation et de 10 jours de réflexion pour un crédit immobilier.</li>
+<li>Connaissez-vous vos <strong>délais</strong> ? Un crédit à la consommation ouvre un droit de rétractation de 14 jours après la signature. Pour un crédit immobilier, il n’y a pas de rétractation après l’acceptation : vous disposez d’un délai de réflexion de 10 jours <em>avant</em> de pouvoir accepter l’offre.</li>
 </ul>` }
   ],
   faq: [
     { q: 'Comment savoir si un regroupement est intéressant ?', a: 'En comparant le coût total restant à payer (frais et assurance inclus) avec et sans regroupement, et en vérifiant que la nouvelle mensualité est supportable.' },
     { q: 'Vaut-il mieux une durée courte ou longue ?', a: 'Une durée courte coûte moins cher au total mais impose une mensualité plus élevée. Une durée longue allège le budget mensuel mais augmente le coût total.' },
-    { q: 'Puis-je changer d’avis après avoir signé ?', a: 'Oui, dans le délai de rétractation : 14 jours pour un crédit à la consommation, 10 jours de réflexion pour un crédit immobilier.' }
+    { q: 'Puis-je changer d’avis après avoir signé ?', a: 'Pour un crédit à la consommation, oui : vous disposez de 14 jours pour vous rétracter. Pour un crédit immobilier, il n’y a pas de délai de rétractation après l’acceptation, mais un délai de réflexion obligatoire de 10 jours avant de pouvoir accepter l’offre.' }
   ],
   cta: { kind: 'call', project: 'Regroupement de crédits', label: 'Calculer mon cas', text: 'Je chiffre votre situation réelle, avec et sans regroupement, pour que vous décidiez en connaissance de cause.' },
   sources: [
-    { label: 'Banque de France : crédits et surendettement', url: 'https://www.banque-france.fr' },
-    { label: 'Service-public.fr : rétractation et remboursement anticipé', url: 'https://www.service-public.fr' }
+    { label: 'Ministère de l’Économie : les délais de réflexion ou de rétractation', url: 'https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/les-delais-de-reflexion-ou-de-retractation' },
+    { label: 'Ministère de l’Économie : crédit immobilier, comment ça marche ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/emprunter-et-sassurer/credit-immobilier-comment-ca-marche' }
   ],
   related: ['regroupement-de-credits-quand-est-ce-interessant', 'capital-initial-ou-capital-restant-du']
 }

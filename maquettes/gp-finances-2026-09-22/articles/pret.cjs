@@ -13,7 +13,7 @@ module.exports = [
   intro: 'Vous avez signé votre prêt il y a quelques mois, voire quelques années, avec l’assurance proposée par votre banque. Bonne nouvelle : rien ne vous oblige à la garder. Depuis la loi Lemoine, vous pouvez changer d’assurance emprunteur à tout moment, sans frais et sans attendre une date anniversaire. Voici comment procéder, étape par étape.',
   sections: [
     { h2: 'Ce que dit la loi Lemoine', html: `
-<p>La loi du 28 février 2022 (dite « loi Lemoine ») permet de résilier l’assurance d’un prêt immobilier <strong>à tout moment, sans frais ni pénalité</strong>. Elle s’applique depuis le 1er juin 2022 aux nouveaux contrats et depuis le 1er septembre 2022 à tous les contrats déjà en cours.</p>
+<p>La loi du 28 février 2022 (dite « loi Lemoine ») permet de résilier l’assurance d’un prêt immobilier <strong>à tout moment, sans frais ni pénalité</strong>. Depuis le 1er septembre 2022, tous les emprunteurs peuvent en bénéficier, y compris ceux dont le contrat est déjà en cours, sans attendre la fin de la première année.</p>
 <p>Concrètement : plus besoin d’attendre la date anniversaire de votre prêt ou de votre contrat. Vous pouvez comparer, choisir un autre assureur et demander à votre banque d’accepter la substitution quand vous le souhaitez.</p>
 <p>La banque n’a pas le droit de refuser le changement si le nouveau contrat offre des <strong>garanties équivalentes</strong> à celles qu’elle exige. Elle ne peut pas non plus modifier les conditions de votre prêt, ni vous facturer des frais pour cela.</p>` },
     { h2: 'Les 5 étapes pour changer d’assurance de prêt', html: `
@@ -43,21 +43,21 @@ module.exports = [
 <ul>
 <li><strong>Ne comparer que le taux.</strong> Regardez aussi les exclusions, les franchises et la définition de l’invalidité.</li>
 <li><strong>Oublier la nature des cotisations.</strong> Une cotisation calculée sur le capital initial reste stable ; celle calculée sur le capital restant dû baisse avec le temps. Comparez le coût total, pas seulement la première année.</li>
-<li><strong>Le questionnaire de santé.</strong> Il n’est pas demandé lorsque le capital assuré par personne ne dépasse pas 200 000 € et que le prêt se termine avant les 60 ans de l’emprunteur. Au-delà, il peut être demandé, avec un droit à l’oubli de 5 ans pour certains cancers et pour l’hépatite C, sous conditions.</li>
-<li><strong>Les délais.</strong> Une substitution bien préparée prend en général quelques semaines. Anticipez les échanges avec la banque.</li>
+<li><strong>Le questionnaire de santé.</strong> Il n’est pas demandé lorsque le capital assuré par personne ne dépasse pas 200 000 € et que le prêt se termine avant les 60 ans de l’emprunteur. Au-delà, il peut être demandé. Un droit à l’oubli permet, sous conditions, de ne pas déclarer une ancienne maladie (notamment un cancer) lorsque le protocole thérapeutique est terminé depuis au moins 5 ans et qu’il n’y a pas eu de rechute.</li>
+<li><strong>Les délais.</strong> La banque doit répondre sous 10 jours ouvrés, mais ce délai n’est pas toujours respecté en pratique. Anticipez les échanges avec elle.</li>
 </ul>` }
   ],
   faq: [
-    { q: 'Puis-je changer d’assurance si mon prêt est ancien ?', a: 'Oui. Depuis le 1er septembre 2022, la résiliation à tout moment s’applique à tous les prêts immobiliers en cours, à condition que le nouveau contrat offre des garanties équivalentes.' },
+    { q: 'Puis-je changer d’assurance si mon prêt est ancien ?', a: 'Oui. Depuis le 1er septembre 2022, tous les emprunteurs, y compris ceux dont le contrat est en cours, peuvent changer d’assurance à tout moment, à condition que le nouveau contrat offre des garanties équivalentes.' },
     { q: 'Ma banque peut-elle refuser ?', a: 'Uniquement si les garanties du nouveau contrat ne sont pas équivalentes à celles qu’elle exige. Elle doit répondre sous 10 jours ouvrés et motiver un éventuel refus par écrit.' },
     { q: 'Le taux de mon prêt change-t-il ?', a: 'Non. Le taux d’intérêt de votre prêt reste le même. L’avenant met simplement à jour le coût de l’assurance et le TAEG.' },
     { q: 'Qui s’occupe de la résiliation de l’ancien contrat ?', a: 'En général, le nouvel assureur ou le courtier. Chez GP Finances, je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.' }
   ],
   cta: { kind: 'simulator', href: '/assurance-emprunteur#simuler-assurance', label: 'Estimer mon économie', text: 'Estimez en quelques minutes ce que pourrait vous coûter une nouvelle assurance de prêt, avec le comparatif de plusieurs solutions.' },
   sources: [
-    { label: 'Service-public.fr : assurance de prêt immobilier', url: 'https://www.service-public.fr/particuliers/vosdroits/F1671' },
-    { label: 'Ministère de l’Économie : changer d’assurance emprunteur', url: 'https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/achat-immobilier-pouvez-vous-changer-dassurance-emprunteur' },
-    { label: 'ABE Infoservice : assurance emprunteur', url: 'https://www.abe-infoservice.fr/fr/assurance/assurance-emprunteur/que-faut-il-savoir-sur-lassurance-emprunteur' }
+    { label: 'Ministère de l’Économie : pouvez-vous changer d’assurance emprunteur ?', url: 'https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/achat-immobilier-pouvez-vous-changer-dassurance-emprunteur' },
+    { label: 'Ministère de l’Économie : questionnaire de santé, quand est-il obligatoire ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/emprunter-et-sassurer/assurance-emprunteur-questionnaire-de-sante-quand-est-ce-obligatoire' },
+    { label: 'ABE Infoservice : que faut-il savoir sur l’assurance emprunteur ?', url: 'https://www.abe-infoservice.fr/fr/assurance/assurance-emprunteur/que-faut-il-savoir-sur-lassurance-emprunteur' }
   ],
   related: ['capital-initial-ou-capital-restant-du', 'per-impots-combien-economiser']
 },

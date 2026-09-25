@@ -26,7 +26,7 @@ module.exports = [
 <p>Elle dépend de vos revenus, mais aussi de votre situation familiale (nombre de parts). Les tranches sont mises à jour chaque année : vérifiez celles qui s’appliquent à vous sur votre avis d’imposition ou sur le simulateur des impôts.</p>
 <p>Plus votre TMI est élevée, plus l’avantage est important. À 0 % ou à 11 %, l’intérêt fiscal du PER est faible, voire nul.</p>` },
     { h2: 'Le plafond de déduction', html: `
-<p>Vous ne pouvez pas tout déduire. Pour un salarié, le plafond annuel correspond en général à <strong>10 % des revenus professionnels de l’année précédente</strong>, dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS), avec un minimum égal à 10 % du PASS.</p>
+<p>Vous ne pouvez pas tout déduire. Le plafond annuel correspond à <strong>10 % de vos revenus d’activité professionnelle de l’année précédente</strong>, ces revenus n’étant retenus que dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS). Il ne peut pas être inférieur à <strong>10 % du PASS</strong>, même avec de faibles revenus.</p>
 <ul>
 <li>Le plafond que vous n’utilisez pas peut être <strong>reporté pendant 3 ans</strong>.</li>
 <li>Dans un couple soumis à une imposition commune, les plafonds peuvent être <strong>mutualisés</strong> si vous le choisissez.</li>
@@ -53,7 +53,8 @@ module.exports = [
   cta: { kind: 'simulator', href: '/per-retraite#simuler', label: 'Simuler mon économie d’impôt', text: 'Renseignez votre situation en trois étapes : vous obtenez une estimation de votre économie d’impôt et de l’effort réel d’épargne.' },
   sources: [
     { label: 'Ministère de l’Économie : fonctionnement du PER', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/comment-fonctionne-le-plan-depargne-retraite-individuel' },
-    { label: 'impots.gouv.fr : simulateur et barème de l’impôt sur le revenu', url: 'https://www.impots.gouv.fr' }
+    { label: 'impots.gouv.fr : épargne retraite', url: 'https://www.impots.gouv.fr/particulier/epargne-retraite' },
+    { label: 'Bofip : limites de déduction des cotisations d’épargne retraite', url: 'https://bofip.impots.gouv.fr/bofip/1124-PGP.html/identifiant=BOI-IR-BASE-20-50-20-20260217' }
   ],
   related: ['per-sortie-capital-rente-deblocage', 'clause-beneficiaire-assurance-vie-transmission']
 },
@@ -119,7 +120,7 @@ module.exports = [
   cta: { kind: 'call', project: 'PER', label: 'Faire le point sur mon PER', text: 'Un échange pour vérifier ce qui est possible dans votre cas, avant ou après un versement.' },
   sources: [
     { label: 'Ministère de l’Économie : fonctionnement du PER', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/comment-fonctionne-le-plan-depargne-retraite-individuel' },
-    { label: 'Service-public.fr : épargne retraite', url: 'https://www.service-public.fr' }
+    { label: 'Direction générale du Trésor : le PER, questions-réponses pour les épargnants', url: 'https://www.tresor.economie.gouv.fr/banque-assurance-finance/les-mesures-de-la-loi-pacte-pour-le-financement-de-l-economie/questions-reponses-le-nouveau-per-pour-les-epargnants' }
   ],
   related: ['per-impots-combien-economiser', 'assurance-vie-fonctionnement-fonds-euros-unites-de-compte']
 },
@@ -231,8 +232,8 @@ module.exports = [
   ],
   cta: { kind: 'call', project: 'Assurance-Vie', label: 'Faire relire ma clause', text: 'Un échange pour vérifier que votre clause correspond à votre situation et à vos souhaits.' },
   sources: [
-    { label: 'Service-public.fr : assurance-vie, clause bénéficiaire et succession', url: 'https://www.service-public.fr/particuliers/vosdroits/F15274' },
-    { label: 'impots.gouv.fr : droits de succession et assurance-vie', url: 'https://www.impots.gouv.fr' }
+    { label: 'impots.gouv.fr : bénéficiaire d’une assurance-vie, comment la déclarer ?', url: 'https://www.impots.gouv.fr/particulier/questions/je-suis-beneficiaire-dune-assurance-vie-comment-la-declarer' },
+    { label: 'Ministère de l’Économie : pourquoi souscrire un contrat d’assurance-vie ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/pourquoi-souscrire-un-contrat-dassurance-vie' }
   ],
   related: ['assurance-vie-fonctionnement-fonds-euros-unites-de-compte', 'per-impots-combien-economiser']
 }
