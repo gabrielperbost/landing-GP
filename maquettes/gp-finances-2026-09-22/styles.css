@@ -109,3 +109,22 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .hero-visual .hero-portrait img{object-position:center 22%}
 .hero-visual .photo-frame{border-radius:50%}
 .hero-visual .portrait-caption{justify-content:center;text-align:left}
+
+/* Pages locales : chiffres, tableaux et questions propres à chaque ville */
+.local-body{max-width:900px;margin-top:8px}.local-h3{font-family:var(--serif);font-size:26px;color:var(--navy);margin:38px 0 10px;font-weight:500}
+.local-body p{font-size:15px;line-height:1.75;color:#3d4e60}.local-body strong{color:var(--navy)}
+.local-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:6px 0 4px}
+.local-stat{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px 20px 18px;display:grid;gap:6px}
+.local-stat strong{font-family:var(--serif);font-size:32px;line-height:1.1;color:var(--navy);font-weight:500}.local-stat span{font-size:13px;line-height:1.45;color:var(--muted)}
+.local-table{width:100%;border-collapse:collapse;margin:14px 0;background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-size:14px}
+.local-table th,.local-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);line-height:1.5}.local-table th{background:#f1f2ee;color:var(--navy);font-weight:600}
+.local-table tr:last-child td{border-bottom:0}.local-table a{color:var(--navy);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
+.local-table-small{max-width:560px}.local-current td{background:#fffdf5}
+.local-note,.local-source{font-size:12.5px!important;color:var(--muted)!important;line-height:1.65}.local-source{margin-top:26px}
+.local-faq{display:grid;gap:10px;margin-top:12px}
+.local-faq details{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+.local-faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font-weight:600;color:var(--navy);font-size:15px;line-height:1.5}
+.local-faq summary::-webkit-details-marker{display:none}.local-faq summary span{color:#8c7130;font-size:20px;flex:none}.local-faq details[open] summary span{transform:rotate(45deg)}
+.local-faq p{margin:12px 0 0}
+.breadcrumb a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:700px){.local-h3{font-size:22px}.local-stat strong{font-size:27px}.local-table th,.local-table td{padding:10px 12px;font-size:13px}.local-body .local-table:not(.local-table-small){display:block;overflow-x:auto}}

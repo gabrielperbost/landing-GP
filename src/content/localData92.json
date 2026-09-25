@@ -1,0 +1,589 @@
+{
+ "retrievedAt": "2026-09-25",
+ "years": [
+  2024,
+  2025
+ ],
+ "sources": {
+  "population": "INSEE, via API Géo (geo.api.gouv.fr)",
+  "prices": "DGFiP, base DVF (Demandes de valeurs foncières), data.gouv.fr"
+ },
+ "cities": {
+  "antony": {
+   "insee": "92002",
+   "population": 64263,
+   "flats": {
+    "sales": 863,
+    "medianPerM2": 4975,
+    "medianPrice": 280000,
+    "medianArea": 64
+   },
+   "houses": {
+    "sales": 363,
+    "medianPerM2": 5873,
+    "medianPrice": 565000,
+    "medianArea": 103
+   }
+  },
+  "asnieres-sur-seine": {
+   "insee": "92004",
+   "population": 93941,
+   "flats": {
+    "sales": 2048,
+    "medianPerM2": 6202,
+    "medianPrice": 295000,
+    "medianArea": 52
+   },
+   "houses": {
+    "sales": 178,
+    "medianPerM2": 7988,
+    "medianPrice": 930750,
+    "medianArea": 119
+   }
+  },
+  "bagneux": {
+   "insee": "92007",
+   "population": 44572,
+   "flats": {
+    "sales": 341,
+    "medianPerM2": 4947,
+    "medianPrice": 248000,
+    "medianArea": 55
+   },
+   "houses": {
+    "sales": 89,
+    "medianPerM2": 6071,
+    "medianPrice": 510000,
+    "medianArea": 89
+   }
+  },
+  "bois-colombes": {
+   "insee": "92009",
+   "population": 28909,
+   "flats": {
+    "sales": 591,
+    "medianPerM2": 6184,
+    "medianPrice": 320000,
+    "medianArea": 54
+   },
+   "houses": {
+    "sales": 139,
+    "medianPerM2": 8000,
+    "medianPrice": 885000,
+    "medianArea": 105
+   }
+  },
+  "boulogne-billancourt": {
+   "insee": "92012",
+   "population": 119019,
+   "flats": {
+    "sales": 2822,
+    "medianPerM2": 8251,
+    "medianPrice": 411950,
+    "medianArea": 52
+   },
+   "houses": {
+    "sales": 61,
+    "medianPerM2": 13000,
+    "medianPrice": 2102150,
+    "medianArea": 148
+   }
+  },
+  "bourg-la-reine": {
+   "insee": "92014",
+   "population": 21019,
+   "flats": {
+    "sales": 365,
+    "medianPerM2": 5171,
+    "medianPrice": 281000,
+    "medianArea": 59
+   },
+   "houses": {
+    "sales": 67,
+    "medianPerM2": 7217,
+    "medianPrice": 783680,
+    "medianArea": 109
+   }
+  },
+  "chatenay-malabry": {
+   "insee": "92019",
+   "population": 35825,
+   "flats": {
+    "sales": 626,
+    "medianPerM2": 4725,
+    "medianPrice": 283825,
+    "medianArea": 66
+   },
+   "houses": {
+    "sales": 58,
+    "medianPerM2": 5897,
+    "medianPrice": 661650,
+    "medianArea": 115
+   }
+  },
+  "chatillon": {
+   "insee": "92020",
+   "population": 36705,
+   "flats": {
+    "sales": 631,
+    "medianPerM2": 5550,
+    "medianPrice": 290000,
+    "medianArea": 58
+   },
+   "houses": {
+    "sales": 108,
+    "medianPerM2": 7156,
+    "medianPrice": 621000,
+    "medianArea": 83
+   }
+  },
+  "chaville": {
+   "insee": "92022",
+   "population": 20594,
+   "flats": {
+    "sales": 337,
+    "medianPerM2": 5469,
+    "medianPrice": 285000,
+    "medianArea": 56
+   },
+   "houses": {
+    "sales": 84,
+    "medianPerM2": 7143,
+    "medianPrice": 755500,
+    "medianArea": 101
+   }
+  },
+  "clamart": {
+   "insee": "92023",
+   "population": 58576,
+   "flats": {
+    "sales": 794,
+    "medianPerM2": 5533,
+    "medianPrice": 300000,
+    "medianArea": 60
+   },
+   "houses": {
+    "sales": 284,
+    "medianPerM2": 7108,
+    "medianPrice": 704000,
+    "medianArea": 99
+   }
+  },
+  "clichy": {
+   "insee": "92024",
+   "population": 64410,
+   "flats": {
+    "sales": 1245,
+    "medianPerM2": 6867,
+    "medianPrice": 295550,
+    "medianArea": 45
+   },
+   "houses": {
+    "sales": 11,
+    "medianPerM2": 9800,
+    "medianPrice": 766000,
+    "medianArea": 54
+   }
+  },
+  "colombes": {
+   "insee": "92025",
+   "population": 91053,
+   "flats": {
+    "sales": 1114,
+    "medianPerM2": 5000,
+    "medianPrice": 226050,
+    "medianArea": 50
+   },
+   "houses": {
+    "sales": 525,
+    "medianPerM2": 6957,
+    "medianPrice": 637700,
+    "medianArea": 92
+   }
+  },
+  "courbevoie": {
+   "insee": "92026",
+   "population": 82902,
+   "flats": {
+    "sales": 1813,
+    "medianPerM2": 6667,
+    "medianPrice": 332000,
+    "medianArea": 51
+   },
+   "houses": {
+    "sales": 57,
+    "medianPerM2": 9196,
+    "medianPrice": 944360,
+    "medianArea": 101
+   }
+  },
+  "fontenay-aux-roses": {
+   "insee": "92032",
+   "population": 24070,
+   "flats": {
+    "sales": 316,
+    "medianPerM2": 4283,
+    "medianPrice": 234950,
+    "medianArea": 59
+   },
+   "houses": {
+    "sales": 55,
+    "medianPerM2": 5843,
+    "medianPrice": 630000,
+    "medianArea": 116
+   }
+  },
+  "garches": {
+   "insee": "92033",
+   "population": 17743,
+   "flats": {
+    "sales": 317,
+    "medianPerM2": 5420,
+    "medianPrice": 380000,
+    "medianArea": 70
+   },
+   "houses": {
+    "sales": 63,
+    "medianPerM2": 8438,
+    "medianPrice": 1080000,
+    "medianArea": 129
+   }
+  },
+  "la-garenne-colombes": {
+   "insee": "92035",
+   "population": 30197,
+   "flats": {
+    "sales": 675,
+    "medianPerM2": 6392,
+    "medianPrice": 329500,
+    "medianArea": 55
+   },
+   "houses": {
+    "sales": 63,
+    "medianPerM2": 8220,
+    "medianPrice": 940050,
+    "medianArea": 104
+   }
+  },
+  "gennevilliers": {
+   "insee": "92036",
+   "population": 50979,
+   "flats": {
+    "sales": 232,
+    "medianPerM2": 4514,
+    "medianPrice": 217750,
+    "medianArea": 58
+   },
+   "houses": {
+    "sales": 52,
+    "medianPerM2": 4603,
+    "medianPrice": 368300,
+    "medianArea": 77
+   }
+  },
+  "issy-les-moulineaux": {
+   "insee": "92040",
+   "population": 67669,
+   "flats": {
+    "sales": 1248,
+    "medianPerM2": 7528,
+    "medianPrice": 352500,
+    "medianArea": 49
+   },
+   "houses": {
+    "sales": 83,
+    "medianPerM2": 8938,
+    "medianPrice": 889800,
+    "medianArea": 95
+   }
+  },
+  "le-plessis-robinson": {
+   "insee": "92060",
+   "population": 28848,
+   "flats": {
+    "sales": 572,
+    "medianPerM2": 5599,
+    "medianPrice": 320500,
+    "medianArea": 65
+   },
+   "houses": {
+    "sales": 67,
+    "medianPerM2": 6436,
+    "medianPrice": 670000,
+    "medianArea": 101
+   }
+  },
+  "levallois-perret": {
+   "insee": "92044",
+   "population": 68092,
+   "flats": {
+    "sales": 1589,
+    "medianPerM2": 8940,
+    "medianPrice": 425150,
+    "medianArea": 49
+   },
+   "houses": {
+    "sales": 13,
+    "medianPerM2": 11250,
+    "medianPrice": 1503000,
+    "medianArea": 117
+   }
+  },
+  "malakoff": {
+   "insee": "92046",
+   "population": 30557,
+   "flats": {
+    "sales": 384,
+    "medianPerM2": 6475,
+    "medianPrice": 250000,
+    "medianArea": 42
+   },
+   "houses": {
+    "sales": 71,
+    "medianPerM2": 7933,
+    "medianPrice": 642000,
+    "medianArea": 88
+   }
+  },
+  "marnes-la-coquette": {
+   "insee": "92047",
+   "population": 1752,
+   "flats": {
+    "sales": 4,
+    "medianPerM2": 4938,
+    "medianPrice": 438950,
+    "medianArea": 94
+   },
+   "houses": {
+    "sales": 21,
+    "medianPerM2": 6702,
+    "medianPrice": 1020000,
+    "medianArea": 158
+   }
+  },
+  "meudon": {
+   "insee": "92048",
+   "population": 46334,
+   "flats": {
+    "sales": 738,
+    "medianPerM2": 5507,
+    "medianPrice": 310000,
+    "medianArea": 64
+   },
+   "houses": {
+    "sales": 121,
+    "medianPerM2": 8060,
+    "medianPrice": 864250,
+    "medianArea": 107
+   }
+  },
+  "montrouge": {
+   "insee": "92049",
+   "population": 46324,
+   "flats": {
+    "sales": 1173,
+    "medianPerM2": 7102,
+    "medianPrice": 335000,
+    "medianArea": 52
+   },
+   "houses": {
+    "sales": 40,
+    "medianPerM2": 9981,
+    "medianPrice": 1025075,
+    "medianArea": 101
+   }
+  },
+  "nanterre": {
+   "insee": "92050",
+   "population": 97783,
+   "flats": {
+    "sales": 646,
+    "medianPerM2": 5000,
+    "medianPrice": 259920,
+    "medianArea": 53
+   },
+   "houses": {
+    "sales": 201,
+    "medianPerM2": 6169,
+    "medianPrice": 583900,
+    "medianArea": 90
+   }
+  },
+  "neuilly-sur-seine": {
+   "insee": "92051",
+   "population": 59538,
+   "flats": {
+    "sales": 1667,
+    "medianPerM2": 10417,
+    "medianPrice": 715000,
+    "medianArea": 71
+   },
+   "houses": {
+    "sales": 36,
+    "medianPerM2": 16481,
+    "medianPrice": 2950950,
+    "medianArea": 210
+   }
+  },
+  "puteaux": {
+   "insee": "92062",
+   "population": 44002,
+   "flats": {
+    "sales": 949,
+    "medianPerM2": 7034,
+    "medianPrice": 346289,
+    "medianArea": 51
+   },
+   "houses": {
+    "sales": 34,
+    "medianPerM2": 9618,
+    "medianPrice": 904808,
+    "medianArea": 96
+   }
+  },
+  "rueil-malmaison": {
+   "insee": "92063",
+   "population": 82874,
+   "flats": {
+    "sales": 1327,
+    "medianPerM2": 5485,
+    "medianPrice": 305986,
+    "medianArea": 63
+   },
+   "houses": {
+    "sales": 387,
+    "medianPerM2": 7647,
+    "medianPrice": 835805,
+    "medianArea": 110
+   }
+  },
+  "saint-cloud": {
+   "insee": "92064",
+   "population": 29855,
+   "flats": {
+    "sales": 586,
+    "medianPerM2": 6435,
+    "medianPrice": 414204,
+    "medianArea": 67
+   },
+   "houses": {
+    "sales": 89,
+    "medianPerM2": 9895,
+    "medianPrice": 1208950,
+    "medianArea": 120
+   }
+  },
+  "sceaux": {
+   "insee": "92071",
+   "population": 20884,
+   "flats": {
+    "sales": 358,
+    "medianPerM2": 5812,
+    "medianPrice": 343264,
+    "medianArea": 63
+   },
+   "houses": {
+    "sales": 70,
+    "medianPerM2": 7657,
+    "medianPrice": 1004450,
+    "medianArea": 138
+   }
+  },
+  "sevres": {
+   "insee": "92072",
+   "population": 22303,
+   "flats": {
+    "sales": 322,
+    "medianPerM2": 5442,
+    "medianPrice": 318650,
+    "medianArea": 63
+   },
+   "houses": {
+    "sales": 76,
+    "medianPerM2": 8035,
+    "medianPrice": 931750,
+    "medianArea": 110
+   }
+  },
+  "suresnes": {
+   "insee": "92073",
+   "population": 48956,
+   "flats": {
+    "sales": 873,
+    "medianPerM2": 6649,
+    "medianPrice": 351000,
+    "medianArea": 56
+   },
+   "houses": {
+    "sales": 113,
+    "medianPerM2": 8410,
+    "medianPrice": 850000,
+    "medianArea": 100
+   }
+  },
+  "vanves": {
+   "insee": "92075",
+   "population": 28622,
+   "flats": {
+    "sales": 626,
+    "medianPerM2": 6224,
+    "medianPrice": 287925,
+    "medianArea": 50
+   },
+   "houses": {
+    "sales": 52,
+    "medianPerM2": 7956,
+    "medianPrice": 987500,
+    "medianArea": 106
+   }
+  },
+  "vaucresson": {
+   "insee": "92076",
+   "population": 8432,
+   "flats": {
+    "sales": 151,
+    "medianPerM2": 4928,
+    "medianPrice": 384000,
+    "medianArea": 84
+   },
+   "houses": {
+    "sales": 46,
+    "medianPerM2": 8043,
+    "medianPrice": 1233045,
+    "medianArea": 163
+   }
+  },
+  "ville-d-avray": {
+   "insee": "92077",
+   "population": 11089,
+   "flats": {
+    "sales": 133,
+    "medianPerM2": 5172,
+    "medianPrice": 390000,
+    "medianArea": 79
+   },
+   "houses": {
+    "sales": 32,
+    "medianPerM2": 8208,
+    "medianPrice": 1018815,
+    "medianArea": 131
+   }
+  },
+  "villeneuve-la-garenne": {
+   "insee": "92078",
+   "population": 26021,
+   "flats": {
+    "sales": 164,
+    "medianPerM2": 3252,
+    "medianPrice": 170000,
+    "medianArea": 57
+   },
+   "houses": {
+    "sales": 26,
+    "medianPerM2": 3942,
+    "medianPrice": 355000,
+    "medianArea": 86
+   }
+  }
+ }
+}
