@@ -95,6 +95,28 @@ const faqSchema = html => {
 const breadcrumbSchema = (name, route) => name && route !== '/' ? JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name, item: ORIGIN + route }] }) : '';
 
+// Rubrique « Conseils » : uniquement les articles publiés (published: true dans maquettes/.../articles/).
+const ARTICLES = require(path.join(SRC, 'articles', 'index.cjs')).filter(a => a.published);
+const CAT_NAME = { 'assurance-emprunteur': 'Assurance de prêt', per: 'PER', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'regroupement-credits': 'Regroupement de crédits' };
+const ARTICLE_BY_NAME = new Map();
+if (ARTICLES.length) {
+  ROUTES.conseils = '/conseils';
+  SEO.conseils = ['Conseils : assurance de prêt, PER, assurance-vie, mutuelle | GP Finances', 'Guides pratiques de GP Finances : assurance de prêt, PER, assurance-vie, prévoyance, mutuelle et regroupement de crédits.'];
+  for (const a of ARTICLES) {
+    ROUTES['conseil-' + a.slug] = '/conseils/' + a.slug;
+    SEO['conseil-' + a.slug] = [a.seoTitle + ' | GP Finances', a.description];
+    ARTICLE_BY_NAME.set('conseil-' + a.slug, a);
+  }
+}
+const articleSchemas = (a, route) => [
+  JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.description, datePublished: a.updated, dateModified: a.updated,
+    author: { '@type': 'Person', name: 'Gabriel Perbost', jobTitle: 'Courtier indépendant', url: ORIGIN + '/nous-trouver' },
+    publisher: { '@type': 'Organization', name: 'GP Finances', url: ORIGIN }, mainEntityOfPage: ORIGIN + route,
+    image: ORIGIN + '/site/assets/gabriel-perbost.jpeg', inLanguage: 'fr-FR' }),
+  JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Conseils', item: ORIGIN + '/conseils' },
+    { '@type': 'ListItem', position: 3, name: a.title, item: ORIGIN + route }] })
+];
 const ld = (title, description, route) => JSON.stringify({
   '@context': 'https://schema.org', '@type': 'FinancialService', name: 'GP FINANCES',
   url: ORIGIN + route, description, telephone: '+33651224213', email: 'gabriel.perbost@gp-finances.fr',
@@ -129,7 +151,7 @@ for (const [name, route] of Object.entries(ROUTES)) {
   // adresse canonique, partage et données structurées
   const title = (/<title>([^<]*)<\/title>/.exec(html) || [])[1] || 'GP Finances';
   const description = (/<meta name="description" content="([^"]*)"/.exec(html) || [])[1] || '';
-  const head = `<link rel="canonical" href="${ORIGIN}${route}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="GP Finances"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${ORIGIN}${route}"><script type="application/ld+json">${ld(title, description, route)}</script>${breadcrumbSchema(NAMES[name], route) ? `<script type="application/ld+json">${breadcrumbSchema(NAMES[name], route)}</script>` : ''}${faqSchema(html) ? `<script type="application/ld+json">${faqSchema(html)}</script>` : ''}`;
+  const head = `<link rel="canonical" href="${ORIGIN}${route}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="GP Finances"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${ORIGIN}${route}"><script type="application/ld+json">${ld(title, description, route)}</script>${breadcrumbSchema(NAMES[name], route) ? `<script type="application/ld+json">${breadcrumbSchema(NAMES[name], route)}</script>` : ''}${faqSchema(html) ? `<script type="application/ld+json">${faqSchema(html)}</script>` : ''}${ARTICLE_BY_NAME.has(name) ? articleSchemas(ARTICLE_BY_NAME.get(name), route).map(j => `<script type="application/ld+json">${j}</script>`).join('') : ''}${name === 'conseils' ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Conseils', item: ORIGIN + '/conseils' }] })}</script>` : ''}`;
   html = html.replace('</head>', head + '</head>');
   if (/Maquette|Aperçu privé|noindex/.test(html)) errors.push(`${name}: reste une trace de la maquette (Maquette / Aperçu privé / noindex)`);
 
@@ -138,7 +160,8 @@ for (const [name, route] of Object.entries(ROUTES)) {
     if (!fs.existsSync(path.join(ROOT, 'public', 'videos', m[1]))) errors.push(`${name}: vidéo manquante public/videos/${m[1]}`);
   }
   for (const file of swapped) html = html.split('/site/assets/' + file).join('/site/assets/' + file.replace(/\.png$/, '.jpg'));
-  fs.writeFileSync(path.join(PAGES, name + '.html'), html);
+  if (ARTICLE_BY_NAME.has(name)) { fs.mkdirSync(path.join(PAGES, 'conseils'), { recursive: true }); fs.writeFileSync(path.join(PAGES, 'conseils', name.replace(/^conseil-/, '') + '.html'), html); }
+  else fs.writeFileSync(path.join(PAGES, name + '.html'), html);
   built[name] = html;
 }
 

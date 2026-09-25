@@ -63,6 +63,9 @@ const nextConfig = {
         // « /per » reste l'ancienne page de campagne PER : la nouvelle page PER est /per-retraite.
         ...SITE_PAGES.map(([source, page]) => ({ source, destination: `/site/pages/${page}.html` })),
         // Pages locales Hauts-de-Seine : même page « assurance emprunteur », contenu propre à chaque ville
+        // Rubrique Conseils (pages présentes seulement pour les articles publiés)
+        { source: "/conseils", destination: "/site/pages/conseils.html" },
+        { source: "/conseils/:slug", destination: "/site/pages/conseils/:slug.html" },
         { source: "/assurance-de-pret/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
         { source: "/assurance-de-pret/hauts-de-seine/:ville", destination: "/site/pages/villes/:ville.html" }
       ]
