@@ -69,12 +69,12 @@ const existsInSite = rel => {
 // Titres et descriptions optimisés pour le référencement (le design des pages ne change pas).
 const SEO = {
   index: ['GP Finances · Courtier en assurance de prêt, PER et épargne', 'Courtier indépendant à Issy-les-Moulineaux : assurance de prêt, PER, assurance-vie, prévoyance, mutuelle et regroupement de crédits. Étude sans engagement.'],
-  'assurance-emprunteur': ['Assurance emprunteur : changez et économisez | GP Finances', 'Changez d’assurance de prêt à tout moment (loi Lemoine). Estimez votre économie en 2 minutes : je compare, je m’occupe des démarches et de la résiliation.'],
+  'assurance-emprunteur': ['Assurance de prêt : changer d’assurance emprunteur | GP Finances', 'Assurance de prêt immobilier : changez d’assurance emprunteur à tout moment (loi Lemoine) et estimez votre économie en 2 minutes. Courtier indépendant, démarches et résiliation prises en charge.'],
   per: ['PER : simulation d’économie d’impôt et conseil | GP Finances', 'Simulez l’économie d’impôt d’un Plan Épargne Retraite selon votre situation. Étude personnalisée avec un courtier indépendant, sans engagement.'],
   'assurance-vie': ['Assurance-vie : simuler et choisir avec un courtier | GP Finances', 'Simulez la croissance de votre capital en assurance-vie et faites-vous conseiller par un courtier indépendant : supports, frais, retraits, clause bénéficiaire.'],
   prevoyance: ['Prévoyance : protéger vos revenus et votre famille | GP Finances', 'Arrêt de travail, invalidité, décès : une prévoyance étudiée pour votre situation par un courtier indépendant. Étude personnalisée, sans engagement.'],
   mutuelle: ['Mutuelle santé : trouver la couverture adaptée | GP Finances', 'Trouvez l’équilibre entre vos besoins de santé, vos garanties et votre budget, avec un courtier indépendant. Étude personnalisée, sans engagement.'],
-  'regroupement-credits': ['Regroupement de crédits : rééquilibrer votre budget | GP Finances', 'Faites étudier vos crédits et vos charges pour comprendre les possibilités de regroupement et leurs conséquences sur votre budget. Sans engagement.'],
+  'regroupement-credits': ['Regroupement de crédits : rééquilibrer votre budget | GP Finances', 'Regroupement de crédit : faites étudier vos crédits et vos charges pour comprendre les possibilités de regroupement et leurs conséquences sur votre budget. Sans engagement.'],
   'mentions-legales': ['Mentions légales | GP Finances', 'Mentions légales du site gp-finances.fr : éditeur, immatriculations ORIAS, hébergement, propriété intellectuelle.'],
   confidentialite: ['Politique de confidentialité | GP Finances', 'Comment GP Finances traite vos données personnelles : finalités, base légale, destinataires, durées de conservation, cookies et droits.']
 };
@@ -119,6 +119,7 @@ for (const [name, route] of Object.entries(ROUTES)) {
     return `${attr}="/site/${value}"`;
   });
 
+  if (name === 'assurance-emprunteur') html = html.replace('<p class="eyebrow"><span></span>Assurance emprunteur</p>', '<p class="eyebrow"><span></span>Assurance de prêt · Assurance emprunteur</p>');
   // titre et description optimisés
   if (SEO[name]) {
     html = html.replace(/<title>[^<]*<\/title>/, `<title>${SEO[name][0]}</title>`).replace(/(<meta name="description" content=")[^"]*(")/, `$1${SEO[name][1]}$2`);
@@ -177,7 +178,7 @@ const localPage = ({ file, route, title, description, eyebrow, heading, intro, e
     .replace(/"url":"[^"]*"/, `"url":"${url}"`)
     .replace(/"description":"[^"]*"/, `"description":"${esc(description)}"`);
   if (areaServed) html = html.replace('"areaServed":"FR"', `"areaServed":{"@type":"City","name":"${esc(areaServed)}"}`);
-  html = html.replace('<p class="eyebrow"><span></span>Assurance emprunteur</p>', `<p class="eyebrow"><span></span>${esc(eyebrow)}</p>`);
+  html = html.replace('<p class="eyebrow"><span></span>Assurance de prêt · Assurance emprunteur</p>', `<p class="eyebrow"><span></span>${esc(eyebrow)}</p>`);
   if (h1) html = html.replace(/<h1>[^<]*<br>[^<]*<em>[^<]*<\/em><\/h1>/, h1);
   if (breadcrumb) {
     html = html.replace(/<a href="\/#solutions" class="breadcrumb">Accueil <span>\/<\/span> Assurance emprunteur<\/a>/, breadcrumb.html);
