@@ -57,4 +57,7 @@
       window.open(CALENDLY_LOAN,'_blank','noopener');
     },true);
   }
+  // Vidéo verticale (format smartphone) : la fenêtre s'adapte à la forme de la vidéo.
+  const dialogVideo=$('#video-dialog video');
+  if(dialogVideo)dialogVideo.addEventListener('loadedmetadata',()=>$('#video-dialog').classList.toggle('is-vertical',dialogVideo.videoHeight>dialogVideo.videoWidth));
 })();

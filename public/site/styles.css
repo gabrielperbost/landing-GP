@@ -143,3 +143,12 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .contact-h2{font-family:var(--serif);font-size:30px;color:var(--navy);margin:48px 0 14px;font-weight:500}
 .contact-ways{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contact-ways article{background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px}.contact-ways h3{font-size:19px;margin:14px 0 6px;color:var(--navy)}.contact-ways p{font-size:15px;line-height:1.65;color:#4d6177;margin:0}
 @media(max-width:900px){.contact-grid{grid-template-columns:1fr}.contact-ways{grid-template-columns:1fr}.contact-card{padding:24px}}
+
+/* Carte vidéo verticale (format smartphone) dans « Nos derniers conseils » */
+.article-video-vertical{font:inherit;text-align:left;padding:0;cursor:pointer;width:100%;color:inherit}
+.article-video-vertical .article-video img{object-fit:cover;object-position:center 30%}
+.article-video-vertical .article-video:after{content:'';position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(transparent,#0d1f3cd9);pointer-events:none}
+.article-video-vertical .video-caption{position:absolute;left:22px;bottom:18px;z-index:2;font-family:var(--serif);font-size:24px;line-height:1.2;color:#fff;text-align:left}
+.article-video-vertical .video-caption b{color:var(--gold-light);font-weight:500}
+.article-video-vertical .video-play-badge{z-index:2}
+.video-dialog.is-vertical{width:min(430px,calc(100% - 22px))}.video-dialog.is-vertical video{max-height:86dvh;margin-inline:auto}
