@@ -34,7 +34,7 @@ const ROUTES = {
 };
 const SHARED = [
   'assets', 'styles.css', 'social-proof.css', 'insurance-simulator.css', 'per-simulator.css', 'life-simulator.css',
-  'app.js', 'reviews-carousel.js', 'live-counter.js', 'consent-tracking.js', 'borrower-references.js', 'insurance-quote.js',
+  'app.js', 'reviews-carousel.js', 'live-counter.js', 'consent-tracking.js', 'lead-popup.js', 'borrower-references.js', 'insurance-quote.js',
   'per-calculator.js', 'per-projection.js', 'per-profile.js', 'per-simulator.js', 'life-calculator.js', 'life-simulator.js'
 ];
 

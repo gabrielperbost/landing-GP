@@ -174,6 +174,10 @@
         const data = await response.json();
         if (data.status === 'quote' && Array.isArray(data.solutions) && data.solutions.length) {
           render(data.solutions, !!co); show('quote');
+          window.dispatchEvent(new CustomEvent('gp:simulation-result', {detail:{type:'assurance_emprunteur', summary:{
+            capital_restant_du:Math.round(capital), duree_restante_mois:months, taux_pret:rate, emprunteurs:co ? 2 : 1,
+            profession:professions.p_.title, meilleure_solution_total:Math.round(data.solutions[0].total), meilleure_solution_moyenne_mensuelle:Math.round(data.solutions[0].averageMonthly * 100) / 100,
+            ville:body.address.city}}}));
           window.gpTrack && window.gpTrack('simulation_resultat', {simulateur:'assurance_emprunteur', emprunteurs:co ? 2 : 1, solutions:data.solutions.length, capital_tranche:capital < 100000 ? 'moins_de_100k' : capital < 200000 ? '100k_200k' : capital < 400000 ? '200k_400k' : 'plus_de_400k', meilleure_solution_euros:Math.round(data.solutions[0].total)});
         } else {
           callState(data.message);

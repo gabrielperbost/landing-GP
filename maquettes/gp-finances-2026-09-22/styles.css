@@ -152,3 +152,19 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .article-video-vertical .video-caption b{color:var(--gold-light);font-weight:500}
 .article-video-vertical .video-play-badge{z-index:2}
 .video-dialog.is-vertical{width:min(430px,calc(100% - 22px))}.video-dialog.is-vertical video{max-height:86dvh;margin-inline:auto}
+
+/* Fenêtre de collecte de coordonnées après une simulation */
+.lead-dialog{max-width:460px}
+.lead-kicker{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8c7130;margin:0 0 8px;font-weight:600}
+.lead-dialog h2{font-family:var(--serif);font-size:30px;line-height:1.15;color:var(--navy);margin:0 0 12px;font-weight:500}
+.lead-text{font-size:15px;line-height:1.65;color:#4d6177;margin:0 0 18px}
+.lead-dialog form{display:grid;gap:14px}
+.lead-dialog form>label:not(.consent-line){display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;font-size:13px;font-weight:600;color:var(--navy)}
+.lead-dialog form>label:not(.consent-line) input{flex:0 0 100%}
+.lead-dialog input:not([type=checkbox]){height:50px;border:1.5px solid #cfd6de;border-radius:12px;padding:0 14px;font:inherit;font-size:16px;color:var(--navy);background:#fbfcfd;width:100%;box-sizing:border-box}
+.lead-dialog input:not([type=checkbox]):focus{outline:0;border-color:var(--navy);box-shadow:0 0 0 4px #0d1f3c14;background:#fff}
+.lead-optional{font-weight:400;color:#6b7b8d}
+.lead-error{border-left:3px solid #ad4f36;background:#fff4f0;color:#913b27;padding:10px 12px;font-size:13px;margin:0}
+.lead-submit{width:100%;min-height:54px}.lead-submit:disabled{opacity:.6;cursor:wait}
+.lead-skip{background:none;border:0;padding:8px;font:inherit;font-size:14px;color:#5b6b7c;text-decoration:underline;text-underline-offset:3px;cursor:pointer;justify-self:center}
+.lead-done-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}

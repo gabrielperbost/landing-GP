@@ -18,6 +18,9 @@ Aucune mesure n'est déclenchée avant le choix du visiteur (bandeau cookies). L
 | Une vidéo témoignage est lancée | `video_temoignage_ouverte` | nom du témoignage |
 | Début d'une simulation | `simulation_demarree` | simulateur (`assurance_emprunteur`, `per`, `assurance_vie`) |
 | Simulation envoyée | `simulation_envoyee` | emprunteurs (1 ou 2) |
+| La fenêtre « coordonnées » s'affiche après une simulation | `popup_lead_affiche` | simulateur |
+| Le visiteur la ferme (« Non merci ») | `popup_lead_ferme` | simulateur |
+| Le visiteur laisse ses coordonnées | `lead_simulation_envoye` | simulateur |
 | Simulation avec résultat | `simulation_resultat` | emprunteurs, nombre de solutions, tranche de capital, meilleure solution en € |
 | Simulation renvoyée vers vous | `simulation_appel_demande` | simulateur |
 
@@ -43,7 +46,9 @@ La mesure ne fonctionne que si l'identifiant Google Analytics est renseigné dan
 - tout ce que le visiteur a saisi (capital, durée, taux, profil, quotités, second emprunteur) ;
 - la page d'origine.
 
-Le simulateur ne collecte ni nom, ni e-mail, ni téléphone : l'e-mail sert à suivre les demandes, pas à rappeler une personne. Les demandes de rappel (formulaire « On vous rappelle ») arrivent par le circuit existant, avec le téléphone.
+Le simulateur ne collecte ni nom, ni e-mail, ni téléphone : l'e-mail sert à suivre les demandes, pas à rappeler une personne. **Contacts après une simulation** : quand un visiteur laisse ses coordonnées dans la fenêtre qui s'ouvre après une simulation (assurance de prêt, PER, assurance-vie), tu reçois un e-mail « Lead après simulation … » avec son prénom, son téléphone, son e-mail éventuel et le résumé chiffré de sa simulation. La fenêtre ne s'ouvre qu'une fois par simulateur et par visite, et seulement avec la case de consentement cochée.
+
+Les demandes de rappel (formulaire « On vous rappelle ») arrivent par le circuit existant, avec le téléphone.
 
 ## Conservation
 

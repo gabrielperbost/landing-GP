@@ -20,8 +20,15 @@ type LeadSourcePayload = {
   [key: string]: unknown;
 };
 
+type SimulationContext = {
+  type: string;
+  label: string;
+  entries: [string, string][];
+};
+
 type LeadContext = {
   sourcePayload?: LeadSourcePayload;
+  simulation?: SimulationContext;
   isPerLead: boolean;
   wantsLeadMagnet: boolean;
   objective?: string;
@@ -296,10 +303,26 @@ const buildInternalEmailHtml = ({
     `
     : "";
 
+  const simulationHtml = context?.simulation
+    ? `
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #e2e8f0;">
+        <div><b>Contexte :</b> a fait une simulation ${escapeHtml(context.simulation.label)} sur le site</div>
+        ${context.simulation.entries
+          .map(([key, value]) => `<div><b>${escapeHtml(key.replaceAll("_", " "))} :</b> ${escapeHtml(value)}</div>`)
+          .join("")}
+        <div style="color:#64748b;margin-top:4px;">Consentement à être rappelé(e) : oui (case cochée avant l'envoi).</div>
+      </div>
+    `
+    : "";
+
   const content = `
     <div style="font-family:Arial,sans-serif;color:#0f172a;font-size:14px;line-height:1.6;">
       <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:12px 14px;margin-bottom:12px;">
-        <div style="font-weight:900;color:#9a3412;">Nouveau lead - Demande "Être rappelé"</div>
+        <div style="font-weight:900;color:#9a3412;">${
+          context?.simulation
+            ? `Nouveau lead - après une simulation ${escapeHtml(context.simulation.label)}`
+            : 'Nouveau lead - Demande "Être rappelé"'
+        }</div>
         <div style="color:#7c2d12;margin-top:4px;">Action : rappeler + demander documents (assurance / offre de prêt / TA)</div>
       </div>
 
@@ -309,6 +332,7 @@ const buildInternalEmailHtml = ({
         <div><b>Email :</b> ${escapeHtml(email || "Non renseigné")}</div>
         <div><b>Source :</b> ${escapeHtml(source || "site")}</div>
         ${perContextHtml}
+        ${simulationHtml}
       </div>
     </div>
   `;
@@ -376,6 +400,29 @@ const resolveSiteBaseUrl = (req: Request): string => {
   return `${proto}://${host}`;
 };
 
+const SIMULATION_LABELS: Record<string, string> = {
+  assurance_emprunteur: "assurance de prêt",
+  per: "PER",
+  assurance_vie: "assurance-vie"
+};
+
+/** Contact déposé dans la fenêtre qui s'ouvre après une simulation : résumé nettoyé (valeurs simples, tailles limitées). */
+const resolveSimulation = (sourcePayload: LeadSourcePayload | undefined): SimulationContext | undefined => {
+  const formName = typeof sourcePayload?.form === "string" ? sourcePayload.form : "";
+  if (!formName.startsWith("simulation_")) return undefined;
+  const type = formName.slice("simulation_".length);
+  const raw = (sourcePayload?.simulation as { summary?: unknown } | undefined)?.summary;
+  const entries: [string, string][] = [];
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    for (const [key, value] of Object.entries(raw as Record<string, unknown>).slice(0, 12)) {
+      if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        entries.push([key.slice(0, 40), String(value).slice(0, 120)]);
+      }
+    }
+  }
+  return { type, label: SIMULATION_LABELS[type] ?? type.slice(0, 30), entries };
+};
+
 const resolveLeadContext = (req: Request, lead: ValidLead): LeadContext => {
   const sourcePayload = parseSourcePayload(lead.source);
   const formName = typeof sourcePayload?.form === "string" ? sourcePayload.form : "";
@@ -388,6 +435,7 @@ const resolveLeadContext = (req: Request, lead: ValidLead): LeadContext => {
 
   return {
     sourcePayload,
+    simulation: resolveSimulation(sourcePayload),
     isPerLead,
     wantsLeadMagnet,
     objective,
@@ -476,6 +524,11 @@ export async function POST(req: Request) {
     const lead = parsed.data;
     const leadContext = resolveLeadContext(req, lead);
 
+    // Contact déposé après une simulation : consentement explicite obligatoire (RGPD).
+    if (leadContext.simulation && !normalizeBoolean(leadContext.sourcePayload?.consent)) {
+      return NextResponse.json({ ok: false, error: "Consentement requis" }, { status: 400 });
+    }
+
     const host = normalizeEnv(process.env.SMTP_HOST);
     const user = normalizeEnv(process.env.SMTP_USER);
     const pass = normalizeEnv(process.env.SMTP_PASS);
@@ -505,9 +558,11 @@ export async function POST(req: Request) {
       await transporter.sendMail({
         from,
         to: internalRecipients,
-        subject: leadContext.isPerLead
-          ? `Lead PER à rappeler - ${lead.name} (${lead.phone})`
-          : `À rappeler - ${lead.name} (${lead.phone})`,
+        subject: leadContext.simulation
+          ? `Lead après simulation ${leadContext.simulation.label} - ${lead.name} (${lead.phone})`
+          : leadContext.isPerLead
+            ? `Lead PER à rappeler - ${lead.name} (${lead.phone})`
+            : `À rappeler - ${lead.name} (${lead.phone})`,
         html: buildInternalEmailHtml({ ...lead, context: leadContext })
       });
 

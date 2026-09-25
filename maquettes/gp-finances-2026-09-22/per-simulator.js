@@ -253,7 +253,15 @@
         const error = validate(stage);
         if (error) { if (stage !== step) visit(stage); showError(error); return; }
       }
-      if (step === 2) { if (renderResult()) visit(3); }
+      if (step === 2) {
+        if (renderResult()) {
+          visit(3);
+          // Signal pour la fenêtre « laissez vos coordonnées » (résumé chiffré, sans donnée d'identité).
+          window.dispatchEvent(new CustomEvent('gp:simulation-result', {detail:{type:'per', summary:{
+            versement:Math.round(result.contribution), economie_impot_estimee:Math.round(result.saving), effort_net:Math.round(result.netEffort),
+            tranche_marginale_pourcent:Math.round(result.before.tmi * 100)}}}));
+        }
+      }
       else visit(step + 1);
     });
     on($('#per-reset-parts'),'click',() => { clearError(); manualParts = false; sync(); });

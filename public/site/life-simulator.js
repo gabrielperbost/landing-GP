@@ -54,6 +54,16 @@
     setText('#life-result-subtitle','Projection en attente de données valides.');
     setText('[data-life-hero-assumptions]','Corrigez votre scénario dans le simulateur.');
   }
+  // Assurance-vie : le résultat se met à jour en direct. La simulation est « faite » quand le visiteur a modifié au moins deux réglages puis s'est arrêté 6 secondes.
+  let touches=0,engagedTimer,notified=false;
+  function touch(){
+    if(notified)return;touches++;clearTimeout(engagedTimer);
+    if(touches>=2)engagedTimer=setTimeout(()=>{
+      if(!result||!result.valid||notified)return;notified=true;
+      window.dispatchEvent(new CustomEvent('gp:simulation-result',{detail:{type:'assurance_vie',summary:{
+        versement_initial:Math.round(result.initial),versement_mensuel:Math.round(result.monthly),duree_ans:result.years,hypothese_rendement_pourcent:result.rate,capital_projete:Math.round(result.final.capital)}}}));
+    },6000);
+  }
   function update(announce=true){
     const input=values();result=model.project(input);
     form.querySelectorAll('[aria-invalid]').forEach(el=>el.removeAttribute('aria-invalid'));
@@ -83,6 +93,7 @@
     setText('[data-life-hero-assumptions]',`${euro(result.initial)} au départ + ${euro(result.monthly)}/mois · Hypothèse ${number(result.rate)} %/an.`);
     $('#life-year-rows').innerHTML=result.points.slice(1).map(p=>`<tr><th scope="row">${p.year}</th><td>${euro(p.paid)}</td><td>${euro(p.fees)}</td><td>${euro(p.capital)}</td></tr>`).join('');
     hoverYear=result.years;drawChart();
+    if(announce)touch();
     clearTimeout(announceTimer);
     if(announce)announceTimer=setTimeout(()=>setText('#life-live-status',`Capital projeté : ${euro(final.capital)} dans ${yearsText(result.years)}, pour ${euro(final.paid)} versés, avec ${euro(final.fees)} de frais de versement.`),300);
   }
