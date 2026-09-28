@@ -13,16 +13,22 @@ const normalizeEnv = (value: string | undefined) => {
   return trimmed || undefined;
 };
 
+type ScheduleTemplate = "reminder_11d" | "reminder_9d" | "reminder_7d" | "reminder_5d" | "reminder_3d" | "reminder_1d" | "reminder_morning";
+
 type ScheduleItem = {
   dateKey: string; // date (heure de Paris) à laquelle envoyer, format AAAA-MM-JJ
   reminderKey: WebinarPerReminderKey;
-  template: "reminder_7d" | "reminder_3d" | "reminder_1d" | "reminder_morning";
+  template: ScheduleTemplate;
   alsoSms: boolean;
 };
 
-// Webinaire le dimanche 11 octobre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement.
+// Webinaire le dimanche 11 octobre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement,
+// espacés d'environ 2 jours pour garder le contact pendant toute la durée de la campagne ads.
 const SCHEDULE: ScheduleItem[] = [
+  { dateKey: "2026-09-30", reminderKey: "reminder_11d_sent_at", template: "reminder_11d", alsoSms: false },
+  { dateKey: "2026-10-02", reminderKey: "reminder_9d_sent_at", template: "reminder_9d", alsoSms: false },
   { dateKey: "2026-10-04", reminderKey: "reminder_7d_sent_at", template: "reminder_7d", alsoSms: false },
+  { dateKey: "2026-10-06", reminderKey: "reminder_5d_sent_at", template: "reminder_5d", alsoSms: false },
   { dateKey: "2026-10-08", reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
   { dateKey: "2026-10-10", reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
   { dateKey: "2026-10-11", reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true }

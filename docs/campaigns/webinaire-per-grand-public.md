@@ -15,12 +15,16 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 
 1. **Page d'inscription**, dans le même style que le reste du site : présentation du webinaire, programme, formulaire (prénom, nom, e-mail, case à cocher « SMS de rappel » qui révèle le téléphone si activée), une seule case de consentement RGPD obligatoire (couvre l'e-mail et, si demandé, le SMS — sans elle, l'inscription est refusée puisqu'aucune information ne pourrait être envoyée), FAQ.
 2. **À l'inscription** : écriture dans un Google Sheet (voir ci-dessous), e-mail de confirmation avec lien Zoom et bouton « Ajouter à l'agenda » (Google, Outlook, fichier .ics), SMS de confirmation si la case SMS est cochée.
-3. **Relances automatiques aux inscrits uniquement** (jamais de prospection à froid) :
+3. **Relances automatiques aux inscrits uniquement** (jamais de prospection à froid), espacées d'environ 2 jours pour garder le contact pendant toute la campagne :
+   - J-11 (30 septembre) : e-mail, avec la vidéo « 5 erreurs PER ».
+   - J-9 (2 octobre) : e-mail, invitation à poser une question en avance.
    - J-7 (4 octobre) : e-mail.
+   - J-5 (6 octobre) : e-mail, rappel du programme.
    - J-3 (8 octobre) : e-mail.
    - La veille (10 octobre) : e-mail + SMS.
    - Le matin même (11 octobre) : e-mail + SMS.
-   - Chaque relance n'est envoyée qu'une fois (le Google Sheet garde la trace).
+   - Chaque relance n'est envoyée qu'une fois par personne (le Google Sheet garde la trace) ; une personne inscrite après une date de relance ne reçoit que celles qui restent à venir.
+   - Chaque e-mail (confirmation comprise) affiche 2 vrais avis Google (rotation parmi 5 avis sélectionnés) et les 2 témoignages vidéo clients PER (Anaëlle, Dorothée).
 4. **Désinscription en un clic**, obligatoire légalement, présente dans chaque e-mail.
 5. **Suivi des sources publicitaires** : la page capte `utm_source`, `utm_campaign` etc. dans l'adresse (ajoutés automatiquement par la plupart des régies pub) et les enregistre avec l'inscription.
 
@@ -32,7 +36,7 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 
 ## Étape 1 : créer le Google Sheet (5 minutes)
 
-> ⚠️ Si tu as déjà créé ce Sheet et collé une version précédente du script avant le 28 septembre, **recolle la version ci-dessous** : elle ajoute une colonne « Nom » et simplifie le consentement en une seule case. Une ancienne version du script fonctionnerait quand même, mais sans la colonne Nom.
+> ⚠️ **Tu as déjà créé ce Sheet et collé une version précédente du script (28 septembre, 16h) : recolle la version ci-dessous dès que possible**, avant le 30 septembre si possible. Elle ajoute 3 colonnes à la fin (Rappel 11j / 9j / 5j) pour la nouvelle cadence de relances tous les 2 jours. Comme les nouvelles colonnes sont ajoutées **à la fin**, aucune donnée déjà enregistrée n'est perturbée — tu peux recoller sans risque, même avec des inscriptions déjà présentes dans le Sheet. Sans cette mise à jour, les relances J-11/J-9/J-5 continueraient de partir mais ne se marqueraient pas comme envoyées dans le Sheet (risque de doublon uniquement si la tâche est relancée manuellement deux fois le même jour).
 
 1. Crée un nouveau Google Sheet, par exemple nommé « Inscriptions Webinaire PER 11 octobre 2026 ».
 2. Dans ce Sheet : menu `Extensions` > `Apps Script`.
@@ -47,13 +51,17 @@ const SHEET_NAME = 'Feuille 1';
 const SECRET = 'CHANGE_ME_SECRET';
 const HEADERS = [
   'Date inscription', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Consent email', 'Consent SMS',
-  'Statut', 'Source', 'Rappel 7j', 'Rappel 3j', 'Rappel veille', 'Rappel matin'
+  'Statut', 'Source', 'Rappel 7j', 'Rappel 3j', 'Rappel veille', 'Rappel matin',
+  'Rappel 11j', 'Rappel 9j', 'Rappel 5j'
 ];
 const REMINDER_COLUMNS = {
   reminder_7d_sent_at: 10,
   reminder_3d_sent_at: 11,
   reminder_1d_sent_at: 12,
-  reminder_morning_sent_at: 13
+  reminder_morning_sent_at: 13,
+  reminder_11d_sent_at: 14,
+  reminder_9d_sent_at: 15,
+  reminder_5d_sent_at: 16
 };
 
 function jsonResponse(payload) {
@@ -115,7 +123,8 @@ function doPost(e) {
     registration.consent_sms || '',
     registration.status || 'registered',
     registration.source || 'webinaire-per',
-    existing[9] || '', existing[10] || '', existing[11] || '', existing[12] || ''
+    existing[9] || '', existing[10] || '', existing[11] || '', existing[12] || '',
+    existing[13] || '', existing[14] || '', existing[15] || ''
   ];
   if (index >= 0) sheet.getRange(index + 1, 1, 1, row.length).setValues([row]);
   else sheet.appendRow(row);
@@ -131,7 +140,8 @@ function doGet(e) {
     created_at: row[0] || '', prenom: row[1] || '', nom: row[2] || '', email: row[3] || '', telephone: row[4] || '',
     consent_email: String(row[5] || '').toLowerCase() === 'oui', consent_sms: String(row[6] || '').toLowerCase() === 'oui',
     status: row[7] || 'registered', source: row[8] || 'webinaire-per',
-    reminder_7d_sent_at: row[9] || '', reminder_3d_sent_at: row[10] || '', reminder_1d_sent_at: row[11] || '', reminder_morning_sent_at: row[12] || ''
+    reminder_7d_sent_at: row[9] || '', reminder_3d_sent_at: row[10] || '', reminder_1d_sent_at: row[11] || '', reminder_morning_sent_at: row[12] || '',
+    reminder_11d_sent_at: row[13] || '', reminder_9d_sent_at: row[14] || '', reminder_5d_sent_at: row[15] || ''
   }));
   return jsonResponse({ success: true, participants });
 }

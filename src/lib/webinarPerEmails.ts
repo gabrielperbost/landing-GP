@@ -1,7 +1,16 @@
 import { WEBINAR_PER, getWebinarPerRegistrationUrl } from "@/lib/webinarPerConfig";
 import { getWebinarPerCalendarLinks } from "@/lib/webinarPerCalendar";
 
-export type WebinarPerEmailTemplate = "confirmation" | "reminder_7d" | "reminder_3d" | "reminder_1d" | "reminder_morning" | "replay";
+export type WebinarPerEmailTemplate =
+  | "confirmation"
+  | "reminder_11d"
+  | "reminder_9d"
+  | "reminder_7d"
+  | "reminder_5d"
+  | "reminder_3d"
+  | "reminder_1d"
+  | "reminder_morning"
+  | "replay";
 
 export type WebinarPerContact = { prenom: string; email: string };
 export type WebinarPerEmail = { subject: string; html: string; text: string };
@@ -137,6 +146,35 @@ export const buildWebinarPerEmail = (
             <p style="margin:14px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
         })
       };
+    case "reminder_11d":
+      return {
+        subject: "Merci pour votre inscription au webinaire PER",
+        text: `Merci pour votre inscription au webinaire PER du ${dateTime}. En attendant, la vidéo « 5 erreurs à éviter avec le PER » : ${WEBINAR_PER.videoUrl}`,
+        html: shell({
+          title: "Merci pour votre inscription",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Votre place est réservée pour le ${dateTime}. En attendant, si vous voulez une première mise en jambe, voici une courte vidéo où j'explique les 5 erreurs les plus fréquentes avec le PER :</p>
+            <div style="margin:10px 0 16px;">${button(WEBINAR_PER.videoUrl, "Regarder la vidéo (3 min)")}</div>
+            ${videoTestimonialsBlock(registrationUrl)}
+            ${reviewsBlock([2, 3])}`
+        })
+      };
+    case "reminder_9d":
+      return {
+        subject: "Une question à me poser avant le webinaire PER ?",
+        text: `Le webinaire PER a lieu le ${dateTime}. Une question à me poser en avance ? Répondez à cet e-mail.`,
+        html: shell({
+          title: "Une question pour le webinaire ?",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Le webinaire approche : ${dateTime}. Si vous avez déjà une question sur votre situation (âge, tranche d'imposition, projet de retraite…), répondez à cet e-mail : je pourrai y répondre pendant la session.</p>
+            ${meetingBlock}
+            ${reviewsBlock([4, 0])}`
+        })
+      };
     case "reminder_7d":
       return {
         subject: "J-7 : votre webinaire PER approche",
@@ -149,7 +187,21 @@ export const buildWebinarPerEmail = (
             <p style="margin:0 0 12px;">Rendez-vous dans une semaine pour parler retraite et fiscalité. Une question à laquelle vous aimeriez que je réponde pendant le webinaire ? Répondez simplement à cet e-mail.</p>
             ${meetingBlock}
             ${videoTestimonialsBlock(registrationUrl)}
-            ${reviewsBlock([2, 3])}`
+            ${reviewsBlock([1, 2])}`
+        })
+      };
+    case "reminder_5d":
+      return {
+        subject: "J-5 : ce que vous allez apprendre au webinaire PER",
+        text: `Le webinaire PER a lieu dans 5 jours, ${dateTime}.`,
+        html: shell({
+          title: "Dans 5 jours",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Au programme le ${dateTime} : comprendre le PER simplement, calculer votre économie d'impôt selon votre tranche, et éviter les erreurs les plus fréquentes avant de verser. 15 minutes de questions en direct à la fin.</p>
+            ${meetingBlock}
+            ${reviewsBlock([3, 4])}`
         })
       };
     case "reminder_3d":
@@ -163,7 +215,7 @@ export const buildWebinarPerEmail = (
           contentHtml: `
             <p style="margin:0 0 12px;">Le webinaire PER approche. Gardez ce créneau : ${dateTime}.</p>
             ${meetingBlock}
-            ${reviewsBlock([4, 0])}
+            ${reviewsBlock([0, 1])}
             ${videoTestimonialsBlock(registrationUrl)}`
         })
       };
@@ -178,7 +230,7 @@ export const buildWebinarPerEmail = (
           contentHtml: `
             <p style="margin:0 0 12px;">Dernier rappel avant demain, ${WEBINAR_PER.timeLabel}. Gardez ce lien sous la main :</p>
             ${meetingBlock}
-            ${reviewsBlock([1, 2])}`
+            ${reviewsBlock([2, 3])}`
         })
       };
     case "reminder_morning":
@@ -192,7 +244,7 @@ export const buildWebinarPerEmail = (
           contentHtml: `
             <p style="margin:0 0 12px;">Rendez-vous cet après-midi à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Voici le lien de connexion :</p>
             ${meetingBlock}
-            ${reviewsBlock([3, 4])}
+            ${reviewsBlock([4, 0])}
             <p style="margin:14px 0 0;">À tout à l'heure !<br>Gabriel</p>`
         })
       };

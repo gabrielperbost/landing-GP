@@ -17,6 +17,7 @@ export const WEBINAR_PER = {
   registrationPath: "/webinaire-per",
   unsubscribePath: "/api/webinar-per/unsubscribe",
   meetingUrl: (process.env.WEBINAR_PER_MEETING_URL?.trim() || DEFAULT_MEETING_URL),
+  videoUrl: "https://www.youtube.com/watch?v=CNFS4tn5538",
   replayPolicy: "Participation gratuite sur inscription. Un replay sera envoyé aux personnes inscrites."
 } as const;
 
