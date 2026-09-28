@@ -231,8 +231,11 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .webinar-flank-video .testimonial-image{height:270px}
 .webinar-flank-video .testimonial-info{padding:16px 18px}
 .webinar-flank-video .testimonial-info strong{font-size:15px}
-.webinar-video-feature{max-width:640px;margin:64px auto 0}
+.webinar-video-feature{max-width:820px;margin:64px auto 0}
 .webinar-video-card{display:block;margin-top:26px;text-align:left}
+.webinar-video-card .article-art{height:auto;aspect-ratio:16/9}
+.webinar-video-card .video-play-badge{width:84px;height:84px}
+.webinar-video-card .video-play-badge .icon{width:44px;height:44px}
 .webinar-card{text-align:left;min-height:378px;display:flex;flex-direction:column;justify-content:center}
 .webinar-card h2{font-family:var(--serif);font-size:28px;color:var(--navy);margin:0 0 6px;font-weight:500;text-align:center}
 .webinar-card-note{font-size:14px;color:var(--muted);margin:0 0 22px;text-align:center}
