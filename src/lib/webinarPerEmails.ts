@@ -51,16 +51,23 @@ const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string;
 const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#0d1f3c;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-weight:700;font-size:14px;padding:13px 22px;border-radius:10px;margin:6px 8px 0 0;">${label}</a>`;
 
+const goldButton = (href: string, label: string) =>
+  `<a href="${href}" style="display:inline-block;background:#c9a84c;color:#0d1f3c;text-decoration:none;font-family:Arial,sans-serif;font-weight:800;font-size:15.5px;padding:15px 26px;border-radius:10px;margin:10px 0 0;">${label}</a>`;
+
 // Guide PDF offert à l'inscription (lead magnet), joint à l'e-mail de confirmation
-// et disponible en lien direct au cas où la pièce jointe serait filtrée.
+// et disponible en lien direct au cas où la pièce jointe serait filtrée. C'est la
+// première chose que le lecteur doit voir et avoir envie d'ouvrir : bloc mis en avant,
+// en tête d'e-mail, gros titre et bouton doré (couleur CTA du site).
 export const WEBINAR_PER_GUIDE_URL = "https://gp-finances.fr/site/assets/guide-per-gp-finances.pdf";
 const WEBINAR_PER_GUIDE_NAME = "Guide-PER-GP-Finances.pdf";
 
 const guideBlock = () => `
-  <div style="margin:14px 0;padding:14px 16px;background:#f1f6ff;border:1px solid #dbeafe;border-radius:12px;">
-    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13.5px;margin-bottom:6px;">📄 Votre guide « Le PER expliqué simplement »</div>
-    <p style="font-family:Arial,sans-serif;font-size:13px;color:#334155;line-height:1.5;margin:0 0 10px;">Il est joint à cet e-mail. Si vous ne le voyez pas, téléchargez-le directement :</p>
-    ${button(WEBINAR_PER_GUIDE_URL, "Télécharger le guide (PDF)")}
+  <div style="margin:6px 0 18px;padding:20px 20px 22px;background:linear-gradient(180deg,#fbf7ec 0%,#f7f1e0 100%);border:1.5px solid #e9dcb0;border-radius:14px;text-align:center;">
+    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0d1f3c;font-size:20px;line-height:1.3;margin:0 0 8px;">🎁 Votre guide PDF offert est prêt</div>
+    <div style="font-family:Georgia,serif;font-weight:700;color:#8a6d1d;font-size:16px;margin:0 0 10px;">« Le PER expliqué simplement »</div>
+    <p style="font-family:Arial,sans-serif;font-size:14px;color:#334155;line-height:1.6;margin:0 0 4px;">5 pages avec schémas, l'avantage fiscal étape par étape, et une simulation détaillée sur 20 ans (4 000&nbsp;€/an) — de quoi arriver au webinaire déjà à l'aise avec le sujet.</p>
+    <p style="font-family:Arial,sans-serif;font-size:12.5px;color:#8a7a52;line-height:1.5;margin:0 0 2px;">Il est joint à cet e-mail (fichier PDF). Vous pouvez aussi le télécharger directement :</p>
+    ${goldButton(WEBINAR_PER_GUIDE_URL, "📄 Ouvrir mon guide PER (PDF)")}
   </div>`;
 
 // Avis Google réels (vérifiés sur la fiche GP FINANCES), jamais inventés.
@@ -142,17 +149,17 @@ export const buildWebinarPerEmail = (
   switch (template) {
     case "confirmation":
       return {
-        subject: "Inscription confirmée + votre guide PER offert",
-        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Lien : ${WEBINAR_PER.meetingUrl}. Votre guide « Le PER expliqué simplement » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}).`,
+        subject: "🎁 Votre guide PER offert est prêt (+ inscription confirmée)",
+        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Votre guide « Le PER expliqué simplement » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}). Lien du webinaire : ${WEBINAR_PER.meetingUrl}.`,
         html: shell({
           title: "Votre inscription est confirmée",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(WEBINAR_PER.title)} »</b>.</p>
-            ${meetingBlock}
+            <p style="margin:0 0 14px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(WEBINAR_PER.title)} »</b>. Et comme promis, votre cadeau vous attend juste en dessous 👇</p>
             ${guideBlock()}
-            <p style="margin:14px 0 0;">Au programme : comprendre le PER, calculer votre économie d'impôt potentielle et éviter les erreurs les plus fréquentes. Vous pourrez poser vos questions en direct.</p>
+            ${meetingBlock}
+            <p style="margin:14px 0 0;">Au programme du webinaire : comprendre le PER, calculer votre économie d'impôt potentielle et éviter les erreurs les plus fréquentes. Vous pourrez poser vos questions en direct.</p>
             ${videoTestimonialsBlock(registrationUrl)}
             ${reviewsBlock([0, 1])}
             <p style="margin:14px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
