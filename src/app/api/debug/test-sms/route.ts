@@ -14,6 +14,15 @@ export async function GET(request: Request) {
   const config = getBrevoSmsConfig();
   if (!config) return NextResponse.json({ ok: false, error: "NO_BREVO_CONFIG" });
 
+  if (searchParams.get("action") === "aggregate") {
+    const days = searchParams.get("days") || "7";
+    const url = new URL("https://api.brevo.com/v3/transactionalSMS/statistics/aggregatedReport");
+    url.searchParams.set("days", days);
+    const res = await fetch(url.toString(), { headers: { accept: "application/json", "api-key": config.apiKey } });
+    const body = await res.json().catch(() => ({}));
+    return NextResponse.json({ ok: res.ok, status: res.status, body });
+  }
+
   if (searchParams.get("action") === "events") {
     const days = searchParams.get("days") || "1";
     const eventsUrl = new URL("https://api.brevo.com/v3/transactionalSMS/statistics/events");
