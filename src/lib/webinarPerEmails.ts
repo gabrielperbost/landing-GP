@@ -42,6 +42,63 @@ const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string;
 const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#0d1f3c;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-weight:700;font-size:14px;padding:13px 22px;border-radius:10px;margin:6px 8px 0 0;">${label}</a>`;
 
+// Avis Google réels (vérifiés sur la fiche GP FINANCES), jamais inventés.
+const GOOGLE_REVIEWS_URL =
+  "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr";
+const REVIEWS: { author: string; text: string }[] = [
+  { author: "Julien Menier", text: "Très réactif, et très pro, je recommande à 100%" },
+  {
+    author: "Johanna Djian",
+    text: "Un courtier qui a tout pour plaire : efficace, pédagogue, professionnel, réactif, et en plus sympathique ! Allez y les yeux fermés !"
+  },
+  { author: "Duarte Joao", text: "Parfait, Gabriel est d'une efficacité incroyable. Bravo ! Professionnalisme incroyable" },
+  {
+    author: "Didier Dorville",
+    text: "Excellente expérience avec Gabriel. À l'écoute de nos besoins et de notre situation, il a su nous accompagner avec efficacité…"
+  },
+  {
+    author: "Edouard Ballout",
+    text: "Gabriel associe toutes les qualités recherchées : disponibilité, clarté et efficacité. Je ne peux que recommander !"
+  }
+];
+
+// Témoignages vidéo réels de clients PER, déjà utilisés sur la page d'inscription.
+const VIDEO_TESTIMONIALS: { name: string; img: string }[] = [
+  { name: "Anaëlle", img: "https://gp-finances.fr/site/assets/temoignage-anaelle.jpg" },
+  { name: "Dorothée", img: "https://gp-finances.fr/site/assets/temoignage-dorothee.jpg" }
+];
+
+const reviewsBlock = (pair: [number, number]) => `
+  <div style="margin:16px 0;padding:14px 16px;background:#fffaf0;border:1px solid #f3e2b8;border-radius:12px;">
+    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13px;margin-bottom:10px;">★★★★★ 5/5 · 17 avis Google</div>
+    ${pair
+      .map(
+        (i, idx) => `
+      <div style="font-family:Arial,sans-serif;font-size:13px;color:#334155;line-height:1.5;${idx === 0 ? "margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid #f3e2b8;" : "margin:0;"}">
+        « ${escapeHtml(REVIEWS[i].text)} »<br>
+        <span style="color:#8a6d1d;font-weight:700;">— ${escapeHtml(REVIEWS[i].author)}</span>
+      </div>`
+      )
+      .join("")}
+    <a href="${GOOGLE_REVIEWS_URL}" style="display:inline-block;margin-top:10px;color:#0d1f3c;font-family:Arial,sans-serif;font-size:12px;font-weight:700;">Voir tous les avis Google ↗</a>
+  </div>`;
+
+const videoTestimonialsBlock = (registrationUrl: string) => `
+  <div style="margin:16px 0;">
+    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13px;margin-bottom:8px;">Témoignages clients PER (vidéo)</div>
+    <table role="presentation" style="width:100%;border-collapse:collapse;"><tr>
+      ${VIDEO_TESTIMONIALS.map(
+        (v) => `
+        <td style="width:50%;padding:0 6px 0 0;">
+          <a href="${registrationUrl}#inscription" style="display:block;text-decoration:none;">
+            <img src="${v.img}" alt="Témoignage client ${escapeHtml(v.name)}" width="260" style="width:100%;height:auto;border-radius:10px;display:block;border:1px solid #e7eefb;">
+            <div style="font-family:Arial,sans-serif;font-size:12px;color:#0d1f3c;font-weight:700;margin-top:4px;">▶ Témoignage — ${escapeHtml(v.name)}</div>
+          </a>
+        </td>`
+      ).join("")}
+    </tr></table>
+  </div>`;
+
 export const buildWebinarPerEmail = (
   template: WebinarPerEmailTemplate,
   contact: WebinarPerContact,
@@ -75,7 +132,9 @@ export const buildWebinarPerEmail = (
             <p style="margin:0 0 12px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(WEBINAR_PER.title)} »</b>.</p>
             ${meetingBlock}
             <p style="margin:14px 0 0;">Au programme : comprendre le PER, calculer votre économie d'impôt potentielle et éviter les erreurs les plus fréquentes. Vous pourrez poser vos questions en direct.</p>
-            <p style="margin:12px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
+            ${videoTestimonialsBlock(registrationUrl)}
+            ${reviewsBlock([0, 1])}
+            <p style="margin:14px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
         })
       };
     case "reminder_7d":
@@ -88,7 +147,9 @@ export const buildWebinarPerEmail = (
           unsubscribeUrl,
           contentHtml: `
             <p style="margin:0 0 12px;">Rendez-vous dans une semaine pour parler retraite et fiscalité. Une question à laquelle vous aimeriez que je réponde pendant le webinaire ? Répondez simplement à cet e-mail.</p>
-            ${meetingBlock}`
+            ${meetingBlock}
+            ${videoTestimonialsBlock(registrationUrl)}
+            ${reviewsBlock([2, 3])}`
         })
       };
     case "reminder_3d":
@@ -101,7 +162,9 @@ export const buildWebinarPerEmail = (
           unsubscribeUrl,
           contentHtml: `
             <p style="margin:0 0 12px;">Le webinaire PER approche. Gardez ce créneau : ${dateTime}.</p>
-            ${meetingBlock}`
+            ${meetingBlock}
+            ${reviewsBlock([4, 0])}
+            ${videoTestimonialsBlock(registrationUrl)}`
         })
       };
     case "reminder_1d":
@@ -114,7 +177,8 @@ export const buildWebinarPerEmail = (
           unsubscribeUrl,
           contentHtml: `
             <p style="margin:0 0 12px;">Dernier rappel avant demain, ${WEBINAR_PER.timeLabel}. Gardez ce lien sous la main :</p>
-            ${meetingBlock}`
+            ${meetingBlock}
+            ${reviewsBlock([1, 2])}`
         })
       };
     case "reminder_morning":
@@ -128,6 +192,7 @@ export const buildWebinarPerEmail = (
           contentHtml: `
             <p style="margin:0 0 12px;">Rendez-vous cet après-midi à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Voici le lien de connexion :</p>
             ${meetingBlock}
+            ${reviewsBlock([3, 4])}
             <p style="margin:14px 0 0;">À tout à l'heure !<br>Gabriel</p>`
         })
       };
