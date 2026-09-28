@@ -54,11 +54,11 @@ const button = (href: string, label: string) =>
 // Guide PDF offert à l'inscription (lead magnet), joint à l'e-mail de confirmation
 // et disponible en lien direct au cas où la pièce jointe serait filtrée.
 export const WEBINAR_PER_GUIDE_URL = "https://gp-finances.fr/site/assets/guide-per-gp-finances.pdf";
-const WEBINAR_PER_GUIDE_NAME = "Comprendre-le-PER-en-5-pages-GP-Finances.pdf";
+const WEBINAR_PER_GUIDE_NAME = "Guide-PER-GP-Finances.pdf";
 
 const guideBlock = () => `
   <div style="margin:14px 0;padding:14px 16px;background:#f1f6ff;border:1px solid #dbeafe;border-radius:12px;">
-    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13.5px;margin-bottom:6px;">📄 Votre guide « Comprendre le PER en 5 pages »</div>
+    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13.5px;margin-bottom:6px;">📄 Votre guide « Le PER expliqué simplement »</div>
     <p style="font-family:Arial,sans-serif;font-size:13px;color:#334155;line-height:1.5;margin:0 0 10px;">Il est joint à cet e-mail. Si vous ne le voyez pas, téléchargez-le directement :</p>
     ${button(WEBINAR_PER_GUIDE_URL, "Télécharger le guide (PDF)")}
   </div>`;
@@ -144,7 +144,7 @@ export const buildWebinarPerEmail = (
     case "confirmation":
       return {
         subject: "Inscription confirmée + votre guide PER offert",
-        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Lien : ${WEBINAR_PER.meetingUrl}. Votre guide « Comprendre le PER en 5 pages » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}).`,
+        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Lien : ${WEBINAR_PER.meetingUrl}. Votre guide « Le PER expliqué simplement » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}).`,
         html: shell({
           title: "Votre inscription est confirmée",
           contact,

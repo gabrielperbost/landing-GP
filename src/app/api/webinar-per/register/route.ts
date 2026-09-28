@@ -70,7 +70,7 @@ export async function POST(request: Request) {
         text: email_.text,
         unsubscribeUrl,
         tags: ["webinaire-per", "confirmation"],
-        attachment: [{ url: WEBINAR_PER_GUIDE_URL, name: "Comprendre-le-PER-en-5-pages-GP-Finances.pdf" }]
+        attachment: [{ url: WEBINAR_PER_GUIDE_URL, name: "Guide-PER-GP-Finances.pdf" }]
       });
     } catch (error) {
       console.error("[webinar-per] échec e-mail de confirmation", error instanceof Error ? error.message : error);

@@ -122,7 +122,7 @@ for(const s of services){
   ${flankVideo('left','temoignage-anaelle.png','Anaëlle','PER/temoignage-2-anaelle.mp4')}
   <div class="contact-card webinar-card">
    <h2>Je m’inscris</h2>
-   <p class="webinar-card-note">Gratuit et sans engagement. En plus du lien de connexion, recevez immédiatement par e-mail le <strong>guide « Comprendre le PER en 5 pages »</strong>.</p>
+   <p class="webinar-card-note">Gratuit et sans engagement. En plus du lien de connexion, recevez immédiatement par e-mail le <strong>guide « Le PER expliqué simplement »</strong> (schémas et simulation détaillée sur 20 ans).</p>
    <form id="webinar-per-form" novalidate>
     <div class="webinar-field-row">
      <div class="webinar-field"><label for="wp-prenom">Prénom</label><input id="wp-prenom" name="prenom" autocomplete="given-name" required maxlength="60"></div>

@@ -2,56 +2,116 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Comprendre le PER en 5 pages — GP Finances</title>
+<title>Le guide du PER, expliqué simplement — GP Finances</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <style>
   :root{--navy:#0d1f3c;--navy-soft:#172f50;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#fafaf7;--ink:#142638;--muted:#5b6773;--border:#e3ddc9;--gold-pale:#f7f2e7;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:#fff;font-family:var(--sans);color:var(--ink)}
   @page{size:A4;margin:0}
-  .page{width:210mm;height:296mm;padding:18mm 17mm 16mm;position:relative;page-break-after:always;display:flex;flex-direction:column}
+  .page{width:210mm;height:296mm;padding:16mm 16mm 15mm;position:relative;page-break-after:always;display:flex;flex-direction:column}
   .page:last-child{page-break-after:auto}
-  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;margin:0;color:var(--navy)}
-  p{margin:0;line-height:1.62;color:var(--ink);font-size:11.3pt}
+  h1,h2,h3,h4{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;margin:0;color:var(--navy)}
+  p{margin:0;line-height:1.58;color:var(--ink);font-size:11pt}
   .muted{color:var(--muted)}
-  .eyebrow{display:flex;align-items:center;gap:9px;color:#9b7b2e;font-size:9.5pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+  .eyebrow{display:flex;align-items:center;gap:9px;color:#9b7b2e;font-size:9.3pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px}
   .eyebrow span{width:20px;height:1.4px;background:var(--gold);display:block}
-  .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:12.5pt;letter-spacing:-.03em;color:var(--navy)}
-  .brand-mark{display:grid;place-items:center;width:30px;height:32px;border-radius:8px;background:var(--navy);color:#fff;font-family:var(--serif);font-size:16px}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:12pt;letter-spacing:-.03em;color:var(--navy)}
+  .brand-mark{display:grid;place-items:center;width:29px;height:31px;border-radius:8px;background:var(--navy);color:#fff;font-family:var(--serif);font-size:15px}
   .brand b{color:var(--gold)}
-  .page-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:22px}
+  .page-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:11px;border-bottom:1px solid var(--border);margin-bottom:18px}
   .page-header .pg{font-size:9pt;color:var(--muted);font-weight:600}
-  .page-footer{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);font-size:8pt;color:var(--muted);line-height:1.6}
-  h2.title{font-size:20pt;margin-bottom:4px}
-  h3.sub{font-size:12.5pt;color:var(--navy);margin:18px 0 8px}
-  ul{margin:8px 0 0;padding-left:18px}
-  li{font-size:11.3pt;line-height:1.6;color:var(--ink);margin-bottom:5px}
+  .page-footer{margin-top:auto;padding-top:10px;border-top:1px solid var(--border);font-size:7.8pt;color:var(--muted);line-height:1.55}
+  h2.title{font-size:19pt;margin-bottom:4px}
+  h3.sub{font-size:12pt;color:var(--navy);margin:14px 0 7px}
+  ul{margin:7px 0 0;padding-left:17px}
+  li{font-size:10.8pt;line-height:1.55;color:var(--ink);margin-bottom:4px}
   li strong,p strong{color:var(--navy)}
-  .callout{background:var(--gold-pale);border:1px solid #e9d9ab;border-radius:10px;padding:14px 16px;margin-top:14px}
-  .callout p{font-size:10.8pt}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{border:1px solid var(--border);padding:8px 10px;font-size:10.3pt;text-align:left}
-  th{background:#f6f4ec;color:var(--navy);font-weight:700;font-size:9.3pt;text-transform:uppercase;letter-spacing:.03em}
-  td.num{font-weight:700;color:var(--navy)}
-  .example{border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:12px}
-  .example h4{font-family:var(--serif);font-size:13pt;color:var(--navy);margin:0 0 3px;font-weight:500}
-  .example .profile{font-size:9.5pt;color:var(--muted);margin-bottom:8px}
-  .example-figures{display:flex;gap:16px;margin-top:8px}
-  .example-figures div{flex:1;background:#f9f8f4;border-radius:8px;padding:9px 11px}
-  .example-figures span{display:block;font-size:8.7pt;color:var(--muted);margin-bottom:2px}
-  .example-figures strong{font-family:var(--serif);font-size:15pt;color:var(--navy);font-weight:500}
+  .callout{background:var(--gold-pale);border:1px solid #e9d9ab;border-radius:10px;padding:11px 14px;margin-top:12px}
+  .callout p{font-size:10.3pt}
+  .sources{font-size:7.8pt;color:var(--muted);line-height:1.6;margin-top:5px}
+
+  /* Cover */
   .cover{background:var(--navy);color:#fff;justify-content:center;align-items:center;text-align:center}
   .cover .eyebrow{justify-content:center;color:var(--gold-light)}
-  .cover h1{font-size:34pt;color:#fff;line-height:1.15;max-width:150mm;margin:0 auto}
+  .cover h1{font-size:31pt;color:#fff;line-height:1.16;max-width:155mm;margin:0 auto}
   .cover h1 em{color:var(--gold-light);font-style:normal}
-  .cover .lead{color:#c7cfda;font-size:12.5pt;margin-top:18px;max-width:120mm;margin-inline:auto;line-height:1.7}
-  .cover .tag{margin-top:38px;display:inline-block;border:1px solid #ffffff40;border-radius:100px;padding:10px 22px;font-size:10pt;color:#fff}
-  .cover .brand{justify-content:center;color:#fff;position:absolute;top:20mm;left:0;right:0}
+  .cover .lead{color:#c7cfda;font-size:12pt;margin-top:16px;max-width:125mm;margin-inline:auto;line-height:1.65}
+  .cover .tag{margin-top:30px;display:inline-block;border:1px solid #ffffff40;border-radius:100px;padding:9px 20px;font-size:9.5pt;color:#fff}
+  .cover .brand{justify-content:center;color:#fff;position:absolute;top:18mm;left:0;right:0}
   .cover .brand-mark{background:#fff;color:var(--navy)}
-  .cover .foot{position:absolute;bottom:16mm;left:0;right:0;text-align:center;font-size:8.5pt;color:#9aa7b8}
-  .attention-list li{margin-bottom:9px}
+  .cover .foot{position:absolute;bottom:15mm;left:0;right:0;text-align:center;font-size:8.3pt;color:#9aa7b8}
+  .cover .whatsinside{margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:150mm;margin-inline:auto}
+  .cover .whatsinside span{border:1px solid #ffffff30;border-radius:9px;padding:7px 12px;font-size:8.7pt;color:#d7dee6}
+
+  /* 4-step flow diagram */
+  .flow{display:flex;align-items:stretch;gap:6px;margin-top:14px}
+  .flow-step{flex:1;background:#f9f8f4;border:1px solid var(--border);border-radius:12px;padding:13px 11px;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .flow-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--serif);font-size:12px;display:grid;place-items:center;margin-bottom:8px}
+  .flow-icon{font-size:20px;margin-bottom:4px}
+  .flow-step h4{font-size:10.8pt;margin-bottom:5px}
+  .flow-step p{font-size:8.9pt;line-height:1.45;color:var(--muted)}
+  .flow-arrow{align-self:center;color:var(--gold);font-size:16px;flex-shrink:0;padding-top:24px}
+
+  /* TMI bracket diagram */
+  .bracket{display:flex;border-radius:10px;overflow:hidden;margin-top:12px;height:46px}
+  .bracket>div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:9.3pt;font-weight:700;position:relative}
+  .bracket .b0{background:#c7cdd0;flex:0.6;color:#4a5560}
+  .bracket .b11{background:#9fb0c4;flex:0.8}
+  .bracket .b30{background:#6f88a8;flex:1.3}
+  .bracket .b41{background:var(--navy-soft);flex:1.1}
+  .bracket .b45{background:var(--navy);flex:0.9}
+  .bracket-labels{display:flex;margin-top:5px;font-size:7.8pt;color:var(--muted)}
+  .bracket-labels>div{text-align:center}
+  .bracket-labels .l0{flex:0.6}.bracket-labels .l11{flex:0.8}.bracket-labels .l30{flex:1.3}.bracket-labels .l41{flex:1.1}.bracket-labels .l45{flex:0.9}
+
+  /* Storyline persona card */
+  .persona{display:flex;align-items:center;gap:12px;background:#f9f8f4;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:12px}
+  .persona-avatar{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:17px;flex-shrink:0}
+  .persona h4{font-size:12pt;margin-bottom:2px}
+  .persona p{font-size:9.3pt;color:var(--muted)}
+
+  /* Yearly step list (storyline) */
+  .steps{margin-top:10px}
+  .step-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+  .step-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--gold);color:var(--navy);font-family:var(--serif);font-size:10px;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+  .step-row p{font-size:9.8pt;line-height:1.5}
+
+  /* Growth bar chart */
+  .chart{display:flex;align-items:flex-end;gap:14px;height:120px;margin-top:16px;padding:0 6px}
+  .chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .chart-bar .bar{width:100%;max-width:46px;background:linear-gradient(180deg,var(--gold-light),var(--gold));border-radius:6px 6px 0 0}
+  .chart-bar .val{font-family:var(--serif);font-size:10.5pt;color:var(--navy);margin-bottom:4px;white-space:nowrap}
+  .chart-bar .yr{font-size:8.3pt;color:var(--muted);margin-top:6px}
+  .chart-note{font-size:8pt;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* Summary figures grid */
+  .figures{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .figures div{background:#f9f8f4;border:1px solid var(--border);border-radius:9px;padding:9px 8px;text-align:center}
+  .figures span{display:block;font-size:8pt;color:var(--muted);margin-bottom:3px}
+  .figures strong{font-family:var(--serif);font-size:13.5pt;color:var(--navy);font-weight:500}
+
+  /* Comparison bar (versé vs effort réel) */
+  .compare{margin-top:14px}
+  .compare-row{margin-bottom:10px}
+  .compare-row .lbl{display:flex;justify-content:space-between;font-size:9pt;margin-bottom:3px}
+  .compare-row .lbl strong{color:var(--navy)}
+  .compare-track{height:16px;background:#eef0ee;border-radius:5px;overflow:hidden;display:flex}
+  .compare-track .paid{background:#c7cdd0}
+  .compare-track .economy{background:var(--gold)}
+  .compare-track .effort{background:var(--navy)}
+
+  /* Compact 3-example cards */
+  .mini-examples{display:flex;gap:10px;margin-top:12px}
+  .mini-example{flex:1;border:1px solid var(--border);border-radius:11px;padding:11px 12px}
+  .mini-example h4{font-size:10.8pt;margin-bottom:2px}
+  .mini-example .profile{font-size:8.3pt;color:var(--muted);margin-bottom:7px}
+  .mini-example .fig{background:#f9f8f4;border-radius:7px;padding:7px 8px;margin-bottom:5px}
+  .mini-example .fig span{display:block;font-size:7.8pt;color:var(--muted)}
+  .mini-example .fig strong{font-family:var(--serif);font-size:12.5pt;color:var(--navy);font-weight:500}
+
+  .attention-list li{margin-bottom:8px}
   .attention-list li::marker{color:var(--gold)}
-  .sources{font-size:8pt;color:var(--muted);line-height:1.7;margin-top:6px}
 </style>
 </head>
 <body>
@@ -59,128 +119,166 @@
 <div class="page cover">
   <div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div>
   <p class="eyebrow"><span></span>Guide gratuit</p>
-  <h1>Comprendre le <em>PER</em><br>en 5 pages</h1>
-  <p class="lead">Fonctionnement, avantage fiscal, trois exemples chiffrés et points de vigilance — pour arriver au webinaire avec les bases déjà en tête.</p>
+  <h1>Le guide du <em>PER</em><br>expliqué simplement</h1>
+  <p class="lead">Le fonctionnement en schéma, l'avantage fiscal, et Julien qui verse 4 000 € par an : suivez sa simulation pas à pas sur 20 ans.</p>
+  <div class="whatsinside">
+    <span>Le cycle en 4 étapes</span><span>L'avantage fiscal expliqué</span><span>Simulation détaillée sur 20 ans</span><span>Ce à quoi faire attention</span>
+  </div>
   <div class="tag">Webinaire PER · dimanche 11 octobre 2026 · 15h-16h</div>
   <div class="foot">GP FINANCES — Gabriel Perbost, courtier indépendant, ORIAS 23003789<br>Ce guide est une présentation générale à visée pédagogique ; il ne constitue pas un conseil personnalisé.</div>
 </div>
 
 <div class="page">
-  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">1 / 4</span></div>
-  <p class="eyebrow"><span></span>Le principe</p>
-  <h2 class="title">Comment fonctionne le PER</h2>
-  <p class="muted">Le Plan Épargne Retraite (PER) est un produit d'épargne conçu pour préparer la retraite, avec un fonctionnement en deux temps bien distincts : ce que vous versez pendant votre vie active, et ce que vous récupérez à la retraite.</p>
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">1 / 5</span></div>
+  <p class="eyebrow"><span></span>Le cycle du PER</p>
+  <h2 class="title">Comment ça marche, en un coup d'œil</h2>
+  <p class="muted">Quatre temps, du versement à la sortie. Chaque étape est détaillée dans les pages suivantes.</p>
 
-  <h3 class="sub">À l'entrée : des versements volontaires, déductibles de vos revenus</h3>
-  <p>Vous versez quand vous voulez, le montant que vous voulez (dans la limite d'un plafond annuel). Ces versements peuvent être <strong>déduits de votre revenu imposable</strong> de l'année, ce qui réduit votre impôt sur le revenu immédiatement. C'est ce mécanisme qui rend le PER attractif pour les foyers fortement imposés — le détail est expliqué page 2.</p>
+  <div class="flow">
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-icon">💶</div><h4>Vous versez</h4><p>Quand vous voulez, le montant que vous voulez, dans la limite d'un plafond annuel.</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-icon">🧾</div><h4>Vous déduisez</h4><p>Le versement réduit votre revenu imposable de l'année : impôt en moins immédiatement.</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-icon">📈</div><h4>Ça capitalise</h4><p>Votre épargne est investie et continue de grandir chaque année, même sans nouveau versement.</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-num">4</div><div class="flow-icon">🔓</div><h4>Vous sortez</h4><p>À la retraite : en capital, en rente, ou les deux. Avant, l'épargne reste bloquée sauf cas prévus par la loi.</p></div>
+  </div>
 
-  <h3 class="sub">Pendant la durée de vie du contrat : votre épargne est bloquée</h3>
-  <p>L'argent placé sur un PER n'est en principe pas disponible avant la retraite. La loi prévoit toutefois des cas de <strong>déblocage anticipé</strong> :</p>
-  <ul>
-    <li>l'achat de votre résidence principale (pour la part issue des versements volontaires et de l'épargne salariale) ;</li>
-    <li>le décès du conjoint ou du partenaire de PACS ;</li>
-    <li>l'invalidité de l'épargnant, de ses enfants, de son conjoint ou de son partenaire ;</li>
-    <li>l'expiration des droits au chômage ;</li>
-    <li>la cessation d'activité non salariée suite à une liquidation judiciaire ;</li>
-    <li>une situation de surendettement.</li>
-  </ul>
+  <div class="callout">
+    <p><strong>À retenir :</strong> l'avantage fiscal de l'étape 2 n'est pas un cadeau définitif — c'est un <strong>report d'impôt</strong>. Ce que vous déduisez aujourd'hui sera imposé à la sortie, en principe à un moment où votre tranche d'imposition sera plus basse. Le détail page 3.</p>
+  </div>
+
+  <h3 class="sub">Avant la retraite, votre épargne est bloquée — sauf exceptions</h3>
+  <p>La loi prévoit des cas de <strong>déblocage anticipé</strong> : achat de la résidence principale, décès du conjoint ou du partenaire de PACS, invalidité, fin des droits au chômage, cessation d'activité non salariée suite à liquidation judiciaire, surendettement.</p>
 
   <h3 class="sub">À la sortie : capital, rente, ou un mélange des deux</h3>
-  <p>À la retraite, trois façons de récupérer votre épargne :</p>
-  <ul>
-    <li><strong>En capital</strong>, en une fois ou de façon fractionnée : de la souplesse pour un projet ou pour compléter vos revenus.</li>
-    <li><strong>En rente viagère</strong>, versée à vie : un revenu régulier garanti, mais le capital n'est plus disponible ensuite.</li>
-    <li><strong>Un mélange des deux</strong> : une partie en capital, une partie en rente.</li>
-  </ul>
-  <p class="muted" style="margin-top:8px;font-size:9.8pt">Selon l'origine des sommes (versements volontaires, épargne salariale, cotisations obligatoires), les possibilités de sortie en capital peuvent varier : vérifiez la composition de votre contrat.</p>
+  <p><strong>En capital</strong> (en une fois ou fractionné) pour de la souplesse, <strong>en rente viagère</strong> pour un revenu garanti à vie, ou <strong>un mélange des deux</strong>. Selon l'origine des sommes, les possibilités de sortie en capital peuvent varier.</p>
 
   <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
 </div>
 
 <div class="page">
-  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">2 / 4</span></div>
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">2 / 5</span></div>
   <p class="eyebrow"><span></span>L'intérêt du PER</p>
   <h2 class="title">L'avantage fiscal, et ses limites</h2>
+  <p class="muted">L'économie d'impôt se calcule simplement : <strong>montant versé × votre tranche marginale d'imposition (TMI)</strong>, dans la limite de votre plafond de déduction.</p>
 
-  <h3 class="sub">Le calcul : versement × votre tranche d'imposition</h3>
-  <p>L'économie d'impôt se calcule simplement : <strong>montant versé × votre tranche marginale d'imposition (TMI)</strong>, dans la limite de votre plafond de déduction disponible. Le barème de l'impôt est progressif (0 %, 11 %, 30 %, 41 % ou 45 % selon les tranches en vigueur) : plus votre TMI est élevée, plus l'avantage est important. À 0 % ou 11 %, l'intérêt fiscal est faible, voire nul.</p>
+  <h3 class="sub">Le barème de l'impôt est progressif</h3>
+  <p style="font-size:9.8pt">Plus votre revenu imposable est élevé, plus la dernière tranche est taxée fort. C'est ce taux, votre TMI, qui détermine l'avantage du PER.</p>
+  <div class="bracket"><div class="b0">0 %</div><div class="b11">11 %</div><div class="b30">30 %</div><div class="b41">41 %</div><div class="b45">45 %</div></div>
+  <div class="bracket-labels"><div class="l0">Non imposable</div><div class="l11">Faible avantage</div><div class="l30">Intéressant</div><div class="l41">Très intéressant</div><div class="l45">Très intéressant</div></div>
 
   <h3 class="sub">Le plafond de déduction</h3>
-  <p>Vous ne pouvez pas tout déduire. Le plafond annuel correspond à <strong>10 % de vos revenus professionnels de l'année précédente</strong>, retenus dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS). Il ne peut pas être inférieur à <strong>10 % du PASS</strong>, même avec de faibles revenus.</p>
+  <p>Le plafond annuel correspond à <strong>10 % de vos revenus professionnels de l'année précédente</strong>, retenus dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS), et ne peut être inférieur à <strong>10 % du PASS</strong>.</p>
   <ul>
-    <li>Le plafond non utilisé peut être <strong>reporté pendant 3 ans</strong>.</li>
-    <li>Dans un couple soumis à imposition commune, les plafonds peuvent être <strong>mutualisés</strong>.</li>
-    <li>Votre plafond disponible figure sur votre <strong>avis d'imposition</strong>.</li>
+    <li>Le plafond non utilisé est <strong>reportable 3 ans</strong>.</li>
+    <li>Dans un couple à imposition commune, les plafonds sont <strong>mutualisables</strong>.</li>
+    <li>Il figure sur votre <strong>avis d'imposition</strong>.</li>
   </ul>
 
   <div class="callout">
-    <p><strong>Important — ce n'est pas une exonération, mais un report d'impôt.</strong> Ce que vous déduisez aujourd'hui sera imposé à la sortie : à l'impôt sur le revenu pour les sommes issues de versements déduits, à la fiscalité des revenus du capital pour les gains. Le pari du PER est de déduire quand votre TMI est élevée, pour récupérer l'épargne plus tard, quand elle sera généralement plus basse (à la retraite). Vous pouvez aussi choisir, à chaque versement, de <strong>ne pas déduire</strong> : dans ce cas, seuls les gains seront imposés à la sortie.</p>
+    <p><strong>Ce n'est pas une exonération, c'est un report d'impôt.</strong> Les sommes déduites sont imposées à la sortie ; les gains suivent la fiscalité des revenus du capital. Vous pouvez aussi choisir, à chaque versement, de <strong>ne pas déduire</strong> : seuls les gains seront alors imposés à la sortie.</p>
   </div>
-
-  <h3 class="sub">Pour qui est-ce le plus intéressant ?</h3>
-  <ul>
-    <li>Vous êtes <strong>fortement imposé</strong> (TMI 30 % ou plus) et disposez d'un plafond de déduction suffisant.</li>
-    <li>Vous <strong>préparez votre retraite</strong> et acceptez de bloquer cette épargne jusque-là.</li>
-    <li>Vous avez déjà une <strong>épargne de précaution</strong> disponible par ailleurs : le PER n'en tient pas lieu.</li>
-  </ul>
 
   <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
 </div>
 
 <div class="page">
-  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">3 / 4</span></div>
-  <p class="eyebrow"><span></span>En pratique</p>
-  <h2 class="title">Trois exemples chiffrés</h2>
-  <p class="muted">Des exemples pédagogiques, sous réserve d'un plafond de déduction suffisant. Votre économie réelle dépend de votre foyer fiscal — c'est justement ce que nous calculerons ensemble pendant le webinaire.</p>
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">3 / 5</span></div>
+  <p class="eyebrow"><span></span>En pratique, pas à pas</p>
+  <h2 class="title">Suivez Julien, sur 20 ans</h2>
 
-  <div class="example">
-    <h4>Un salarié cadre, tranche à 30 %</h4>
-    <p class="profile">Verse 5 000 € sur son PER cette année</p>
-    <div class="example-figures">
-      <div><span>Économie d'impôt</span><strong>1 500 €</strong></div>
-      <div><span>Effort d'épargne réel</span><strong>3 500 €</strong></div>
+  <div class="persona">
+    <div class="persona-avatar">J</div>
+    <div><h4>Julien, 42 ans, cadre, tranche à 30 %</h4><p>Il décide de verser <strong>4 000 € chaque année</strong> sur son PER, jusqu'à ses 62 ans (hypothèse de rendement 4 %/an, frais 1 % par versement).</p></div>
+  </div>
+
+  <div class="steps">
+    <div class="step-row"><div class="step-dot">1</div><p>Chaque année, Julien verse <strong>4 000 €</strong> sur son PER, en une ou plusieurs fois.</p></div>
+    <div class="step-row"><div class="step-dot">2</div><p>Grâce à la déduction fiscale (TMI 30 %), son impôt baisse de <strong>1 200 €</strong> cette année-là → son effort réel n'est que de <strong>2 800 €</strong>.</p></div>
+    <div class="step-row"><div class="step-dot">3</div><p>Son épargne est investie et continue de grandir chaque année — y compris sur ce qu'il a versé les années précédentes.</p></div>
+  </div>
+
+  <div class="chart">
+    <div class="chart-bar"><div class="val">21 449 €</div><div class="bar" style="height:18%"></div><div class="yr">5 ans</div></div>
+    <div class="chart-bar"><div class="val">47 544 €</div><div class="bar" style="height:40%"></div><div class="yr">10 ans</div></div>
+    <div class="chart-bar"><div class="val">79 293 €</div><div class="bar" style="height:67%"></div><div class="yr">15 ans</div></div>
+    <div class="chart-bar"><div class="val">117 921 €</div><div class="bar" style="height:100%"></div><div class="yr">20 ans</div></div>
+  </div>
+  <p class="chart-note">Capital estimé au fil des ans (hypothèse 4 %/an, nette de frais) — un repère pédagogique, non garanti.</p>
+
+  <h3 class="sub">Après 20 ans</h3>
+  <div class="figures">
+    <div><span>Total versé</span><strong>80 000 €</strong></div>
+    <div><span>Économie d'impôt cumulée</span><strong>24 000 €</strong></div>
+    <div><span>Effort réel total</span><strong>56 000 €</strong></div>
+    <div><span>Capital estimé</span><strong>117 921 €</strong></div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-row">
+      <div class="lbl"><span>Ce que Julien a réellement déboursé</span><strong>56 000 € sur 80 000 € versés</strong></div>
+      <div class="compare-track"><div class="effort" style="width:70%"></div><div class="economy" style="width:30%"></div></div>
+    </div>
+  </div>
+  <p class="chart-note" style="text-align:left">En <span style="color:var(--navy);font-weight:700">bleu marine</span> : son effort réel. En <span style="color:var(--gold);font-weight:700">doré</span> : l'économie d'impôt qui a financé le reste.</p>
+
+  <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr — Simulation pédagogique réalisée avec la même méthode que le simulateur PER du site.</div>
+</div>
+
+<div class="page">
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">4 / 5</span></div>
+  <p class="eyebrow"><span></span>D'autres profils</p>
+  <h2 class="title">Trois autres exemples, en un coup d'œil</h2>
+  <p class="muted">Des exemples pédagogiques, sous réserve d'un plafond de déduction suffisant. Votre économie réelle dépend de votre foyer fiscal.</p>
+
+  <div class="mini-examples">
+    <div class="mini-example">
+      <h4>Salarié cadre</h4>
+      <p class="profile">TMI 30 % · verse 5 000 €</p>
+      <div class="fig"><span>Économie d'impôt</span><strong>1 500 €</strong></div>
+      <div class="fig"><span>Effort réel</span><strong>3 500 €</strong></div>
+    </div>
+    <div class="mini-example">
+      <h4>Profession libérale</h4>
+      <p class="profile">TMI 41 % · verse 8 000 €</p>
+      <div class="fig"><span>Économie d'impôt</span><strong>3 280 €</strong></div>
+      <div class="fig"><span>Effort réel</span><strong>4 720 €</strong></div>
+    </div>
+    <div class="mini-example">
+      <h4>Proche de son plafond</h4>
+      <p class="profile">TMI 30 % · verse 12 000 €</p>
+      <div class="fig"><span>Économie d'impôt</span><strong>3 600 €</strong></div>
+      <div class="fig"><span>Effort réel</span><strong>8 400 €</strong></div>
     </div>
   </div>
 
-  <div class="example">
-    <h4>Une profession libérale, tranche à 41 %</h4>
-    <p class="profile">Verse 8 000 € sur son PER cette année</p>
-    <div class="example-figures">
-      <div><span>Économie d'impôt</span><strong>3 280 €</strong></div>
-      <div><span>Effort d'épargne réel</span><strong>4 720 €</strong></div>
-    </div>
-  </div>
+  <h3 class="sub">Et vous ?</h3>
+  <p>Votre économie réelle dépend de votre revenu, votre tranche d'imposition et votre plafond disponible. C'est exactement ce que nous calculerons ensemble, avec vos propres chiffres, pendant le webinaire du 11 octobre.</p>
 
-  <div class="example">
-    <h4>Un contribuable proche de son plafond, tranche à 30 %</h4>
-    <p class="profile">Verse 12 000 € sur son PER cette année</p>
-    <div class="example-figures">
-      <div><span>Économie d'impôt</span><strong>3 600 €</strong></div>
-      <div><span>Effort d'épargne réel</span><strong>8 400 €</strong></div>
-    </div>
+  <div class="callout">
+    <p><strong>Pour qui est-ce le plus intéressant ?</strong> Vous êtes fortement imposé (TMI 30 % ou plus), vous préparez votre retraite en acceptant de bloquer cette épargne jusque-là, et vous avez déjà une épargne de précaution disponible par ailleurs.</p>
   </div>
-
-  <p class="muted" style="margin-top:14px;font-size:9.5pt">« Effort d'épargne réel » = montant versé − économie d'impôt : c'est ce que le versement vous coûte réellement, une fois l'avantage fiscal pris en compte.</p>
 
   <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
 </div>
 
 <div class="page">
-  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">4 / 4</span></div>
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">5 / 5</span></div>
   <p class="eyebrow"><span></span>Avant de verser</p>
   <h2 class="title">Ce à quoi faire attention</h2>
 
   <ul class="attention-list">
-    <li><strong>Ce n'est pas une exonération.</strong> Vous déplacez l'impôt dans le temps, vous ne l'effacez pas — voir page 2.</li>
+    <li><strong>Ce n'est pas une exonération.</strong> Vous déplacez l'impôt dans le temps, vous ne l'effacez pas — voir page 3.</li>
     <li><strong>Vérifiez votre plafond de déduction</strong> avant de verser (avis d'imposition) : au-delà, plus d'avantage fiscal sur le surplus.</li>
-    <li><strong>Votre argent est bloqué</strong> jusqu'à la retraite, sauf cas de déblocage anticipé prévus par la loi (page 1).</li>
+    <li><strong>Votre argent est bloqué</strong> jusqu'à la retraite, sauf cas de déblocage anticipé prévus par la loi (page 2).</li>
     <li><strong>Ayez déjà une épargne de précaution</strong> disponible par ailleurs avant de verser sur un PER : ce n'est pas une épargne de court terme.</li>
-    <li><strong>Comparez les frais</strong> (versement, gestion, arbitrage) et vérifiez les conditions de transfert : elles sont plafonnées à 1 % avant 5 ans de détention, et nulles au-delà.</li>
-    <li><strong>Si votre TMI est de 0 % ou 11 %</strong>, l'intérêt fiscal immédiat est faible ou nul : d'autres solutions d'épargne peuvent être plus adaptées à votre situation.</li>
+    <li><strong>Comparez les frais</strong> (versement, gestion, arbitrage) et vérifiez les conditions de transfert : plafonnées à 1 % avant 5 ans de détention, nulles au-delà.</li>
+    <li><strong>Si votre TMI est de 0 % ou 11 %</strong>, l'intérêt fiscal immédiat est faible ou nul : d'autres solutions d'épargne peuvent être plus adaptées.</li>
   </ul>
 
   <div class="callout">
-    <p><strong>Toutes ces questions seront reprises en détail pendant le webinaire</strong>, avec des exemples adaptés à votre propre situation et 15 minutes de questions en direct.</p>
+    <p><strong>Toutes ces questions seront reprises en détail pendant le webinaire</strong>, avec une simulation adaptée à votre propre situation et 15 minutes de questions en direct.</p>
   </div>
 
   <h3 class="sub">Rendez-vous dimanche 11 octobre 2026, 15h-16h</h3>
@@ -188,7 +286,7 @@
 
   <div class="page-footer">
     GP FINANCES — Gabriel Perbost, courtier indépendant, ORIAS 23003789 · 24 rue du Gouverneur Général Éboué, 92130 Issy-les-Moulineaux<br>
-    Ce guide est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Aucune promesse de rendement n'est faite.
+    Ce guide est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Les simulations de capital sont des hypothèses pédagogiques non garanties, nettes de frais, avant fiscalité de sortie. Aucune promesse de rendement n'est faite.
     <div class="sources">Sources : Ministère de l'Économie (economie.gouv.fr) · impots.gouv.fr, épargne retraite · BOFiP, limites de déduction des cotisations d'épargne retraite (BOI-IR-BASE-20-50-20-20260217).</div>
   </div>
 </div>
