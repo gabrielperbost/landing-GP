@@ -220,6 +220,7 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .webinar-lead{font-size:18px;line-height:1.75;color:#3d4e60;max-width:640px;margin-inline:auto}
 .webinar-hero-proof{margin-bottom:22px}
 .webinar-hero-proof .hero-social-proof{margin-top:0;display:flex;justify-content:center}
+.webinar-proof-mid{margin:0 0 28px}
 .webinar-badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:30px 0 0;text-align:left}
 .webinar-badge{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px 20px}
 .webinar-badge .icon{width:26px;height:26px;flex:none;color:#9b7b2e}

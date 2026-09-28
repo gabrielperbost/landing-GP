@@ -59,7 +59,7 @@
     banner.className = 'cookie-banner';
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', 'Choix sur les cookies');
-    banner.innerHTML = '<div class="cookie-copy"><strong>Vos données, votre choix</strong><p>Avec votre accord, nous mesurons l’audience du site (pages vues, simulations lancées) pour l’améliorer. Aucune donnée n’est collectée avant votre choix. <a href="/politique-de-confidentialite">En savoir plus</a></p></div><div class="cookie-actions"><button type="button" class="cookie-btn" data-choice="refuse">Tout refuser</button><button type="button" class="cookie-btn cookie-btn-primary" data-choice="accept">Tout accepter</button></div>';
+    banner.innerHTML = '<div class="cookie-copy"><strong>Vos données, votre choix</strong><p>Avec votre accord, nous mesurons l’audience du site (pages vues, simulations lancées) et la performance de nos publicités (Meta) pour l’améliorer. Aucune donnée n’est collectée avant votre choix. <a href="/politique-de-confidentialite">En savoir plus</a></p></div><div class="cookie-actions"><button type="button" class="cookie-btn" data-choice="refuse">Tout refuser</button><button type="button" class="cookie-btn cookie-btn-primary" data-choice="accept">Tout accepter</button></div>';
     banner.addEventListener('click', e => {
       const b = e.target.closest('[data-choice]');
       if (!b) return;

@@ -52,6 +52,9 @@
       form.hidden = true;
       document.querySelector('[data-wp-success]').hidden = false;
       window.gpTrack && window.gpTrack('webinaire_per_inscription', { sms: Boolean(telephone) });
+      // Lead envoyé uniquement ici, une fois l'inscription réellement confirmée par le serveur
+      // (le formulaire n'est pas un Tally : ce point équivaut à « Tally.FormSubmitted »).
+      if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'webinaire_per' });
     } catch {
       fail('Le service est momentanément indisponible. Réessayez dans un instant, ou appelez le 06 51 22 42 13.');
     } finally {

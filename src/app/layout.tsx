@@ -39,38 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={manrope.variable}>
       <body>
-        {CONFIG.GA4_ID !== "G-XXXXXXX" && (
-          <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${CONFIG.GA4_ID}`} strategy="afterInteractive" />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${CONFIG.GA4_ID}', { send_page_view: false });
-              `}
-            </Script>
-            <Suspense fallback={null}>
-              <GoogleAnalyticsPageViews measurementId={CONFIG.GA4_ID} />
-            </Suspense>
-          </>
-        )}
-        {CONFIG.META_PIXEL_ID !== "YOUR_META_PIXEL_ID" && (
-          <Script id="fb-pixel" strategy="afterInteractive">
-            {`
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${CONFIG.META_PIXEL_ID}');
-              fbq('track', 'PageView');
-            `}
-          </Script>
-        )}
+        {/* GA4 + Meta Pixel : chargés uniquement après consentement (bandeau « Tout accepter »),
+            via le même script que le reste du site (voir consent-tracking.js et /api/site-config). */}
+        <Script src="/site/consent-tracking.js" strategy="afterInteractive" />
+        <Suspense fallback={null}>
+          <GoogleAnalyticsPageViews measurementId={CONFIG.GA4_ID} />
+        </Suspense>
         <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify({
             "@context": "https://schema.org",

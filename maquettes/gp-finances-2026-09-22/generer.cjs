@@ -107,7 +107,6 @@ for(const s of services){
 
  const heroInner=`<a href="index.html#per-hero" class="breadcrumb" style="visibility:hidden">.</a>
  <div class="webinar-hero">
-  <div class="webinar-hero-proof">${proof.heroProof()}</div>
   <p class="eyebrow center"><span></span>Webinaire gratuit · Plan Épargne Retraite</p>
   <h1>Comprendre et optimiser<br>votre <em>PER</em>, en 1 heure.</h1>
   <p class="webinar-lead">Un webinaire en direct, gratuit et sans engagement, pour comprendre le fonctionnement du PER, savoir combien vous pourriez économiser d’impôt et éviter les erreurs les plus fréquentes.</p>
@@ -140,6 +139,7 @@ for(const s of services){
  </div>`;
 
  const videoInner=`<div class="webinar-video-feature">
+  <div class="webinar-hero-proof webinar-proof-mid">${proof.heroProof()}</div>
   <p class="eyebrow center"><span></span>Vous ne me connaissez pas encore&nbsp;?</p>
   <h2 class="conseils-h2 center">Regardez cette vidéo de 3 minutes</h2>
   <p class="webinar-lead">Les 5 erreurs à éviter avec le PER, expliquées simplement.</p>
@@ -255,8 +255,8 @@ legalPage('confidentialite.html','Politique de confidentialité','Comment GP FIN
 <p>Si vous demandez à être rappelé(e), y compris grâce à la fenêtre qui s’ouvre après une simulation d’assurance de prêt, de PER ou d’assurance-vie, nous traitons votre prénom, votre numéro de téléphone (et éventuellement votre e-mail) ainsi qu’un <strong>résumé chiffré de votre simulation</strong> (par exemple le capital restant dû et la durée, ou le versement envisagé) pour vous recontacter et préparer l’échange. Cette fenêtre ne s’ouvre qu’une fois par simulateur et par visite, et rien n’est envoyé sans que vous cochiez la case de consentement : « Non merci » la ferme sans rien transmettre.</p>
 <h3>Autres simulateurs (PER, assurance-vie)</h3>
 <p>Ces simulateurs calculent leur résultat directement dans votre navigateur. Les chiffres saisis ne sont pas envoyés à nos serveurs.</p>
-<h3>Mesure d’audience</h3>
-<p>Avec votre accord uniquement, nous utilisons des outils de mesure d’audience (Google Analytics, et Meta si activé) : pages consultées, clics sur les menus, sur le téléphone ou les rendez-vous, lancement d’une simulation, lecture d’une vidéo. Ces informations sont statistiques et ne servent pas à vous identifier.</p>
+<h3>Mesure d’audience et publicité</h3>
+<p>Avec votre accord uniquement, nous utilisons des outils de mesure d’audience et de performance publicitaire (Google Analytics, et le pixel Meta / Facebook Ads) : pages consultées, clics sur les menus, sur le téléphone ou les rendez-vous, lancement d’une simulation, lecture d’une vidéo, inscription à un webinaire. Ces informations servent à mesurer l’efficacité de nos publicités (Meta/Facebook, Instagram) et à ne pas montrer nos annonces aux personnes déjà inscrites ou déjà clientes. Elles sont statistiques et ne servent pas à vous identifier personnellement en dehors de ces plateformes.</p>
 <h2>3. Pourquoi (finalités) et sur quelle base légale</h2>
 <table class="legal-table"><thead><tr><th>Finalité</th><th>Base légale</th></tr></thead><tbody>
 <tr><td>Établir votre estimation d’assurance emprunteur</td><td>Mesures précontractuelles prises à votre demande ; consentement explicite pour les données de santé (art. 6.1.b et 9.2.a du RGPD)</td></tr>

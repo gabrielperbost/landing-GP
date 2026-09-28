@@ -136,7 +136,6 @@ export const buildWebinarPerEmail = (
       <div style="margin-top:12px;">
         ${button(WEBINAR_PER.meetingUrl, "Rejoindre le webinaire")}
         ${button(calendar.google, "Ajouter à Google Agenda")}
-        ${button(calendar.ics, "Télécharger le .ics")}
       </div>
     </div>`;
 

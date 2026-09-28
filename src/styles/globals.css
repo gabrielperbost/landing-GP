@@ -81,3 +81,40 @@ body {
     display: none;
   }
 }
+
+/* Bandeau cookies (RGPD) — repris tel quel du site principal pour les pages Next.js
+   (monper, webinaire-per-avocats, tarificateur-gp, etc.) afin que consent-tracking.js
+   affiche un bandeau correctement stylé ici aussi, avant tout chargement de GA4/Meta. */
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 200;
+  max-width: 920px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: #0d1f3c;
+  color: #e8edf5;
+  border: 1px solid #ffffff22;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px #0d1f3c55;
+  font-family: Arial, sans-serif;
+}
+.cookie-copy strong { display: block; color: #fff; font-size: 15px; margin-bottom: 4px; }
+.cookie-copy p { font-size: 13px; line-height: 1.55; margin: 0; color: #c9d4e3; }
+.cookie-copy a { color: #ead18a; text-decoration: underline; text-underline-offset: 3px; }
+.cookie-actions { display: flex; gap: 10px; flex: none; }
+.cookie-btn { min-height: 46px; padding: 0 20px; border-radius: 30px; border: 1.5px solid #ffffff55; background: transparent; color: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.cookie-btn:hover { background: #ffffff14; }
+.cookie-btn-primary { background: #c9a84c; border-color: #c9a84c; color: #0d1f3c; }
+.cookie-btn-primary:hover { background: #d8b95e; }
+@media (max-width: 700px) {
+  .cookie-banner { flex-direction: column; align-items: stretch; gap: 14px; padding: 16px 16px 18px; }
+  .cookie-actions { flex-direction: column-reverse; }
+  .cookie-btn { width: 100%; }
+}
