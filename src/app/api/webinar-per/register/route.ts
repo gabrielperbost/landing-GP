@@ -24,10 +24,10 @@ export async function POST(request: Request) {
   const nom = clean(body.nom).slice(0, 60);
   const email = clean(body.email).toLowerCase().slice(0, 160);
   const telephoneRaw = clean(body.telephone).slice(0, 30);
-  // Un seul consentement couvre l'e-mail et, si demandé, le SMS (simplification voulue :
-  // sans lui, l'inscription ne sert à rien puisqu'aucune information ne peut être envoyée).
+  // Un seul consentement couvre l'e-mail et, si un numéro est renseigné, le SMS (simplification
+  // voulue : pas de question séparée « voulez-vous un SMS ? », le téléphone est optionnel et son
+  // seul remplissage vaut demande de rappel SMS).
   const consent = body.consent === true;
-  const consentSms = consent && body.consentSms === true;
   const source = clean(body.source).slice(0, 200) || "webinaire-per";
 
   if (prenom.length < 2) return NextResponse.json({ ok: false, error: "prenom_invalide" }, { status: 400, headers });
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   if (!consent) return NextResponse.json({ ok: false, error: "consentement_requis" }, { status: 400, headers });
   const phone = telephoneRaw ? toE164FrenchPhone(telephoneRaw) : null;
   if (telephoneRaw && !phone) return NextResponse.json({ ok: false, error: "telephone_invalide" }, { status: 400, headers });
-  if (consentSms && !phone) return NextResponse.json({ ok: false, error: "telephone_requis_pour_sms" }, { status: 400, headers });
+  const consentSms = consent && Boolean(phone);
 
   if (!isWebinarPerSheetConfigured()) {
     console.warn("[webinar-per] inscription refusée : Google Sheet non configuré (WEBINAR_PER_GOOGLE_APPS_SCRIPT_URL/SECRET manquants)");

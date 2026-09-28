@@ -129,9 +129,8 @@ for(const s of services){
      <div class="webinar-field"><label for="wp-nom">Nom</label><input id="wp-nom" name="nom" autocomplete="family-name" required maxlength="60"></div>
     </div>
     <div class="webinar-field"><label for="wp-email">E-mail</label><input id="wp-email" name="email" type="email" autocomplete="email" required maxlength="160"></div>
-    <fieldset class="webinar-yn"><legend>Recevoir un rappel par SMS la veille&nbsp;?</legend><div class="webinar-pills"><label class="webinar-pill"><input type="radio" name="wantsSms" value="yes"><span>Oui</span></label><label class="webinar-pill"><input type="radio" name="wantsSms" value="no" checked><span>Non</span></label></div></fieldset>
-    <div class="webinar-field" data-wp-phone hidden><label for="wp-telephone">Téléphone mobile</label><input id="wp-telephone" name="telephone" type="tel" autocomplete="tel" maxlength="20" placeholder="06 00 00 00 00"></div>
-    <label class="consent-line"><input type="checkbox" name="consent" required><span>J’accepte d’être recontacté(e) par e-mail — et par SMS si je l’ai demandé — par GP FINANCES au sujet de ce webinaire (lien, rappels, replay). Sans cette case cochée, je ne recevrai aucune information. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a></span></label>
+    <div class="webinar-field"><label for="wp-telephone">Téléphone mobile <span class="webinar-field-optional">(optionnel, pour un rappel SMS)</span></label><input id="wp-telephone" name="telephone" type="tel" autocomplete="tel" maxlength="20" placeholder="06 00 00 00 00"></div>
+    <label class="consent-line"><input type="checkbox" name="consent" required><span>J’accepte d’être recontacté(e) par e-mail — et par SMS si j’indique un numéro — par GP FINANCES au sujet de ce webinaire (lien, rappels, replay). Sans cette case cochée, je ne recevrai aucune information. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a></span></label>
     <p class="webinar-error" data-wp-error role="alert" hidden></p>
     <button type="submit" class="button button-gold wp-submit" data-wp-submit>M’inscrire au webinaire ${icon('arrow')}</button>
    </form>
