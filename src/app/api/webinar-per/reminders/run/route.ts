@@ -91,7 +91,7 @@ async function handle(request: NextRequest) {
         const built = buildWebinarPerEmail(due.template, contact, { unsubscribeUrl });
         await sendBrevoTransactionalEmail({
           config: emailConfig,
-          to: { email: participant.email, name: participant.prenom },
+          to: { email: participant.email, name: [participant.prenom, participant.nom].filter(Boolean).join(" ") },
           subject: built.subject,
           html: built.html,
           text: built.text,

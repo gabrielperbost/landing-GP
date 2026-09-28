@@ -13,7 +13,7 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 
 ## Ce qui a été construit
 
-1. **Page d'inscription**, dans le même style que le reste du site : présentation du webinaire, programme, formulaire (prénom, e-mail, case à cocher « SMS de rappel » qui révèle le téléphone si activée), consentement RGPD séparé pour l'e-mail et pour le SMS, FAQ.
+1. **Page d'inscription**, dans le même style que le reste du site : présentation du webinaire, programme, formulaire (prénom, nom, e-mail, case à cocher « SMS de rappel » qui révèle le téléphone si activée), une seule case de consentement RGPD obligatoire (couvre l'e-mail et, si demandé, le SMS — sans elle, l'inscription est refusée puisqu'aucune information ne pourrait être envoyée), FAQ.
 2. **À l'inscription** : écriture dans un Google Sheet (voir ci-dessous), e-mail de confirmation avec lien Zoom et bouton « Ajouter à l'agenda » (Google, Outlook, fichier .ics), SMS de confirmation si la case SMS est cochée.
 3. **Relances automatiques aux inscrits uniquement** (jamais de prospection à froid) :
    - J-7 (4 octobre) : e-mail.
@@ -32,6 +32,8 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 
 ## Étape 1 : créer le Google Sheet (5 minutes)
 
+> ⚠️ Si tu as déjà créé ce Sheet et collé une version précédente du script avant le 28 septembre, **recolle la version ci-dessous** : elle ajoute une colonne « Nom » et simplifie le consentement en une seule case. Une ancienne version du script fonctionnerait quand même, mais sans la colonne Nom.
+
 1. Crée un nouveau Google Sheet, par exemple nommé « Inscriptions Webinaire PER 11 octobre 2026 ».
 2. Dans ce Sheet : menu `Extensions` > `Apps Script`.
 3. Supprime le contenu par défaut et colle le script ci-dessous.
@@ -44,14 +46,14 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 const SHEET_NAME = 'Feuille 1';
 const SECRET = 'CHANGE_ME_SECRET';
 const HEADERS = [
-  'Date inscription', 'Prénom', 'Email', 'Téléphone', 'Consent email', 'Consent SMS',
+  'Date inscription', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Consent email', 'Consent SMS',
   'Statut', 'Source', 'Rappel 7j', 'Rappel 3j', 'Rappel veille', 'Rappel matin'
 ];
 const REMINDER_COLUMNS = {
-  reminder_7d_sent_at: 9,
-  reminder_3d_sent_at: 10,
-  reminder_1d_sent_at: 11,
-  reminder_morning_sent_at: 12
+  reminder_7d_sent_at: 10,
+  reminder_3d_sent_at: 11,
+  reminder_1d_sent_at: 12,
+  reminder_morning_sent_at: 13
 };
 
 function jsonResponse(payload) {
@@ -67,7 +69,7 @@ function getSheet() {
 }
 
 function findRow(rows, email) {
-  return rows.findIndex((line, index) => index > 0 && String(line[2] || '').trim().toLowerCase() === email);
+  return rows.findIndex((line, index) => index > 0 && String(line[3] || '').trim().toLowerCase() === email);
 }
 
 function doPost(e) {
@@ -91,7 +93,7 @@ function doPost(e) {
     const rows = sheet.getDataRange().getValues();
     const email = String(body.email || '').trim().toLowerCase();
     const index = findRow(rows, email);
-    if (index >= 0) sheet.getRange(index + 1, 7).setValue('unsubscribed');
+    if (index >= 0) sheet.getRange(index + 1, 8).setValue('unsubscribed');
     return jsonResponse({ success: true });
   }
 
@@ -106,13 +108,14 @@ function doPost(e) {
   const row = [
     registration.consent_at || new Date().toISOString(),
     registration.prenom || '',
+    registration.nom || '',
     email,
     registration.telephone || '',
     registration.consent_email || '',
     registration.consent_sms || '',
     registration.status || 'registered',
     registration.source || 'webinaire-per',
-    existing[8] || '', existing[9] || '', existing[10] || '', existing[11] || ''
+    existing[9] || '', existing[10] || '', existing[11] || '', existing[12] || ''
   ];
   if (index >= 0) sheet.getRange(index + 1, 1, 1, row.length).setValues([row]);
   else sheet.appendRow(row);
@@ -125,10 +128,10 @@ function doGet(e) {
   const sheet = getSheet();
   const rows = sheet.getDataRange().getValues().slice(1).filter(row => row.some(Boolean));
   const participants = rows.map(row => ({
-    created_at: row[0] || '', prenom: row[1] || '', email: row[2] || '', telephone: row[3] || '',
-    consent_email: String(row[4] || '').toLowerCase() === 'oui', consent_sms: String(row[5] || '').toLowerCase() === 'oui',
-    status: row[6] || 'registered', source: row[7] || 'webinaire-per',
-    reminder_7d_sent_at: row[8] || '', reminder_3d_sent_at: row[9] || '', reminder_1d_sent_at: row[10] || '', reminder_morning_sent_at: row[11] || ''
+    created_at: row[0] || '', prenom: row[1] || '', nom: row[2] || '', email: row[3] || '', telephone: row[4] || '',
+    consent_email: String(row[5] || '').toLowerCase() === 'oui', consent_sms: String(row[6] || '').toLowerCase() === 'oui',
+    status: row[7] || 'registered', source: row[8] || 'webinaire-per',
+    reminder_7d_sent_at: row[9] || '', reminder_3d_sent_at: row[10] || '', reminder_1d_sent_at: row[11] || '', reminder_morning_sent_at: row[12] || ''
   }));
   return jsonResponse({ success: true, participants });
 }
@@ -160,7 +163,7 @@ Directement dans le Google Sheet créé à l'étape 1 : une ligne par personne, 
 
 ## Conformité
 
-- Consentement e-mail et SMS demandés séparément ; aucun envoi sans case cochée.
+- Une case de consentement unique, obligatoire, couvre l'e-mail et le SMS ; aucun envoi sans elle cochée.
 - Lien de désinscription dans chaque e-mail.
 - Les SMS de rappel indiquent explicitement de rappeler GP Finances pour ne plus en recevoir. Remarque : l'API d'envoi utilisée ici est faite pour des SMS ponctuels liés à une inscription volontaire, elle ne gère pas le mot-clé STOP automatique des campagnes marketing Brevo. Si tu veux un vrai mécanisme STOP par SMS, il faudrait passer par le module Campagnes SMS de Brevo plutôt que par ce système.
 - Ce webinaire n'est pas un conseil personnalisé : la page et chaque e-mail le rappellent, avec ton numéro ORIAS.

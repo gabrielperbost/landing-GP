@@ -11,6 +11,7 @@ import "server-only";
 
 export type WebinarPerRegistration = {
   prenom: string;
+  nom: string;
   email: string;
   telephone?: string;
   consentEmail: boolean;
@@ -28,6 +29,7 @@ export type WebinarPerReminderKey =
 export type WebinarPerParticipant = {
   created_at: string;
   prenom: string;
+  nom: string;
   email: string;
   telephone: string;
   consent_email: boolean;
@@ -74,6 +76,7 @@ export const appendWebinarPerRegistration = async (registration: WebinarPerRegis
     action: "append",
     registration: {
       prenom: registration.prenom,
+      nom: registration.nom,
       email: registration.email.trim().toLowerCase(),
       telephone: registration.telephone || "",
       consent_email: registration.consentEmail ? "oui" : "non",

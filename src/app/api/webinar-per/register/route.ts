@@ -21,15 +21,19 @@ export async function POST(request: Request) {
   }
 
   const prenom = clean(body.prenom).slice(0, 60);
+  const nom = clean(body.nom).slice(0, 60);
   const email = clean(body.email).toLowerCase().slice(0, 160);
   const telephoneRaw = clean(body.telephone).slice(0, 30);
-  const consentEmail = body.consentEmail === true;
-  const consentSms = body.consentSms === true;
+  // Un seul consentement couvre l'e-mail et, si demandé, le SMS (simplification voulue :
+  // sans lui, l'inscription ne sert à rien puisqu'aucune information ne peut être envoyée).
+  const consent = body.consent === true;
+  const consentSms = consent && body.consentSms === true;
   const source = clean(body.source).slice(0, 200) || "webinaire-per";
 
   if (prenom.length < 2) return NextResponse.json({ ok: false, error: "prenom_invalide" }, { status: 400, headers });
+  if (nom.length < 2) return NextResponse.json({ ok: false, error: "nom_invalide" }, { status: 400, headers });
   if (!emailRegex.test(email)) return NextResponse.json({ ok: false, error: "email_invalide" }, { status: 400, headers });
-  if (!consentEmail) return NextResponse.json({ ok: false, error: "consentement_requis" }, { status: 400, headers });
+  if (!consent) return NextResponse.json({ ok: false, error: "consentement_requis" }, { status: 400, headers });
   const phone = telephoneRaw ? toE164FrenchPhone(telephoneRaw) : null;
   if (telephoneRaw && !phone) return NextResponse.json({ ok: false, error: "telephone_invalide" }, { status: 400, headers });
   if (consentSms && !phone) return NextResponse.json({ ok: false, error: "telephone_requis_pour_sms" }, { status: 400, headers });
@@ -42,9 +46,10 @@ export async function POST(request: Request) {
   try {
     await appendWebinarPerRegistration({
       prenom,
+      nom,
       email,
       telephone: phone || undefined,
-      consentEmail,
+      consentEmail: consent,
       consentSms,
       source
     });
@@ -61,7 +66,7 @@ export async function POST(request: Request) {
       const email_ = buildWebinarPerEmail("confirmation", { prenom, email }, { unsubscribeUrl });
       await sendBrevoTransactionalEmail({
         config: brevoEmailConfig,
-        to: { email, name: prenom },
+        to: { email, name: [prenom, nom].filter(Boolean).join(" ") },
         subject: email_.subject,
         html: email_.html,
         text: email_.text,
