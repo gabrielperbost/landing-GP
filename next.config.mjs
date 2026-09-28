@@ -7,6 +7,8 @@ const SITE_PAGES = [
   ["/prevoyance", "prevoyance"],
   ["/mutuelle", "mutuelle"],
   ["/regroupement-credits", "regroupement-credits"],
+  ["/webinaire-per", "webinaire-per"],
+  ["/webinaire-per/desinscription", "webinaire-per-desinscription"],
   ["/nous-trouver", "nous-trouver"],
   ["/mentions-legales", "mentions-legales"],
   ["/politique-de-confidentialite", "confidentialite"]

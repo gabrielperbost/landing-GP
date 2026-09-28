@@ -19,6 +19,10 @@
     {
       "path": "/api/webinar-avocats/reminders/run",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/webinar-per/reminders/run",
+      "schedule": "10 7 * * *"
     }
   ]
 }

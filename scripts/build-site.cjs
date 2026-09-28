@@ -28,13 +28,15 @@ const ROUTES = {
   prevoyance: '/prevoyance',
   mutuelle: '/mutuelle',
   'regroupement-credits': '/regroupement-credits',
+  'webinaire-per': '/webinaire-per',
+  'webinaire-per-desinscription': '/webinaire-per/desinscription',
   'nous-trouver': '/nous-trouver',
   'mentions-legales': '/mentions-legales',
   confidentialite: '/politique-de-confidentialite'
 };
 const SHARED = [
   'assets', 'styles.css', 'social-proof.css', 'insurance-simulator.css', 'per-simulator.css', 'life-simulator.css',
-  'app.js', 'reviews-carousel.js', 'live-counter.js', 'consent-tracking.js', 'lead-popup.js', 'borrower-references.js', 'insurance-quote.js',
+  'app.js', 'reviews-carousel.js', 'live-counter.js', 'consent-tracking.js', 'lead-popup.js', 'webinar-per-signup.js', 'borrower-references.js', 'insurance-quote.js',
   'per-calculator.js', 'per-projection.js', 'per-profile.js', 'per-simulator.js', 'life-calculator.js', 'life-simulator.js'
 ];
 
@@ -76,11 +78,13 @@ const SEO = {
   prevoyance: ['Prévoyance : protéger vos revenus et votre famille | GP Finances', 'Arrêt de travail, invalidité, décès : une prévoyance étudiée pour votre situation par un courtier indépendant. Étude personnalisée, sans engagement.'],
   mutuelle: ['Mutuelle santé : trouver la couverture adaptée | GP Finances', 'Trouvez l’équilibre entre vos besoins de santé, vos garanties et votre budget, avec un courtier indépendant. Étude personnalisée, sans engagement.'],
   'regroupement-credits': ['Regroupement de crédits : rééquilibrer votre budget | GP Finances', 'Regroupement de crédit : faites étudier vos crédits et vos charges pour comprendre les possibilités de regroupement et leurs conséquences sur votre budget. Sans engagement.'],
+  'webinaire-per': ['Webinaire PER gratuit : comprendre et optimiser votre retraite | GP Finances', 'Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. Dimanche 11 octobre 2026, 15h00. Sans engagement.'],
+  'webinaire-per-desinscription': ['Désinscription webinaire | GP Finances', 'Désinscription du webinaire PER GP Finances.'],
   'nous-trouver': ['Où nous trouver : cabinet de courtage à Issy-les-Moulineaux | GP Finances', 'Adresse, plan d’accès, téléphone et prise de rendez-vous de GP Finances, courtier en assurance de prêt, PER et mutuelle à Issy-les-Moulineaux (92), ou en visio.'],
   'mentions-legales': ['Mentions légales | GP Finances', 'Mentions légales du site gp-finances.fr : éditeur, immatriculations ORIAS, hébergement, propriété intellectuelle.'],
   confidentialite: ['Politique de confidentialité | GP Finances', 'Comment GP Finances traite vos données personnelles : finalités, base légale, destinataires, durées de conservation, cookies et droits.']
 };
-const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'nous-trouver': 'Nous trouver', 'regroupement-credits': 'Regroupement de crédits' };
+const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'webinaire-per': 'Webinaire PER', 'nous-trouver': 'Nous trouver', 'regroupement-credits': 'Regroupement de crédits' };
 const SAME_AS = [
   'https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z',
   'https://www.cncef.org/annuaire/perbost-gabriel/', 'https://www.linkedin.com/in/gabriel-perbost/', 'https://www.instagram.com/gabriel_perbost/'
