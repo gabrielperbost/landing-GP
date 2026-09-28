@@ -13,8 +13,9 @@ Statut au 28 septembre 2026 : le code est écrit et prêt à déployer. **Il man
 
 ## Ce qui a été construit
 
-1. **Page d'inscription**, dans le même style que le reste du site : présentation du webinaire, programme, formulaire (prénom, nom, e-mail, téléphone optionnel), une seule case de consentement RGPD obligatoire (couvre l'e-mail et, si un numéro est renseigné, le SMS — sans elle, l'inscription est refusée puisqu'aucune information ne pourrait être envoyée), FAQ. Pas de question « voulez-vous un SMS ? » séparée : remplir le téléphone vaut demande de rappel SMS, pour ne pas faire perdre d'inscriptions à un choix superflu.
-2. **À l'inscription** : écriture dans un Google Sheet (voir ci-dessous), e-mail de confirmation avec lien Zoom et bouton « Ajouter à l'agenda » (Google, Outlook, fichier .ics), SMS de confirmation si la case SMS est cochée.
+1. **Page d'inscription**, dans le même style que le reste du site : présentation du webinaire, programme, formulaire (prénom, nom, e-mail, téléphone **obligatoire**), une seule case de consentement RGPD obligatoire (couvre l'e-mail et le SMS), FAQ.
+2. **Lead magnet** : un guide PDF de 5 pages, « Comprendre le PER en 5 pages » (fonctionnement, avantage fiscal, 3 exemples chiffrés, points de vigilance — contenu repris et sourcé comme les articles Conseils du site), offert à l'inscription. Fichier : `maquettes/gp-finances-2026-09-22/assets/guide-per-gp-finances.pdf` (généré depuis `guide-per-print.html`, non publié en HTML, seul le PDF est déployé), servi en production à `https://gp-finances.fr/site/assets/guide-per-gp-finances.pdf`.
+3. **À l'inscription** : écriture dans un Google Sheet (voir ci-dessous), e-mail de confirmation avec lien Zoom, bouton « Ajouter à l'agenda » (Google, Outlook, fichier .ics) **et le guide PDF en pièce jointe** (+ lien de téléchargement direct en secours si la pièce jointe est filtrée), SMS de confirmation.
 3. **Relances automatiques aux inscrits uniquement** (jamais de prospection à froid), espacées d'environ 2 jours pour garder le contact pendant toute la campagne :
    - J-11 (30 septembre) : e-mail, avec la vidéo « 5 erreurs PER ».
    - J-9 (2 octobre) : e-mail, invitation à poser une question en avance.

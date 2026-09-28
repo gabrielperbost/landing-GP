@@ -122,19 +122,19 @@ for(const s of services){
   ${flankVideo('left','temoignage-anaelle.png','Anaëlle','PER/temoignage-2-anaelle.mp4')}
   <div class="contact-card webinar-card">
    <h2>Je m’inscris</h2>
-   <p class="webinar-card-note">Gratuit et sans engagement. Vous recevrez le lien de connexion par e-mail.</p>
+   <p class="webinar-card-note">Gratuit et sans engagement. En plus du lien de connexion, recevez immédiatement par e-mail le <strong>guide « Comprendre le PER en 5 pages »</strong>.</p>
    <form id="webinar-per-form" novalidate>
     <div class="webinar-field-row">
      <div class="webinar-field"><label for="wp-prenom">Prénom</label><input id="wp-prenom" name="prenom" autocomplete="given-name" required maxlength="60"></div>
      <div class="webinar-field"><label for="wp-nom">Nom</label><input id="wp-nom" name="nom" autocomplete="family-name" required maxlength="60"></div>
     </div>
     <div class="webinar-field"><label for="wp-email">E-mail</label><input id="wp-email" name="email" type="email" autocomplete="email" required maxlength="160"></div>
-    <div class="webinar-field"><label for="wp-telephone">Téléphone mobile <span class="webinar-field-optional">(optionnel, pour un rappel SMS)</span></label><input id="wp-telephone" name="telephone" type="tel" autocomplete="tel" maxlength="20" placeholder="06 00 00 00 00"></div>
-    <label class="consent-line"><input type="checkbox" name="consent" required><span>J’accepte d’être recontacté(e) par e-mail — et par SMS si j’indique un numéro — par GP FINANCES au sujet de ce webinaire (lien, rappels, replay). Sans cette case cochée, je ne recevrai aucune information. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a></span></label>
+    <div class="webinar-field"><label for="wp-telephone">Téléphone mobile</label><input id="wp-telephone" name="telephone" type="tel" autocomplete="tel" required maxlength="20" placeholder="06 00 00 00 00"></div>
+    <label class="consent-line"><input type="checkbox" name="consent" required><span>J’accepte d’être recontacté(e) par e-mail et par SMS par GP FINANCES au sujet de ce webinaire (lien, rappels, replay, guide PER). Sans cette case cochée, je ne recevrai aucune information. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a></span></label>
     <p class="webinar-error" data-wp-error role="alert" hidden></p>
-    <button type="submit" class="button button-gold wp-submit" data-wp-submit>M’inscrire au webinaire ${icon('arrow')}</button>
+    <button type="submit" class="button button-gold wp-submit" data-wp-submit>M’inscrire et recevoir le guide ${icon('arrow')}</button>
    </form>
-   <div data-wp-success hidden><h3>Inscription confirmée</h3><p>Un e-mail de confirmation vient de vous être envoyé, avec le lien de connexion et un bouton pour l’ajouter à votre agenda.</p></div>
+   <div data-wp-success hidden><h3>Inscription confirmée</h3><p>Un e-mail de confirmation vient de vous être envoyé, avec le lien de connexion, le guide PER en pièce jointe et un bouton pour ajouter le webinaire à votre agenda.</p></div>
   </div>
   ${flankVideo('right','temoignage-dorothee.png','Dorothée','PER/temoignage-1-dorothee.mp4')}
  </div>`;

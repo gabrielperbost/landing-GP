@@ -20,6 +20,7 @@ type SendBrevoTransactionalEmailPayload = {
   replyTo?: string;
   unsubscribeUrl?: string;
   tags?: string[];
+  attachment?: { url: string; name: string }[];
 };
 
 const parseFromEmail = (from: string) => {
@@ -45,7 +46,8 @@ export const sendBrevoTransactionalEmail = async ({
   text,
   replyTo,
   unsubscribeUrl,
-  tags = []
+  tags = [],
+  attachment
 }: SendBrevoTransactionalEmailPayload) => {
   const headers =
     unsubscribeUrl
@@ -78,7 +80,8 @@ export const sendBrevoTransactionalEmail = async ({
       htmlContent: html,
       textContent: text,
       tags,
-      headers
+      headers,
+      attachment
     })
   });
 

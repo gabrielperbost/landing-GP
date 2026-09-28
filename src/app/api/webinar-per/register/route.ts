@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { appendWebinarPerRegistration, isWebinarPerSheetConfigured } from "@/lib/webinarPerSheet";
-import { buildWebinarPerEmail } from "@/lib/webinarPerEmails";
+import { buildWebinarPerEmail, WEBINAR_PER_GUIDE_URL } from "@/lib/webinarPerEmails";
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms, toE164FrenchPhone } from "@/lib/brevoSms";
 import { WEBINAR_PER, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
@@ -24,9 +24,7 @@ export async function POST(request: Request) {
   const nom = clean(body.nom).slice(0, 60);
   const email = clean(body.email).toLowerCase().slice(0, 160);
   const telephoneRaw = clean(body.telephone).slice(0, 30);
-  // Un seul consentement couvre l'e-mail et, si un numéro est renseigné, le SMS (simplification
-  // voulue : pas de question séparée « voulez-vous un SMS ? », le téléphone est optionnel et son
-  // seul remplissage vaut demande de rappel SMS).
+  // Le téléphone est obligatoire : un seul consentement couvre l'e-mail et le SMS.
   const consent = body.consent === true;
   const source = clean(body.source).slice(0, 200) || "webinaire-per";
 
@@ -35,7 +33,7 @@ export async function POST(request: Request) {
   if (!emailRegex.test(email)) return NextResponse.json({ ok: false, error: "email_invalide" }, { status: 400, headers });
   if (!consent) return NextResponse.json({ ok: false, error: "consentement_requis" }, { status: 400, headers });
   const phone = telephoneRaw ? toE164FrenchPhone(telephoneRaw) : null;
-  if (telephoneRaw && !phone) return NextResponse.json({ ok: false, error: "telephone_invalide" }, { status: 400, headers });
+  if (!phone) return NextResponse.json({ ok: false, error: "telephone_invalide" }, { status: 400, headers });
   const consentSms = consent && Boolean(phone);
 
   if (!isWebinarPerSheetConfigured()) {
@@ -71,7 +69,8 @@ export async function POST(request: Request) {
         html: email_.html,
         text: email_.text,
         unsubscribeUrl,
-        tags: ["webinaire-per", "confirmation"]
+        tags: ["webinaire-per", "confirmation"],
+        attachment: [{ url: WEBINAR_PER_GUIDE_URL, name: "Comprendre-le-PER-en-5-pages-GP-Finances.pdf" }]
       });
     } catch (error) {
       console.error("[webinar-per] échec e-mail de confirmation", error instanceof Error ? error.message : error);
@@ -87,7 +86,7 @@ export async function POST(request: Request) {
         await sendBrevoSms({
           config: smsConfig,
           phone,
-          text: `GP Finances : inscription confirmée au webinaire PER du ${WEBINAR_PER.dateLabel} à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Lien par e-mail. STOP au 06 51 22 42 13.`,
+          text: `GP Finances : inscription confirmée au webinaire PER du ${WEBINAR_PER.dateLabel} à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Lien + guide PER par e-mail. STOP au 06 51 22 42 13.`,
           tag: "webinaire-per-confirmation"
         });
       } catch (error) {

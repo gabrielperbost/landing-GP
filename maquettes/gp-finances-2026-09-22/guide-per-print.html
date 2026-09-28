@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Comprendre le PER en 5 pages — GP Finances</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+  :root{--navy:#0d1f3c;--navy-soft:#172f50;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#fafaf7;--ink:#142638;--muted:#5b6773;--border:#e3ddc9;--gold-pale:#f7f2e7;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;font-family:var(--sans);color:var(--ink)}
+  @page{size:A4;margin:0}
+  .page{width:210mm;height:296mm;padding:18mm 17mm 16mm;position:relative;page-break-after:always;display:flex;flex-direction:column}
+  .page:last-child{page-break-after:auto}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.02em;margin:0;color:var(--navy)}
+  p{margin:0;line-height:1.62;color:var(--ink);font-size:11.3pt}
+  .muted{color:var(--muted)}
+  .eyebrow{display:flex;align-items:center;gap:9px;color:#9b7b2e;font-size:9.5pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+  .eyebrow span{width:20px;height:1.4px;background:var(--gold);display:block}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:12.5pt;letter-spacing:-.03em;color:var(--navy)}
+  .brand-mark{display:grid;place-items:center;width:30px;height:32px;border-radius:8px;background:var(--navy);color:#fff;font-family:var(--serif);font-size:16px}
+  .brand b{color:var(--gold)}
+  .page-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:22px}
+  .page-header .pg{font-size:9pt;color:var(--muted);font-weight:600}
+  .page-footer{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);font-size:8pt;color:var(--muted);line-height:1.6}
+  h2.title{font-size:20pt;margin-bottom:4px}
+  h3.sub{font-size:12.5pt;color:var(--navy);margin:18px 0 8px}
+  ul{margin:8px 0 0;padding-left:18px}
+  li{font-size:11.3pt;line-height:1.6;color:var(--ink);margin-bottom:5px}
+  li strong,p strong{color:var(--navy)}
+  .callout{background:var(--gold-pale);border:1px solid #e9d9ab;border-radius:10px;padding:14px 16px;margin-top:14px}
+  .callout p{font-size:10.8pt}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{border:1px solid var(--border);padding:8px 10px;font-size:10.3pt;text-align:left}
+  th{background:#f6f4ec;color:var(--navy);font-weight:700;font-size:9.3pt;text-transform:uppercase;letter-spacing:.03em}
+  td.num{font-weight:700;color:var(--navy)}
+  .example{border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:12px}
+  .example h4{font-family:var(--serif);font-size:13pt;color:var(--navy);margin:0 0 3px;font-weight:500}
+  .example .profile{font-size:9.5pt;color:var(--muted);margin-bottom:8px}
+  .example-figures{display:flex;gap:16px;margin-top:8px}
+  .example-figures div{flex:1;background:#f9f8f4;border-radius:8px;padding:9px 11px}
+  .example-figures span{display:block;font-size:8.7pt;color:var(--muted);margin-bottom:2px}
+  .example-figures strong{font-family:var(--serif);font-size:15pt;color:var(--navy);font-weight:500}
+  .cover{background:var(--navy);color:#fff;justify-content:center;align-items:center;text-align:center}
+  .cover .eyebrow{justify-content:center;color:var(--gold-light)}
+  .cover h1{font-size:34pt;color:#fff;line-height:1.15;max-width:150mm;margin:0 auto}
+  .cover h1 em{color:var(--gold-light);font-style:normal}
+  .cover .lead{color:#c7cfda;font-size:12.5pt;margin-top:18px;max-width:120mm;margin-inline:auto;line-height:1.7}
+  .cover .tag{margin-top:38px;display:inline-block;border:1px solid #ffffff40;border-radius:100px;padding:10px 22px;font-size:10pt;color:#fff}
+  .cover .brand{justify-content:center;color:#fff;position:absolute;top:20mm;left:0;right:0}
+  .cover .brand-mark{background:#fff;color:var(--navy)}
+  .cover .foot{position:absolute;bottom:16mm;left:0;right:0;text-align:center;font-size:8.5pt;color:#9aa7b8}
+  .attention-list li{margin-bottom:9px}
+  .attention-list li::marker{color:var(--gold)}
+  .sources{font-size:8pt;color:var(--muted);line-height:1.7;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div>
+  <p class="eyebrow"><span></span>Guide gratuit</p>
+  <h1>Comprendre le <em>PER</em><br>en 5 pages</h1>
+  <p class="lead">Fonctionnement, avantage fiscal, trois exemples chiffrés et points de vigilance — pour arriver au webinaire avec les bases déjà en tête.</p>
+  <div class="tag">Webinaire PER · dimanche 11 octobre 2026 · 15h-16h</div>
+  <div class="foot">GP FINANCES — Gabriel Perbost, courtier indépendant, ORIAS 23003789<br>Ce guide est une présentation générale à visée pédagogique ; il ne constitue pas un conseil personnalisé.</div>
+</div>
+
+<div class="page">
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">1 / 4</span></div>
+  <p class="eyebrow"><span></span>Le principe</p>
+  <h2 class="title">Comment fonctionne le PER</h2>
+  <p class="muted">Le Plan Épargne Retraite (PER) est un produit d'épargne conçu pour préparer la retraite, avec un fonctionnement en deux temps bien distincts : ce que vous versez pendant votre vie active, et ce que vous récupérez à la retraite.</p>
+
+  <h3 class="sub">À l'entrée : des versements volontaires, déductibles de vos revenus</h3>
+  <p>Vous versez quand vous voulez, le montant que vous voulez (dans la limite d'un plafond annuel). Ces versements peuvent être <strong>déduits de votre revenu imposable</strong> de l'année, ce qui réduit votre impôt sur le revenu immédiatement. C'est ce mécanisme qui rend le PER attractif pour les foyers fortement imposés — le détail est expliqué page 2.</p>
+
+  <h3 class="sub">Pendant la durée de vie du contrat : votre épargne est bloquée</h3>
+  <p>L'argent placé sur un PER n'est en principe pas disponible avant la retraite. La loi prévoit toutefois des cas de <strong>déblocage anticipé</strong> :</p>
+  <ul>
+    <li>l'achat de votre résidence principale (pour la part issue des versements volontaires et de l'épargne salariale) ;</li>
+    <li>le décès du conjoint ou du partenaire de PACS ;</li>
+    <li>l'invalidité de l'épargnant, de ses enfants, de son conjoint ou de son partenaire ;</li>
+    <li>l'expiration des droits au chômage ;</li>
+    <li>la cessation d'activité non salariée suite à une liquidation judiciaire ;</li>
+    <li>une situation de surendettement.</li>
+  </ul>
+
+  <h3 class="sub">À la sortie : capital, rente, ou un mélange des deux</h3>
+  <p>À la retraite, trois façons de récupérer votre épargne :</p>
+  <ul>
+    <li><strong>En capital</strong>, en une fois ou de façon fractionnée : de la souplesse pour un projet ou pour compléter vos revenus.</li>
+    <li><strong>En rente viagère</strong>, versée à vie : un revenu régulier garanti, mais le capital n'est plus disponible ensuite.</li>
+    <li><strong>Un mélange des deux</strong> : une partie en capital, une partie en rente.</li>
+  </ul>
+  <p class="muted" style="margin-top:8px;font-size:9.8pt">Selon l'origine des sommes (versements volontaires, épargne salariale, cotisations obligatoires), les possibilités de sortie en capital peuvent varier : vérifiez la composition de votre contrat.</p>
+
+  <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
+</div>
+
+<div class="page">
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">2 / 4</span></div>
+  <p class="eyebrow"><span></span>L'intérêt du PER</p>
+  <h2 class="title">L'avantage fiscal, et ses limites</h2>
+
+  <h3 class="sub">Le calcul : versement × votre tranche d'imposition</h3>
+  <p>L'économie d'impôt se calcule simplement : <strong>montant versé × votre tranche marginale d'imposition (TMI)</strong>, dans la limite de votre plafond de déduction disponible. Le barème de l'impôt est progressif (0 %, 11 %, 30 %, 41 % ou 45 % selon les tranches en vigueur) : plus votre TMI est élevée, plus l'avantage est important. À 0 % ou 11 %, l'intérêt fiscal est faible, voire nul.</p>
+
+  <h3 class="sub">Le plafond de déduction</h3>
+  <p>Vous ne pouvez pas tout déduire. Le plafond annuel correspond à <strong>10 % de vos revenus professionnels de l'année précédente</strong>, retenus dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS). Il ne peut pas être inférieur à <strong>10 % du PASS</strong>, même avec de faibles revenus.</p>
+  <ul>
+    <li>Le plafond non utilisé peut être <strong>reporté pendant 3 ans</strong>.</li>
+    <li>Dans un couple soumis à imposition commune, les plafonds peuvent être <strong>mutualisés</strong>.</li>
+    <li>Votre plafond disponible figure sur votre <strong>avis d'imposition</strong>.</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Important — ce n'est pas une exonération, mais un report d'impôt.</strong> Ce que vous déduisez aujourd'hui sera imposé à la sortie : à l'impôt sur le revenu pour les sommes issues de versements déduits, à la fiscalité des revenus du capital pour les gains. Le pari du PER est de déduire quand votre TMI est élevée, pour récupérer l'épargne plus tard, quand elle sera généralement plus basse (à la retraite). Vous pouvez aussi choisir, à chaque versement, de <strong>ne pas déduire</strong> : dans ce cas, seuls les gains seront imposés à la sortie.</p>
+  </div>
+
+  <h3 class="sub">Pour qui est-ce le plus intéressant ?</h3>
+  <ul>
+    <li>Vous êtes <strong>fortement imposé</strong> (TMI 30 % ou plus) et disposez d'un plafond de déduction suffisant.</li>
+    <li>Vous <strong>préparez votre retraite</strong> et acceptez de bloquer cette épargne jusque-là.</li>
+    <li>Vous avez déjà une <strong>épargne de précaution</strong> disponible par ailleurs : le PER n'en tient pas lieu.</li>
+  </ul>
+
+  <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
+</div>
+
+<div class="page">
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">3 / 4</span></div>
+  <p class="eyebrow"><span></span>En pratique</p>
+  <h2 class="title">Trois exemples chiffrés</h2>
+  <p class="muted">Des exemples pédagogiques, sous réserve d'un plafond de déduction suffisant. Votre économie réelle dépend de votre foyer fiscal — c'est justement ce que nous calculerons ensemble pendant le webinaire.</p>
+
+  <div class="example">
+    <h4>Un salarié cadre, tranche à 30 %</h4>
+    <p class="profile">Verse 5 000 € sur son PER cette année</p>
+    <div class="example-figures">
+      <div><span>Économie d'impôt</span><strong>1 500 €</strong></div>
+      <div><span>Effort d'épargne réel</span><strong>3 500 €</strong></div>
+    </div>
+  </div>
+
+  <div class="example">
+    <h4>Une profession libérale, tranche à 41 %</h4>
+    <p class="profile">Verse 8 000 € sur son PER cette année</p>
+    <div class="example-figures">
+      <div><span>Économie d'impôt</span><strong>3 280 €</strong></div>
+      <div><span>Effort d'épargne réel</span><strong>4 720 €</strong></div>
+    </div>
+  </div>
+
+  <div class="example">
+    <h4>Un contribuable proche de son plafond, tranche à 30 %</h4>
+    <p class="profile">Verse 12 000 € sur son PER cette année</p>
+    <div class="example-figures">
+      <div><span>Économie d'impôt</span><strong>3 600 €</strong></div>
+      <div><span>Effort d'épargne réel</span><strong>8 400 €</strong></div>
+    </div>
+  </div>
+
+  <p class="muted" style="margin-top:14px;font-size:9.5pt">« Effort d'épargne réel » = montant versé − économie d'impôt : c'est ce que le versement vous coûte réellement, une fois l'avantage fiscal pris en compte.</p>
+
+  <div class="page-footer">GP FINANCES · ORIAS 23003789 · gp-finances.fr</div>
+</div>
+
+<div class="page">
+  <div class="page-header"><div class="brand"><span class="brand-mark">GP</span><span>GP <b>FINANCES</b></span></div><span class="pg">4 / 4</span></div>
+  <p class="eyebrow"><span></span>Avant de verser</p>
+  <h2 class="title">Ce à quoi faire attention</h2>
+
+  <ul class="attention-list">
+    <li><strong>Ce n'est pas une exonération.</strong> Vous déplacez l'impôt dans le temps, vous ne l'effacez pas — voir page 2.</li>
+    <li><strong>Vérifiez votre plafond de déduction</strong> avant de verser (avis d'imposition) : au-delà, plus d'avantage fiscal sur le surplus.</li>
+    <li><strong>Votre argent est bloqué</strong> jusqu'à la retraite, sauf cas de déblocage anticipé prévus par la loi (page 1).</li>
+    <li><strong>Ayez déjà une épargne de précaution</strong> disponible par ailleurs avant de verser sur un PER : ce n'est pas une épargne de court terme.</li>
+    <li><strong>Comparez les frais</strong> (versement, gestion, arbitrage) et vérifiez les conditions de transfert : elles sont plafonnées à 1 % avant 5 ans de détention, et nulles au-delà.</li>
+    <li><strong>Si votre TMI est de 0 % ou 11 %</strong>, l'intérêt fiscal immédiat est faible ou nul : d'autres solutions d'épargne peuvent être plus adaptées à votre situation.</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Toutes ces questions seront reprises en détail pendant le webinaire</strong>, avec des exemples adaptés à votre propre situation et 15 minutes de questions en direct.</p>
+  </div>
+
+  <h3 class="sub">Rendez-vous dimanche 11 octobre 2026, 15h-16h</h3>
+  <p>Webinaire gratuit et en direct, sans engagement. Le lien de connexion vous a été envoyé par e-mail avec ce guide.</p>
+
+  <div class="page-footer">
+    GP FINANCES — Gabriel Perbost, courtier indépendant, ORIAS 23003789 · 24 rue du Gouverneur Général Éboué, 92130 Issy-les-Moulineaux<br>
+    Ce guide est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Aucune promesse de rendement n'est faite.
+    <div class="sources">Sources : Ministère de l'Économie (economie.gouv.fr) · impots.gouv.fr, épargne retraite · BOFiP, limites de déduction des cotisations d'épargne retraite (BOI-IR-BASE-20-50-20-20260217).</div>
+  </div>
+</div>
+
+</body>
+</html>

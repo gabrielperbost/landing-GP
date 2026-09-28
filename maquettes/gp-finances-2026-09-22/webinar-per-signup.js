@@ -28,7 +28,7 @@
     if (prenom.length < 2) return fail('Indiquez votre prénom.');
     if (nom.length < 2) return fail('Indiquez votre nom.');
     if (!emailRegex.test(email)) return fail('Vérifiez votre adresse e-mail.');
-    if (telephone && telephone.replace(/\D/g, '').length < 9) return fail('Indiquez un numéro de téléphone valide, ou laissez le champ vide.');
+    if (telephone.replace(/\D/g, '').length < 9) return fail('Indiquez un numéro de téléphone mobile valide.');
     if (!consent) return fail('Cochez la case pour recevoir les informations du webinaire.');
 
     submitBtn.disabled = true;
@@ -46,7 +46,7 @@
         if (data.error === 'consentement_requis') return fail('Cochez la case pour recevoir les informations du webinaire.');
         if (data.error === 'email_invalide') return fail('Vérifiez votre adresse e-mail.');
         if (data.error === 'nom_invalide') return fail('Indiquez votre nom.');
-        if (data.error === 'telephone_invalide') return fail('Indiquez un numéro de téléphone valide, ou laissez le champ vide.');
+        if (data.error === 'telephone_invalide') return fail('Indiquez un numéro de téléphone mobile valide.');
         return fail('Inscription momentanément indisponible. Réessayez dans un instant, ou appelez le 06 51 22 42 13.');
       }
       form.hidden = true;

@@ -51,6 +51,18 @@ const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string;
 const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#0d1f3c;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-weight:700;font-size:14px;padding:13px 22px;border-radius:10px;margin:6px 8px 0 0;">${label}</a>`;
 
+// Guide PDF offert à l'inscription (lead magnet), joint à l'e-mail de confirmation
+// et disponible en lien direct au cas où la pièce jointe serait filtrée.
+export const WEBINAR_PER_GUIDE_URL = "https://gp-finances.fr/site/assets/guide-per-gp-finances.pdf";
+const WEBINAR_PER_GUIDE_NAME = "Comprendre-le-PER-en-5-pages-GP-Finances.pdf";
+
+const guideBlock = () => `
+  <div style="margin:14px 0;padding:14px 16px;background:#f1f6ff;border:1px solid #dbeafe;border-radius:12px;">
+    <div style="font-family:Arial,sans-serif;font-weight:900;color:#0b1220;font-size:13.5px;margin-bottom:6px;">📄 Votre guide « Comprendre le PER en 5 pages »</div>
+    <p style="font-family:Arial,sans-serif;font-size:13px;color:#334155;line-height:1.5;margin:0 0 10px;">Il est joint à cet e-mail. Si vous ne le voyez pas, téléchargez-le directement :</p>
+    ${button(WEBINAR_PER_GUIDE_URL, "Télécharger le guide (PDF)")}
+  </div>`;
+
 // Avis Google réels (vérifiés sur la fiche GP FINANCES), jamais inventés.
 const GOOGLE_REVIEWS_URL =
   "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr";
@@ -131,8 +143,8 @@ export const buildWebinarPerEmail = (
   switch (template) {
     case "confirmation":
       return {
-        subject: "Inscription confirmée : Webinaire PER, " + WEBINAR_PER.dateLabel,
-        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Lien : ${WEBINAR_PER.meetingUrl}`,
+        subject: "Inscription confirmée + votre guide PER offert",
+        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Lien : ${WEBINAR_PER.meetingUrl}. Votre guide « Comprendre le PER en 5 pages » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}).`,
         html: shell({
           title: "Votre inscription est confirmée",
           contact,
@@ -140,6 +152,7 @@ export const buildWebinarPerEmail = (
           contentHtml: `
             <p style="margin:0 0 12px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(WEBINAR_PER.title)} »</b>.</p>
             ${meetingBlock}
+            ${guideBlock()}
             <p style="margin:14px 0 0;">Au programme : comprendre le PER, calculer votre économie d'impôt potentielle et éviter les erreurs les plus fréquentes. Vous pourrez poser vos questions en direct.</p>
             ${videoTestimonialsBlock(registrationUrl)}
             ${reviewsBlock([0, 1])}
