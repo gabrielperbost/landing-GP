@@ -46,9 +46,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GoogleAnalyticsPageViews measurementId={CONFIG.GA4_ID} />
         </Suspense>
         {/* Meta Pixel : chargé immédiatement, sans attendre le consentement — requis par
-            Meta pour valider/publier les campagnes (vérification du pixel sur le domaine). */}
+            Meta pour valider/publier les campagnes (vérification du pixel sur le domaine).
+            beforeInteractive : Next.js l'inclut directement dans le HTML rendu côté serveur
+            (pas seulement injecté en JS après coup), pour que Meta le détecte à la lecture
+            de la page, comme sur le reste du site. */}
         {CONFIG.META_PIXEL_ID !== "YOUR_META_PIXEL_ID" && (
-          <Script id="fb-pixel" strategy="afterInteractive">
+          <Script id="fb-pixel" strategy="beforeInteractive">
             {`
               !function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
