@@ -2,6 +2,15 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { parseInsurerSimulationText } from "@/lib/insurerSimulationImport";
 import { isSimulateurAuthorizedFromRequest } from "@/lib/simulateurAuth";
+import type * as pdfjsType from "pdfjs-dist/legacy/build/pdf.mjs";
+
+// pdfjs-dist n'exporte pas DocumentInitParameters publiquement (il n'existe que dans un
+// fichier de types interne) : on l'isole depuis le type réel du paramètre de getDocument(),
+// qui est une union (ArrayBuffer | URL | TypedArray | DocumentInitParameters) — seul le
+// membre objet a une propriété `data`, ce qui permet de l'extraire sans dépendre d'un
+// chemin d'import interne fragile.
+type GetDocumentParam = Parameters<typeof pdfjsType.getDocument>[0];
+type DocumentInitParameters = Extract<GetDocumentParam, { data?: unknown }>;
 
 export const runtime = "nodejs";
 
@@ -37,11 +46,12 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const bytes = new Uint8Array(arrayBuffer);
 
-    // Objet assigné à une variable typée explicitement avant l'appel : passé en littéral
-    // directement, TypeScript échoue parfois à vérifier les propriétés en excès contre une
-    // union contenant plusieurs membres de type objet (ArrayBuffer | TypedArray | ...
-    // | DocumentInitParameters), même quand la propriété existe bien sur le bon membre.
-    const documentParams: Parameters<typeof pdfjs.getDocument>[0] = {
+    // Objet assigné à une variable typée explicitement avec DocumentInitParameters (pas
+    // Parameters<typeof getDocument>[0], qui reste l'union ArrayBuffer | URL | TypedArray |
+    // DocumentInitParameters et reproduit le même échec) : passé en littéral directement à
+    // getDocument(), TypeScript échoue à vérifier les propriétés en excès contre cette union,
+    // même quand la propriété existe bien sur le membre DocumentInitParameters.
+    const documentParams: DocumentInitParameters = {
       data: bytes,
       useSystemFonts: true,
       disableFontFace: true,
