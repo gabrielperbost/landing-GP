@@ -170,9 +170,16 @@ for (const [name, route] of Object.entries(ROUTES)) {
 }
 
 
-// ---- Pages locales (Hauts-de-Seine) : la page « assurance emprunteur » du nouveau site, complétée de données publiques propres à chaque ville
+// ---- Pages locales (assurance emprunteur, par ville) : la page « assurance emprunteur » du
+// nouveau site, complétée de données publiques propres à chaque ville. Pour les villes qui ont
+// un fichier src/content/villes/{slug}.ts (modèle VilleData : angle éditorial, FAQ locale avec
+// sources, quartiers réels…), ce contenu enrichi remplace la section générée automatiquement ;
+// les autres villes gardent le comportement existant (tuiles chiffrées + FAQ calculée).
 const { CITIES_92 } = await import(require('node:url').pathToFileURL(path.join(ROOT, 'src', 'content', 'localSeo92.ts')).href);
 const LOCAL = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'content', 'localData92.json'), 'utf8'));
+const { VILLES: VILLES_DATA } = await import(require('node:url').pathToFileURL(path.join(ROOT, 'src', 'content', 'villes', 'index.ts')).href);
+const VILLE_BY_SLUG = new Map(VILLES_DATA.map(v => [v.slug, v]));
+const { nonBreakingName } = await import(require('node:url').pathToFileURL(path.join(ROOT, 'src', 'lib', 'text.ts')).href);
 const esc = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const nf = new Intl.NumberFormat('fr-FR');
 const num = v => nf.format(Math.round(v)).replace(/[  ]/g, '&nbsp;');
@@ -180,6 +187,25 @@ const eur = v => num(v) + '&nbsp;€';
 const plain = html => html.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const VILLES = path.join(PAGES, 'villes');
 fs.mkdirSync(VILLES, { recursive: true });
+
+// FAQ générales (questions non spécifiques à une ville) : un pool plus large que ce qui est
+// affiché, pour qu'un sous-ensemble tournant (3-4 questions) varie d'une ville à l'autre plutôt
+// que de répéter toujours les mêmes questions sur les 36 pages.
+const GENERAL_FAQ_POOL = [
+  { q: 'Puis-je changer d’assurance de prêt à tout moment ?', a: 'Oui. Depuis la loi Lemoine (2022), vous pouvez résilier l’assurance de votre prêt immobilier quand vous le souhaitez, sans attendre une date anniversaire.' },
+  { q: 'Le changement d’assurance a-t-il un coût ?', a: 'Non, c’est gratuit. Votre banque ne peut pas non plus modifier le taux de votre crédit parce que vous changez d’assurance.' },
+  { q: 'Ma banque peut-elle refuser le nouveau contrat ?', a: 'Seulement si les garanties proposées ne sont pas équivalentes à celles exigées initialement. Je vérifie cette équivalence avant toute demande, pour éviter un refus.' },
+  { q: 'Le questionnaire de santé est-il toujours nécessaire ?', a: 'Pas toujours : il est supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans.' },
+  { q: 'Dois-je prévenir ma banque moi-même ?', a: 'Non, je m’occupe de toutes les démarches, y compris de la résiliation de votre ancien contrat auprès de votre banque.' },
+  { q: 'Les garanties restent-elles les mêmes ?', a: 'Je ne propose que des contrats avec des garanties équivalentes ou supérieures à celles de votre contrat actuel.' },
+  { q: 'Combien de temps prend le changement ?', a: 'Votre banque a 10 jours ouvrés pour répondre à la demande une fois le dossier complet envoyé.' },
+  { q: 'Puis-je changer si mon prêt est déjà ancien ?', a: 'Oui, l’ancienneté du prêt n’a aucune incidence : le droit au changement s’applique à tout moment, quelle que soit la date de signature.' }
+];
+const rotatingGeneralFaq = (slug, count = 4) => {
+  const sum = [...slug].reduce((s, ch) => s + ch.charCodeAt(0), 0);
+  const start = sum % GENERAL_FAQ_POOL.length;
+  return Array.from({ length: count }, (_, i) => GENERAL_FAQ_POOL[(start + i) % GENERAL_FAQ_POOL.length]);
+};
 const YEARS_TEXT = LOCAL.years.join(' et ');
 const RETRIEVED = new Date(LOCAL.retrievedAt + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
 const cityInfo = c => {
@@ -192,7 +218,7 @@ const cityInfo = c => {
   return { ...d, flats, houses, capital, refKind: flats ? 'appartement' : houses ? 'maison' : null, refPrice: price };
 };
 const INFO = new Map(CITIES_92.map(c => [c.slug, cityInfo(c)]));
-const cityLink = c => `<a href="/assurance-de-pret/hauts-de-seine/${c.slug}">${esc(c.name)}</a>`;
+const cityLink = c => `<a href="/assurance-emprunteur/${c.slug}">${esc(c.name)}</a>`;
 const insuranceCost = (capital, points) => capital * (points / 100) * 20;
 
 const localPage = ({ file, route, title, description, eyebrow, heading, intro, extra, h1, breadcrumb, faq, areaServed }) => {
@@ -235,21 +261,22 @@ const faqHtml = items => `<div class="local-faq">${items.map(q => `<details><sum
   const rows = CITIES_92.map(c => ({ c, i: INFO.get(c.slug) })).filter(x => x.i.flats).sort((a, b) => b.i.flats.medianPerM2 - a.i.flats.medianPerM2);
   const table = `<h3 class="local-h3">Le prix de l’immobilier ville par ville</h3><p class="local-note">Prix médian d’un appartement, d’après les ventes enregistrées en ${YEARS_TEXT} (base DVF). Cliquez sur votre ville pour voir le détail.</p><table class="local-table"><thead><tr><th>Ville</th><th>Prix médian au m²</th><th>Prix médian d’un appartement</th><th>Ventes analysées</th></tr></thead><tbody>${rows.map(({ c, i }) => `<tr><td>${cityLink(c)}</td><td>${eur(i.flats.medianPerM2)}</td><td>${eur(i.flats.medianPrice)}</td><td>${num(i.flats.sales)}</td></tr>`).join('')}</tbody></table><p class="local-source">Sources : DGFiP, base DVF (data.gouv.fr) ; INSEE. Données relevées le ${RETRIEVED}. Repères statistiques, ils ne remplacent pas l’estimation d’un bien.</p>`;
   localPage({
-    file: 'hauts-de-seine', route: '/assurance-de-pret/hauts-de-seine',
+    file: 'hauts-de-seine', route: '/assurance-emprunteur/hauts-de-seine',
     title: 'Assurance de prêt dans les Hauts-de-Seine (92) | GP Finances',
     description: 'Assurance de prêt immobilier dans les Hauts-de-Seine : prix de l’immobilier ville par ville, comparaison des contrats et économies sur l’assurance emprunteur.',
     eyebrow: 'Assurance emprunteur · Hauts-de-Seine (92)',
     heading: 'Votre ville dans les Hauts-de-Seine',
     intro: 'Accompagnement humain, comparaison des contrats et démarches prises en charge, où que vous habitiez dans le 92. Choisissez votre ville :',
     extra: `<p class="city-links">${CITIES_92.map(cityLink).join('')}</p>${table}`,
-    breadcrumb: { html: '<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <span>Hauts-de-Seine</span></nav>', schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Hauts-de-Seine', item: ORIGIN + '/assurance-de-pret/hauts-de-seine' }] } }
+    breadcrumb: { html: '<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>Hauts-de-Seine</span></nav>', schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: 'Hauts-de-Seine', item: ORIGIN + '/assurance-emprunteur/hauts-de-seine' }] } }
   });
 }
 
 for (const c of CITIES_92) {
   const i = INFO.get(c.slug);
-  const route = `/assurance-de-pret/hauts-de-seine/${c.slug}`;
-  const name = esc(c.name), cp = esc(c.postalCode);
+  const ville = VILLE_BY_SLUG.get(c.slug);
+  const route = `/assurance-emprunteur/${c.slug}`;
+  const name = esc(nonBreakingName(c.name)), cp = esc(c.postalCode);
   const near = c.nearby.map(n => CITIES_92.find(x => x.name === n)).filter(Boolean);
   const nearNames = c.nearby.map(n => { const hit = CITIES_92.find(x => x.name === n); return hit ? cityLink(hit) : `<span>${esc(n)}</span>`; });
   const tiles = [];
@@ -258,29 +285,42 @@ for (const c of CITIES_92) {
   if (i.houses) tiles.push(stat(eur(i.houses.medianPrice), 'prix médian d’une maison'));
   const faq = [];
   const blocks = [];
+  if (ville) {
+    // Angle éditorial + portrait réel de la ville (quartiers, profil du marché, qui emprunte
+    // ici) : contenu propre à cette ville, voir src/content/villes/{slug}.ts.
+    blocks.push(`<p class="local-angle">${esc(ville.angleEditorial)}</p><h3 class="local-h3">À ${name}</h3><p>${esc(ville.profilImmobilier)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p>`);
+  }
   if (tiles.length) blocks.push(`<div class="local-stats">${tiles.join('')}</div>`);
   if (i.refKind) {
     const p = (points) => eur(insuranceCost(i.capital, points));
     const kind = i.refKind === 'appartement' ? 'un appartement' : 'une maison';
     blocks.push(`<h3 class="local-h3">Un exemple de financement à ${name}</h3><p>Pour acheter ${kind} au prix médian du secteur (${eur(i.refPrice)}) avec 10&nbsp;% d’apport, le capital emprunté serait d’environ <strong>${eur(i.capital)}</strong>. Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`);
-    if (i.flats) faq.push({ q: `Combien coûte un appartement à ${c.name} ?`, a: `D’après les ventes enregistrées en ${YEARS_TEXT} (base DVF), le prix médian d’un appartement à ${name} est d’environ ${eur(i.flats.medianPrice)}, soit ${eur(i.flats.medianPerM2)} le m² (${num(i.flats.sales)} ventes analysées). Ce sont des repères statistiques, pas l’estimation de votre bien.` });
-    faq.push({ q: `Quel capital emprunter pour acheter à ${c.name} ?`, a: `Pour ${kind} au prix médian avec 10&nbsp;% d’apport, le capital emprunté serait d’environ ${eur(i.capital)}. Votre capacité réelle dépend de vos revenus, de vos charges et de votre banque.` });
-    faq.push({ q: `Combien l’assurance de prêt peut-elle coûter en plus ou en moins ?`, a: `À titre d’illustration, sur ${eur(i.capital)} empruntés pendant 20&nbsp;ans, chaque 0,10&nbsp;point d’écart de taux d’assurance (calculé sur le capital initial) représente environ ${p(0.10)} sur la durée. Comparer les contrats peut donc compter.` });
+    if (!ville) {
+      if (i.flats) faq.push({ q: `Combien coûte un appartement à ${c.name} ?`, a: `D’après les ventes enregistrées en ${YEARS_TEXT} (base DVF), le prix médian d’un appartement à ${name} est d’environ ${eur(i.flats.medianPrice)}, soit ${eur(i.flats.medianPerM2)} le m² (${num(i.flats.sales)} ventes analysées). Ce sont des repères statistiques, pas l’estimation de votre bien.` });
+      faq.push({ q: `Quel capital emprunter pour acheter à ${c.name} ?`, a: `Pour ${kind} au prix médian avec 10&nbsp;% d’apport, le capital emprunté serait d’environ ${eur(i.capital)}. Votre capacité réelle dépend de vos revenus, de vos charges et de votre banque.` });
+      faq.push({ q: `Combien l’assurance de prêt peut-elle coûter en plus ou en moins ?`, a: `À titre d’illustration, sur ${eur(i.capital)} empruntés pendant 20&nbsp;ans, chaque 0,10&nbsp;point d’écart de taux d’assurance (calculé sur le capital initial) représente environ ${p(0.10)} sur la durée. Comparer les contrats peut donc compter.` });
+    }
   }
-  faq.push({ q: `Puis-je changer l’assurance de mon prêt immobilier à ${c.name} ?`, a: `Oui. Depuis la loi Lemoine, vous pouvez résilier l’assurance de votre prêt à tout moment, sans frais, en proposant un contrat aux garanties équivalentes à celles exigées par votre banque. Je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.` });
-  faq.push({ q: `Dois-je me déplacer à Issy-les-Moulineaux ?`, a: `Non. Les échanges se font en visio ou par téléphone, où que vous habitiez, et mon cabinet est situé à Issy-les-Moulineaux, dans les Hauts-de-Seine.` });
+  if (ville) {
+    // FAQ réduite et différenciée : 3 questions propres à la ville (sourcées dans le fichier
+    // VilleData) + un sous-ensemble tournant de questions générales (pool de 8, 4 affichées).
+    faq.push(...ville.faqLocales.map(q => ({ q: q.q, a: q.r })), ...rotatingGeneralFaq(c.slug, 4));
+  } else {
+    faq.push({ q: `Puis-je changer l’assurance de mon prêt immobilier à ${c.name} ?`, a: `Oui. Depuis la loi Lemoine, vous pouvez résilier l’assurance de votre prêt à tout moment, sans frais, en proposant un contrat aux garanties équivalentes à celles exigées par votre banque. Je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.` });
+    faq.push({ q: `Dois-je me déplacer à Issy-les-Moulineaux ?`, a: `Non. Les échanges se font en visio ou par téléphone, où que vous habitiez, et mon cabinet est situé à Issy-les-Moulineaux, dans les Hauts-de-Seine.` });
+  }
   blocks.push(`<h3 class="local-h3">Vos questions à ${name}</h3>${faqHtml(faq)}`);
   const nearRows = near.map(n => ({ n, ni: INFO.get(n.slug) })).filter(x => x.ni.flats);
   if (i.flats && nearRows.length) {
     blocks.push(`<h3 class="local-h3">Comparé aux communes voisines</h3><table class="local-table local-table-small"><thead><tr><th>Commune</th><th>Prix médian au m²</th></tr></thead><tbody><tr class="local-current"><td>${name}</td><td><strong>${eur(i.flats.medianPerM2)}</strong></td></tr>${nearRows.map(({ n, ni }) => `<tr><td>${cityLink(n)}</td><td>${eur(ni.flats.medianPerM2)}</td></tr>`).join('')}</tbody></table>`);
   }
-  blocks.push(`<p class="city-links-label">Nous accompagnons aussi les habitants de :</p><p class="city-links">${nearNames.join('')}</p><p class="local-source">${LOCAL.retrievedAt ? `Sources : DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p>`);
+  blocks.push(`<p class="city-links-label">J’accompagne aussi les habitants de :</p><p class="city-links">${nearNames.join('')}</p><p class="local-source">${LOCAL.retrievedAt ? `Sources : DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p>`);
 
   const title0 = `Assurance de prêt à ${c.name} (${c.postalCode}) : changer et économiser`;
-  const title = title0.length <= 58 ? `${title0} | GP Finances` : title0;
-  const description = i.refKind
+  const title = ville ? ville.meta.title : (title0.length <= 58 ? `${title0} | GP Finances` : title0);
+  const description = ville ? ville.meta.description : (i.refKind
     ? `À ${c.name} (${c.postalCode}), ${i.refKind === 'appartement' ? 'l’appartement' : 'la maison'} se vend ${i.flats ? `environ ${num(i.flats.medianPerM2).replace(/&nbsp;/g, ' ')} €/m²` : `autour de ${num(i.refPrice).replace(/&nbsp;/g, ' ')} €`} : sur ${num(i.capital).replace(/&nbsp;/g, ' ')} € empruntés, 0,10 point d’assurance en moins vaut ${num(insuranceCost(i.capital, 0.10)).replace(/&nbsp;/g, ' ')} € sur 20 ans.`
-    : `GP Finances accompagne les emprunteurs à ${c.name} (${c.postalCode}) pour réduire le coût de l’assurance de prêt avec garanties équivalentes et gestion complète des démarches.`;
+    : `GP Finances accompagne les emprunteurs à ${c.name} (${c.postalCode}) pour réduire le coût de l’assurance de prêt avec garanties équivalentes et gestion complète des démarches.`);
   localPage({
     file: c.slug, route, title, description,
     eyebrow: `Assurance emprunteur · ${c.name}`,
@@ -288,7 +328,7 @@ for (const c of CITIES_92) {
     heading: `Assurance de prêt à ${name} (${cp})`,
     intro: `${i.population ? `${name} est une commune de ${num(i.population)}&nbsp;habitants des Hauts-de-Seine. ` : ''}${esc(c.localPitch)}`,
     extra: blocks.join(''), faq, areaServed: c.name,
-    breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-de-pret/hauts-de-seine">Hauts-de-Seine</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Hauts-de-Seine', item: ORIGIN + '/assurance-de-pret/hauts-de-seine' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
+    breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
   });
 }
 console.log(`Pages locales : 1 page départementale + ${CITIES_92.length} villes`);

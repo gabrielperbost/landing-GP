@@ -1,4 +1,4 @@
-import type { VilleData } from "./types";
+import type { VilleData } from "./types.ts";
 
 // Chiffres repris tels quels de src/content/localData92.json (DVF/INSEE,
 // récupérés le 2026-09-25) — aucune valeur recalculée ou arrondie différemment.
@@ -30,6 +30,10 @@ export const issyLesMoulineaux: VilleData = {
     {
       q: "Je travaille à Val de Seine : puis-je passer au cabinet entre deux rendez-vous ?",
       r: "Oui, le cabinet est à Issy-les-Moulineaux même. Un rendez-vous en personne est tout à fait possible ; je peux aussi vous recevoir par téléphone ou en visio si c’est plus pratique pour vous."
+    },
+    {
+      q: "Comment venir au cabinet si je ne suis pas en voiture ?",
+      r: "Le cabinet est facilement accessible par la ligne 12 (Mairie d’Issy ou Corentin Celton), le RER C ou le tramway T2, qui desservent tous Issy-les-Moulineaux."
     }
   ],
   meta: {

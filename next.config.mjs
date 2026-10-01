@@ -51,6 +51,18 @@ const nextConfig = {
         source: "/monper/merci",
         destination: "/per?merci=1",
         permanent: false
+      },
+      // Pages locales assurance emprunteur : ancienne adresse -> nouvelle (301, SEO préservé).
+      // Voir docs/campaigns (ou le rapport de migration) pour la liste complète ville par ville.
+      {
+        source: "/assurance-de-pret/hauts-de-seine",
+        destination: "/assurance-emprunteur/hauts-de-seine",
+        permanent: true
+      },
+      {
+        source: "/assurance-de-pret/hauts-de-seine/:ville",
+        destination: "/assurance-emprunteur/:ville",
+        permanent: true
       }
     ];
   },
@@ -64,12 +76,14 @@ const nextConfig = {
         // Site GP FINANCES (pages construites par `node scripts/build-site.cjs`, voir public/site/routes.json).
         // « /per » reste l'ancienne page de campagne PER : la nouvelle page PER est /per-retraite.
         ...SITE_PAGES.map(([source, page]) => ({ source, destination: `/site/pages/${page}.html` })),
-        // Pages locales Hauts-de-Seine : même page « assurance emprunteur », contenu propre à chaque ville
         // Rubrique Conseils (pages présentes seulement pour les articles publiés)
         { source: "/conseils", destination: "/site/pages/conseils.html" },
         { source: "/conseils/:slug", destination: "/site/pages/conseils/:slug.html" },
-        { source: "/assurance-de-pret/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
-        { source: "/assurance-de-pret/hauts-de-seine/:ville", destination: "/site/pages/villes/:ville.html" }
+        // Pages locales assurance emprunteur : même page « assurance emprunteur », contenu propre
+        // à chaque ville. Le hub doit être déclaré AVANT la route dynamique :ville, sinon
+        // "/assurance-emprunteur/hauts-de-seine" serait aussi capturé comme un slug de ville.
+        { source: "/assurance-emprunteur/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
+        { source: "/assurance-emprunteur/:ville", destination: "/site/pages/villes/:ville.html" }
       ]
     };
   }
