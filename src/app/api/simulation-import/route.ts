@@ -37,12 +37,17 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const bytes = new Uint8Array(arrayBuffer);
 
-    const loadingTask = pdfjs.getDocument({
+    // Objet assigné à une variable typée explicitement avant l'appel : passé en littéral
+    // directement, TypeScript échoue parfois à vérifier les propriétés en excès contre une
+    // union contenant plusieurs membres de type objet (ArrayBuffer | TypedArray | ...
+    // | DocumentInitParameters), même quand la propriété existe bien sur le bon membre.
+    const documentParams: Parameters<typeof pdfjs.getDocument>[0] = {
       data: bytes,
       useSystemFonts: true,
       disableFontFace: true,
       isEvalSupported: false
-    });
+    };
+    const loadingTask = pdfjs.getDocument(documentParams);
 
     const pdf = await loadingTask.promise;
 
