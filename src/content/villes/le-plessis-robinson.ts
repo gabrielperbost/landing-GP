@@ -8,9 +8,9 @@ export const lePlessisRobinson: VilleData = {
   codesPostaux: ["92350"],
   departement: "92",
   villesVoisines: ["chatenay-malabry", "clamart", "sceaux"],
-  quartiers: ["Cœur de Ville", "Jean Jaurès", "Anatole France"],
+  quartiers: ["Jean Jaurès", "Anatole France", "Hachette", "Architecte"],
   profilImmobilier:
-    "Le Plessis-Robinson s’est fait connaître pour sa rénovation urbaine en « ville-jardin », avec des immeubles aux façades classiques organisés autour de jardins et de places. Le marché y est équilibré entre appartements de ces nouveaux quartiers et maisons plus anciennes.",
+    "Le Plessis-Robinson s’est fait connaître pour sa rénovation urbaine autour de la cité-jardin, l’ensemble historique des années 1920-1930 aux façades classiques organisées autour de jardins et de places. Le marché y est équilibré entre appartements de ces quartiers rénovés et maisons plus anciennes.",
   prixM2: {
     appartements: { valeur: 5599, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 6436, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
@@ -20,10 +20,10 @@ export const lePlessisRobinson: VilleData = {
     "Beaucoup de familles séduites par le cadre urbain particulier de la commune, avec des prêts qui dépassent souvent 20 à 25 ans. Les dossiers à deux emprunteurs sont majoritaires, et beaucoup de ces familles n’ont jamais comparé leur assurance depuis l’achat.",
   accesBureau:
     "GP Finances reçoit à Issy-les-Moulineaux. Pour les emprunteurs du Plessis-Robinson, l’essentiel du suivi se fait par téléphone ou en visio ; un rendez-vous au cabinet reste possible si vous le préférez.",
-  angleEditorial: "La ville-jardin : un cadre de vie qui attire les familles.",
+  angleEditorial: "La cité-jardin : un cadre de vie qui attire les familles.",
   faqLocales: [
     {
-      q: "Nous avons acheté dans l’un des nouveaux quartiers « ville-jardin » du Plessis-Robinson : cela a-t-il une incidence sur l’assurance ?",
+      q: "Nous avons acheté dans l’un des quartiers rénovés de la cité-jardin au Plessis-Robinson : cela a-t-il une incidence sur l’assurance ?",
       r: "Non, le style architectural ou l’ancienneté du programme n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon."
     },
     {
@@ -36,8 +36,8 @@ export const lePlessisRobinson: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Le Plessis-Robinson s’est rénové en « ville-jardin » (immeubles organisés autour de jardins et de places)", source: "TODO_VERIFIER — caractérisation largement connue de la commune, pas recoupée avec une source patrimoniale précise cette session" },
-    { fait: "Quartiers Cœur de Ville, Jean Jaurès, Anatole France", source: "TODO_VERIFIER — noms IRIS partiels, pas recoupés avec le découpage officiel de la mairie" }
+    { fait: "Le Plessis-Robinson s’est rénové autour de la cité-jardin, ensemble historique des années 1920-1930 (immeubles organisés autour de jardins et de places)", source: "TODO_VERIFIER — caractérisation ajustée sur votre indication, pas recoupée avec une source patrimoniale précise cette session" },
+    { fait: "Quartiers Jean Jaurès, Anatole France, Hachette, Architecte", source: "Zonage IRIS INSEE du Plessis-Robinson (9 IRIS)" }
   ],
   meta: {
     title: "Assurance emprunteur au Plessis-Robinson | GP Finances",

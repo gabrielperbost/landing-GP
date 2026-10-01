@@ -205,7 +205,43 @@ const GENERAL_FAQ_POOL = [
 // slugs dès que la différence de leurs sommes est un multiple des petits modulos utilisés plus
 // bas (2, 3, 8) — ce qui arrive plus souvent qu'il n'y paraît sur des noms de ville — et fait
 // alors coïncider TOUTES les variantes (FAQ générale, intertitres…) pour cette paire de villes.
-const slugSum = slug => { let h = 5381; for (const ch of slug) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h; };
+// Table d'attribution explicite (pas un hash) : pour chaque bloc tournant, chaque ville a une
+// variante assignée par un algorithme de coloration de graphe simple — deux villes voisines
+// (celles qui se lient entre elles via villesVoisines, dans les deux sens) n'ont jamais la même
+// variante pour un même bloc. Un hash, même salé par le nom du bloc, pouvait faire coïncider deux
+// villes par pur hasard arithmétique (vu avec Bagneux/Châtenay-Malabry puis Gennevilliers/
+// Nanterre) ; cette table le garantit structurellement plutôt que statistiquement.
+const slugSumSeed = slug => { let h = 5381; for (const ch of slug) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h; };
+const VILLAGE_ADJACENCY = new Map();
+const addEdge = (a, b) => {
+  if (!VILLAGE_ADJACENCY.has(a)) VILLAGE_ADJACENCY.set(a, new Set());
+  VILLAGE_ADJACENCY.get(a).add(b);
+};
+for (const v of VILLES_DATA) {
+  if (!VILLAGE_ADJACENCY.has(v.slug)) VILLAGE_ADJACENCY.set(v.slug, new Set());
+  for (const n of v.villesVoisines) { addEdge(v.slug, n); addEdge(n, v.slug); }
+}
+// Un assignment par clé (pas le même pour toutes, sinon deux villes qui coïncident sur l'une
+// coïncident sur toutes) : l'ordre de parcours est mélangé par ville+clé, mais la contrainte
+// « jamais la même variante qu'un voisin déjà assigné » est stricte.
+const assignVariants = (key, poolSize) => {
+  const slugs = VILLES_DATA.map(v => v.slug).sort();
+  const assignment = new Map();
+  for (const slug of slugs) {
+    const used = new Set();
+    for (const n of VILLAGE_ADJACENCY.get(slug) || []) {
+      if (assignment.has(n)) used.add(assignment.get(n));
+    }
+    const start = slugSumSeed(slug + '::' + key) % poolSize;
+    let chosen = start;
+    for (let i = 0; i < poolSize; i++) {
+      const candidate = (start + i) % poolSize;
+      if (!used.has(candidate)) { chosen = candidate; break; }
+    }
+    assignment.set(slug, chosen);
+  }
+  return assignment;
+};
 // Intertitres/connecteurs à variantes (brief : « varie aussi l'ordre des sections et les
 // intertitres d'une page à l'autre »). Choisis par ville via un hash du slug, pour que le même
 // texte ne se répète pas mot pour mot sur les 36+ pages. Au moins 6 variantes par bloc tournant
@@ -258,11 +294,6 @@ const PHRASES = {
     'Je travaille aussi avec les emprunteurs de :'
   ]
 };
-// Hash propre à chaque bloc tournant (slug + nom du bloc), pour que deux villes qui coïncident
-// sur une rotation ne coïncident pas mécaniquement sur toutes les autres.
-const phraseHash = (key, slug) => slugSum(slug + '::' + key);
-const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[phraseHash(key, slug) % options.length]; };
-
 // « Comment ça marche » (section process-section du gabarit) : jusqu'ici identique mot pour mot
 // sur toutes les pages villes, ce qui pesait sur la similarité à mesure que le nombre de pages
 // migrées augmentait. 6 versions complètes (titre, sous-titre, 3 étapes), même sens, formulation
@@ -281,9 +312,20 @@ const PROCESS_VARIANTS = [
   { h2: 'Mon rôle : simplifier le vôtre.', sub: 'Je m’occupe de l’essentiel, vous gardez juste la décision finale.',
     steps: [['Votre profil', 'Analyse de votre situation, de vos contrats et de vos besoins.'], ['Le comparatif', 'Sélection des meilleures offres du marché pour votre cas.'], ['Les démarches', 'Prise en charge complète, de la résiliation à la signature.']] }
 ];
+
+// Une table d'attribution par bloc (voir assignVariants plus haut), calculée une fois. phrase()
+// et rotatingGeneralFaq() ne font plus que lire la table — aucun hash au moment du choix.
+const PHRASE_ASSIGNMENTS = {};
+for (const key of Object.keys(PHRASES)) PHRASE_ASSIGNMENTS[key] = assignVariants(key, PHRASES[key]().length);
+const PROCESS_ASSIGNMENT = assignVariants('processVariant', PROCESS_VARIANTS.length);
+const FAQ_START_ASSIGNMENT = assignVariants('generalFaqStart', GENERAL_FAQ_POOL.length);
+
+const phrase = (key, slug, ...args) => {
+  const options = PHRASES[key](...args);
+  return options[PHRASE_ASSIGNMENTS[key].get(slug) ?? 0];
+};
 const rotatingGeneralFaq = (slug, count = 4) => {
-  const sum = slugSum(slug);
-  const start = sum % GENERAL_FAQ_POOL.length;
+  const start = FAQ_START_ASSIGNMENT.get(slug) ?? 0;
   return Array.from({ length: count }, (_, i) => GENERAL_FAQ_POOL[(start + i) % GENERAL_FAQ_POOL.length]);
 };
 const YEARS_TEXT = LOCAL.years.join(' et ');
@@ -367,7 +409,7 @@ const condenseForCityPage = (html, parts) => {
   // formulation différente — voir PROCESS_VARIANTS) plutôt qu'extraite telle quelle du gabarit,
   // qui est identique mot pour mot sur toutes les pages. La loi Lemoine reste résumée en une
   // phrase variante + lien vers le détail sur /assurance-emprunteur.
-  const pv = PROCESS_VARIANTS[phraseHash('processVariant', parts.slug) % PROCESS_VARIANTS.length];
+  const pv = PROCESS_VARIANTS[PROCESS_ASSIGNMENT.get(parts.slug) ?? 0];
   const process = `<section class="section process-section" id="methode"><div class="container"><p class="eyebrow"><span></span>Notre méthode</p><div class="section-heading"><h2>${pv.h2}</h2><p>${pv.sub} ${phrase('lemoineSentence', parts.slug)} <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p></div><div class="process-grid">${pv.steps.map(([title, text], i) => `<article class="process-step"><div class="step-top"><span class="step-number">0${i + 1}</span><span class="step-line"></span></div><h3>${title}</h3><p>${text}</p></article>`).join('')}</div></div></section>`;
 
   const testimonials = extract(/<section class="section testimonials-section"[\s\S]*?<\/section>/);

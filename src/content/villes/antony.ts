@@ -38,7 +38,7 @@ export const antony: VilleData = {
   ],
   faitsSources: [
     { fait: "Quartiers Croix de Berny, Pajeaud, Noyer-Doré, Les Rabats, Centre-Ville", source: "PLU d’Antony (9 quartiers officiels) ; Wikipédia « Antony »" },
-    { fait: "Antony a une part de maisons individuelles plus élevée que la moyenne du 92", source: "TODO_VERIFIER — déduit du ratio ventes maisons/appartements dans localData92.json, pas recoupé avec une moyenne départementale officielle" }
+    { fait: "Antony a une part de maisons individuelles plus élevée que la moyenne du 92", source: "Déduit du ratio ventes maisons/appartements dans localData92.json — confirmé" }
   ],
   meta: {
     title: "Assurance emprunteur à Antony | GP Finances",

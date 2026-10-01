@@ -9,7 +9,7 @@ export const levalloisPerret: VilleData = {
   codesPostaux: ["92300"],
   departement: "92",
   villesVoisines: ["clichy", "neuilly-sur-seine", "courbevoie"],
-  quartiers: ["Hôtel de Ville", "Front de Seine", "Île de la Jatte", "Anatole France"],
+  quartiers: ["Centre-Ville", "Front de Seine", "Louise Michel", "Alsace", "République", "Île de la Jatte"],
   profilImmobilier:
     "Levallois-Perret est l’une des communes les plus denses et les plus chères du nord du 92, avec un marché presque exclusivement composé d’appartements. Le secteur de l’Île de la Jatte, au bord de la Seine, et le Front de Seine sont particulièrement recherchés.",
   prixM2: {
@@ -37,7 +37,7 @@ export const levalloisPerret: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Hôtel de Ville, Front de Seine, Île de la Jatte, Anatole France", source: "TODO_VERIFIER — noms d’usage repris parmi la liste plus large des secteurs de Levallois, pas recoupés avec le découpage officiel de la mairie" },
+    { fait: "Quartiers Centre-Ville, Front de Seine, Louise Michel, Alsace, République, Île de la Jatte", source: "Ville de Levallois (ville-levallois.fr), page « Conseils de quartier » ; lelevallois.fr, « Carte des quartiers de Levallois-Perret »" },
     { fait: "Seulement 13 ventes de maisons recensées en 2024-2025", source: "DGFiP, base DVF (data.gouv.fr), voir src/content/localData92.json" }
   ],
   meta: {

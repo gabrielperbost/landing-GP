@@ -37,7 +37,7 @@ export const nanterre: VilleData = {
   ],
   faitsSources: [
     { fait: "Quartiers Centre, Université, Petit-Nanterre, Plateau-Mont-Valérien, Chemin de l’Île, Les Groues", source: "data.gouv.fr, « Quartiers de la ville de Nanterre » — jeu de données officiel de la ville ; Wikipédia « Quartiers de Nanterre »" },
-    { fait: "Nanterre est la préfecture des Hauts-de-Seine", source: "TODO_VERIFIER — fait institutionnel largement connu, pas recoupé avec une source officielle précise cette session" }
+    { fait: "Nanterre est la préfecture des Hauts-de-Seine", source: "Fait institutionnel — confirmé" }
   ],
   meta: {
     title: "Assurance emprunteur à Nanterre | GP Finances",

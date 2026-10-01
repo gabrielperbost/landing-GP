@@ -9,9 +9,9 @@ export const neuillySurSeine: VilleData = {
   codesPostaux: ["92200"],
   departement: "92",
   villesVoisines: ["levallois-perret", "courbevoie", "puteaux"],
-  quartiers: ["Charles Laffitte", "Parc de Neuilly", "Plaine des Sablons", "Saint-James"],
+  quartiers: ["Île de la Jatte", "Sablons", "Bagatelle", "Perronet-Chézy", "Longchamp"],
   profilImmobilier:
-    "Neuilly-sur-Seine a le prix au m² le plus élevé de tout le département, pour les appartements comme pour les rares maisons vendues. Le secteur de Saint-James et les abords du Bois de Boulogne comptent parmi les plus recherchés d’Île-de-France.",
+    "Neuilly-sur-Seine a le prix au m² le plus élevé de tout le département, pour les appartements comme pour les rares maisons vendues. Le secteur de Bagatelle, aux abords du Bois de Boulogne, et l’Île de la Jatte comptent parmi les plus recherchés d’Île-de-France.",
   prixM2: {
     appartements: { valeur: 10417, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: null
@@ -37,7 +37,7 @@ export const neuillySurSeine: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Charles Laffitte, Parc de Neuilly, Plaine des Sablons, Saint-James", source: "TODO_VERIFIER — noms d’usage repris des zones IRIS INSEE (26 zones statistiques), simplifiés ici ; pas recoupés avec un découpage par quartiers de la mairie" },
+    { fait: "Quartiers Île de la Jatte, Sablons, Bagatelle, Perronet-Chézy, Longchamp", source: "Ville de Neuilly-sur-Seine (neuillysurseine.fr), page « Rencontrez le Maire dans votre quartier » (tournée officielle des 11 quartiers)" },
     { fait: "Neuilly-sur-Seine a le prix médian au m² le plus élevé du 92 dans ce lot de villes", source: "DGFiP, base DVF (data.gouv.fr), voir src/content/localData92.json" }
   ],
   meta: {

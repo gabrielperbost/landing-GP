@@ -25,6 +25,16 @@ import { meudon } from "./meudon.ts";
 import { montrouge } from "./montrouge.ts";
 import { nanterre } from "./nanterre.ts";
 import { neuillySurSeine } from "./neuilly-sur-seine.ts";
+import { puteaux } from "./puteaux.ts";
+import { rueilMalmaison } from "./rueil-malmaison.ts";
+import { saintCloud } from "./saint-cloud.ts";
+import { sceaux } from "./sceaux.ts";
+import { sevres } from "./sevres.ts";
+import { suresnes } from "./suresnes.ts";
+import { vanves } from "./vanves.ts";
+import { vaucresson } from "./vaucresson.ts";
+import { villeDAvray } from "./ville-d-avray.ts";
+import { villeneuveLaGarenne } from "./villeneuve-la-garenne.ts";
 import type { VilleData } from "./types.ts";
 
 // Une entrée par ville migrée/créée.
@@ -57,7 +67,17 @@ export const VILLES: VilleData[] = [
   meudon,
   montrouge,
   nanterre,
-  neuillySurSeine
+  neuillySurSeine,
+  puteaux,
+  rueilMalmaison,
+  saintCloud,
+  sceaux,
+  sevres,
+  suresnes,
+  vanves,
+  vaucresson,
+  villeDAvray,
+  villeneuveLaGarenne
 ];
 
 export const getVilleBySlug = (slug: string): VilleData | undefined => VILLES.find((v) => v.slug === slug);

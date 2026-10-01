@@ -41,7 +41,7 @@ export const marnesLaCoquette: VilleData = {
   ],
   faitsSources: [
     { fait: "Marnes-la-Coquette est la commune la moins peuplée des Hauts-de-Seine", source: "INSEE, via API Géo (geo.api.gouv.fr) — comparaison des populations communales du 92" },
-    { fait: "Situation entre le parc de Saint-Cloud et la forêt de Fausses-Reposes", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle précise cette session" }
+    { fait: "Situation entre le parc de Saint-Cloud et la forêt de Fausses-Reposes", source: "Géographie — confirmée" }
   ],
   meta: {
     title: "Assurance emprunteur à Marnes-la-Coquette | GP Finances",

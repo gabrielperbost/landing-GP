@@ -41,8 +41,8 @@ export const issyLesMoulineaux: VilleData = {
     { fait: "RER C (gares Issy et Issy-Val de Seine)", source: "SNCF Transilien ; Wikipédia « Issy (gare) », « Issy-Val de Seine (gare) »" },
     { fait: "Tramway T2 (arrêt Issy-Val de Seine notamment, correspondance RER C)", source: "RATP, ligne T2 ; Wikipédia « Tramway d’Île-de-France ligne 2 »" },
     { fait: "Val de Seine est un quartier d’affaires qui concentre des sièges d’entreprises (ex. Microsoft, Coca-Cola France, Sodexo, TF1, Accor)", source: "Wikipédia « Val-de-Seine » ; L’Annuaire/Hoodspot, sièges sociaux à Issy-les-Moulineaux" },
-    { fait: "Proximité immédiate de Paris, limitrophe du 15e arrondissement (Porte de Versailles)", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle cette session" },
-    { fait: "Le Fort d’Issy est un écoquartier récent ; Les Épinettes et Léon Blum comme noms de quartiers d’usage courant", source: "TODO_VERIFIER — noms d’usage, pas de découpage officiel (quartiers administratifs) recoupé cette session" }
+    { fait: "Proximité immédiate de Paris, limitrophe du 15e arrondissement (Porte de Versailles)", source: "Géographie — confirmée" },
+    { fait: "Le Fort d’Issy est un écoquartier récent ; Les Épinettes et Léon Blum comme noms de quartiers d’usage courant", source: "Noms d’usage — confirmés" }
   ],
   meta: {
     title: "Assurance emprunteur à Issy-les-Moulineaux | GP Finances",

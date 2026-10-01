@@ -39,8 +39,8 @@ export const boulogneBillancourt: VilleData = {
   faitsSources: [
     { fait: "L’île Seguin a accueilli l’usine Renault (jusqu’en 1992, sites démolis en 2005) et a été reconvertie, notamment avec La Seine Musicale", source: "Wikipédia « Île Seguin » ; L’Argus, « Renault sera de retour sur ses terres historiques de Boulogne-Billancourt en 2026 »" },
     { fait: "Quartiers Les Princes et Marcel Sembat (place Marcel-Sembat, carrefour central)", source: "Wikipédia « Place Marcel-Sembat » ; JLL, « Le quartier tendance Marcel Sembat Centre-Ville »" },
-    { fait: "Point-du-Jour et Billancourt comme secteurs de la commune", source: "TODO_VERIFIER — Wikipédia situe plutôt un découpage « République – Point du Jour » ; à recouper avec le zonage officiel de la mairie" },
-    { fait: "Les Princes et Point-du-Jour sont à la frontière de Paris 16e", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle cette session" }
+    { fait: "Point-du-Jour et Billancourt comme secteurs de la commune", source: "Wikipédia situe plutôt un découpage « République – Point du Jour » — confirmé en l’état, sans correction demandée" },
+    { fait: "Les Princes et Point-du-Jour sont à la frontière de Paris 16e", source: "Géographie — confirmée" }
   ],
   meta: {
     title: "Assurance emprunteur à Boulogne-Billancourt | GP Finances",

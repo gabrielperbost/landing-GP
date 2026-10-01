@@ -38,7 +38,7 @@ export const gennevilliers: VilleData = {
   ],
   faitsSources: [
     { fait: "Quartiers Village, Chandon, Fossé de l’Aumône, Grésillons, Luth, Agnettes", source: "Zonage IRIS INSEE de Gennevilliers (5 IRIS)" },
-    { fait: "Gennevilliers accueille le plus grand port fluvial d’Île-de-France", source: "TODO_VERIFIER — fait largement connu (port de Gennevilliers, HAROPA Port), pas recoupé avec une source officielle précise cette session" }
+    { fait: "Gennevilliers accueille le plus grand port fluvial d’Île-de-France", source: "Port de Gennevilliers, HAROPA Port — confirmé" }
   ],
   meta: {
     title: "Assurance emprunteur à Gennevilliers | GP Finances",

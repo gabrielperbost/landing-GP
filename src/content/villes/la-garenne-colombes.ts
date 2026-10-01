@@ -8,7 +8,7 @@ export const laGarenneColombes: VilleData = {
   codesPostaux: ["92250"],
   departement: "92",
   villesVoisines: ["colombes", "bois-colombes", "courbevoie"],
-  quartiers: ["Mairie", "Médéric", "Sartoris", "Vallées", "Moulin Bailly"],
+  quartiers: ["Les Vallées", "Centre-Sud", "Centre-Nord", "Champs-Philippe"],
   profilImmobilier:
     "La plus petite commune du secteur nord du 92 en superficie, La Garenne-Colombes a un prix au m² parmi les plus élevés du secteur, avec un marché presque exclusivement composé d’appartements. Le centre-ville, autour de la mairie, concentre l’essentiel des commerces et de la vie locale.",
   prixM2: {
@@ -36,7 +36,7 @@ export const laGarenneColombes: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Mairie, Médéric, Sartoris, Vallées, Moulin Bailly", source: "TODO_VERIFIER — liste partielle reprise d’un agrégateur immobilier, pas recoupée avec un découpage officiel de la mairie" }
+    { fait: "Quartiers Les Vallées, Centre-Sud, Centre-Nord, Champs-Philippe", source: "Site officiel de la mairie de La Garenne-Colombes (lagarennecolombes.fr), « Conseils de quartier » (4 conseils officiels)" }
   ],
   meta: {
     title: "Assurance emprunteur à La Garenne-Colombes | GP Finances",
