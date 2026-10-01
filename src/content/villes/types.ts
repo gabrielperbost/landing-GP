@@ -1,0 +1,58 @@
+/**
+ * Modèle de données pour les landing pages locales « assurance emprunteur »
+ * (36 communes du 92 + 20 arrondissements de Paris). Une ville = un fichier
+ * dans ce dossier, pour faciliter la relecture et la vérification des faits.
+ *
+ * Règle stricte : aucun champ chiffré ne doit être inventé. Si une donnée ne
+ * peut pas être vérifiée avec une source fiable (DVF/data.gouv.fr, Notaires
+ * du Grand Paris, INSEE), la valeur est `null` et le champ est listé dans le
+ * rapport de génération sous TODO_VERIFIER.
+ */
+
+export type ChiffreVerifie = {
+  valeur: number;
+  source: string;
+  date: string; // date de récupération de la donnée, pas la date de la transaction
+};
+
+export type VilleData = {
+  slug: string;
+  nom: string;
+  type: "commune" | "arrondissement";
+  codesPostaux: string[];
+  departement: "92" | "75";
+
+  /** Slugs (pas les noms) des villes/arrondissements voisins, pour le maillage interne. */
+  villesVoisines: string[];
+
+  /** Vrais quartiers de la ville, pas des zones inventées. */
+  quartiers: string[];
+
+  /** 2-3 phrases spécifiques : type de biens, profil dominant (primo-accédants, familles, investisseurs…). */
+  profilImmobilier: string;
+
+  /** Prix au m², par type de bien. `null` si non vérifié → TODO_VERIFIER. */
+  prixM2: {
+    appartements: ChiffreVerifie | null;
+    maisons: ChiffreVerifie | null;
+  };
+
+  population: ChiffreVerifie | null;
+
+  /** Qui emprunte ici, en une ou deux phrases ancrées dans la réalité du marché local. */
+  profilEmprunteurs: string;
+
+  /** Temps/moyen de transport réel jusqu'au bureau d'Issy-les-Moulineaux ou à Paris 6e. */
+  accesBureau: string;
+
+  /** L'angle unique de la page (voir brief : grands capitaux, primo-accédants, cadres de la Défense…). */
+  angleEditorial: string;
+
+  /** 2 questions propres à la ville. La FAQ générale (FAQ_ITEMS) est ajoutée automatiquement par le template. */
+  faqLocales: { q: string; r: string }[];
+
+  meta: {
+    title: string;
+    description: string;
+  };
+};

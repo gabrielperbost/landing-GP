@@ -25,7 +25,26 @@ const config: Config = {
         muted: "#475569",
         surface: "#0B1224",
         card: "#FFFFFF",
-        border: "#E2E8F0"
+        border: "#E2E8F0",
+        // Direction artistique du site réellement en ligne (pages locales assurance
+        // emprunteur, voir src/app/assurance-emprunteur/[slug]) : valeurs reprises à
+        // l'identique de :root dans maquettes/gp-finances-2026-09-22/styles.css.
+        // Tokens additifs, n'affectent aucune page existante (primary/ink/surface
+        // du thème bleu/cyan inchangés).
+        midnight: "#0d1f3c",
+        midnightSoft: "#172f50",
+        gold: "#c9a84c",
+        goldLight: "#e8c97a",
+        ivory: "#fafaf7",
+        localInk: "#142638",
+        localMuted: "#64717d",
+        localBorder: "#e8e4d9",
+        goldPale: "#f7f2e7",
+        bluePale: "#eff3f7"
+      },
+      fontFamily: {
+        localSerif: ["var(--font-local-serif)", "Georgia", "serif"],
+        localSans: ["var(--font-local-sans)", "Arial", "sans-serif"]
       },
       boxShadow: {
         soft: "0 18px 48px -22px rgba(15, 23, 42, 0.22)"
