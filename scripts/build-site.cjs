@@ -201,7 +201,11 @@ const GENERAL_FAQ_POOL = [
   { q: 'Combien de temps prend le changement ?', a: 'Votre banque a 10 jours ouvrés pour répondre à la demande une fois le dossier complet envoyé.' },
   { q: 'Puis-je changer si mon prêt est déjà ancien ?', a: 'Oui, l’ancienneté du prêt n’a aucune incidence : le droit au changement s’applique à tout moment, quelle que soit la date de signature.' }
 ];
-const slugSum = slug => [...slug].reduce((s, ch) => s + ch.charCodeAt(0), 0);
+// Hash djb2 (pas une simple somme de codes de caractères) : une somme simple fait coïncider deux
+// slugs dès que la différence de leurs sommes est un multiple des petits modulos utilisés plus
+// bas (2, 3, 8) — ce qui arrive plus souvent qu'il n'y paraît sur des noms de ville — et fait
+// alors coïncider TOUTES les variantes (FAQ générale, intertitres…) pour cette paire de villes.
+const slugSum = slug => { let h = 5381; for (const ch of slug) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h; };
 // Intertitres/connecteurs à variantes (brief : « varie aussi l'ordre des sections et les
 // intertitres d'une page à l'autre »). Choisis par ville via un hash du slug, pour que le même
 // texte ne se répète pas mot pour mot sur les 36+ pages.
@@ -210,6 +214,11 @@ const PHRASES = {
   whyReviewHeading: name => [`Pourquoi revoir votre assurance de prêt à ${name}`, `Ce que change une assurance de prêt mieux choisie à ${name}`, `Votre assurance de prêt à ${name}, en clair`],
   financingTitle: name => [`Un exemple de financement à ${name}`, `Ce que représente un achat à ${name}`, `Simulation chiffrée pour un achat à ${name}`],
   faqTitle: name => [`Vos questions à ${name}`, `Questions fréquentes à ${name}`, `Ce qu’on me demande souvent à ${name}`],
+  lemoineSentence: () => [
+    'Depuis la loi Lemoine, vous pouvez changer d’assurance de prêt à tout moment, sans frais.',
+    'La loi Lemoine vous permet de résilier votre assurance de prêt quand vous le souhaitez, sans attendre une date anniversaire.',
+    'Grâce à la loi Lemoine, ce changement est possible à tout moment du prêt, sans frais ni justification particulière.'
+  ],
   nearbyLead: () => ['J’accompagne aussi les habitants de :', 'Je suis aussi présent auprès des emprunteurs de :', 'Vous habitez plutôt par ici ? Voir aussi :']
 };
 const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[slugSum(slug) % options.length]; };
@@ -296,10 +305,12 @@ const condenseForCityPage = (html, parts) => {
   const simulator = extract(/<section class="section insurance-simulator"[\s\S]*?<\/section>\s*(?=<section)/);
 
   // Méthode (« Comment ça marche »), avec la loi Lemoine résumée en une phrase + lien vers le
-  // détail sur /assurance-emprunteur, plutôt qu'une section « loi Lemoine » séparée.
+  // détail sur /assurance-emprunteur, plutôt qu'une section « loi Lemoine » séparée. Phrase
+  // variante (comme financingTitle/faqTitle) : identique sur toutes les pages sinon, ce qui
+  // pèse sur la similarité entre pages dont le contenu local est plus court.
   const process = extract(/<section class="section process-section" id="methode">[\s\S]*?<\/section>/).replace(
     '<p>Vous choisissez la solution. Je gère le reste.</p>',
-    '<p>Vous choisissez la solution. Je gère le reste. Depuis la loi Lemoine, vous pouvez changer d’assurance de prêt à tout moment, sans frais. <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p>'
+    `<p>Vous choisissez la solution. Je gère le reste. ${phrase('lemoineSentence', parts.slug)} <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p>`
   );
 
   const testimonials = extract(/<section class="section testimonials-section"[\s\S]*?<\/section>/);
@@ -455,14 +466,14 @@ for (const c of CITIES_ALL) {
       .map(s => `${s.source} (${s.date})`)
       .filter((v, idx, arr) => arr.indexOf(v) === idx)
       .join(' ; ');
-    const cityBlock = `<section class="section local-seo-city" id="pres-de-chez-vous"><div class="container simple-explainer"><p class="eyebrow"><span></span>Près de chez vous</p><h2>À ${name}</h2></div><div class="container local-body"><!--LOCAL--><p class="local-angle">${esc(ville.angleEditorial)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p><p class="local-note">Accès au cabinet : ${esc(ville.accesBureau)}</p><!--/LOCAL-->${nearbyBlock}<p class="local-source">${sourcesNote ? `Sources : ${sourcesNote}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p></div></section>`;
+    const cityBlock = `<section class="section local-seo-city" id="pres-de-chez-vous"><div class="container simple-explainer"><p class="eyebrow"><span></span>Près de chez vous</p><h2>À ${name}</h2></div><div class="container local-body"><!--LOCAL--><p class="local-angle">${esc(ville.angleEditorial)}</p><p>${esc(ville.profilImmobilier)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p><p class="local-note">Accès au cabinet : ${esc(ville.accesBureau)}</p><!--/LOCAL-->${nearbyBlock}<p class="local-source">${sourcesNote ? `Sources : ${sourcesNote}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p></div></section>`;
 
     localPage({
       file: c.slug, route, title: ville.meta.title, description: ville.meta.description,
       eyebrow: `Assurance emprunteur · ${c.name}`,
       h1: `<h1>Assurance de prêt à ${name}.<br>Le coût de votre assurance <em>diminue.</em></h1>`,
       faq, areaServed: c.name,
-      condenseParts: { financingSection, faqSection, cityBlock },
+      condenseParts: { slug: c.slug, financingSection, faqSection, cityBlock },
       breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
     });
     continue;
