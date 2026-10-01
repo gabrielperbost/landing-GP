@@ -206,9 +206,10 @@ const slugSum = slug => [...slug].reduce((s, ch) => s + ch.charCodeAt(0), 0);
 // intertitres d'une page à l'autre »). Choisis par ville via un hash du slug, pour que le même
 // texte ne se répète pas mot pour mot sur les 36+ pages.
 const PHRASES = {
+  // H2 de la section « exemple de financement », pensé bénéfice (pas une répétition du H1).
+  whyReviewHeading: name => [`Pourquoi revoir votre assurance de prêt à ${name}`, `Ce que change une assurance de prêt mieux choisie à ${name}`, `Votre assurance de prêt à ${name}, en clair`],
   financingTitle: name => [`Un exemple de financement à ${name}`, `Ce que représente un achat à ${name}`, `Simulation chiffrée pour un achat à ${name}`],
   faqTitle: name => [`Vos questions à ${name}`, `Questions fréquentes à ${name}`, `Ce qu’on me demande souvent à ${name}`],
-  neighborsTitle: () => ['Comparé aux communes voisines', 'Par rapport aux villes alentour', 'Le marché autour de vous'],
   nearbyLead: () => ['J’accompagne aussi les habitants de :', 'Je suis aussi présent auprès des emprunteurs de :', 'Vous habitez plutôt par ici ? Voir aussi :']
 };
 const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[slugSum(slug) % options.length]; };
@@ -219,41 +220,126 @@ const rotatingGeneralFaq = (slug, count = 4) => {
 };
 const YEARS_TEXT = LOCAL.years.join(' et ');
 const RETRIEVED = new Date(LOCAL.retrievedAt + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
-const cityInfo = c => {
-  const d = LOCAL.cities[c.slug] || {};
-  const flats = d.flats && d.flats.sales >= 30 ? d.flats : null;
-  const houses = d.houses && d.houses.sales >= 15 ? d.houses : null;
+// Nombre de ventes minimum, sous la base DVF, pour qu'un chiffre (tuile ou exemple de
+// financement) soit considéré assez fiable pour être affiché — même règle pour le 92 et pour
+// Paris, pour les appartements comme pour les maisons. En dessous, la donnée est traitée comme
+// absente (voir localData.js) plutôt que d'afficher un chiffre statistiquement fragile.
+const MIN_SALES = 50;
+let LOCAL_PARIS = { cities: {} };
+try {
+  LOCAL_PARIS = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'content', 'localDataParis.json'), 'utf8'));
+} catch {
+  // Pas encore généré (aucun arrondissement migré) : node scripts/fetch-local-data-paris.cjs.
+}
+const cityInfo = (c, source) => {
+  const d = (source[c.slug]) || {};
+  const flats = d.flats && d.flats.sales >= MIN_SALES ? d.flats : null;
+  const houses = d.houses && d.houses.sales >= MIN_SALES ? d.houses : null;
   const ref = flats || houses;
   const price = ref ? ref.medianPrice : null;
   const capital = price ? Math.round(price * 0.9 / 1000) * 1000 : null;
   return { ...d, flats, houses, capital, refKind: flats ? 'appartement' : houses ? 'maison' : null, refPrice: price };
 };
-// Villes hors 92 (Paris pour l'instant) : pas de fiche dans localSeo92/localData92.json, juste
-// un "stub" minimal {slug, name, postalCode, nearby} dérivé de VilleData, pour pouvoir réutiliser
-// exactement la même boucle de génération de page que pour le 92.
+// Villes hors 92 (Paris) : pas de fiche dans localSeo92.ts, juste un "stub" minimal
+// {slug, name, postalCode, nearby} dérivé de VilleData, pour réutiliser exactement la même
+// boucle de génération de page que pour le 92. Population reprise de VilleData (sourcée
+// indépendamment, voir src/content/villes/{slug}.ts), car localDataParis.json ne couvre que les
+// prix (DVF) — pas la population (déjà disponible via geo.api.gouv.fr dans VilleData).
 const OTHER_STUBS = VILLES_DATA.filter(v => v.departement !== '92').map(v => ({
   slug: v.slug, name: v.nom, postalCode: v.codesPostaux[0], nearby: []
 }));
 const CITIES_ALL = [...CITIES_92, ...OTHER_STUBS];
-const INFO = new Map(CITIES_ALL.map(c => [c.slug, cityInfo(c)]));
-// Pour les villes sans fiche localData92.json (Paris), on reprend les chiffres de VilleData
-// (déjà sourcés indépendamment, voir src/content/villes/{slug}.ts) plutôt que de laisser les
-// tuiles vides. Les villes du 92 déjà couvertes par localData92.json ne sont pas modifiées.
-for (const v of VILLES_DATA) {
-  const info = INFO.get(v.slug);
-  if (info && !info.population && !info.flats && !info.houses) {
-    INFO.set(v.slug, {
-      ...info,
-      population: v.population ? v.population.valeur : undefined,
-      flats: v.prixM2.appartements ? { medianPerM2: v.prixM2.appartements.valeur } : null,
-      houses: v.prixM2.maisons ? { medianPerM2: v.prixM2.maisons.valeur } : null
-    });
-  }
-}
+const INFO = new Map([
+  ...CITIES_92.map(c => [c.slug, cityInfo(c, LOCAL.cities)]),
+  ...OTHER_STUBS.map(c => {
+    const info = cityInfo(c, LOCAL_PARIS.cities);
+    const ville = VILLE_BY_SLUG.get(c.slug);
+    return [c.slug, { ...info, population: ville && ville.population ? ville.population.valeur : undefined }];
+  })
+]);
 const cityLink = c => `<a href="/assurance-emprunteur/${c.slug}">${esc(c.name)}</a>`;
 const insuranceCost = (capital, points) => capital * (points / 100) * 20;
 
-const localPage = ({ file, route, title, description, eyebrow, heading, intro, extra, h1, breadcrumb, faq, areaServed }) => {
+// Condense les blocs génériques du gabarit (identiques sur les 56 pages villes) pour ne garder,
+// sur une page ville, que l'essentiel : le détail complet (avis Google, loi Lemoine, méthode)
+// reste sur /assurance-emprunteur, avec un lien « En savoir plus » depuis la page ville. Ne
+// touche jamais au contenu propre à la ville (local-seo), injecté séparément.
+// Dans un bandeau d'avis (<ul class="tk-track">...</ul>), ne garde que les N premiers <li> —
+// utilisé pour compacter le bandeau défilant sur les pages villes (3 avis réels au lieu de 17+,
+// même mécanique des deux côtés de la boucle CSS, aria-hidden compris).
+const truncateTrack = (trackHtml, count) => {
+  const items = trackHtml.match(/<li>[\s\S]*?<\/li>/g) || [];
+  return items.slice(0, count).join('');
+};
+
+// Page ville : reconstruit entièrement le <main> dans l'ordre validé (assurance d'abord, ville
+// ensuite) plutôt que d'insérer un bloc local dans le gabarit complet. Sections génériques
+// gardées (extraites telles quelles du gabarit) : hero, bandeau d'avis compact, simulateur,
+// méthode (+ 1 phrase loi Lemoine), témoignages, présentation compacte de Gabriel, CTA final.
+// Sections génériques retirées des pages villes (détail complet réservé à /assurance-emprunteur) :
+// « pourquoi nous choisir », chiffres agrégés de la société, paragraphe loi Lemoine en entier,
+// comparaison avant/après générique, carrousel d'avis complet, FAQ générique.
+const condenseForCityPage = (html, parts) => {
+  const extract = re => (re.exec(html) || [])[0] || '';
+
+  const hero = extract(/<section class="service-hero">[\s\S]*?<\/section>/);
+
+  // Bandeau défilant d'avis Google : avis réels et vérifiés, gardé en version compacte (3 avis au
+  // lieu de 17+) plutôt que supprimé ; exclu de la mesure de similarité/contenu local par
+  // scripts/check-landings.ts, au même titre que le simulateur — un repère de confiance, pas du
+  // contenu éditorial propre à la page.
+  let ticker = extract(/<section class="review-ticker"[\s\S]*?<\/section>/);
+  ticker = ticker
+    .replace(/<ul class="tk-track">([\s\S]*?)<\/ul>/, (m, inner) => `<ul class="tk-track">${truncateTrack(inner, 3)}</ul>`)
+    .replace(/<ul class="tk-track" aria-hidden="true">([\s\S]*?)<\/ul>/, (m, inner) => `<ul class="tk-track" aria-hidden="true">${truncateTrack(inner, 3)}</ul>`);
+
+  const simulator = extract(/<section class="section insurance-simulator"[\s\S]*?<\/section>\s*(?=<section)/);
+
+  // Méthode (« Comment ça marche »), avec la loi Lemoine résumée en une phrase + lien vers le
+  // détail sur /assurance-emprunteur, plutôt qu'une section « loi Lemoine » séparée.
+  const process = extract(/<section class="section process-section" id="methode">[\s\S]*?<\/section>/).replace(
+    '<p>Vous choisissez la solution. Je gère le reste.</p>',
+    '<p>Vous choisissez la solution. Je gère le reste. Depuis la loi Lemoine, vous pouvez changer d’assurance de prêt à tout moment, sans frais. <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p>'
+  );
+
+  const testimonials = extract(/<section class="section testimonials-section"[\s\S]*?<\/section>/);
+
+  // Présentation compacte de Gabriel (photo + 2 phrases + ORIAS) : un repère de confiance, pas du
+  // contenu éditorial propre à la page — exclue de la mesure comme le simulateur et le bandeau.
+  const advisorPhoto = (/<div class="advisor-photo">[\s\S]*?<\/div>/.exec(extract(/<section class="section advisor-section"[\s\S]*?<\/section>/)) || [])[0] || '';
+  const advisor = `<section class="section advisor-section condensed" id="votre-courtier"><div class="container advisor-layout">${advisorPhoto}<div class="advisor-copy"><p class="eyebrow"><span></span>Votre courtier</p><h2>Gabriel Perbost</h2><p class="section-intro">Un interlocuteur unique pour analyser votre situation, comparer les solutions et gérer vos démarches. Courtier indépendant · ORIAS 23003789.</p></div></div></section>`;
+
+  const finalCta = extract(/<section class="final-section"[\s\S]*?<\/section>/);
+
+  const main = [hero, ticker, simulator, process, parts.financingSection, parts.faqSection, testimonials, parts.cityBlock, advisor, finalCta].join('');
+  return html.replace(/<main id="main">[\s\S]*?<\/main>/, `<main id="main">${main}</main>`);
+};
+
+// Villes pas encore migrées (pas de fichier VilleData) : gardent le bloc local unique inséré
+// avant le simulateur (pas assez de contenu rédigé pour la nouvelle structure éclatée), mais
+// profitent quand même des allègements génériques validés sur les 3 pages pilotes — bandeau
+// d'avis compact, carrousel réduit, FAQ générique retirée, liens vers le détail loi Lemoine/méthode.
+const applyGenericTrims = (html) => {
+  html = html
+    .replace(/<ul class="tk-track">([\s\S]*?)<\/ul>/, (m, inner) => `<ul class="tk-track">${truncateTrack(inner, 3)}</ul>`)
+    .replace(/<ul class="tk-track" aria-hidden="true">([\s\S]*?)<\/ul>/, (m, inner) => `<ul class="tk-track" aria-hidden="true">${truncateTrack(inner, 3)}</ul>`);
+  html = html.replace(/<section class="section social-proof-section" id="avis-clients"[\s\S]*?<\/section>/, (m) => {
+    const badge = (/<a class="google-rating"[\s\S]*?<\/a>/.exec(m) || [])[0] || '';
+    return `<section class="section social-proof-section condensed" id="avis-clients"><div class="container"><div class="proof-section-heading">${badge}<p>Les avis complets de nos clients sont à lire sur la page <a href="/assurance-emprunteur#avis-clients">assurance emprunteur</a>.</p></div></div></section>`;
+  });
+  html = html.replace(/<section class="section faq-section">[\s\S]*?<\/section>/, '');
+  html = html.replace(
+    '<p class="section-intro">La loi Lemoine permet de changer d’assurance emprunteur à tout moment pour les prêts concernés. Nous comparons les contrats, vérifions les garanties et préparons votre dossier.</p>',
+    '<p class="section-intro">La loi Lemoine permet de changer d’assurance emprunteur à tout moment pour les prêts concernés. Nous comparons les contrats, vérifions les garanties et préparons votre dossier.</p><p class="text-link"><a href="/assurance-emprunteur#comprendre">En savoir plus sur la loi Lemoine →</a></p>'
+  );
+  html = html.replace(
+    '<p>Vous choisissez la solution. Je gère le reste.</p>',
+    '<p>Vous choisissez la solution. Je gère le reste. <a href="/assurance-emprunteur#methode">Le détail de la méthode →</a></p>'
+  );
+  return html;
+};
+
+const localPage = ({ file, route, title, description, eyebrow, heading, intro, extra, h1, breadcrumb, faq, areaServed, condenseParts, condenseGeneric }) => {
   let html = built['assurance-emprunteur'];
   const url = ORIGIN + route;
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
@@ -271,10 +357,19 @@ const localPage = ({ file, route, title, description, eyebrow, heading, intro, e
     html = html.replace(/<a href="\/#solutions" class="breadcrumb">Accueil <span>\/<\/span> Assurance emprunteur<\/a>/, breadcrumb.html);
     html = html.replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"BreadcrumbList".*?<\/script>/s, `<script type="application/ld+json">${JSON.stringify(breadcrumb.schema)}</script>`);
   }
-  // FAQ : questions propres à la ville + questions générales déjà présentes sur la page, dans un seul bloc de données structurées
-  const section = `<section class="section local-seo" id="pres-de-chez-vous"><div class="container simple-explainer"><p class="eyebrow"><span></span>Près de chez vous</p><h2>${heading}</h2><p class="section-intro">${intro}</p></div><div class="container local-body">${extra}</div></section>`;
-  if (!html.includes('<section class="section insurance-simulator"')) throw new Error('simulateur introuvable dans la page locale');
-  html = html.replace('<section class="section insurance-simulator"', section + '<section class="section insurance-simulator"');
+  if (condenseParts) {
+    // Page ville : le <main> est entièrement reconstruit dans l'ordre validé (voir
+    // condenseForCityPage), pas un bloc inséré dans le gabarit complet.
+    html = condenseForCityPage(html, condenseParts);
+  } else {
+    // Page hub (ex. /assurance-emprunteur/hauts-de-seine) ou ville pas encore migrée : gabarit
+    // complet, un seul bloc local inséré avant le simulateur (+ allègements génériques pour les
+    // villes non migrées, voir applyGenericTrims — pas pour le hub, qui reste la page complète).
+    const section = `<section class="section local-seo" id="pres-de-chez-vous"><div class="container simple-explainer"><p class="eyebrow"><span></span>Près de chez vous</p><h2>${heading}</h2><p class="section-intro">${intro}</p></div><div class="container local-body">${extra}</div></section>`;
+    if (!html.includes('<section class="section insurance-simulator"')) throw new Error('simulateur introuvable dans la page locale');
+    html = html.replace('<section class="section insurance-simulator"', section + '<section class="section insurance-simulator"');
+    if (condenseGeneric) html = applyGenericTrims(html);
+  }
   if (faq && faq.length) {
     html = html.replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"FAQPage".*?<\/script>/s, m => {
       const base = JSON.parse(m.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
@@ -286,7 +381,13 @@ const localPage = ({ file, route, title, description, eyebrow, heading, intro, e
 };
 
 const stat = (value, label) => `<div class="local-stat"><strong>${value}</strong><span>${label}</span></div>`;
-const faqHtml = items => `<div class="local-faq">${items.map(q => `<details><summary>${esc(q.q)}<span>+</span></summary><p>${q.a}</p></details>`).join('')}</div>`;
+// `local: true` sur une question = écrite spécifiquement pour cette ville (voir faqLocales dans
+// VilleData) : balisée <!--LOCAL--> pour la mesure de part de contenu local. Les questions
+// générales tournantes (pool partagé entre toutes les villes) ne le sont pas.
+const faqHtml = items => `<div class="local-faq">${items.map(q => {
+  const details = `<details><summary>${esc(q.q)}<span>+</span></summary><p>${q.a}</p></details>`;
+  return q.local ? `<!--LOCAL-->${details}<!--/LOCAL-->` : details;
+}).join('')}</div>`;
 
 // Page du département : tableau des prix par ville (données réelles)
 {
@@ -311,6 +412,65 @@ for (const c of CITIES_ALL) {
   const name = esc(nonBreakingName(c.name)), cp = esc(c.postalCode);
   const near = c.nearby.map(n => CITIES_92.find(x => x.name === n)).filter(Boolean);
   const nearNames = c.nearby.map(n => { const hit = CITIES_92.find(x => x.name === n); return hit ? cityLink(hit) : `<span>${esc(n)}</span>`; });
+  const faq = [];
+
+  if (ville) {
+    // Ville migrée (fichier src/content/villes/{slug}.ts) : structure validée sur les 3 pages
+    // pilotes — assurance d'abord (simulateur, méthode, cas concret, FAQ, témoignages), ville
+    // ensuite (bloc court en bas de page). Voir condenseForCityPage pour l'assemblage complet.
+    faq.push(...ville.faqLocales.map(q => ({ q: q.q, a: q.r, local: true })), ...rotatingGeneralFaq(c.slug, 2));
+
+    // 2 tuiles au lieu de 4 : prix au m² + capital typique emprunté (celui-là même qui sert
+    // d'exemple de financement juste en dessous). Balisées locales : ce sont des faits propres à
+    // la ville.
+    const tiles2 = [];
+    if (i.flats) tiles2.push(stat(eur(i.flats.medianPerM2), 'prix médian d’un appartement au m²'));
+    if (i.capital) tiles2.push(stat(eur(i.capital), 'capital typique emprunté (10&nbsp;% d’apport)'));
+
+    // Tableau chiffré (écart de taux d'assurance) uniquement si un capital réel et assez sourcé
+    // existe (voir MIN_SALES). Sans ça, pas de note explicative : une section sans donnée fiable
+    // ne doit pas apparaître du tout, pas même sous une forme dégradée.
+    let financingDetail = '';
+    if (i.refKind) {
+      const p = (points) => eur(insuranceCost(i.capital, points));
+      financingDetail = `<h3 class="local-h3">${phrase('financingTitle', c.slug, name)}</h3><p>Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats pour ce capital :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`;
+    }
+    // Section entière masquée si aucune tuile ni aucun détail chiffré (ni prix/m², ni exemple) :
+    // pas de bloc affiché avec juste un H2 et rien dessous.
+    const financingSection = (tiles2.length || financingDetail)
+      ? `<section class="section local-seo-financing" id="exemple-financement"><div class="container simple-explainer"><p class="eyebrow"><span></span>Votre situation à ${name}</p><h2>${phrase('whyReviewHeading', c.slug, name)}</h2></div><div class="container local-body"><!--LOCAL-->${tiles2.length ? `<div class="local-stats">${tiles2.join('')}</div>` : ''}${financingDetail}<!--/LOCAL--></div></section>`
+      : '';
+
+    const faqSection = `<section class="section local-seo-faq" id="faq-locale"><div class="container simple-explainer"><p class="eyebrow"><span></span>Vos questions</p><h2>${phrase('faqTitle', c.slug, name)}</h2></div><div class="container local-body">${faqHtml(faq)}</div></section>`;
+
+    // Bloc ville, en bas de page : angle éditorial + profil (sous l'angle de l'assurance :
+    // profils d'emprunteurs, durées et montants typiques — pas de données immobilières
+    // supplémentaires), quartiers, accès au cabinet, puis liens vers les villes voisines (sans
+    // tableau de prix, déjà donné plus haut) et la mention des sources.
+    const nearbyBlock = nearNames.length
+      ? `<p class="city-links-label">${phrase('nearbyLead', c.slug)}</p><p class="city-links">${nearNames.join('')}</p>`
+      : '';
+    const sourcesNote = [ville.population, ville.prixM2.appartements, ville.prixM2.maisons]
+      .filter(Boolean)
+      .map(s => `${s.source} (${s.date})`)
+      .filter((v, idx, arr) => arr.indexOf(v) === idx)
+      .join(' ; ');
+    const cityBlock = `<section class="section local-seo-city" id="pres-de-chez-vous"><div class="container simple-explainer"><p class="eyebrow"><span></span>Près de chez vous</p><h2>À ${name}</h2></div><div class="container local-body"><!--LOCAL--><p class="local-angle">${esc(ville.angleEditorial)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p><p class="local-note">Accès au cabinet : ${esc(ville.accesBureau)}</p><!--/LOCAL-->${nearbyBlock}<p class="local-source">${sourcesNote ? `Sources : ${sourcesNote}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p></div></section>`;
+
+    localPage({
+      file: c.slug, route, title: ville.meta.title, description: ville.meta.description,
+      eyebrow: `Assurance emprunteur · ${c.name}`,
+      h1: `<h1>Assurance de prêt à ${name}.<br>Le coût de votre assurance <em>diminue.</em></h1>`,
+      faq, areaServed: c.name,
+      condenseParts: { financingSection, faqSection, cityBlock },
+      breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
+    });
+    continue;
+  }
+
+  // Ville pas encore migrée : comportement historique (bloc unique avant le simulateur, tuiles
+  // chiffrées, tableau des communes voisines), avec les allègements génériques du gabarit
+  // (bandeau d'avis compact, FAQ générique retirée) appliqués en plus.
   const tiles = [];
   if (i.population) tiles.push(stat(num(i.population), 'habitants (INSEE)'));
   if (i.flats) {
@@ -319,71 +479,41 @@ for (const c of CITIES_ALL) {
   }
   if (i.houses && i.houses.medianPrice) tiles.push(stat(eur(i.houses.medianPrice), 'prix médian d’une maison'));
   else if (i.houses) tiles.push(stat(eur(i.houses.medianPerM2), 'prix médian d’une maison au m²'));
-  const faq = [];
-  // Blocs nommés, assemblés dans l'ordre choisi par la ville (ville.sectionOrder) pour éviter
-  // un gabarit identique d'une page à l'autre. Les villes non migrées gardent l'ordre historique.
-  const namedBlocks = {};
-  if (ville) {
-    // Angle éditorial + portrait réel de la ville (quartiers, profil du marché, qui emprunte
-    // ici) : contenu propre à cette ville, voir src/content/villes/{slug}.ts.
-    namedBlocks.profil = `<p class="local-angle">${esc(ville.angleEditorial)}</p><h3 class="local-h3">À ${name}</h3><p>${esc(ville.profilImmobilier)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p>`;
-  }
-  if (tiles.length) namedBlocks.stats = `<div class="local-stats">${tiles.join('')}</div>`;
+  const blocks = [];
+  if (tiles.length) blocks.push(`<div class="local-stats">${tiles.join('')}</div>`);
   if (i.refKind) {
     const p = (points) => eur(insuranceCost(i.capital, points));
     const kind = i.refKind === 'appartement' ? 'un appartement' : 'une maison';
-    namedBlocks.financing = `<h3 class="local-h3">${phrase('financingTitle', c.slug, name)}</h3><p>Pour acheter ${kind} au prix médian du secteur (${eur(i.refPrice)}) avec 10&nbsp;% d’apport, le capital emprunté serait d’environ <strong>${eur(i.capital)}</strong>. Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`;
-    if (!ville) {
-      if (i.flats) faq.push({ q: `Combien coûte un appartement à ${c.name} ?`, a: `D’après les ventes enregistrées en ${YEARS_TEXT} (base DVF), le prix médian d’un appartement à ${name} est d’environ ${eur(i.flats.medianPrice)}, soit ${eur(i.flats.medianPerM2)} le m² (${num(i.flats.sales)} ventes analysées). Ce sont des repères statistiques, pas l’estimation de votre bien.` });
-      faq.push({ q: `Quel capital emprunter pour acheter à ${c.name} ?`, a: `Pour ${kind} au prix médian avec 10&nbsp;% d’apport, le capital emprunté serait d’environ ${eur(i.capital)}. Votre capacité réelle dépend de vos revenus, de vos charges et de votre banque.` });
-      faq.push({ q: `Combien l’assurance de prêt peut-elle coûter en plus ou en moins ?`, a: `À titre d’illustration, sur ${eur(i.capital)} empruntés pendant 20&nbsp;ans, chaque 0,10&nbsp;point d’écart de taux d’assurance (calculé sur le capital initial) représente environ ${p(0.10)} sur la durée. Comparer les contrats peut donc compter.` });
-    }
+    blocks.push(`<h3 class="local-h3">${phrase('financingTitle', c.slug, name)}</h3><p>Pour acheter ${kind} au prix médian du secteur (${eur(i.refPrice)}) avec 10&nbsp;% d’apport, le capital emprunté serait d’environ <strong>${eur(i.capital)}</strong>. Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`);
+    if (i.flats) faq.push({ q: `Combien coûte un appartement à ${c.name} ?`, a: `D’après les ventes enregistrées en ${YEARS_TEXT} (base DVF), le prix médian d’un appartement à ${name} est d’environ ${eur(i.flats.medianPrice)}, soit ${eur(i.flats.medianPerM2)} le m² (${num(i.flats.sales)} ventes analysées). Ce sont des repères statistiques, pas l’estimation de votre bien.` });
+    faq.push({ q: `Quel capital emprunter pour acheter à ${c.name} ?`, a: `Pour ${kind} au prix médian avec 10&nbsp;% d’apport, le capital emprunté serait d’environ ${eur(i.capital)}. Votre capacité réelle dépend de vos revenus, de vos charges et de votre banque.` });
+    faq.push({ q: `Combien l’assurance de prêt peut-elle coûter en plus ou en moins ?`, a: `À titre d’illustration, sur ${eur(i.capital)} empruntés pendant 20&nbsp;ans, chaque 0,10&nbsp;point d’écart de taux d’assurance (calculé sur le capital initial) représente environ ${p(0.10)} sur la durée. Comparer les contrats peut donc compter.` });
   }
-  if (ville) {
-    // FAQ réduite et différenciée : 3 questions propres à la ville (sourcées dans le fichier
-    // VilleData) + un sous-ensemble tournant de questions générales (pool de 8, 4 affichées).
-    faq.push(...ville.faqLocales.map(q => ({ q: q.q, a: q.r })), ...rotatingGeneralFaq(c.slug, 4));
-  } else {
-    faq.push({ q: `Puis-je changer l’assurance de mon prêt immobilier à ${c.name} ?`, a: `Oui. Depuis la loi Lemoine, vous pouvez résilier l’assurance de votre prêt à tout moment, sans frais, en proposant un contrat aux garanties équivalentes à celles exigées par votre banque. Je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.` });
-    faq.push({ q: `Dois-je me déplacer à Issy-les-Moulineaux ?`, a: `Non. Les échanges se font en visio ou par téléphone, où que vous habitiez, et mon cabinet est situé à Issy-les-Moulineaux, dans les Hauts-de-Seine.` });
-  }
-  namedBlocks.faq = `<h3 class="local-h3">${phrase('faqTitle', c.slug, name)}</h3>${faqHtml(faq)}`;
+  faq.push({ q: `Puis-je changer l’assurance de mon prêt immobilier à ${c.name} ?`, a: `Oui. Depuis la loi Lemoine, vous pouvez résilier l’assurance de votre prêt à tout moment, sans frais, en proposant un contrat aux garanties équivalentes à celles exigées par votre banque. Je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.` });
+  faq.push({ q: `Dois-je me déplacer à Issy-les-Moulineaux ?`, a: `Non. Les échanges se font en visio ou par téléphone, où que vous habitiez, et mon cabinet est situé à Issy-les-Moulineaux, dans les Hauts-de-Seine.` });
+  blocks.push(`<h3 class="local-h3">${phrase('faqTitle', c.slug, name)}</h3>${faqHtml(faq)}`);
   const nearRows = near.map(n => ({ n, ni: INFO.get(n.slug) })).filter(x => x.ni.flats);
   if (i.flats && nearRows.length) {
-    namedBlocks.neighbors = `<h3 class="local-h3">${phrase('neighborsTitle', c.slug)}</h3><table class="local-table local-table-small"><thead><tr><th>Commune</th><th>Prix médian au m²</th></tr></thead><tbody><tr class="local-current"><td>${name}</td><td><strong>${eur(i.flats.medianPerM2)}</strong></td></tr>${nearRows.map(({ n, ni }) => `<tr><td>${cityLink(n)}</td><td>${eur(ni.flats.medianPerM2)}</td></tr>`).join('')}</tbody></table>`;
+    blocks.push(`<h3 class="local-h3">Comparé aux communes voisines</h3><table class="local-table local-table-small"><thead><tr><th>Commune</th><th>Prix médian au m²</th></tr></thead><tbody><tr class="local-current"><td>${name}</td><td><strong>${eur(i.flats.medianPerM2)}</strong></td></tr>${nearRows.map(({ n, ni }) => `<tr><td>${cityLink(n)}</td><td>${eur(ni.flats.medianPerM2)}</td></tr>`).join('')}</tbody></table>`);
   }
-  const order = (ville && ville.sectionOrder) || ['profil', 'stats', 'financing', 'faq', 'neighbors'];
-  const blocks = order.map(key => namedBlocks[key]).filter(Boolean);
   const nearbyBlock = nearNames.length
     ? `<p class="city-links-label">${phrase('nearbyLead', c.slug)}</p><p class="city-links">${nearNames.join('')}</p>`
     : '';
-  // Mention des sources : celles de la ville (VilleData) quand elles existent, sinon celles du
-  // 92 par défaut. Ne jamais citer une source qui n'a pas réellement servi pour cette page.
-  const sourcesNote = ville
-    ? [ville.population, ville.prixM2.appartements, ville.prixM2.maisons]
-        .filter(Boolean)
-        .map(s => `${s.source} (${s.date})`)
-        .filter((v, idx, arr) => arr.indexOf(v) === idx)
-        .join(' ; ')
-    : (LOCAL.retrievedAt ? `DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}` : '');
+  const sourcesNote = LOCAL.retrievedAt ? `DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}` : '';
   blocks.push(`${nearbyBlock}<p class="local-source">${sourcesNote ? `Sources : ${sourcesNote}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p>`);
 
   const title0 = `Assurance de prêt à ${c.name} (${c.postalCode}) : changer et économiser`;
-  const title = ville ? ville.meta.title : (title0.length <= 58 ? `${title0} | GP Finances` : title0);
-  const description = ville ? ville.meta.description : (i.refKind
+  const title = title0.length <= 58 ? `${title0} | GP Finances` : title0;
+  const description = i.refKind
     ? `À ${c.name} (${c.postalCode}), ${i.refKind === 'appartement' ? 'l’appartement' : 'la maison'} se vend ${i.flats ? `environ ${num(i.flats.medianPerM2).replace(/&nbsp;/g, ' ')} €/m²` : `autour de ${num(i.refPrice).replace(/&nbsp;/g, ' ')} €`} : sur ${num(i.capital).replace(/&nbsp;/g, ' ')} € empruntés, 0,10 point d’assurance en moins vaut ${num(insuranceCost(i.capital, 0.10)).replace(/&nbsp;/g, ' ')} € sur 20 ans.`
-    : `GP Finances accompagne les emprunteurs à ${c.name} (${c.postalCode}) pour réduire le coût de l’assurance de prêt avec garanties équivalentes et gestion complète des démarches.`);
+    : `GP Finances accompagne les emprunteurs à ${c.name} (${c.postalCode}) pour réduire le coût de l’assurance de prêt avec garanties équivalentes et gestion complète des démarches.`;
   localPage({
     file: c.slug, route, title, description,
     eyebrow: `Assurance emprunteur · ${c.name}`,
     h1: `<h1>Assurance de prêt à ${name}.<br>Le coût de votre assurance <em>diminue.</em></h1>`,
     heading: `Assurance de prêt à ${name} (${cp})`,
-    // L'angle éditorial a déjà sa propre mise en avant (.local-angle) juste en dessous : on ne
-    // le répète pas ici, cette ligne ne donne que le repère démographique.
-    intro: ville
-      ? (i.population ? `${name} est ${ville.type === 'arrondissement' ? 'un arrondissement de Paris' : 'une commune des Hauts-de-Seine'} de ${num(i.population)}&nbsp;habitants.` : '')
-      : `${i.population ? `${name} est une commune de ${num(i.population)}&nbsp;habitants des Hauts-de-Seine. ` : ''}${esc(c.localPitch)}`,
-    extra: blocks.join(''), faq, areaServed: c.name,
+    intro: `${i.population ? `${name} est une commune de ${num(i.population)}&nbsp;habitants des Hauts-de-Seine. ` : ''}${esc(c.localPitch)}`,
+    extra: blocks.join(''), faq, areaServed: c.name, condenseGeneric: true,
     breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
   });
 }

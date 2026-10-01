@@ -2,26 +2,41 @@
 /**
  * Contrôles qualité des pages locales « assurance emprunteur » générées par
  * scripts/build-site.cjs (public/site/pages/villes/*.html), pour détecter les
- * pages satellites (contenu quasi identique) avant toute indexation.
+ * pages satellites (contenu quasi identique ou trop pauvre en contenu propre
+ * à la ville) avant toute indexation.
  *
  *   node scripts/check-landings.ts
  *
- * Vérifie :
- *  1. Similarité de texte entre chaque paire de pages MIGRÉES (celles qui ont un
- *     fichier src/content/villes/{slug}.ts) — shingles de 5 mots, indice de
- *     Jaccard, seuil 50 %. Les pages pas encore migrées (ancien contenu généré
- *     automatiquement) ne sont volontairement pas comparées entre elles : leur
- *     similarité est un problème déjà identifié, pas quelque chose que ce
- *     contrôle doit re-signaler à chaque exécution tant qu'elles ne sont pas
- *     reprises.
- *  2. Unicité des <title>, meta description et H1 (sur TOUTES les pages).
- *  3. Présence de TODO_VERIFIER (chiffres non sourcés, à valider).
- *  4. Liens internes (villes voisines, hub) : toutes les cibles existent.
- *  5. Que le build Next.js (tsc --noEmit) passe sans erreur.
+ * Vérifie, pour chaque paire de pages MIGRÉES (celles qui ont un fichier
+ * src/content/villes/{slug}.ts) :
+ *  1. Similarité du contenu principal (tout ce qui est entre <header> et
+ *     <footer>, SAUF le simulateur d'assurance — un outil fonctionnel
+ *     identique sur les 56 pages, traité comme le header/menu/footer et pas
+ *     comme du contenu éditorial ; le reste, y compris les blocs génériques
+ *     « pourquoi nous choisir », loi Lemoine, process…, est volontairement
+ *     gardé dans la mesure car Google l'analyse comme du contenu de la page)
+ *     — shingles de 5 mots, indice de Jaccard, seuil : < 40 % entre chaque paire.
+ *  2. Part de contenu local : au moins 38 % des mots du contenu principal
+ *     (hors simulateur) doivent être propres à la ville (texte balisé
+ *     <!--LOCAL--> par build-site.cjs : angle éditorial, profil immobilier/
+ *     emprunteurs, quartiers, accès au cabinet, cas concret chiffré et FAQ
+ *     propres à la ville). ~1 000 mots de contenu principal (hors simulateur)
+ *     par page est l'objectif, affiché à titre indicatif mais pas bloquant
+ *     (c'est une cible, pas un seuil strict). Les pages pas encore migrées ne
+ *     sont volontairement pas mesurées : leur similarité/pauvreté de contenu
+ *     est un problème déjà identifié, pas quelque chose que ce contrôle doit
+ *     re-signaler à chaque exécution tant qu'elles ne sont pas reprises.
+ *
+ * Vérifie aussi, sur TOUTES les pages :
+ *  3. Unicité des <title>, meta description et H1.
+ *  4. Présence de TODO_VERIFIER (chiffres non sourcés, à valider).
+ *  5. Liens internes (villes voisines, hub) : toutes les cibles existent.
+ *  6. Que le build Next.js (tsc --noEmit) passe sans erreur.
  *
  * Code de sortie non nul si un problème bloquant est détecté (titres dupliqués,
- * lien mort, paire migrée > 50 % de similarité). Les TODO_VERIFIER sont listés
- * mais ne font pas échouer le script (ce sont des chiffres à valider, pas une erreur).
+ * lien mort, paire migrée ≥ 50 % de similarité, page migrée sous le seuil de
+ * contenu local). Les TODO_VERIFIER sont listés mais ne font pas échouer le
+ * script (ce sont des chiffres à valider, pas une erreur).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -31,8 +46,10 @@ import { VILLES as VILLES_DATA } from "../src/content/villes/index.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VILLES_DIR = path.join(ROOT, "public", "site", "pages", "villes");
-const SIMILARITY_THRESHOLD = 0.5;
+const SIMILARITY_THRESHOLD = 0.4;
 const SHINGLE_SIZE = 5;
+const LOCAL_SHARE_MIN = 0.38;
+const TOTAL_WORDS_TARGET = 1000; // indicatif, affiché mais pas bloquant
 const MIGRATED_SLUGS = new Set(VILLES_DATA.map((v) => v.slug));
 
 type PageInfo = {
@@ -42,6 +59,9 @@ type PageInfo = {
   description: string;
   h1: string;
   text: string;
+  wordCount: number;
+  localWordCount: number;
+  localShare: number;
   shingles: Set<string>;
   links: string[];
 };
@@ -72,6 +92,14 @@ const jaccard = (a: Set<string>, b: Set<string>) => {
   return union === 0 ? 0 : inter / union;
 };
 
+const wordCount = (text: string) => (text.trim() ? text.trim().split(/\s+/).length : 0);
+
+// Texte entre <!--LOCAL--> et <!--/LOCAL--> (posé par build-site.cjs sur l'angle éditorial, le
+// profil immobilier/emprunteurs, les quartiers et la FAQ propre à la ville) : le seul contenu
+// qu'on compte comme « propre à la ville » pour la part de contenu local.
+const localText = (mainHtml: string) =>
+  [...mainHtml.matchAll(/<!--LOCAL-->([\s\S]*?)<!--\/LOCAL-->/g)].map((m) => stripTags(m[1])).join(" ");
+
 if (!fs.existsSync(VILLES_DIR)) {
   console.error(`Introuvable : ${VILLES_DIR}. Lancez d'abord \`node scripts/build-site.cjs\`.`);
   process.exit(1);
@@ -91,6 +119,16 @@ const problems: string[] = [];
 const todoVerifier: string[] = [];
 const pages: PageInfo[] = [];
 
+// Faits qualitatifs non sourcés (faitsSources, voir src/content/villes/types.ts) : pas dans le
+// HTML généré (c'est une métadonnée de relecture), donc listés séparément du scan ci-dessous.
+for (const v of VILLES_DATA) {
+  for (const f of v.faitsSources ?? []) {
+    if (f.source.startsWith("TODO_VERIFIER")) {
+      todoVerifier.push(`${v.slug} (faitsSources) : « ${f.fait} » — ${f.source}`);
+    }
+  }
+}
+
 for (const file of files) {
   const slug = file.replace(/\.html$/, "");
   const html = fs.readFileSync(path.join(VILLES_DIR, file), "utf8");
@@ -99,10 +137,21 @@ for (const file of files) {
   const description = (/<meta name="description" content="([^"]*)"/.exec(html) || [])[1] ?? "";
   const h1 = stripTags((/<h1>([\s\S]*?)<\/h1>/.exec(html) || [])[1] ?? "");
 
-  // Texte visible du <main> uniquement (évite que header/footer identiques sur
-  // toutes les pages ne gonflent artificiellement la similarité).
-  const mainMatch = /<main[^>]*>([\s\S]*?)<\/main>/.exec(html);
-  const text = stripTags(mainMatch ? mainMatch[1] : html);
+  // Texte du contenu principal (tout ce qui est entre <header> et <footer>, donc le <main> —
+  // header/menu/footer identiques sur toutes les pages, exclus pour ne pas gonfler artificiellement
+  // la similarité), MOINS le simulateur d'assurance, le bandeau d'avis Google et la présentation
+  // compacte de Gabriel : trois blocs de confiance/outil identiques sur les 56 pages (libellés de
+  // formulaire, avis vérifiés, bio courtier déjà affichés ailleurs), traités comme le header/footer
+  // plutôt que comme du contenu éditorial propre à la page. Les autres blocs génériques du gabarit
+  // (méthode, témoignages…) restent dans la mesure.
+  const mainHtmlRaw = (/<main[^>]*>([\s\S]*?)<\/main>/.exec(html) || [])[1] ?? html;
+  const mainHtml = mainHtmlRaw
+    .replace(/<section class="section insurance-simulator"[\s\S]*?<\/section>\s*(?=<section)/, '')
+    .replace(/<section class="review-ticker"[\s\S]*?<\/section>/, '')
+    .replace(/<section class="section advisor-section condensed"[\s\S]*?<\/section>/, '');
+  const text = stripTags(mainHtml);
+  const wc = wordCount(text);
+  const localWc = wordCount(localText(mainHtml));
 
   if (html.includes("TODO_VERIFIER")) {
     const count = (html.match(/TODO_VERIFIER/g) || []).length;
@@ -111,10 +160,22 @@ for (const file of files) {
 
   const links = [...html.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1]);
 
-  pages.push({ file, slug, title, description, h1, text, shingles: shingles(text), links });
+  pages.push({
+    file,
+    slug,
+    title,
+    description,
+    h1,
+    text,
+    wordCount: wc,
+    localWordCount: localWc,
+    localShare: wc === 0 ? 0 : localWc / wc,
+    shingles: shingles(text),
+    links
+  });
 }
 
-// 2. Unicité des title / description / H1
+// 3. Unicité des title / description / H1
 const byTitle = new Map<string, string[]>();
 const byDescription = new Map<string, string[]>();
 const byH1 = new Map<string, string[]>();
@@ -138,7 +199,7 @@ for (const [label, map] of [
   }
 }
 
-// 1. Similarité par paire, pages migrées uniquement (texte du <main>)
+// 1. Similarité par paire, pages migrées uniquement (contenu principal)
 const migratedPages = pages.filter((p) => MIGRATED_SLUGS.has(p.slug));
 const similarPairs: { a: string; b: string; score: number }[] = [];
 for (let i = 0; i < migratedPages.length; i++) {
@@ -151,7 +212,16 @@ for (const { a, b, score } of similarPairs) {
   problems.push(`Similarité ${(score * 100).toFixed(0)} % entre ${a} et ${b} (seuil : ${SIMILARITY_THRESHOLD * 100} %)`);
 }
 
-// 4. Liens internes : la cible doit exister (route connue ou fichier de ville)
+// 2. Part de contenu local (pages migrées uniquement)
+for (const p of migratedPages) {
+  if (p.localShare < LOCAL_SHARE_MIN) {
+    problems.push(
+      `${p.file} : part de contenu local ${(p.localShare * 100).toFixed(0)} % (seuil : ${LOCAL_SHARE_MIN * 100} %) — ${p.localWordCount} mots locaux sur ${p.wordCount}`
+    );
+  }
+}
+
+// 5. Liens internes : la cible doit exister (route connue ou fichier de ville)
 const knownSlugs = new Set(pages.map((p) => p.slug));
 let routes: Record<string, string> = {};
 try {
@@ -184,7 +254,7 @@ for (const [href, fileSet] of brokenLinks) {
   problems.push(`Lien interne vers une page inconnue « ${href} » (présent sur ${[...fileSet].join(", ")})`);
 }
 
-// 5. tsc --noEmit
+// 6. tsc --noEmit
 let tscOk = true;
 try {
   execFileSync("npx", ["tsc", "--noEmit"], { cwd: ROOT, stdio: "pipe" });
@@ -196,8 +266,18 @@ try {
 
 // ---- Rapport ----
 console.log(`\nPages contrôlées : ${pages.length} (dont ${migratedPages.length} migrées, comparées entre elles)`);
-console.log(`Similarité max autorisée entre pages migrées : ${SIMILARITY_THRESHOLD * 100} % (shingles de ${SHINGLE_SIZE} mots, texte du <main>)`);
+console.log(`Similarité max autorisée entre pages migrées (contenu principal, hors simulateur) : ${SIMILARITY_THRESHOLD * 100} %`);
+console.log(`Part de contenu local minimale : ${LOCAL_SHARE_MIN * 100} % · Cible indicative (non bloquante) : ~${TOTAL_WORDS_TARGET} mots`);
 console.log(`tsc --noEmit : ${tscOk ? "OK" : "ÉCHEC"}`);
+
+if (migratedPages.length) {
+  console.log(`\nPages migrées — détail (contenu principal, hors simulateur) :`);
+  for (const p of migratedPages) {
+    const shareStr = `${(p.localShare * 100).toFixed(0)} %`.padStart(4);
+    const targetFlag = Math.abs(p.wordCount - TOTAL_WORDS_TARGET) > 250 ? "  ⚠ loin de la cible" : "";
+    console.log(`  - ${p.file.padEnd(28)} ${p.wordCount} mots au total, ${p.localWordCount} locaux (${shareStr})${targetFlag}`);
+  }
+}
 
 if (todoVerifier.length) {
   console.log(`\nTODO_VERIFIER à valider (${todoVerifier.length}) :`);

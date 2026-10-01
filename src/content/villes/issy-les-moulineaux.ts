@@ -18,10 +18,10 @@ export const issyLesMoulineaux: VilleData = {
   },
   population: { valeur: 67669, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres travaillant à Val de Seine, à Paris ou à La Défense, ainsi que des familles en accession secondaire. Les prix élevés poussent souvent à emprunter sur des durées longues et des capitaux importants, ce qui rend le coût de l’assurance de prêt particulièrement sensible.",
+    "Beaucoup de cadres travaillant à Val de Seine, à Paris ou à La Défense, ainsi que des familles en accession secondaire. Les prix élevés poussent souvent à emprunter sur des durées longues et des capitaux importants, ce qui rend le coût de l’assurance de prêt particulièrement sensible. Les prêts dépassent fréquemment 20 à 25 ans, et les dossiers à deux emprunteurs sont majoritaires chez les couples de cadres. Les situations les plus fréquentes : un premier achat avec un apport conséquent, ou un changement d’assurance sur un prêt déjà en cours pour profiter d’un meilleur taux sans toucher au crédit lui-même.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux : un rendez-vous en personne se fait sur place, sans déplacement à prévoir. Une visio ou un appel restent possibles si c’est plus simple pour vous.",
-  angleEditorial: "Ville du bureau : rendez-vous en personne mis en avant.",
+  angleEditorial: "Le cabinet est sur place : le rendez-vous en personne n’est jamais loin.",
   faqLocales: [
     {
       q: "J’ai acheté un logement récent, par exemple dans le Fort d’Issy : puis-je quand même changer d’assurance ?",
@@ -35,6 +35,14 @@ export const issyLesMoulineaux: VilleData = {
       q: "Comment venir au cabinet si je ne suis pas en voiture ?",
       r: "Le cabinet est facilement accessible par la ligne 12 (Mairie d’Issy ou Corentin Celton), le RER C ou le tramway T2, qui desservent tous Issy-les-Moulineaux."
     }
+  ],
+  faitsSources: [
+    { fait: "Ligne 12 du métro (stations Mairie d’Issy, terminus, et Corentin Celton)", source: "RATP ; Wikipédia « Ligne 12 du métro de Paris », « Mairie d’Issy (métro) », « Corentin Celton (métro) »" },
+    { fait: "RER C (gares Issy et Issy-Val de Seine)", source: "SNCF Transilien ; Wikipédia « Issy (gare) », « Issy-Val de Seine (gare) »" },
+    { fait: "Tramway T2 (arrêt Issy-Val de Seine notamment, correspondance RER C)", source: "RATP, ligne T2 ; Wikipédia « Tramway d’Île-de-France ligne 2 »" },
+    { fait: "Val de Seine est un quartier d’affaires qui concentre des sièges d’entreprises (ex. Microsoft, Coca-Cola France, Sodexo, TF1, Accor)", source: "Wikipédia « Val-de-Seine » ; L’Annuaire/Hoodspot, sièges sociaux à Issy-les-Moulineaux" },
+    { fait: "Proximité immédiate de Paris, limitrophe du 15e arrondissement (Porte de Versailles)", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle cette session" },
+    { fait: "Le Fort d’Issy est un écoquartier récent ; Les Épinettes et Léon Blum comme noms de quartiers d’usage courant", source: "TODO_VERIFIER — noms d’usage, pas de découpage officiel (quartiers administratifs) recoupé cette session" }
   ],
   meta: {
     title: "Assurance emprunteur à Issy-les-Moulineaux | GP Finances",

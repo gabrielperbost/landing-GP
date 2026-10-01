@@ -18,11 +18,10 @@ export const boulogneBillancourt: VilleData = {
   },
   population: { valeur: 119019, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres supérieurs et de dirigeants, avec des capitaux empruntés souvent élevés, en particulier pour l’achat d’une maison. Sur ce type de montant, chaque point de taux d’assurance représente une somme bien plus importante qu’ailleurs : la délégation d’assurance y a un impact financier particulièrement net.",
+    "Beaucoup de cadres supérieurs et de dirigeants, avec des capitaux empruntés souvent élevés, en particulier pour l’achat d’une maison. Sur ce type de montant, chaque point de taux d’assurance représente une somme bien plus importante qu’ailleurs : la délégation d’assurance y a un impact financier particulièrement net. Les prêts dépassent souvent 25 à 30 ans pour l’achat d’une maison, avec une quotité répartie entre les deux emprunteurs selon les revenus de chacun. C’est aussi une ville où beaucoup de propriétaires n’ont jamais comparé leur assurance depuis la signature du prêt, parfois plusieurs années plus tôt, alors que la loi Lemoine leur permet de le faire sans attendre.",
   accesBureau:
     "Le cabinet de GP Finances est à Issy-les-Moulineaux, à quelques minutes de Boulogne-Billancourt. La plupart des échanges se font par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Capitaux élevés : chaque point de taux d’assurance pèse lourd.",
-  sectionOrder: ["stats", "profil", "faq", "financing", "neighbors"],
   faqLocales: [
     {
       q: "J’ai acheté une maison du côté de Billancourt pour un capital important : l’assurance de prêt a-t-elle vraiment un impact sur ce type de montant ?",
@@ -36,6 +35,12 @@ export const boulogneBillancourt: VilleData = {
       q: "Dois-je me déplacer jusqu’à Issy-les-Moulineaux pour une étude ?",
       r: "Non, la plupart des échanges se font par téléphone ou en visio. Un rendez-vous en personne reste possible si vous le préférez."
     }
+  ],
+  faitsSources: [
+    { fait: "L’île Seguin a accueilli l’usine Renault (jusqu’en 1992, sites démolis en 2005) et a été reconvertie, notamment avec La Seine Musicale", source: "Wikipédia « Île Seguin » ; L’Argus, « Renault sera de retour sur ses terres historiques de Boulogne-Billancourt en 2026 »" },
+    { fait: "Quartiers Les Princes et Marcel Sembat (place Marcel-Sembat, carrefour central)", source: "Wikipédia « Place Marcel-Sembat » ; JLL, « Le quartier tendance Marcel Sembat Centre-Ville »" },
+    { fait: "Point-du-Jour et Billancourt comme secteurs de la commune", source: "TODO_VERIFIER — Wikipédia situe plutôt un découpage « République – Point du Jour » ; à recouper avec le zonage officiel de la mairie" },
+    { fait: "Les Princes et Point-du-Jour sont à la frontière de Paris 16e", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle cette session" }
   ],
   meta: {
     title: "Assurance emprunteur à Boulogne-Billancourt | GP Finances",

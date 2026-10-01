@@ -1,0 +1,27 @@
+{
+ "retrievedAt": "2026-10-01",
+ "years": [
+  2024,
+  2025
+ ],
+ "sources": {
+  "prices": "DGFiP, base DVF (Demandes de valeurs foncières), data.gouv.fr"
+ },
+ "cities": {
+  "paris-15e": {
+   "insee": "75115",
+   "flats": {
+    "sales": 5655,
+    "medianPerM2": 9467,
+    "medianPrice": 408000,
+    "medianArea": 45
+   },
+   "houses": {
+    "sales": 15,
+    "medianPerM2": 11190,
+    "medianPrice": 1325000,
+    "medianArea": 144
+   }
+  }
+ }
+}
