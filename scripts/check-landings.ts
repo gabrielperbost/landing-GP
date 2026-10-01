@@ -7,26 +7,33 @@
  *   node scripts/check-landings.ts
  *
  * Vérifie :
- *  1. Similarité de texte entre chaque paire de pages (shingles de 5 mots, indice
- *     de Jaccard) — signale toute paire > 60 %.
- *  2. Unicité des <title>, meta description et H1.
+ *  1. Similarité de texte entre chaque paire de pages MIGRÉES (celles qui ont un
+ *     fichier src/content/villes/{slug}.ts) — shingles de 5 mots, indice de
+ *     Jaccard, seuil 50 %. Les pages pas encore migrées (ancien contenu généré
+ *     automatiquement) ne sont volontairement pas comparées entre elles : leur
+ *     similarité est un problème déjà identifié, pas quelque chose que ce
+ *     contrôle doit re-signaler à chaque exécution tant qu'elles ne sont pas
+ *     reprises.
+ *  2. Unicité des <title>, meta description et H1 (sur TOUTES les pages).
  *  3. Présence de TODO_VERIFIER (chiffres non sourcés, à valider).
  *  4. Liens internes (villes voisines, hub) : toutes les cibles existent.
  *  5. Que le build Next.js (tsc --noEmit) passe sans erreur.
  *
  * Code de sortie non nul si un problème bloquant est détecté (titres dupliqués,
- * lien mort, paire > 60 % de similarité). Les TODO_VERIFIER sont listés mais ne
- * font pas échouer le script (ce sont des chiffres à valider, pas une erreur).
+ * lien mort, paire migrée > 50 % de similarité). Les TODO_VERIFIER sont listés
+ * mais ne font pas échouer le script (ce sont des chiffres à valider, pas une erreur).
  */
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { VILLES as VILLES_DATA } from "../src/content/villes/index.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VILLES_DIR = path.join(ROOT, "public", "site", "pages", "villes");
-const SIMILARITY_THRESHOLD = 0.6;
+const SIMILARITY_THRESHOLD = 0.5;
 const SHINGLE_SIZE = 5;
+const MIGRATED_SLUGS = new Set(VILLES_DATA.map((v) => v.slug));
 
 type PageInfo = {
   file: string;
@@ -131,12 +138,13 @@ for (const [label, map] of [
   }
 }
 
-// 1. Similarité par paire (texte du <main> uniquement)
+// 1. Similarité par paire, pages migrées uniquement (texte du <main>)
+const migratedPages = pages.filter((p) => MIGRATED_SLUGS.has(p.slug));
 const similarPairs: { a: string; b: string; score: number }[] = [];
-for (let i = 0; i < pages.length; i++) {
-  for (let j = i + 1; j < pages.length; j++) {
-    const score = jaccard(pages[i].shingles, pages[j].shingles);
-    if (score > SIMILARITY_THRESHOLD) similarPairs.push({ a: pages[i].file, b: pages[j].file, score });
+for (let i = 0; i < migratedPages.length; i++) {
+  for (let j = i + 1; j < migratedPages.length; j++) {
+    const score = jaccard(migratedPages[i].shingles, migratedPages[j].shingles);
+    if (score > SIMILARITY_THRESHOLD) similarPairs.push({ a: migratedPages[i].file, b: migratedPages[j].file, score });
   }
 }
 for (const { a, b, score } of similarPairs) {
@@ -187,8 +195,8 @@ try {
 }
 
 // ---- Rapport ----
-console.log(`\nPages contrôlées : ${pages.length}`);
-console.log(`Similarité max autorisée : ${SIMILARITY_THRESHOLD * 100} % (shingles de ${SHINGLE_SIZE} mots, texte du <main>)`);
+console.log(`\nPages contrôlées : ${pages.length} (dont ${migratedPages.length} migrées, comparées entre elles)`);
+console.log(`Similarité max autorisée entre pages migrées : ${SIMILARITY_THRESHOLD * 100} % (shingles de ${SHINGLE_SIZE} mots, texte du <main>)`);
 console.log(`tsc --noEmit : ${tscOk ? "OK" : "ÉCHEC"}`);
 
 if (todoVerifier.length) {

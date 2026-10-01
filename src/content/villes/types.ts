@@ -48,8 +48,15 @@ export type VilleData = {
   /** L'angle unique de la page (voir brief : grands capitaux, primo-accédants, cadres de la Défense…). */
   angleEditorial: string;
 
-  /** 2 questions propres à la ville. La FAQ générale (FAQ_ITEMS) est ajoutée automatiquement par le template. */
+  /** 3 questions propres à la ville. Des questions générales tournantes s'y ajoutent automatiquement. */
   faqLocales: { q: string; r: string }[];
+
+  /**
+   * Ordre des blocs dans la section locale, pour éviter un gabarit identique
+   * d'une ville à l'autre (voir brief). Si omis, l'ordre par défaut
+   * [profil, stats, financing, faq, neighbors] est utilisé.
+   */
+  sectionOrder?: Array<"profil" | "stats" | "financing" | "faq" | "neighbors">;
 
   meta: {
     title: string;

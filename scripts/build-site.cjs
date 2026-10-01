@@ -201,8 +201,19 @@ const GENERAL_FAQ_POOL = [
   { q: 'Combien de temps prend le changement ?', a: 'Votre banque a 10 jours ouvrés pour répondre à la demande une fois le dossier complet envoyé.' },
   { q: 'Puis-je changer si mon prêt est déjà ancien ?', a: 'Oui, l’ancienneté du prêt n’a aucune incidence : le droit au changement s’applique à tout moment, quelle que soit la date de signature.' }
 ];
+const slugSum = slug => [...slug].reduce((s, ch) => s + ch.charCodeAt(0), 0);
+// Intertitres/connecteurs à variantes (brief : « varie aussi l'ordre des sections et les
+// intertitres d'une page à l'autre »). Choisis par ville via un hash du slug, pour que le même
+// texte ne se répète pas mot pour mot sur les 36+ pages.
+const PHRASES = {
+  financingTitle: name => [`Un exemple de financement à ${name}`, `Ce que représente un achat à ${name}`, `Simulation chiffrée pour un achat à ${name}`],
+  faqTitle: name => [`Vos questions à ${name}`, `Questions fréquentes à ${name}`, `Ce qu’on me demande souvent à ${name}`],
+  neighborsTitle: () => ['Comparé aux communes voisines', 'Par rapport aux villes alentour', 'Le marché autour de vous'],
+  nearbyLead: () => ['J’accompagne aussi les habitants de :', 'Je suis aussi présent auprès des emprunteurs de :', 'Vous habitez plutôt par ici ? Voir aussi :']
+};
+const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[slugSum(slug) % options.length]; };
 const rotatingGeneralFaq = (slug, count = 4) => {
-  const sum = [...slug].reduce((s, ch) => s + ch.charCodeAt(0), 0);
+  const sum = slugSum(slug);
   const start = sum % GENERAL_FAQ_POOL.length;
   return Array.from({ length: count }, (_, i) => GENERAL_FAQ_POOL[(start + i) % GENERAL_FAQ_POOL.length]);
 };
@@ -217,7 +228,28 @@ const cityInfo = c => {
   const capital = price ? Math.round(price * 0.9 / 1000) * 1000 : null;
   return { ...d, flats, houses, capital, refKind: flats ? 'appartement' : houses ? 'maison' : null, refPrice: price };
 };
-const INFO = new Map(CITIES_92.map(c => [c.slug, cityInfo(c)]));
+// Villes hors 92 (Paris pour l'instant) : pas de fiche dans localSeo92/localData92.json, juste
+// un "stub" minimal {slug, name, postalCode, nearby} dérivé de VilleData, pour pouvoir réutiliser
+// exactement la même boucle de génération de page que pour le 92.
+const OTHER_STUBS = VILLES_DATA.filter(v => v.departement !== '92').map(v => ({
+  slug: v.slug, name: v.nom, postalCode: v.codesPostaux[0], nearby: []
+}));
+const CITIES_ALL = [...CITIES_92, ...OTHER_STUBS];
+const INFO = new Map(CITIES_ALL.map(c => [c.slug, cityInfo(c)]));
+// Pour les villes sans fiche localData92.json (Paris), on reprend les chiffres de VilleData
+// (déjà sourcés indépendamment, voir src/content/villes/{slug}.ts) plutôt que de laisser les
+// tuiles vides. Les villes du 92 déjà couvertes par localData92.json ne sont pas modifiées.
+for (const v of VILLES_DATA) {
+  const info = INFO.get(v.slug);
+  if (info && !info.population && !info.flats && !info.houses) {
+    INFO.set(v.slug, {
+      ...info,
+      population: v.population ? v.population.valeur : undefined,
+      flats: v.prixM2.appartements ? { medianPerM2: v.prixM2.appartements.valeur } : null,
+      houses: v.prixM2.maisons ? { medianPerM2: v.prixM2.maisons.valeur } : null
+    });
+  }
+}
 const cityLink = c => `<a href="/assurance-emprunteur/${c.slug}">${esc(c.name)}</a>`;
 const insuranceCost = (capital, points) => capital * (points / 100) * 20;
 
@@ -272,7 +304,7 @@ const faqHtml = items => `<div class="local-faq">${items.map(q => `<details><sum
   });
 }
 
-for (const c of CITIES_92) {
+for (const c of CITIES_ALL) {
   const i = INFO.get(c.slug);
   const ville = VILLE_BY_SLUG.get(c.slug);
   const route = `/assurance-emprunteur/${c.slug}`;
@@ -281,20 +313,26 @@ for (const c of CITIES_92) {
   const nearNames = c.nearby.map(n => { const hit = CITIES_92.find(x => x.name === n); return hit ? cityLink(hit) : `<span>${esc(n)}</span>`; });
   const tiles = [];
   if (i.population) tiles.push(stat(num(i.population), 'habitants (INSEE)'));
-  if (i.flats) { tiles.push(stat(eur(i.flats.medianPerM2), 'prix médian d’un appartement au m²')); tiles.push(stat(eur(i.flats.medianPrice), `prix médian d’un appartement (${num(i.flats.medianArea)} m² en médiane)`)); }
-  if (i.houses) tiles.push(stat(eur(i.houses.medianPrice), 'prix médian d’une maison'));
+  if (i.flats) {
+    tiles.push(stat(eur(i.flats.medianPerM2), 'prix médian d’un appartement au m²'));
+    if (i.flats.medianPrice) tiles.push(stat(eur(i.flats.medianPrice), `prix médian d’un appartement (${num(i.flats.medianArea)} m² en médiane)`));
+  }
+  if (i.houses && i.houses.medianPrice) tiles.push(stat(eur(i.houses.medianPrice), 'prix médian d’une maison'));
+  else if (i.houses) tiles.push(stat(eur(i.houses.medianPerM2), 'prix médian d’une maison au m²'));
   const faq = [];
-  const blocks = [];
+  // Blocs nommés, assemblés dans l'ordre choisi par la ville (ville.sectionOrder) pour éviter
+  // un gabarit identique d'une page à l'autre. Les villes non migrées gardent l'ordre historique.
+  const namedBlocks = {};
   if (ville) {
     // Angle éditorial + portrait réel de la ville (quartiers, profil du marché, qui emprunte
     // ici) : contenu propre à cette ville, voir src/content/villes/{slug}.ts.
-    blocks.push(`<p class="local-angle">${esc(ville.angleEditorial)}</p><h3 class="local-h3">À ${name}</h3><p>${esc(ville.profilImmobilier)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p>`);
+    namedBlocks.profil = `<p class="local-angle">${esc(ville.angleEditorial)}</p><h3 class="local-h3">À ${name}</h3><p>${esc(ville.profilImmobilier)}</p><p>${esc(ville.profilEmprunteurs)}</p><p class="local-note">Quartiers : ${ville.quartiers.map(esc).join(', ')}.</p>`;
   }
-  if (tiles.length) blocks.push(`<div class="local-stats">${tiles.join('')}</div>`);
+  if (tiles.length) namedBlocks.stats = `<div class="local-stats">${tiles.join('')}</div>`;
   if (i.refKind) {
     const p = (points) => eur(insuranceCost(i.capital, points));
     const kind = i.refKind === 'appartement' ? 'un appartement' : 'une maison';
-    blocks.push(`<h3 class="local-h3">Un exemple de financement à ${name}</h3><p>Pour acheter ${kind} au prix médian du secteur (${eur(i.refPrice)}) avec 10&nbsp;% d’apport, le capital emprunté serait d’environ <strong>${eur(i.capital)}</strong>. Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`);
+    namedBlocks.financing = `<h3 class="local-h3">${phrase('financingTitle', c.slug, name)}</h3><p>Pour acheter ${kind} au prix médian du secteur (${eur(i.refPrice)}) avec 10&nbsp;% d’apport, le capital emprunté serait d’environ <strong>${eur(i.capital)}</strong>. Sur 20&nbsp;ans, voici ce que représente l’écart de taux d’assurance entre deux contrats :</p><table class="local-table local-table-small"><thead><tr><th>Écart de taux d’assurance</th><th>Différence de coût sur 20&nbsp;ans</th></tr></thead><tbody><tr><td>0,10&nbsp;point</td><td><strong>${p(0.10)}</strong></td></tr><tr><td>0,20&nbsp;point</td><td><strong>${p(0.20)}</strong></td></tr><tr><td>0,30&nbsp;point</td><td><strong>${p(0.30)}</strong></td></tr></tbody></table><p class="local-note">Exemple pédagogique : cotisation calculée sur le capital initial, durée de 20&nbsp;ans, hors frais de dossier. Le coût réel dépend de votre profil, de la quotité et du contrat.</p>`;
     if (!ville) {
       if (i.flats) faq.push({ q: `Combien coûte un appartement à ${c.name} ?`, a: `D’après les ventes enregistrées en ${YEARS_TEXT} (base DVF), le prix médian d’un appartement à ${name} est d’environ ${eur(i.flats.medianPrice)}, soit ${eur(i.flats.medianPerM2)} le m² (${num(i.flats.sales)} ventes analysées). Ce sont des repères statistiques, pas l’estimation de votre bien.` });
       faq.push({ q: `Quel capital emprunter pour acheter à ${c.name} ?`, a: `Pour ${kind} au prix médian avec 10&nbsp;% d’apport, le capital emprunté serait d’environ ${eur(i.capital)}. Votre capacité réelle dépend de vos revenus, de vos charges et de votre banque.` });
@@ -309,12 +347,26 @@ for (const c of CITIES_92) {
     faq.push({ q: `Puis-je changer l’assurance de mon prêt immobilier à ${c.name} ?`, a: `Oui. Depuis la loi Lemoine, vous pouvez résilier l’assurance de votre prêt à tout moment, sans frais, en proposant un contrat aux garanties équivalentes à celles exigées par votre banque. Je m’occupe des démarches, y compris de la résiliation de l’ancien contrat.` });
     faq.push({ q: `Dois-je me déplacer à Issy-les-Moulineaux ?`, a: `Non. Les échanges se font en visio ou par téléphone, où que vous habitiez, et mon cabinet est situé à Issy-les-Moulineaux, dans les Hauts-de-Seine.` });
   }
-  blocks.push(`<h3 class="local-h3">Vos questions à ${name}</h3>${faqHtml(faq)}`);
+  namedBlocks.faq = `<h3 class="local-h3">${phrase('faqTitle', c.slug, name)}</h3>${faqHtml(faq)}`;
   const nearRows = near.map(n => ({ n, ni: INFO.get(n.slug) })).filter(x => x.ni.flats);
   if (i.flats && nearRows.length) {
-    blocks.push(`<h3 class="local-h3">Comparé aux communes voisines</h3><table class="local-table local-table-small"><thead><tr><th>Commune</th><th>Prix médian au m²</th></tr></thead><tbody><tr class="local-current"><td>${name}</td><td><strong>${eur(i.flats.medianPerM2)}</strong></td></tr>${nearRows.map(({ n, ni }) => `<tr><td>${cityLink(n)}</td><td>${eur(ni.flats.medianPerM2)}</td></tr>`).join('')}</tbody></table>`);
+    namedBlocks.neighbors = `<h3 class="local-h3">${phrase('neighborsTitle', c.slug)}</h3><table class="local-table local-table-small"><thead><tr><th>Commune</th><th>Prix médian au m²</th></tr></thead><tbody><tr class="local-current"><td>${name}</td><td><strong>${eur(i.flats.medianPerM2)}</strong></td></tr>${nearRows.map(({ n, ni }) => `<tr><td>${cityLink(n)}</td><td>${eur(ni.flats.medianPerM2)}</td></tr>`).join('')}</tbody></table>`;
   }
-  blocks.push(`<p class="city-links-label">J’accompagne aussi les habitants de :</p><p class="city-links">${nearNames.join('')}</p><p class="local-source">${LOCAL.retrievedAt ? `Sources : DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p>`);
+  const order = (ville && ville.sectionOrder) || ['profil', 'stats', 'financing', 'faq', 'neighbors'];
+  const blocks = order.map(key => namedBlocks[key]).filter(Boolean);
+  const nearbyBlock = nearNames.length
+    ? `<p class="city-links-label">${phrase('nearbyLead', c.slug)}</p><p class="city-links">${nearNames.join('')}</p>`
+    : '';
+  // Mention des sources : celles de la ville (VilleData) quand elles existent, sinon celles du
+  // 92 par défaut. Ne jamais citer une source qui n'a pas réellement servi pour cette page.
+  const sourcesNote = ville
+    ? [ville.population, ville.prixM2.appartements, ville.prixM2.maisons]
+        .filter(Boolean)
+        .map(s => `${s.source} (${s.date})`)
+        .filter((v, idx, arr) => arr.indexOf(v) === idx)
+        .join(' ; ')
+    : (LOCAL.retrievedAt ? `DGFiP, base DVF (data.gouv.fr, ventes de ${YEARS_TEXT}) ; INSEE (population). Données relevées le ${RETRIEVED}` : '');
+  blocks.push(`${nearbyBlock}<p class="local-source">${sourcesNote ? `Sources : ${sourcesNote}. ` : ''}Repères statistiques : ils ne remplacent pas l’estimation d’un bien ni une étude personnalisée.</p>`);
 
   const title0 = `Assurance de prêt à ${c.name} (${c.postalCode}) : changer et économiser`;
   const title = ville ? ville.meta.title : (title0.length <= 58 ? `${title0} | GP Finances` : title0);
@@ -326,12 +378,16 @@ for (const c of CITIES_92) {
     eyebrow: `Assurance emprunteur · ${c.name}`,
     h1: `<h1>Assurance de prêt à ${name}.<br>Le coût de votre assurance <em>diminue.</em></h1>`,
     heading: `Assurance de prêt à ${name} (${cp})`,
-    intro: `${i.population ? `${name} est une commune de ${num(i.population)}&nbsp;habitants des Hauts-de-Seine. ` : ''}${esc(c.localPitch)}`,
+    // L'angle éditorial a déjà sa propre mise en avant (.local-angle) juste en dessous : on ne
+    // le répète pas ici, cette ligne ne donne que le repère démographique.
+    intro: ville
+      ? (i.population ? `${name} est ${ville.type === 'arrondissement' ? 'un arrondissement de Paris' : 'une commune des Hauts-de-Seine'} de ${num(i.population)}&nbsp;habitants.` : '')
+      : `${i.population ? `${name} est une commune de ${num(i.population)}&nbsp;habitants des Hauts-de-Seine. ` : ''}${esc(c.localPitch)}`,
     extra: blocks.join(''), faq, areaServed: c.name,
     breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
   });
 }
-console.log(`Pages locales : 1 page départementale + ${CITIES_92.length} villes`);
+console.log(`Pages locales : 1 page départementale (92) + ${CITIES_ALL.length} villes (${CITIES_92.length} dans le 92, ${CITIES_ALL.length - CITIES_92.length} ailleurs)`);
 
 // avis Google et chiffres : données de la maquette servies telles quelles
 fs.rmSync(TMP, { recursive: true, force: true });
