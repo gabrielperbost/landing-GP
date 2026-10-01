@@ -1,4 +1,4 @@
-export const CITY_92_PREFIX = "/assurance-de-pret/hauts-de-seine/";
+export const CITY_92_PREFIX = "/assurance-emprunteur/";
 
 export const getCitySlugFromPath = (pathname: string): string => {
   if (!pathname.startsWith(CITY_92_PREFIX)) return "";

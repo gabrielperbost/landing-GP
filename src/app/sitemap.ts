@@ -25,14 +25,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/mentions-legales`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${BASE_URL}/politique-de-confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     {
-      url: `${BASE_URL}/assurance-de-pret/hauts-de-seine`,
-      lastModified: now,
+      // Ancienne adresse du hub : /assurance-de-pret/hauts-de-seine (301 vers la nouvelle,
+      // voir next.config.mjs). Mise à jour le 2026-10-01 lors de la migration des pages villes.
+      url: `${BASE_URL}/assurance-emprunteur/hauts-de-seine`,
+      lastModified: new Date("2026-10-01"),
       changeFrequency: "weekly",
       priority: 0.9
     },
     ...CITIES_92.map((city) => ({
-      url: `${BASE_URL}/assurance-de-pret/hauts-de-seine/${city.slug}`,
-      lastModified: now,
+      url: `${BASE_URL}/assurance-emprunteur/${city.slug}`,
+      lastModified: new Date("2026-10-01"),
       changeFrequency: "weekly" as const,
       priority: 0.8
     }))

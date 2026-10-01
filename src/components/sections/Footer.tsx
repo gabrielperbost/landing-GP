@@ -24,7 +24,7 @@ export const Footer = ({ includeLoan92Link = true }: FooterProps) => (
           </a>
         ))}
         {includeLoan92Link && (
-          <Link href="/assurance-de-pret/hauts-de-seine" className="text-primary hover:underline">
+          <Link href="/assurance-emprunteur/hauts-de-seine" className="text-primary hover:underline">
             Assurance de prêt 92
           </Link>
         )}
