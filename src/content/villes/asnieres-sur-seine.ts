@@ -8,7 +8,7 @@ export const asnieresSurSeine: VilleData = {
   codesPostaux: ["92600"],
   departement: "92",
   villesVoisines: ["bois-colombes", "clichy", "colombes"],
-  quartiers: ["Mairie", "Grésillons", "Bécon", "Flachat", "Champs"],
+  quartiers: ["Bac-Bécon-Flachat", "Centre-Mairie", "Grésillons-Bords de Seine", "Les Hauts d’Asnières", "Voltaire-Bourguignons"],
   profilImmobilier:
     "Asnières-sur-Seine est l’une des communes les plus denses et les plus peuplées du 92, avec un marché presque entièrement tourné vers l’appartement (plus de dix fois plus de ventes d’appartements que de maisons). La proximité de Paris (17e) en fait une commune recherchée par les jeunes actifs.",
   prixM2: {
@@ -36,7 +36,7 @@ export const asnieresSurSeine: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Mairie, Grésillons, Bécon, Flachat, Champs", source: "TODO_VERIFIER — liste reprise d’un agrégateur immobilier (lapporteurdimmo.com), pas recoupée avec un découpage officiel de la mairie" }
+    { fait: "Quartiers Bac-Bécon-Flachat, Centre-Mairie, Grésillons-Bords de Seine, Les Hauts d’Asnières, Voltaire-Bourguignons", source: "Site officiel de la mairie d’Asnières-sur-Seine, « Les conseils consultatifs de quartiers » (5 CCQ)" }
   ],
   meta: {
     title: "Assurance emprunteur à Asnières-sur-Seine | GP Finances",

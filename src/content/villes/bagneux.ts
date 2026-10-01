@@ -8,9 +8,9 @@ export const bagneux: VilleData = {
   codesPostaux: ["92220"],
   departement: "92",
   villesVoisines: ["montrouge", "malakoff", "chatillon"],
-  quartiers: ["Centre-Ville", "Victor Hugo", "Pasteur", "Henri Wallon"],
+  quartiers: ["Centre-Ville", "Nord (Henri-Wallon)", "Champ des Oiseaux", "Bas-Longchamps", "Sud"],
   profilImmobilier:
-    "Bagneux reste l’une des communes les plus accessibles du 92 : son prix médian au m² est parmi les plus bas du département. La ville est aussi en pleine transformation urbaine, avec plusieurs secteurs rénovés ces dernières années.",
+    "Bagneux reste l’une des communes les plus accessibles du 92 : son prix médian, 4 947 €/m² pour un appartement (base DVF, ventes 2024-2025), est inférieur à celui de toutes ses communes limitrophes (Montrouge, Malakoff, Châtillon). La ville est aussi en pleine transformation urbaine, avec plusieurs secteurs rénovés ces dernières années.",
   prixM2: {
     appartements: { valeur: 4947, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 6071, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
@@ -36,8 +36,8 @@ export const bagneux: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Centre-Ville, Victor Hugo, Pasteur, Henri Wallon", source: "TODO_VERIFIER — liste reprise d’un agrégateur immobilier, pas recoupée avec un découpage officiel de la mairie" },
-    { fait: "Bagneux a un prix médian au m² parmi les plus bas du 92", source: "TODO_VERIFIER — déduit de la comparaison des chiffres DVF dans localData92.json, pas recoupé avec un classement départemental officiel" }
+    { fait: "Quartiers Centre-Ville, Nord (Henri-Wallon), Champ des Oiseaux, Bas-Longchamps, Sud", source: "Site officiel de la mairie de Bagneux (participez.bagneux92.fr), « Les Conseils de quartier »" },
+    { fait: "Prix médian de 4 947 €/m² à Bagneux, inférieur à Montrouge (7 102 €), Malakoff (6 475 €) et Châtillon (5 550 €)", source: "DGFiP, base DVF (data.gouv.fr), voir src/content/localData92.json" }
   ],
   meta: {
     title: "Assurance emprunteur à Bagneux | GP Finances",

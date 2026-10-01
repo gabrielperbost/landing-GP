@@ -208,20 +208,79 @@ const GENERAL_FAQ_POOL = [
 const slugSum = slug => { let h = 5381; for (const ch of slug) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h; };
 // Intertitres/connecteurs à variantes (brief : « varie aussi l'ordre des sections et les
 // intertitres d'une page à l'autre »). Choisis par ville via un hash du slug, pour que le même
-// texte ne se répète pas mot pour mot sur les 36+ pages.
+// texte ne se répète pas mot pour mot sur les 36+ pages. Au moins 6 variantes par bloc tournant
+// (FAQ générale, intertitres, méthode) : avec seulement 3, deux villes sur 36+ finissent presque
+// systématiquement par retomber sur la même variante pour un bloc donné — ce qui n'était pas
+// visible à 3 pages pilotes mais a fait remonter la similarité avec le premier lot de 12 (33-38 %
+// contre 21-28 % avant). Le hash intègre aussi le nom du bloc (pas seulement le slug) : sans ça,
+// deux villes qui coïncident sur UNE rotation coïncident sur TOUTES (c'est ce qui s'est produit
+// avec Bagneux/Châtenay-Malabry), puisque c'est le même nombre réduit par des modulos différents.
 const PHRASES = {
   // H2 de la section « exemple de financement », pensé bénéfice (pas une répétition du H1).
-  whyReviewHeading: name => [`Pourquoi revoir votre assurance de prêt à ${name}`, `Ce que change une assurance de prêt mieux choisie à ${name}`, `Votre assurance de prêt à ${name}, en clair`],
-  financingTitle: name => [`Un exemple de financement à ${name}`, `Ce que représente un achat à ${name}`, `Simulation chiffrée pour un achat à ${name}`],
-  faqTitle: name => [`Vos questions à ${name}`, `Questions fréquentes à ${name}`, `Ce qu’on me demande souvent à ${name}`],
+  whyReviewHeading: name => [
+    `Pourquoi revoir votre assurance de prêt à ${name}`,
+    `Ce que change une assurance de prêt mieux choisie à ${name}`,
+    `Votre assurance de prêt à ${name}, en clair`,
+    `Ce que vous pouvez gagner à ${name}`,
+    `L’assurance de prêt expliquée pour ${name}`,
+    `Votre situation d’emprunteur à ${name}`
+  ],
+  financingTitle: name => [
+    `Un exemple de financement à ${name}`,
+    `Ce que représente un achat à ${name}`,
+    `Simulation chiffrée pour un achat à ${name}`,
+    `Chiffrer votre projet à ${name}`,
+    `Un cas concret à ${name}`,
+    `Ce que ça change sur votre budget à ${name}`
+  ],
+  faqTitle: name => [
+    `Vos questions à ${name}`,
+    `Questions fréquentes à ${name}`,
+    `Ce qu’on me demande souvent à ${name}`,
+    `Les questions les plus posées à ${name}`,
+    `Tout ce que vous vous demandez à ${name}`,
+    `Vos interrogations sur l’assurance de prêt à ${name}`
+  ],
   lemoineSentence: () => [
     'Depuis la loi Lemoine, vous pouvez changer d’assurance de prêt à tout moment, sans frais.',
     'La loi Lemoine vous permet de résilier votre assurance de prêt quand vous le souhaitez, sans attendre une date anniversaire.',
-    'Grâce à la loi Lemoine, ce changement est possible à tout moment du prêt, sans frais ni justification particulière.'
+    'Grâce à la loi Lemoine, ce changement est possible à tout moment du prêt, sans frais ni justification particulière.',
+    'La loi Lemoine a ouvert ce droit à tout moment, sans attendre une échéance précise ni payer de pénalité.',
+    'Ce changement est permis par la loi Lemoine, à tout instant du prêt, sans qu’aucun frais ne vous soit facturé.',
+    'La loi Lemoine supprime toute contrainte de date : vous pouvez agir dès que vous le décidez, sans frais.'
   ],
-  nearbyLead: () => ['J’accompagne aussi les habitants de :', 'Je suis aussi présent auprès des emprunteurs de :', 'Vous habitez plutôt par ici ? Voir aussi :']
+  nearbyLead: () => [
+    'J’accompagne aussi les habitants de :',
+    'Je suis aussi présent auprès des emprunteurs de :',
+    'Vous habitez plutôt par ici ? Voir aussi :',
+    'J’interviens également pour les habitants de :',
+    'Ces communes voisines, je les connais aussi bien :',
+    'Je travaille aussi avec les emprunteurs de :'
+  ]
 };
-const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[slugSum(slug) % options.length]; };
+// Hash propre à chaque bloc tournant (slug + nom du bloc), pour que deux villes qui coïncident
+// sur une rotation ne coïncident pas mécaniquement sur toutes les autres.
+const phraseHash = (key, slug) => slugSum(slug + '::' + key);
+const phrase = (key, slug, ...args) => { const options = PHRASES[key](...args); return options[phraseHash(key, slug) % options.length]; };
+
+// « Comment ça marche » (section process-section du gabarit) : jusqu'ici identique mot pour mot
+// sur toutes les pages villes, ce qui pesait sur la similarité à mesure que le nombre de pages
+// migrées augmentait. 6 versions complètes (titre, sous-titre, 3 étapes), même sens, formulation
+// différente.
+const PROCESS_VARIANTS = [
+  { h2: 'Je m’occupe de tout.', sub: 'Vous choisissez la solution. Je gère le reste.',
+    steps: [['J’analyse', 'Votre situation, vos objectifs et vos contrats actuels.'], ['Je compare', 'Les solutions du marché pour trouver celles qui vous correspondent.'], ['Je gère', 'Les démarches, de l’étude jusqu’à la mise en place.']] },
+  { h2: 'Simple pour vous, rigoureux pour moi.', sub: 'Trois étapes, un seul interlocuteur du début à la fin.',
+    steps: [['Votre dossier', 'J’étudie votre situation, vos contrats actuels et vos objectifs.'], ['Le marché', 'Je compare les offres disponibles pour identifier les plus adaptées.'], ['La mise en place', 'Je prends en charge toutes les démarches jusqu’à la signature.']] },
+  { h2: 'Une méthode en trois temps.', sub: 'De l’analyse à la mise en place, sans rien à gérer vous-même.',
+    steps: [['Comprendre', 'Votre profil, votre prêt actuel et ce que vous recherchez.'], ['Comparer', 'Les contrats du marché, pour ne garder que les plus pertinents.'], ['Accompagner', 'La résiliation de l’ancien contrat et la mise en place du nouveau.']] },
+  { h2: 'Ce que je fais, concrètement.', sub: 'Un accompagnement de bout en bout, sans démarche de votre côté.',
+    steps: [['J’étudie', 'Votre dossier, vos garanties actuelles et votre budget.'], ['Je sélectionne', 'Les meilleures offres parmi les contrats disponibles.'], ['Je finalise', 'L’ensemble des démarches administratives, jusqu’au bout.']] },
+  { h2: 'Trois étapes, zéro complexité.', sub: 'Vous n’avez qu’une décision à prendre : celle de comparer.',
+    steps: [['Diagnostic', 'Votre situation actuelle et ce qui peut être amélioré.'], ['Comparatif', 'Les solutions du marché les plus avantageuses pour vous.'], ['Exécution', 'Toutes les démarches, de la demande à la mise en place.']] },
+  { h2: 'Mon rôle : simplifier le vôtre.', sub: 'Je m’occupe de l’essentiel, vous gardez juste la décision finale.',
+    steps: [['Votre profil', 'Analyse de votre situation, de vos contrats et de vos besoins.'], ['Le comparatif', 'Sélection des meilleures offres du marché pour votre cas.'], ['Les démarches', 'Prise en charge complète, de la résiliation à la signature.']] }
+];
 const rotatingGeneralFaq = (slug, count = 4) => {
   const sum = slugSum(slug);
   const start = sum % GENERAL_FAQ_POOL.length;
@@ -304,14 +363,12 @@ const condenseForCityPage = (html, parts) => {
 
   const simulator = extract(/<section class="section insurance-simulator"[\s\S]*?<\/section>\s*(?=<section)/);
 
-  // Méthode (« Comment ça marche »), avec la loi Lemoine résumée en une phrase + lien vers le
-  // détail sur /assurance-emprunteur, plutôt qu'une section « loi Lemoine » séparée. Phrase
-  // variante (comme financingTitle/faqTitle) : identique sur toutes les pages sinon, ce qui
-  // pèse sur la similarité entre pages dont le contenu local est plus court.
-  const process = extract(/<section class="section process-section" id="methode">[\s\S]*?<\/section>/).replace(
-    '<p>Vous choisissez la solution. Je gère le reste.</p>',
-    `<p>Vous choisissez la solution. Je gère le reste. ${phrase('lemoineSentence', parts.slug)} <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p>`
-  );
+  // Méthode (« Comment ça marche ») : reconstruite à partir d'une des 6 variantes (même sens,
+  // formulation différente — voir PROCESS_VARIANTS) plutôt qu'extraite telle quelle du gabarit,
+  // qui est identique mot pour mot sur toutes les pages. La loi Lemoine reste résumée en une
+  // phrase variante + lien vers le détail sur /assurance-emprunteur.
+  const pv = PROCESS_VARIANTS[phraseHash('processVariant', parts.slug) % PROCESS_VARIANTS.length];
+  const process = `<section class="section process-section" id="methode"><div class="container"><p class="eyebrow"><span></span>Notre méthode</p><div class="section-heading"><h2>${pv.h2}</h2><p>${pv.sub} ${phrase('lemoineSentence', parts.slug)} <a href="/assurance-emprunteur#comprendre">En savoir plus →</a></p></div><div class="process-grid">${pv.steps.map(([title, text], i) => `<article class="process-step"><div class="step-top"><span class="step-number">0${i + 1}</span><span class="step-line"></span></div><h3>${title}</h3><p>${text}</p></article>`).join('')}</div></div></section>`;
 
   const testimonials = extract(/<section class="section testimonials-section"[\s\S]*?<\/section>/);
 

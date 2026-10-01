@@ -11,7 +11,7 @@ export const courbevoie: VilleData = {
   villesVoisines: ["puteaux", "nanterre", "neuilly-sur-seine"],
   quartiers: ["Cœur de Ville", "Faubourg de l’Arche", "Bécon", "Gambetta"],
   profilImmobilier:
-    "Courbevoie accueille une partie du quartier d’affaires de La Défense sur son territoire, ce qui en fait l’une des communes les plus chères de ce secteur du 92. Le marché est presque exclusivement composé d’appartements, avec des prix tirés par la proximité immédiate des tours de bureaux. Le secteur du Faubourg de l’Arche, plus récent, et le quartier historique de Bécon offrent deux visages très différents de la commune.",
+    "Courbevoie accueille une partie du quartier d’affaires de La Défense, qui s’étend en réalité sur plusieurs communes (Courbevoie, Puteaux et Nanterre, Puteaux en concentrant les deux tiers), ce qui en fait l’une des communes les plus chères de ce secteur du 92. Le marché est presque exclusivement composé d’appartements, avec des prix tirés par la proximité immédiate des tours de bureaux. Le secteur du Faubourg de l’Arche, plus récent, et le quartier historique de Bécon offrent deux visages très différents de la commune.",
   prixM2: {
     appartements: { valeur: 6667, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 9196, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
@@ -38,7 +38,7 @@ export const courbevoie: VilleData = {
   ],
   faitsSources: [
     { fait: "Quartiers Cœur de Ville, Faubourg de l’Arche, Bécon, Gambetta", source: "Site officiel de la mairie de Courbevoie, « Les quartiers de Courbevoie »" },
-    { fait: "Une partie du quartier d’affaires de La Défense se situe sur le territoire de Courbevoie", source: "TODO_VERIFIER — fait largement connu, pas recoupé avec une délimitation officielle précise cette session" }
+    { fait: "La Défense s’étend sur Puteaux (environ deux tiers du territoire), Courbevoie et Nanterre — pas uniquement sur Courbevoie", source: "Wikipédia « La Défense » ; Larousse, « Quartier de la Défense »" }
   ],
   meta: {
     title: "Assurance emprunteur à Courbevoie | GP Finances",

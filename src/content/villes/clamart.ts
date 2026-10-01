@@ -8,7 +8,7 @@ export const clamart: VilleData = {
   codesPostaux: ["92140"],
   departement: "92",
   villesVoisines: ["issy-les-moulineaux", "chatillon", "meudon"],
-  quartiers: ["Centre-Ville", "Jardin Parisien", "La Gare", "Petit Clamart"],
+  quartiers: ["Centre", "Gare", "Galvents-Corby", "Percy-Schneider", "Jardin Parisien", "Plaine", "Trivaux-Garenne"],
   profilImmobilier:
     "Clamart se distingue par une part de maisons élevée pour une commune de cette taille : plus d’une vente sur trois concerne une maison, loin devant la moyenne des communes proches de Paris. Le secteur du Petit Clamart et les abords de la forêt sont particulièrement recherchés par les familles.",
   prixM2: {
@@ -36,7 +36,8 @@ export const clamart: VilleData = {
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Centre-Ville, Jardin Parisien, La Gare, Petit Clamart", source: "TODO_VERIFIER — liste partielle reprise d’un agrégateur immobilier, pas recoupée avec un découpage officiel de la mairie" },
+    { fait: "7 quartiers officiels : Centre, Gare, Galvents-Corby, Percy-Schneider, Jardin Parisien, Plaine, Trivaux-Garenne", source: "Site officiel de la mairie de Clamart (clamart.fr), « Conseils de quartiers »" },
+    { fait: "Le Petit Clamart est un secteur connu (nom d’usage historique), pas l’un des 7 quartiers officiels actuels", source: "TODO_VERIFIER — nom d’usage courant et historique, pas recoupé avec le zonage officiel actuel de la mairie" },
     { fait: "Clamart a une part de maisons élevée pour une commune de cette taille", source: "TODO_VERIFIER — déduit du ratio ventes maisons/appartements dans localData92.json, pas recoupé avec une moyenne départementale officielle" }
   ],
   meta: {

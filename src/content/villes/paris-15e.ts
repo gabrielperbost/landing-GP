@@ -15,7 +15,7 @@ export const paris15e: VilleData = {
   villesVoisines: [],
   quartiers: ["Necker", "Vaugirard", "Saint-Lambert", "Grenelle", "Javel", "Beaugrenelle", "Convention", "Dupleix", "Cambronne", "Commerce"],
   profilImmobilier:
-    "Paris 15e est le plus peuplé des arrondissements parisiens : un marché presque exclusivement d’appartements, entre immeubles haussmanniens du secteur Convention-Vaugirard, tours plus récentes du Front de Seine à Beaugrenelle, et petits collectifs plus familiaux vers Saint-Lambert. Il n’y a pas de marché de maisons individuelles.",
+    "Paris 15e est le plus peuplé des arrondissements parisiens : un marché presque exclusivement d’appartements, entre un mélange d’immeubles anciens et d’immeubles des années 1960-70 du secteur Convention-Vaugirard, tours plus récentes du Front de Seine à Beaugrenelle, et petits collectifs plus familiaux vers Saint-Lambert. Il n’y a pas de marché de maisons individuelles.",
   prixM2: {
     appartements: { valeur: 9467, source: "DGFiP, base DVF (data.gouv.fr), ventes 2024-2025, 5 655 transactions", date: "2026-10-01" },
     maisons: null
@@ -44,7 +44,7 @@ export const paris15e: VilleData = {
     { fait: "Le Front de Seine (tours des années 1970, dont Beaugrenelle) longe la Seine au nord-ouest de l’arrondissement", source: "Wikipédia « Front de Seine », « Beaugrenelle (centre commercial) »" },
     { fait: "Les 4 quartiers administratifs officiels du 15e sont Saint-Lambert, Necker, Grenelle et Javel", source: "Mairie de Paris / INSEE, découpage officiel des quartiers administratifs de Paris" },
     { fait: "Vaugirard, Beaugrenelle, Convention, Dupleix, Cambronne, Commerce sont des noms de quartier ou de station de métro d’usage courant (pas des quartiers administratifs officiels)", source: "TODO_VERIFIER — noms d’usage courant repris dans la liste des quartiers, à distinguer des 4 quartiers administratifs officiels" },
-    { fait: "Secteur Convention-Vaugirard à dominante d’immeubles haussmanniens", source: "TODO_VERIFIER — caractérisation architecturale générale, pas recoupée avec une source patrimoniale cette session" }
+    { fait: "Secteur Convention-Vaugirard : mélange d’immeubles anciens et d’immeubles des années 1960-70", source: "TODO_VERIFIER — caractérisation générale ajustée sur votre indication, pas recoupée avec une source patrimoniale précise cette session" }
   ],
   meta: {
     title: "Assurance emprunteur à Paris 15e | GP Finances",
