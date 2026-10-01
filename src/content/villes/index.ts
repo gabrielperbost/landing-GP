@@ -13,6 +13,18 @@ import { clamart } from "./clamart.ts";
 import { clichy } from "./clichy.ts";
 import { colombes } from "./colombes.ts";
 import { courbevoie } from "./courbevoie.ts";
+import { fontenayAuxRoses } from "./fontenay-aux-roses.ts";
+import { garches } from "./garches.ts";
+import { gennevilliers } from "./gennevilliers.ts";
+import { laGarenneColombes } from "./la-garenne-colombes.ts";
+import { lePlessisRobinson } from "./le-plessis-robinson.ts";
+import { levalloisPerret } from "./levallois-perret.ts";
+import { malakoff } from "./malakoff.ts";
+import { marnesLaCoquette } from "./marnes-la-coquette.ts";
+import { meudon } from "./meudon.ts";
+import { montrouge } from "./montrouge.ts";
+import { nanterre } from "./nanterre.ts";
+import { neuillySurSeine } from "./neuilly-sur-seine.ts";
 import type { VilleData } from "./types.ts";
 
 // Une entrée par ville migrée/créée.
@@ -33,7 +45,19 @@ export const VILLES: VilleData[] = [
   clamart,
   clichy,
   colombes,
-  courbevoie
+  courbevoie,
+  fontenayAuxRoses,
+  garches,
+  gennevilliers,
+  laGarenneColombes,
+  lePlessisRobinson,
+  levalloisPerret,
+  malakoff,
+  marnesLaCoquette,
+  meudon,
+  montrouge,
+  nanterre,
+  neuillySurSeine
 ];
 
 export const getVilleBySlug = (slug: string): VilleData | undefined => VILLES.find((v) => v.slug === slug);
