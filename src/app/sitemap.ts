@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CITIES_92 } from "@/content/localSeo92";
+import { VILLES } from "@/content/villes";
 import siteRoutes from "../../public/site/routes.json";
 
 const BASE_URL = "https://gp-finances.fr";
@@ -32,9 +33,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9
     },
+    {
+      // Hub des 20 arrondissements de Paris, ajouté le 2026-10-02 (voir scripts/build-site.cjs).
+      url: `${BASE_URL}/assurance-emprunteur/paris`,
+      lastModified: new Date("2026-10-02"),
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
     ...CITIES_92.map((city) => ({
       url: `${BASE_URL}/assurance-emprunteur/${city.slug}`,
       lastModified: new Date("2026-10-01"),
+      changeFrequency: "weekly" as const,
+      priority: 0.8
+    })),
+    // Les 20 arrondissements de Paris (VILLES contient aussi les communes du 92, déjà listées
+    // ci-dessus via CITIES_92 : on ne garde ici que departement === "75").
+    ...VILLES.filter((v) => v.departement === "75").map((v) => ({
+      url: `${BASE_URL}/assurance-emprunteur/${v.slug}`,
+      lastModified: new Date("2026-10-02"),
       changeFrequency: "weekly" as const,
       priority: 0.8
     }))

@@ -26,3 +26,4 @@ data/leads.csv
 /*.mp4
 *.mov
 tsconfig.tsbuildinfo
+.qa-screenshots/

@@ -48,8 +48,25 @@ export type VilleData = {
   /** L'angle unique de la page (voir brief : grands capitaux, primo-accédants, cadres de la Défense…). */
   angleEditorial: string;
 
-  /** 2 questions propres à la ville. La FAQ générale (FAQ_ITEMS) est ajoutée automatiquement par le template. */
+  /** 3 questions propres à la ville. Des questions générales tournantes s'y ajoutent automatiquement. */
   faqLocales: { q: string; r: string }[];
+
+  /**
+   * Sources des faits qualitatifs cités dans la page (quartiers, lignes de transport, lieux,
+   * caractérisations du marché) — tout ce qui n'est pas déjà un ChiffreVerifie (prix, population).
+   * `source` doit pointer vers quelque chose de vérifiable (ligne RATP/SNCF officielle, site de la
+   * mairie, API Géo, Wikipédia pour un nom de quartier d'usage courant…). Si un fait n'a pas pu
+   * être vérifié rigoureusement, mettre `"TODO_VERIFIER"` comme source plutôt que d'inventer une
+   * référence : scripts/check-landings.ts les liste pour relecture.
+   */
+  faitsSources: { fait: string; source: string }[];
+
+  /**
+   * Ordre des blocs dans la section locale, pour éviter un gabarit identique
+   * d'une ville à l'autre (voir brief). Si omis, l'ordre par défaut
+   * [profil, stats, financing, faq, neighbors] est utilisé.
+   */
+  sectionOrder?: Array<"profil" | "stats" | "financing" | "faq" | "neighbors">;
 
   meta: {
     title: string;

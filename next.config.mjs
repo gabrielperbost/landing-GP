@@ -83,6 +83,7 @@ const nextConfig = {
         // à chaque ville. Le hub doit être déclaré AVANT la route dynamique :ville, sinon
         // "/assurance-emprunteur/hauts-de-seine" serait aussi capturé comme un slug de ville.
         { source: "/assurance-emprunteur/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
+        { source: "/assurance-emprunteur/paris", destination: "/site/pages/villes/paris.html" },
         { source: "/assurance-emprunteur/:ville", destination: "/site/pages/villes/:ville.html" }
       ]
     };
