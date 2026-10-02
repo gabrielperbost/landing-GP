@@ -29,7 +29,7 @@ export const montrouge: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre appartement à Montrouge : comment se répartit la couverture entre nous ?",
-      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple), à condition que la somme des deux quotités atteigne au moins 100 %. Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     },
     {
       q: "Nous avons un prêt sur 20 ans signé il y a 5 ans à Montrouge : est-il trop tard pour comparer les contrats ?",

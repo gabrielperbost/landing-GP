@@ -29,7 +29,7 @@ export const colombes: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison à Colombes : comment se répartit la couverture entre nous ?",
-      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), à condition que la somme des deux quotités atteigne au moins 100 %. Je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
       q: "C’est notre premier achat à Colombes et l’apport est limité : le questionnaire de santé est-il un frein ?",

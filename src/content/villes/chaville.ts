@@ -29,7 +29,7 @@ export const chaville: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison à Chaville : comment se répartit la couverture entre nous ?",
-      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus, la seule règle étant d’atteindre ensemble au moins 100 %. On en discute ensemble avant de finaliser le contrat."
     },
     {
       q: "J’ai arrêté de fumer il y a un an, depuis l’achat de notre maison à Chaville : cela peut-il faire baisser mon tarif d’assurance ?",

@@ -33,7 +33,7 @@ export const villeneuveLaGarenne: VilleData = {
     },
     {
       q: "Nous empruntons à deux à Villeneuve-la-Garenne : comment se répartit la couverture entre nous ?",
-      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible, du moment que la somme atteint au moins 100 % à vous deux. On en parle avant la mise en place."
     }
   ],
   faitsSources: [

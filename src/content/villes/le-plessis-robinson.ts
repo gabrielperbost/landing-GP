@@ -24,7 +24,7 @@ export const lePlessisRobinson: VilleData = {
   faqLocales: [
     {
       q: "Nous avons emprunté à deux pour notre appartement au Plessis-Robinson : comment se répartit la couverture entre nous ?",
-      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus, la seule règle étant d’atteindre ensemble au moins 100 %. On en discute ensemble avant de finaliser le contrat."
     },
     {
       q: "Nous n’avons jamais comparé notre assurance depuis l’achat au Plessis-Robinson : est-il encore temps ?",

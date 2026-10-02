@@ -25,7 +25,7 @@ export const bourgLaReine: VilleData = {
   faqLocales: [
     {
       q: "Nous empruntons à deux pour acheter à Bourg-la-Reine : comment se répartit la quotité ?",
-      r: "Il n’y a pas de règle imposée : la quotité se décide entre vous, à parts égales ou selon vos revenus respectifs. Je m’assure surtout qu’elle protège correctement votre foyer en cas de coup dur."
+      r: "Il n’y a pas de règle imposée dans la répartition entre vous : à parts égales ou selon vos revenus respectifs, du moment que la somme des deux quotités atteint au moins 100 %. Je m’assure surtout qu’elle protège correctement votre foyer en cas de coup dur."
     },
     {
       q: "Mon entreprise m’a inscrit à une prévoyance collective : est-ce que ça remplace les garanties de l’assurance de prêt ?",

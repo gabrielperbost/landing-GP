@@ -29,7 +29,7 @@ export const puteaux: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre appartement à Puteaux : comment se répartit la couverture entre nous ?",
-      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), à condition que la somme des deux quotités atteigne au moins 100 %. Je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
       q: "Je viens de changer de poste au sein de mon entreprise à La Défense : dois-je le signaler pour mon assurance de prêt à Puteaux ?",

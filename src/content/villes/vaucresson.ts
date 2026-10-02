@@ -29,7 +29,7 @@ export const vaucresson: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison à Vaucresson : comment se répartit la couverture entre nous ?",
-      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus, la seule règle étant d’atteindre ensemble au moins 100 %. On en discute ensemble avant de finaliser le contrat."
     },
     {
       q: "Je suis dirigeant d’entreprise avec ma propre prévoyance : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Vaucresson ?",

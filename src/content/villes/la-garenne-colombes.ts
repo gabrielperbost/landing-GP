@@ -28,7 +28,7 @@ export const laGarenneColombes: VilleData = {
     },
     {
       q: "Nous achetons notre premier appartement à La Garenne-Colombes à deux : comment se répartit la quotité d’assurance ?",
-      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible, du moment que la somme atteint au moins 100 % à vous deux. On en parle avant la mise en place."
     },
     {
       q: "Je suis jeune cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",

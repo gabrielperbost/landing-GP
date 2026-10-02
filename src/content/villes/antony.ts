@@ -29,11 +29,11 @@ export const antony: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison à Antony : comment se répartit la couverture entre nous ?",
-      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun). La seule règle à respecter : la somme des deux quotités doit atteindre au moins 100 %, chacun pouvant même aller jusqu’à 100 % de son côté. C’est un point que j’étudie avec vous avant la mise en place."
     },
     {
       q: "Puis-je comparer mon assurance sans remettre en cause mon crédit immobilier ?",
-      r: "Oui, le changement d’assurance est totalement indépendant du crédit : votre banque ne peut ni le refuser ni modifier votre taux pour cette raison."
+      r: "Oui, le changement d’assurance est indépendant du crédit lui-même : votre banque ne peut pas modifier votre taux pour cette raison, et ne peut refuser le nouveau contrat que si ses garanties ne sont pas au moins équivalentes à celles en place."
     }
   ],
   faitsSources: [

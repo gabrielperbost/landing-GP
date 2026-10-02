@@ -25,7 +25,7 @@ export const chatillon: VilleData = {
   faqLocales: [
     {
       q: "Nous achetons notre premier bien à Châtillon à deux : la quotité d’assurance se répartit-elle automatiquement ?",
-      r: "Non, vous choisissez la répartition entre les deux emprunteurs (par exemple 50/50). C’est un point que j’étudie avec vous avant la mise en place."
+      r: "Non, vous choisissez la répartition entre les deux emprunteurs (par exemple 50/50), du moment que la somme atteint au moins 100 % à vous deux. C’est un point que j’étudie avec vous avant la mise en place."
     },
     {
       q: "Je viens de changer d’emploi juste après avoir acheté à Châtillon : dois-je le signaler pour mon assurance de prêt ?",

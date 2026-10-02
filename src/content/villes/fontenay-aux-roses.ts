@@ -33,7 +33,7 @@ export const fontenayAuxRoses: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison de ville à Fontenay-aux-Roses : comment se répartit la couverture ?",
-      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple), à condition que la somme des deux quotités atteigne au moins 100 %. Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     }
   ],
   faitsSources: [

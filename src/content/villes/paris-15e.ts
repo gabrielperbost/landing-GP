@@ -29,7 +29,7 @@ export const paris15e: VilleData = {
   faqLocales: [
     {
       q: "Nous empruntons à deux : comment se répartit l’assurance entre co-emprunteurs ?",
-      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou 100/100) entre les deux emprunteurs. C’est un point que j’étudie avec vous : une mauvaise répartition peut coûter cher ou mal protéger le foyer en cas de coup dur."
+      r: "Vous choisissez la répartition de la quotité entre les deux emprunteurs, par exemple 50/50 ou jusqu’à 100/100 chacun : la seule règle est que la somme atteigne au moins 100 %. C’est un point que j’étudie avec vous : une mauvaise répartition peut coûter cher ou mal protéger le foyer en cas de coup dur."
     },
     {
       q: "Nous passons d’un 2 pièces à un 3 pièces dans le 15e : faut-il refaire une demande d’assurance de A à Z ?",

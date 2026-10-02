@@ -28,7 +28,7 @@ export const sceaux: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour nous agrandir à Sceaux : comment se répartit la couverture entre nous ?",
-      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus, à condition que la somme atteigne au moins 100 %. C’est un choix qu’on affine ensemble."
     },
     {
       q: "Nous avons un prêt sur 25 ans signé il y a 6 ans à Sceaux, pour notre premier achat : est-il trop tard pour comparer les contrats ?",

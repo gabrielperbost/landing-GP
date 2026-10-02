@@ -24,7 +24,7 @@ export const rueilMalmaison: VilleData = {
   faqLocales: [
     {
       q: "Nous avons emprunté à deux pour notre maison à Rueil-Malmaison : comment se répartit la couverture entre nous ?",
-      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun). La seule règle à respecter : la somme des deux quotités doit atteindre au moins 100 %, chacun pouvant même aller jusqu’à 100 % de son côté. C’est un point que j’étudie avec vous avant la mise en place."
     },
     {
       q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Rueil-Malmaison ?",

@@ -28,7 +28,7 @@ export const nanterre: VilleData = {
     },
     {
       q: "Nous avons emprunté à deux pour notre maison à Nanterre : comment se répartit la couverture entre nous ?",
-      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus, à condition que la somme atteigne au moins 100 %. C’est un choix qu’on affine ensemble."
     },
     {
       q: "Je travaille côté Groues, proche de La Défense, et j’ai une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",

@@ -26,7 +26,7 @@ export const clichy: VilleData = {
   faqLocales: [
     {
       q: "Nous avons emprunté à deux pour notre premier appartement à Clichy : comment se répartit la couverture entre nous ?",
-      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus, à condition que la somme atteigne au moins 100 %. C’est un choix qu’on affine ensemble."
     },
     {
       q: "J’ai un peu dépassé mon budget pour acheter à Clichy : l’assurance peut-elle vraiment alléger ma mensualité ?",
