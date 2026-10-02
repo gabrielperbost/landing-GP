@@ -35,7 +35,7 @@ export const paris10e: VilleData = {
     },
     {
       q: "Nous sommes trois à emprunter ensemble, deux parents et un enfant, pour notre achat dans le 10e : comment ça se passe pour l’assurance ?",
-      r: "Chaque emprunteur inscrit au prêt peut être assuré avec une quotité propre ; à trois, on répartit souvent selon la contribution de chacun au remboursement."
+      r: "Chaque emprunteur inscrit au prêt peut être assuré avec une quotité propre, du moment que la somme des trois atteint au moins 100 % (jusqu’à 100 % chacun si vous le souhaitez) ; chacun peut aussi choisir un assureur différent. On répartit souvent selon la contribution de chacun au remboursement."
     }
   ],
   faitsSources: [

@@ -35,7 +35,7 @@ export const paris5e: VilleData = {
     },
     {
       q: "Mes parents se portent co-emprunteurs avec moi pour mon achat dans le 5e : comment répartir l’assurance entre nous trois ?",
-      r: "La quotité peut se répartir entre plusieurs emprunteurs, pas seulement deux : on définit ensemble une répartition qui protège chacun selon son rôle dans le remboursement."
+      r: "La quotité peut se répartir entre plusieurs emprunteurs, pas seulement deux : la somme des quotités doit atteindre au moins 100 %, et chacun peut être couvert jusqu’à 100 % de son côté si vous le souhaitez. Chaque co-emprunteur peut aussi choisir un assureur différent ; on définit ensemble la répartition qui protège le mieux votre foyer."
     }
   ],
   faitsSources: [

@@ -37,7 +37,7 @@ export const paris1e: VilleData = {
     },
     {
       q: "Je suis non-résident et j’achète un pied-à-terre dans le 1er : puis-je quand même changer d’assurance de prêt ?",
-      r: "Oui, le droit à la délégation ou à la substitution d’assurance s’applique quel que soit votre lieu de résidence ; les démarches se font par courrier ou en ligne, sans qu’il soit nécessaire d’être sur place."
+      r: "Oui, le droit à la délégation ou à la substitution d’assurance s’applique quel que soit votre lieu de résidence, et les démarches se font par courrier ou en ligne. En revanche, certains contrats limitent ou excluent certaines garanties pour un assuré résidant à l’étranger : je vérifie ce point avec vous avant de comparer les offres, la couverture n’est pas automatiquement identique à celle d’un résident français."
     }
   ],
   faitsSources: [

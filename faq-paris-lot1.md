@@ -14,7 +14,7 @@ Oui, même sur un capital emprunté réduit, l’écart de taux entre deux contr
 
 **Q3. Je suis non-résident et j’achète un pied-à-terre dans le 1er : puis-je quand même changer d’assurance de prêt ?**
 
-Oui, le droit à la délégation ou à la substitution d’assurance s’applique quel que soit votre lieu de résidence ; les démarches se font par courrier ou en ligne, sans qu’il soit nécessaire d’être sur place.
+Oui, le droit à la délégation ou à la substitution d’assurance s’applique quel que soit votre lieu de résidence, et les démarches se font par courrier ou en ligne. En revanche, certains contrats limitent ou excluent certaines garanties pour un assuré résidant à l’étranger : je vérifie ce point avec vous avant de comparer les offres, la couverture n’est pas automatiquement identique à celle d’un résident français.
 
 ## Paris 2e
 
@@ -56,7 +56,7 @@ Non, l’assurance de prêt porte sur vous, l’emprunteur, pas sur l’historiq
 
 **Q3. J’ai 58 ans et j’emprunte pour un achat dans le 4e : est-ce plus compliqué de trouver une assurance ?**
 
-C’est plus encadré, mais pas impossible : le questionnaire de santé et, parfois, une surprime peuvent s’appliquer. Je compare plusieurs assureurs pour trouver l’offre la plus adaptée à votre profil.
+Le questionnaire de santé n’est supprimé que si deux conditions sont réunies : la part assurée ne dépasse pas 200 000 € par personne, et le prêt se termine avant vos 60 ans. À 58 ans, la seconde condition est rarement atteinte sur un prêt classique, donc le questionnaire s’applique le plus souvent, avec éventuellement une surprime selon les réponses. Je compare plusieurs assureurs pour trouver l’offre la plus adaptée à votre profil.
 
 ## Paris 5e
 
@@ -70,7 +70,7 @@ L’assureur regarde votre taux d’endettement global, mais un crédit étudian
 
 **Q3. Mes parents se portent co-emprunteurs avec moi pour mon achat dans le 5e : comment répartir l’assurance entre nous trois ?**
 
-La quotité peut se répartir entre plusieurs emprunteurs, pas seulement deux : on définit ensemble une répartition qui protège chacun selon son rôle dans le remboursement.
+La quotité peut se répartir entre plusieurs emprunteurs, pas seulement deux : la somme des quotités doit atteindre au moins 100 %, et chacun peut être couvert jusqu’à 100 % de son côté si vous le souhaitez. Chaque co-emprunteur peut aussi choisir un assureur différent ; on définit ensemble la répartition qui protège le mieux votre foyer.
 
 ## Paris 6e
 
@@ -98,7 +98,7 @@ Non, la prévoyance des agents publics ne remplace pas l’assurance de prêt ex
 
 **Q3. Nous sommes un couple avec des revenus très inégaux pour notre achat dans le 7e : faut-il répartir la quotité à parts égales ?**
 
-Pas obligatoirement : vous pouvez répartir selon vos revenus respectifs, ou autrement, selon ce qui protège le mieux votre foyer en cas de coup dur.
+Pas obligatoirement : vous pouvez répartir selon vos revenus respectifs, du moment que la somme des quotités atteint au moins 100 % (jusqu’à 100 % chacun si vous le souhaitez). Chaque emprunteur peut aussi choisir un assureur différent ; on définit la répartition qui protège le mieux votre foyer en cas de coup dur.
 
 ## Paris 8e
 
@@ -140,5 +140,5 @@ Un peu plus de pièces à fournir (bilans, déclarations), mais pas un obstacle 
 
 **Q3. Nous sommes trois à emprunter ensemble, deux parents et un enfant, pour notre achat dans le 10e : comment ça se passe pour l’assurance ?**
 
-Chaque emprunteur inscrit au prêt peut être assuré avec une quotité propre ; à trois, on répartit souvent selon la contribution de chacun au remboursement.
+Chaque emprunteur inscrit au prêt peut être assuré avec une quotité propre, du moment que la somme des trois atteint au moins 100 % (jusqu’à 100 % chacun si vous le souhaitez) ; chacun peut aussi choisir un assureur différent. On répartit souvent selon la contribution de chacun au remboursement.
 

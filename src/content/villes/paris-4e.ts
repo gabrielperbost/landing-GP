@@ -35,7 +35,7 @@ export const paris4e: VilleData = {
     },
     {
       q: "J’ai 58 ans et j’emprunte pour un achat dans le 4e : est-ce plus compliqué de trouver une assurance ?",
-      r: "C’est plus encadré, mais pas impossible : le questionnaire de santé et, parfois, une surprime peuvent s’appliquer. Je compare plusieurs assureurs pour trouver l’offre la plus adaptée à votre profil."
+      r: "Le questionnaire de santé n’est supprimé que si deux conditions sont réunies : la part assurée ne dépasse pas 200 000 € par personne, et le prêt se termine avant vos 60 ans. À 58 ans, la seconde condition est rarement atteinte sur un prêt classique, donc le questionnaire s’applique le plus souvent, avec éventuellement une surprime selon les réponses. Je compare plusieurs assureurs pour trouver l’offre la plus adaptée à votre profil."
     }
   ],
   faitsSources: [

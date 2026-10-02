@@ -35,7 +35,7 @@ export const paris7e: VilleData = {
     },
     {
       q: "Nous sommes un couple avec des revenus très inégaux pour notre achat dans le 7e : faut-il répartir la quotité à parts égales ?",
-      r: "Pas obligatoirement : vous pouvez répartir selon vos revenus respectifs, ou autrement, selon ce qui protège le mieux votre foyer en cas de coup dur."
+      r: "Pas obligatoirement : vous pouvez répartir selon vos revenus respectifs, du moment que la somme des quotités atteint au moins 100 % (jusqu’à 100 % chacun si vous le souhaitez). Chaque emprunteur peut aussi choisir un assureur différent ; on définit la répartition qui protège le mieux votre foyer en cas de coup dur."
     }
   ],
   faitsSources: [
