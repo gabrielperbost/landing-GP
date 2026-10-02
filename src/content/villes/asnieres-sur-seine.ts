@@ -10,7 +10,7 @@ export const asnieresSurSeine: VilleData = {
   villesVoisines: ["bois-colombes", "clichy", "colombes"],
   quartiers: ["Bac-Bécon-Flachat", "Centre-Mairie", "Grésillons-Bords de Seine", "Les Hauts d’Asnières", "Voltaire-Bourguignons"],
   profilImmobilier:
-    "Asnières-sur-Seine est l’une des communes les plus denses et les plus peuplées du 92, avec un marché presque entièrement tourné vers l’appartement (plus de dix fois plus de ventes d’appartements que de maisons). La proximité de Paris (17e) en fait une commune recherchée par les jeunes actifs.",
+    "Asnières-sur-Seine est l’une des communes les plus denses et les plus peuplées du 92, avec un marché presque entièrement tourné vers l’appartement (plus de dix fois plus de ventes d’appartements que de maisons). La proximité de Paris (17e) en fait une commune recherchée pour un premier achat.",
   prixM2: {
     appartements: { valeur: 6202, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 7988, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }

@@ -13,7 +13,7 @@ export const paris2e: VilleData = {
   villesVoisines: ["paris-1er", "paris-3e", "paris-9e", "paris-10e"],
   quartiers: ["Sentier", "Montorgueil", "Bourse", "Vivienne (quartiers administratifs : Gaillon, Vivienne, Mail, Bonne-Nouvelle)"],
   profilImmobilier:
-    "Le 2e arrondissement, le plus petit de Paris par sa superficie, mêle anciens ateliers du Sentier reconvertis en lofts et immeubles haussmanniens autour de Bourse et Vivienne. Le marché est presque exclusivement composé de petits et moyens appartements, souvent prisés par de jeunes actifs et entrepreneurs du quartier.",
+    "Le 2e arrondissement, le plus petit de Paris par sa superficie, mêle anciens ateliers du Sentier reconvertis en lofts et immeubles haussmanniens autour de Bourse et Vivienne. Le marché est presque exclusivement composé de petits et moyens appartements, souvent recherchés pour un premier achat ou un investissement locatif.",
   prixM2: {
     appartements: { valeur: 11171, source: "DGFiP, base DVF (data.gouv.fr), ventes 2024-2025, 691 transactions", date: "2026-10-02" },
     maisons: null

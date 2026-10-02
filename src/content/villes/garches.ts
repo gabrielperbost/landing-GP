@@ -18,7 +18,7 @@ export const garches: VilleData = {
   },
   population: { valeur: 17743, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de familles et de cadres supérieurs qui achètent une maison pour un capital important, avec des prêts qui dépassent souvent 25 ans. Sur ce type de montant, chaque point de taux d’assurance représente une somme conséquente sur la durée totale du prêt.",
+    "Si vous achetez une maison à Garches, le capital emprunté est souvent important, avec des prêts qui dépassent souvent 25 ans. Sur ce type de montant, chaque point de taux d’assurance représente une somme conséquente sur la durée totale du prêt.",
   accesBureau:
     "Le cabinet est à Issy-les-Moulineaux. Pour les habitants de Garches, l’étude se fait le plus souvent par téléphone ou en visio ; je reste disponible pour un rendez-vous en personne si vous le préférez.",
   angleEditorial: "Maisons et capitaux élevés : l’assurance pèse lourd.",

@@ -17,7 +17,7 @@ export const laGarenneColombes: VilleData = {
   },
   population: { valeur: 30197, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de jeunes cadres et de couples, souvent sur un premier achat compte tenu du prix au m² élevé pour une commune de cette taille. Les prêts à deux emprunteurs sont fréquents, avec une attention particulière portée à la mensualité globale.",
+    "Si c’est un premier achat à La Garenne-Colombes, le prix au m² élevé pour une commune de cette taille pèse vite sur le budget. Les prêts à deux emprunteurs sont fréquents, avec une attention particulière portée à la mensualité globale.",
   accesBureau:
     "Le cabinet de GP Finances se trouve à Issy-les-Moulineaux. Pour les habitants de La Garenne-Colombes, les démarches avancent le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste envisageable sur demande.",
   angleEditorial: "Petite commune recherchée, prix élevés au m².",

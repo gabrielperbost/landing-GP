@@ -18,7 +18,7 @@ export const neuillySurSeine: VilleData = {
   },
   population: { valeur: 59538, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres dirigeants et de professions libérales, avec des capitaux empruntés très élevés. Sur ce type de montant, chaque point de taux d’assurance représente une somme considérable sur la durée du prêt, ce qui rend la délégation d’assurance particulièrement pertinente.",
+    "Les capitaux empruntés sont souvent très élevés à Neuilly-sur-Seine, compte tenu du prix au m² le plus élevé du département. Sur ce type de montant, chaque point de taux d’assurance représente une somme considérable sur la durée du prêt, ce qui rend la délégation d’assurance particulièrement pertinente.",
   accesBureau:
     "Le cabinet est à Issy-les-Moulineaux. Pour les emprunteurs de Neuilly-sur-Seine, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Capitaux très élevés : la délégation d’assurance change tout.",

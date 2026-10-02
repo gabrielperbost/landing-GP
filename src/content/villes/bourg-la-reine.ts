@@ -11,14 +11,14 @@ export const bourgLaReine: VilleData = {
   villesVoisines: ["sceaux", "antony"],
   quartiers: ["Centre Ville", "La Faïencerie", "Les Blagis", "Mirebeau"],
   profilImmobilier:
-    "Petite commune résidentielle à la limite du 92 et de l’Essonne, Bourg-la-Reine combine un centre-ville dense en appartements et des secteurs plus pavillonnaires. La desserte directe vers Paris en fait une commune recherchée par les familles comme par les cadres. Les secteurs de la Faïencerie et des Blagis, plus excentrés, offrent des prix légèrement plus accessibles que le centre-ville.",
+    "Petite commune résidentielle à la limite du 92 et de l’Essonne, Bourg-la-Reine combine un centre-ville dense en appartements et des secteurs plus pavillonnaires. La desserte directe vers Paris en fait une commune recherchée aussi bien pour l’achat d’une maison que pour un appartement proche du RER. Les secteurs de la Faïencerie et des Blagis, plus excentrés, offrent des prix légèrement plus accessibles que le centre-ville.",
   prixM2: {
     appartements: { valeur: 5171, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 7217, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
   },
   population: { valeur: 21019, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Deux profils cohabitent à Bourg-la-Reine : des familles qui s’installent durablement dans une maison, et des cadres qui investissent dans un appartement pour profiter de la desserte directe vers Paris. Les dossiers à deux emprunteurs sont fréquents, et la question de la répartition de la quotité revient souvent.",
+    "Deux situations reviennent souvent à Bourg-la-Reine : l’achat d’une maison pour s’installer durablement, et l’achat d’un appartement pour profiter de la desserte directe vers Paris, parfois en investissement locatif. Les dossiers à deux emprunteurs sont fréquents, et la question de la répartition de la quotité revient souvent.",
   accesBureau:
     "Le cabinet de GP Finances se trouve à Issy-les-Moulineaux. Les échanges avec les emprunteurs de Bourg-la-Reine passent le plus souvent par téléphone ou par visio, un rendez-vous au cabinet restant possible sur demande.",
   angleEditorial: "Entre ville et maison : deux profils d’emprunteurs à Bourg-la-Reine.",

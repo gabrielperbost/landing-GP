@@ -20,10 +20,10 @@ export const paris7e: VilleData = {
   },
   population: { valeur: 48015, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Beaucoup de familles aisées, de hauts fonctionnaires et de diplomates qui empruntent pour de grands appartements. Les montants empruntés sont souvent élevés, avec des répartitions de quotité qui demandent une attention particulière entre co-emprunteurs.",
+    "Si vous empruntez pour un grand appartement familial dans le 7e, les montants empruntés sont souvent élevés, avec des répartitions de quotité qui demandent une attention particulière entre co-emprunteurs.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 7e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
-  angleEditorial: "Grandes familles, hauts fonctionnaires et gros capitaux autour des Invalides.",
+  angleEditorial: "Grands appartements familiaux et gros capitaux autour des Invalides.",
   faqLocales: [
     {
       q: "Nous empruntons un capital élevé pour notre achat dans le 7e : le montant change-t-il la façon dont l’assurance est calculée ?",

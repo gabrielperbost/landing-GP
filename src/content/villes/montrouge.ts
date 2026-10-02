@@ -18,7 +18,7 @@ export const montrouge: VilleData = {
   },
   population: { valeur: 46324, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de jeunes actifs et de cadres qui travaillent à Paris, avec des capitaux empruntés élevés compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
+    "Si vous travaillez à Paris et achetez à Montrouge, le capital emprunté est souvent élevé compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
   accesBureau:
     "GP Finances est installé à Issy-les-Moulineaux. Depuis Montrouge, l’étude avance le plus souvent par téléphone ou en visio ; un déplacement au cabinet reste une option si vous le préférez.",
   angleEditorial: "Aux portes de Paris, prix élevés, surtout des appartements.",

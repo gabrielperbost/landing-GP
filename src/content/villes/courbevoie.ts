@@ -18,10 +18,10 @@ export const courbevoie: VilleData = {
   },
   population: { valeur: 82902, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres qui travaillent à La Défense, avec des capitaux empruntés souvent élevés compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
+    "Si vous travaillez à La Défense et achetez à Courbevoie, le capital emprunté est souvent élevé compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
   accesBureau:
     "Le cabinet est à Issy-les-Moulineaux. Pour les emprunteurs de Courbevoie, souvent pris par leurs horaires à La Défense, le téléphone et la visio permettent d’avancer sans déplacement ; un rendez-vous en personne reste possible sur demande.",
-  angleEditorial: "Aux portes de La Défense : cadres et capitaux élevés.",
+  angleEditorial: "Aux portes de La Défense : des capitaux empruntés souvent élevés.",
   faqLocales: [
     {
       q: "Je travaille à La Défense et j’ai acheté un appartement à Courbevoie pour un capital important : l’assurance a-t-elle un vrai impact ?",
@@ -43,6 +43,6 @@ export const courbevoie: VilleData = {
   meta: {
     title: "Assurance emprunteur à Courbevoie | GP Finances",
     description:
-      "Changez d’assurance de prêt à Courbevoie avec un courtier indépendant. Étude gratuite, garanties équivalentes, loi Lemoine. Utile pour les cadres de La Défense."
+      "Changez d’assurance de prêt à Courbevoie avec un courtier indépendant. Étude gratuite, garanties équivalentes, loi Lemoine. Utile si vous travaillez à La Défense."
   }
 };

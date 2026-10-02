@@ -17,10 +17,10 @@ export const lePlessisRobinson: VilleData = {
   },
   population: { valeur: 28848, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de familles séduites par le cadre urbain particulier de la commune, avec des prêts qui dépassent souvent 20 à 25 ans. Les dossiers à deux emprunteurs sont majoritaires, et beaucoup de ces familles n’ont jamais comparé leur assurance depuis l’achat.",
+    "Le cadre urbain particulier de la commune pousse souvent à un achat pour s’installer durablement, avec des prêts qui dépassent souvent 20 à 25 ans. Les dossiers à deux emprunteurs sont majoritaires, et beaucoup de ces emprunteurs n’ont jamais comparé leur assurance depuis l’achat.",
   accesBureau:
     "GP Finances reçoit à Issy-les-Moulineaux. Pour les emprunteurs du Plessis-Robinson, l’essentiel du suivi se fait par téléphone ou en visio ; un rendez-vous au cabinet reste possible si vous le préférez.",
-  angleEditorial: "La cité-jardin : un cadre de vie qui attire les familles.",
+  angleEditorial: "La cité-jardin : un cadre de vie pour s’installer durablement.",
   faqLocales: [
     {
       q: "Nous avons emprunté à deux pour notre appartement au Plessis-Robinson : comment se répartit la couverture entre nous ?",

@@ -20,7 +20,7 @@ export const paris9e: VilleData = {
   },
   population: { valeur: 57271, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Beaucoup de jeunes actifs et de primo-accédants, souvent avec un apport plus limité que dans les arrondissements voisins du centre. Les statuts professionnels variés (CDD, CDI, auto-entrepreneuriat) se retrouvent fréquemment dans les dossiers.",
+    "Si c’est un premier achat dans le 9e, l’apport est souvent plus limité que dans les arrondissements voisins du centre. Les statuts professionnels variés (CDD, CDI, auto-entrepreneuriat) se retrouvent fréquemment dans les dossiers.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 9e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Primo-accédants et jeunes actifs entre Opéra et Nouvelle Athènes.",

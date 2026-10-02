@@ -20,7 +20,7 @@ export const paris6e: VilleData = {
   },
   population: { valeur: 40389, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Des acheteurs globalement aisés, avec des apports élevés qui réduisent le capital emprunté par rapport au prix du bien. Beaucoup de foyers possèdent déjà un bien, en location ou en résidence secondaire, au moment de cet achat.",
+    "Si vous achetez dans le 6e, l’apport est souvent élevé, ce qui réduit le capital emprunté par rapport au prix du bien. Beaucoup de foyers possèdent déjà un bien, en location ou en résidence secondaire, au moment de cet achat.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 6e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "L’un des arrondissements les plus chers de Paris, entre gros apports et capitaux maîtrisés.",

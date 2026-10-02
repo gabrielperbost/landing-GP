@@ -17,7 +17,7 @@ export const saintCloud: VilleData = {
   },
   population: { valeur: 29855, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres supérieurs et de familles, avec des capitaux empruntés souvent élevés, en particulier pour l’achat d’une maison. Sur ce type de montant, chaque point de taux d’assurance représente une somme bien plus importante qu’ailleurs.",
+    "Si vous achetez une maison à Saint-Cloud, le capital emprunté est souvent élevé. Sur ce type de montant, chaque point de taux d’assurance représente une somme bien plus importante qu’ailleurs.",
   accesBureau:
     "Le cabinet est à Issy-les-Moulineaux. Pour les emprunteurs de Saint-Cloud, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Cadre résidentiel haut de gamme, capitaux élevés.",

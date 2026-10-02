@@ -19,10 +19,10 @@ export const paris8e: VilleData = {
   },
   population: { valeur: 35317, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Beaucoup de cadres dirigeants et de chefs d’entreprise, avec des achats patrimoniaux de grande surface, parfois financés en partie par une donation familiale.",
+    "Si vous achetez un grand appartement patrimonial dans le 8e, l’opération est parfois financée en partie par une donation familiale.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 8e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
-  angleEditorial: "Cadres dirigeants et biens patrimoniaux entre Champs-Élysées et Monceau.",
+  angleEditorial: "Grands achats patrimoniaux entre Champs-Élysées et Monceau.",
   faqLocales: [
     {
       q: "J’achète un grand appartement familial dans le 8e en tant que dirigeant d’entreprise : ma prévoyance de mandataire social suffit-elle ?",

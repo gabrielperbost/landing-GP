@@ -18,7 +18,7 @@ export const boisColombes: VilleData = {
   },
   population: { valeur: 28909, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de familles et de cadres, avec des capitaux empruntés élevés en particulier pour l’achat d’une maison. Les prêts dépassent souvent 20 à 25 ans, et la quotité entre les deux emprunteurs est une question qui revient fréquemment pour les couples.",
+    "Si vous empruntez pour une maison à Bois-Colombes, le capital emprunté est souvent élevé compte tenu du prix au m². Les prêts dépassent souvent 20 à 25 ans, et la quotité entre les deux emprunteurs est une question qui revient fréquemment pour les couples.",
   accesBureau:
     "GP Finances reçoit à Issy-les-Moulineaux. Pour les habitants de Bois-Colombes, le téléphone et la visio restent les moyens les plus simples d’avancer sur un dossier ; le cabinet reste ouvert pour qui préfère un rendez-vous en personne.",
   angleEditorial: "Petite ville recherchée, prix élevés : l’assurance pèse lourd.",

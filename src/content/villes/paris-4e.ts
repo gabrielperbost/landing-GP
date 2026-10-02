@@ -20,10 +20,10 @@ export const paris4e: VilleData = {
   },
   population: { valeur: 27332, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Beaucoup de secundo-accédants au profil aisé, qui revendent un bien plus petit pour s’installer durablement dans le 4e, parfois dans le cadre d’une succession familiale ou d’un nouvel achat à deux.",
+    "Si vous revendez un bien plus petit pour vous installer durablement dans le 4e, l’opération s’inscrit parfois dans le cadre d’une succession familiale ou d’un nouvel achat à deux.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 4e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
-  angleEditorial: "Secundo-accédants aisés et biens de prestige entre Île Saint-Louis et Marais.",
+  angleEditorial: "Revendre pour s’agrandir, entre biens de prestige de l’Île Saint-Louis et du Marais.",
   faqLocales: [
     {
       q: "Nous revendons notre résidence principale pour acheter plus grand dans le 4e : faut-il changer d’assurance de prêt à ce moment-là ?",

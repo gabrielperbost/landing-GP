@@ -13,14 +13,14 @@ export const paris10e: VilleData = {
   villesVoisines: ["paris-2e", "paris-3e", "paris-9e"],
   quartiers: ["Canal Saint-Martin", "Gare du Nord", "Gare de l’Est", "Château d’Eau (quartiers administratifs : Saint-Vincent-de-Paul, Porte-Saint-Denis, Porte-Saint-Martin, Hôpital-Saint-Louis)"],
   profilImmobilier:
-    "Le 10e arrondissement, le plus peuplé de ce lot, s’étend du canal Saint-Martin aux gares du Nord et de l’Est. Le marché, fait d’appartements anciens, affiche les prix les plus accessibles de ces dix arrondissements, avec une forte mixité sociale.",
+    "Le 10e arrondissement, le plus peuplé de ce lot, s’étend du canal Saint-Martin aux gares du Nord et de l’Est. Le marché, fait d’appartements anciens, affiche les prix les plus accessibles de ces dix arrondissements.",
   prixM2: {
     appartements: { valeur: 9264, source: "DGFiP, base DVF (data.gouv.fr), ventes 2024-2025, 2 618 transactions", date: "2026-10-02" },
     maisons: null
   },
   population: { valeur: 83873, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-10-02" },
   profilEmprunteurs:
-    "Beaucoup de primo-accédants et de jeunes familles, attirés par des prix plus accessibles que dans le reste du centre de Paris. Les profils de revenus sont variés, avec une part importante d’indépendants et d’auto-entrepreneurs.",
+    "Si c’est un premier achat dans le 10e, les prix plus accessibles que dans le reste du centre de Paris permettent souvent d’emprunter avec un apport plus limité. Les profils de revenus sont variés, avec une part importante d’indépendants et d’auto-entrepreneurs.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux. Pour les emprunteurs du 10e, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Le secteur le plus accessible du centre de Paris, entre canal et gares.",

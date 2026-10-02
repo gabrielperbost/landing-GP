@@ -18,7 +18,7 @@ export const levalloisPerret: VilleData = {
   },
   population: { valeur: 68092, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres et de couples de cadres, avec des capitaux empruntés souvent élevés compte tenu du prix au m² parmi les plus hauts de ce secteur du 92. Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
+    "Le capital emprunté est souvent élevé à Levallois-Perret, compte tenu du prix au m² parmi les plus hauts de ce secteur du 92. Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
   accesBureau:
     "Le cabinet est à Issy-les-Moulineaux. Pour les emprunteurs de Levallois-Perret, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Marché d’appartements à prix élevé, quasiment sans maisons.",

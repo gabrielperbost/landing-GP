@@ -18,7 +18,7 @@ export const puteaux: VilleData = {
   },
   population: { valeur: 44002, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres qui travaillent à La Défense, avec des capitaux empruntés élevés compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
+    "Si vous travaillez à La Défense et achetez à Puteaux, le capital emprunté est souvent élevé compte tenu du prix au m². Les prêts à deux emprunteurs sont fréquents, et chaque point de taux d’assurance représente une somme importante sur ce type de capital.",
   accesBureau:
     "Le cabinet de GP Finances est à Issy-les-Moulineaux. Pour les habitants de Puteaux, l’étude se mène le plus souvent par téléphone ou en visio ; un rendez-vous en personne reste possible sur demande.",
   angleEditorial: "Au cœur de La Défense : prix élevés, surtout des tours.",
@@ -44,6 +44,6 @@ export const puteaux: VilleData = {
   meta: {
     title: "Assurance emprunteur à Puteaux | GP Finances",
     description:
-      "Changez d’assurance de prêt à Puteaux avec un courtier indépendant. Étude gratuite, garanties équivalentes, loi Lemoine. Utile pour les cadres de La Défense."
+      "Changez d’assurance de prêt à Puteaux avec un courtier indépendant. Étude gratuite, garanties équivalentes, loi Lemoine. Utile si vous travaillez à La Défense."
   }
 };

@@ -11,7 +11,7 @@ export const chaville: VilleData = {
   villesVoisines: ["sevres", "meudon", "ville-d-avray"],
   quartiers: ["Centre-Ville", "Rive Gauche", "Deux Forêts"],
   profilImmobilier:
-    "Chaville doit son nom à sa situation entre deux massifs forestiers, un cadre très recherché par les familles. Le marché y est équilibré entre appartements et maisons, avec une proportion de maisons supérieure à la moyenne des communes denses du 92. Le centre-ville, autour de la gare, et le secteur Rive Gauche concentrent la plupart des appartements, tandis que les maisons se trouvent surtout en périphérie, vers les lisières forestières.",
+    "Chaville doit son nom à sa situation entre deux massifs forestiers, un environnement boisé recherché pour s’installer durablement. Le marché y est équilibré entre appartements et maisons, avec une proportion de maisons supérieure à la moyenne des communes denses du 92. Le centre-ville, autour de la gare, et le secteur Rive Gauche concentrent la plupart des appartements, tandis que les maisons se trouvent surtout en périphérie, vers les lisières forestières.",
   prixM2: {
     appartements: { valeur: 5469, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 7143, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
@@ -21,7 +21,7 @@ export const chaville: VilleData = {
     "Beaucoup de familles qui achètent pour s’installer durablement, avec des prêts qui dépassent souvent 20 à 25 ans. La question de la quotité entre les deux emprunteurs revient fréquemment, de même que le changement d’assurance plusieurs années après la signature initiale.",
   accesBureau:
     "GP Finances reçoit à Issy-les-Moulineaux. Pour les emprunteurs de Chaville, l’essentiel du suivi se fait par téléphone ou en visio ; un rendez-vous au cabinet reste possible si vous le préférez.",
-  angleEditorial: "Entre deux forêts : un cadre de vie recherché par les familles.",
+  angleEditorial: "Entre deux forêts : un cadre de vie recherché pour s’installer durablement.",
   faqLocales: [
     {
       q: "Nous avons acheté notre maison à Chaville il y a plusieurs années : est-il encore temps de changer d’assurance ?",

@@ -18,7 +18,7 @@ export const issyLesMoulineaux: VilleData = {
   },
   population: { valeur: 67669, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Beaucoup de cadres travaillant à Val de Seine, à Paris ou à La Défense, ainsi que des familles en accession secondaire. Les prix élevés poussent souvent à emprunter sur des durées longues et des capitaux importants, ce qui rend le coût de l’assurance de prêt particulièrement sensible. Les prêts dépassent fréquemment 20 à 25 ans, et les dossiers à deux emprunteurs sont majoritaires chez les couples de cadres. Les situations les plus fréquentes : un premier achat avec un apport conséquent, ou un changement d’assurance sur un prêt déjà en cours pour profiter d’un meilleur taux sans toucher au crédit lui-même.",
+    "Si vous travaillez à Val de Seine, à Paris ou à La Défense, ou si vous achetez en accession secondaire, les prix élevés poussent souvent à emprunter sur des durées longues et des capitaux importants, ce qui rend le coût de l’assurance de prêt particulièrement sensible. Les prêts dépassent fréquemment 20 à 25 ans, et les dossiers à deux emprunteurs sont majoritaires. Les situations les plus fréquentes : un premier achat avec un apport conséquent, ou un changement d’assurance sur un prêt déjà en cours pour profiter d’un meilleur taux sans toucher au crédit lui-même.",
   accesBureau:
     "Le cabinet de GP Finances est basé à Issy-les-Moulineaux : un rendez-vous en personne se fait sur place, sans déplacement à prévoir. Une visio ou un appel restent possibles si c’est plus simple pour vous.",
   angleEditorial: "Le cabinet est sur place : le rendez-vous en personne n’est jamais loin.",
