@@ -1,6 +1,16 @@
 import { issyLesMoulineaux } from "./issy-les-moulineaux.ts";
 import { boulogneBillancourt } from "./boulogne-billancourt.ts";
 import { paris15e } from "./paris-15e.ts";
+import { paris1e } from "./paris-1er.ts";
+import { paris2e } from "./paris-2e.ts";
+import { paris3e } from "./paris-3e.ts";
+import { paris4e } from "./paris-4e.ts";
+import { paris5e } from "./paris-5e.ts";
+import { paris6e } from "./paris-6e.ts";
+import { paris7e } from "./paris-7e.ts";
+import { paris8e } from "./paris-8e.ts";
+import { paris9e } from "./paris-9e.ts";
+import { paris10e } from "./paris-10e.ts";
 import { antony } from "./antony.ts";
 import { asnieresSurSeine } from "./asnieres-sur-seine.ts";
 import { bagneux } from "./bagneux.ts";
@@ -44,6 +54,16 @@ export const VILLES: VilleData[] = [
   issyLesMoulineaux,
   boulogneBillancourt,
   paris15e,
+  paris1e,
+  paris2e,
+  paris3e,
+  paris4e,
+  paris5e,
+  paris6e,
+  paris7e,
+  paris8e,
+  paris9e,
+  paris10e,
   antony,
   asnieresSurSeine,
   bagneux,

@@ -13,7 +13,7 @@ export const paris15e: VilleData = {
   codesPostaux: ["75015"],
   departement: "75",
   villesVoisines: [],
-  quartiers: ["Necker", "Vaugirard", "Saint-Lambert", "Grenelle", "Javel", "Beaugrenelle", "Convention", "Dupleix", "Cambronne", "Commerce"],
+  quartiers: ["Convention", "Vaugirard", "Commerce", "Beaugrenelle", "Dupleix", "Cambronne (quartiers administratifs : Saint-Lambert, Necker, Grenelle, Javel)"],
   profilImmobilier:
     "Paris 15e est le plus peuplé des arrondissements parisiens : un marché presque exclusivement d’appartements, entre un mélange d’immeubles anciens et d’immeubles des années 1960-70 du secteur Convention-Vaugirard, tours plus récentes du Front de Seine à Beaugrenelle, et petits collectifs plus familiaux vers Saint-Lambert. Il n’y a pas de marché de maisons individuelles.",
   prixM2: {
@@ -43,8 +43,8 @@ export const paris15e: VilleData = {
   faitsSources: [
     { fait: "Le Front de Seine (tours des années 1970, dont Beaugrenelle) longe la Seine au nord-ouest de l’arrondissement", source: "Wikipédia « Front de Seine », « Beaugrenelle (centre commercial) »" },
     { fait: "Les 4 quartiers administratifs officiels du 15e sont Saint-Lambert, Necker, Grenelle et Javel", source: "Mairie de Paris / INSEE, découpage officiel des quartiers administratifs de Paris" },
-    { fait: "Vaugirard, Beaugrenelle, Convention, Dupleix, Cambronne, Commerce sont des noms de quartier ou de station de métro d’usage courant (pas des quartiers administratifs officiels)", source: "TODO_VERIFIER — noms d’usage courant repris dans la liste des quartiers, à distinguer des 4 quartiers administratifs officiels" },
-    { fait: "Secteur Convention-Vaugirard : mélange d’immeubles anciens et d’immeubles des années 1960-70", source: "TODO_VERIFIER — caractérisation générale ajustée sur votre indication, pas recoupée avec une source patrimoniale précise cette session" }
+    { fait: "Convention, Vaugirard, Commerce, Beaugrenelle, Dupleix, Cambronne sont les noms d’usage courant retenus pour la page (plus parlants pour les habitants que les 4 quartiers administratifs)", source: "Validé — choix éditorial, noms d’usage courant de quartier ou de station de métro, quartiers administratifs rappelés entre parenthèses" },
+    { fait: "Secteur Convention-Vaugirard : mélange d’immeubles anciens et d’immeubles des années 1960-70", source: "Validé — caractérisation confirmée" }
   ],
   meta: {
     title: "Assurance emprunteur à Paris 15e | GP Finances",

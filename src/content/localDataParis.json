@@ -1,5 +1,5 @@
 {
- "retrievedAt": "2026-10-01",
+ "retrievedAt": "2026-10-02",
  "years": [
   2024,
   2025
@@ -21,6 +21,156 @@
     "medianPerM2": 11190,
     "medianPrice": 1325000,
     "medianArea": 144
+   }
+  },
+  "paris-1er": {
+   "insee": "75101",
+   "flats": {
+    "sales": 492,
+    "medianPerM2": 12239,
+    "medianPrice": 522500,
+    "medianArea": 44
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
+   }
+  },
+  "paris-2e": {
+   "insee": "75102",
+   "flats": {
+    "sales": 691,
+    "medianPerM2": 11171,
+    "medianPrice": 406000,
+    "medianArea": 37
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
+   }
+  },
+  "paris-3e": {
+   "insee": "75103",
+   "flats": {
+    "sales": 1228,
+    "medianPerM2": 11782,
+    "medianPrice": 446150,
+    "medianArea": 39
+   },
+   "houses": {
+    "sales": 1,
+    "medianPerM2": 1556,
+    "medianPrice": 70000,
+    "medianArea": 45
+   }
+  },
+  "paris-4e": {
+   "insee": "75104",
+   "flats": {
+    "sales": 963,
+    "medianPerM2": 12630,
+    "medianPrice": 517750,
+    "medianArea": 42
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
+   }
+  },
+  "paris-5e": {
+   "insee": "75105",
+   "flats": {
+    "sales": 1608,
+    "medianPerM2": 11739,
+    "medianPrice": 419950,
+    "medianArea": 37
+   },
+   "houses": {
+    "sales": 4,
+    "medianPerM2": 14532,
+    "medianPrice": 2100000,
+    "medianArea": 178
+   }
+  },
+  "paris-6e": {
+   "insee": "75106",
+   "flats": {
+    "sales": 1359,
+    "medianPerM2": 14131,
+    "medianPrice": 630000,
+    "medianArea": 47
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
+   }
+  },
+  "paris-7e": {
+   "insee": "75107",
+   "flats": {
+    "sales": 1552,
+    "medianPerM2": 13639,
+    "medianPrice": 750000,
+    "medianArea": 59
+   },
+   "houses": {
+    "sales": 4,
+    "medianPerM2": 14749,
+    "medianPrice": 2295000,
+    "medianArea": 193
+   }
+  },
+  "paris-8e": {
+   "insee": "75108",
+   "flats": {
+    "sales": 1156,
+    "medianPerM2": 12006,
+    "medianPrice": 734800,
+    "medianArea": 65
+   },
+   "houses": {
+    "sales": 2,
+    "medianPerM2": 18775,
+    "medianPrice": 5750000,
+    "medianArea": 290
+   }
+  },
+  "paris-9e": {
+   "insee": "75109",
+   "flats": {
+    "sales": 2023,
+    "medianPerM2": 10673,
+    "medianPrice": 466800,
+    "medianArea": 45
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
+   }
+  },
+  "paris-10e": {
+   "insee": "75110",
+   "flats": {
+    "sales": 2618,
+    "medianPerM2": 9264,
+    "medianPrice": 341125,
+    "medianArea": 37
+   },
+   "houses": {
+    "sales": 0,
+    "medianPerM2": null,
+    "medianPrice": null,
+    "medianArea": null
    }
   }
  }

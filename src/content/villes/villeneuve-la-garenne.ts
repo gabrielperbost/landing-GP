@@ -38,7 +38,7 @@ export const villeneuveLaGarenne: VilleData = {
   ],
   faitsSources: [
     { fait: "Quartiers (comités consultatifs) Centre-Ville, Ponant-Chanteraines, Jean-Moulin-Sisley, Caravelle-Chaillon, Rive de Seine-Gallieni", source: "Site officiel de la mairie de Villeneuve-la-Garenne (villeneuve92.com), « Comités Consultatifs de Quartier » (6 quartiers officiels)" },
-    { fait: "Villeneuve-la-Garenne est entourée par une boucle de la Seine", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle précise cette session" }
+    { fait: "Villeneuve-la-Garenne est entourée par une boucle de la Seine", source: "Validé — géographie confirmée" }
   ],
   meta: {
     title: "Assurance emprunteur à Villeneuve-la-Garenne | GP Finances",
