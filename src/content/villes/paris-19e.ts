@@ -34,7 +34,7 @@ export const paris19e: VilleData = {
     },
     {
       q: "J’ai terminé le protocole thérapeutique de mon cancer il y a plus de 5 ans, sans rechute : dois-je le déclarer pour mon prêt dans le 19e ?",
-      r: "Non, grâce au droit à l’oubli : depuis la fin du protocole thérapeutique, un délai de 5 ans sans rechute suffit à ne plus avoir à déclarer un cancer, ou une hépatite C, dans le questionnaire de santé."
+      r: "D’abord, si votre prêt remplit déjà les conditions de suppression du questionnaire de santé (part assurée d’au plus 200 000 € par personne et prêt qui se termine avant vos 60 ans), la question ne se pose même pas : aucun questionnaire à remplir. Sinon, le droit à l’oubli s’applique dans le cadre de la convention AERAS : un délai de 5 ans sans rechute depuis la fin du protocole thérapeutique suffit à ne plus avoir à déclarer un cancer, ou une hépatite C, à condition que la part assurée ne dépasse pas 420 000 € par personne et que le prêt se termine avant vos 71 ans."
     }
   ],
   faitsSources: [
