@@ -545,6 +545,24 @@ const faqHtml = items => `<div class="local-faq">${items.map(q => {
   });
 }
 
+// Page hub Paris : même principe que le hub Hauts-de-Seine, pour les 20 arrondissements.
+{
+  const arrNum = slug => { const m = /^paris-(\d+)/.exec(slug); return m ? Number(m[1]) : 99; };
+  const parisCities = OTHER_STUBS.filter(c => c.slug.startsWith('paris-')).sort((a, b) => arrNum(a.slug) - arrNum(b.slug));
+  const rows = parisCities.map(c => ({ c, i: INFO.get(c.slug) })).filter(x => x.i.flats).sort((a, b) => b.i.flats.medianPerM2 - a.i.flats.medianPerM2);
+  const table = `<h3 class="local-h3">Le prix de l’immobilier arrondissement par arrondissement</h3><p class="local-note">Prix médian d’un appartement, d’après les ventes enregistrées en ${YEARS_TEXT} (base DVF). Cliquez sur votre arrondissement pour voir le détail.</p><table class="local-table"><thead><tr><th>Arrondissement</th><th>Prix médian au m²</th><th>Prix médian d’un appartement</th><th>Ventes analysées</th></tr></thead><tbody>${rows.map(({ c, i }) => `<tr><td>${cityLink(c)}</td><td>${eur(i.flats.medianPerM2)}</td><td>${eur(i.flats.medianPrice)}</td><td>${num(i.flats.sales)}</td></tr>`).join('')}</tbody></table><p class="local-source">Sources : DGFiP, base DVF (data.gouv.fr) ; INSEE. Données relevées le ${RETRIEVED}. Repères statistiques, ils ne remplacent pas l’estimation d’un bien.</p>`;
+  localPage({
+    file: 'paris', route: '/assurance-emprunteur/paris',
+    title: 'Assurance de prêt à Paris | GP Finances',
+    description: 'Assurance de prêt immobilier à Paris : prix de l’immobilier arrondissement par arrondissement, comparaison des contrats et économies sur l’assurance emprunteur.',
+    eyebrow: 'Assurance emprunteur · Paris',
+    heading: 'Votre arrondissement à Paris',
+    intro: 'Accompagnement humain, comparaison des contrats et démarches prises en charge, dans les 20 arrondissements de Paris. Choisissez votre arrondissement :',
+    extra: `<p class="city-links">${parisCities.map(cityLink).join('')}</p>${table}`,
+    breadcrumb: { html: '<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>Paris</span></nav>', schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: 'Paris', item: ORIGIN + '/assurance-emprunteur/paris' }] } }
+  });
+}
+
 for (const c of CITIES_ALL) {
   const i = INFO.get(c.slug);
   const ville = VILLE_BY_SLUG.get(c.slug);
@@ -657,7 +675,7 @@ for (const c of CITIES_ALL) {
     breadcrumb: { html: `<nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span>/</span> <a href="/assurance-emprunteur">Assurance emprunteur</a> <span>/</span> <span>${name}</span></nav>`, schema: { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Assurance emprunteur', item: ORIGIN + '/assurance-emprunteur' }, { '@type': 'ListItem', position: 3, name: c.name, item: ORIGIN + route }] } }
   });
 }
-console.log(`Pages locales : 1 page départementale (92) + ${CITIES_ALL.length} villes (${CITIES_92.length} dans le 92, ${CITIES_ALL.length - CITIES_92.length} ailleurs)`);
+console.log(`Pages locales : 2 pages hubs (Hauts-de-Seine, Paris) + ${CITIES_ALL.length} villes (${CITIES_92.length} dans le 92, ${CITIES_ALL.length - CITIES_92.length} ailleurs)`);
 
 // avis Google et chiffres : données de la maquette servies telles quelles
 fs.rmSync(TMP, { recursive: true, force: true });
