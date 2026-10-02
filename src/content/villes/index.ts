@@ -11,6 +11,15 @@ import { paris7e } from "./paris-7e.ts";
 import { paris8e } from "./paris-8e.ts";
 import { paris9e } from "./paris-9e.ts";
 import { paris10e } from "./paris-10e.ts";
+import { paris11e } from "./paris-11e.ts";
+import { paris12e } from "./paris-12e.ts";
+import { paris13e } from "./paris-13e.ts";
+import { paris14e } from "./paris-14e.ts";
+import { paris16e } from "./paris-16e.ts";
+import { paris17e } from "./paris-17e.ts";
+import { paris18e } from "./paris-18e.ts";
+import { paris19e } from "./paris-19e.ts";
+import { paris20e } from "./paris-20e.ts";
 import { antony } from "./antony.ts";
 import { asnieresSurSeine } from "./asnieres-sur-seine.ts";
 import { bagneux } from "./bagneux.ts";
@@ -64,6 +73,15 @@ export const VILLES: VilleData[] = [
   paris8e,
   paris9e,
   paris10e,
+  paris11e,
+  paris12e,
+  paris13e,
+  paris14e,
+  paris16e,
+  paris17e,
+  paris18e,
+  paris19e,
+  paris20e,
   antony,
   asnieresSurSeine,
   bagneux,
