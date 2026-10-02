@@ -32,6 +32,10 @@
  *  4. Présence de TODO_VERIFIER (chiffres non sourcés, à valider).
  *  5. Liens internes (villes voisines, hub) : toutes les cibles existent.
  *  6. Que le build Next.js (tsc --noEmit) passe sans erreur.
+ *  7. Doublons thématiques de FAQ (pages migrées) : aucune question générale tournante ne doit
+ *     traiter le même sujet qu'une question locale déjà affichée sur la page (ex. deux questions
+ *     différentes sur « puis-je changer à tout moment »). Mêmes mots-clés que
+ *     scripts/build-site.cjs, en filet de sécurité indépendant du build.
  *
  * Code de sortie non nul si un problème bloquant est détecté (titres dupliqués,
  * lien mort, paire migrée ≥ 50 % de similarité, page migrée sous le seuil de
@@ -64,6 +68,22 @@ type PageInfo = {
   localShare: number;
   shingles: Set<string>;
   links: string[];
+  faqQuestions: string[];
+};
+
+// Mêmes sujets et mots-clés que scripts/build-site.cjs (rotatingGeneralFaq/TOPIC_KEYWORDS) :
+// filet de sécurité indépendant du build pour vérifier qu'aucune question générale tournante ne
+// fait doublon de sujet avec une question locale sur la même page (ex. « à tout moment » /
+// « prêt déjà ancien » répétés sous deux formulations différentes).
+const TOPIC_KEYWORDS: Record<string, RegExp> = {
+  timing: /à tout moment/i,
+  "loan-age": /déjà ancien|est-il (encore temps|trop tard)|signé il y a \d/i,
+  cost: /a-t-il un coût|gratuit/i,
+  "bank-refusal": /banque (peut|peut-elle) refuser/i,
+  "health-questionnaire": /questionnaire de santé/i,
+  "bank-notification": /prévenir ma banque/i,
+  guarantees: /garanties (restent|identiques)/i,
+  duration: /combien de temps (prend|dure)/i
 };
 
 const stripTags = (html: string) =>
@@ -160,6 +180,12 @@ for (const file of files) {
 
   const links = [...html.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1]);
 
+  // Questions de la FAQ « Près de chez vous » (locales + générales tournantes), pour le contrôle
+  // de doublon de sujet ci-dessous.
+  const faqQuestions = [...mainHtml.matchAll(/<summary>([\s\S]*?)<span>\+<\/span><\/summary>/g)].map((m) =>
+    stripTags(m[1])
+  );
+
   pages.push({
     file,
     slug,
@@ -171,8 +197,25 @@ for (const file of files) {
     localWordCount: localWc,
     localShare: wc === 0 ? 0 : localWc / wc,
     shingles: shingles(text),
-    links
+    links,
+    faqQuestions
   });
+}
+
+// 7. Doublons thématiques dans la FAQ (pages migrées) : une question générale tournante ne doit
+// jamais traiter le même sujet qu'une question locale affichée sur la même page.
+for (const p of pages.filter((pg) => MIGRATED_SLUGS.has(pg.slug))) {
+  const topicsSeen = new Map<string, string>(); // topic -> première question qui l'a déclenché
+  for (const q of p.faqQuestions) {
+    for (const [topic, re] of Object.entries(TOPIC_KEYWORDS)) {
+      if (!re.test(q)) continue;
+      if (topicsSeen.has(topic) && topicsSeen.get(topic) !== q) {
+        problems.push(`${p.file} : doublon thématique de FAQ (sujet « ${topic} ») entre « ${topicsSeen.get(topic)} » et « ${q} »`);
+      } else if (!topicsSeen.has(topic)) {
+        topicsSeen.set(topic, q);
+      }
+    }
+  }
 }
 
 // 3. Unicité des title / description / H1

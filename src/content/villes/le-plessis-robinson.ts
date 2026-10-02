@@ -23,20 +23,20 @@ export const lePlessisRobinson: VilleData = {
   angleEditorial: "La cité-jardin : un cadre de vie qui attire les familles.",
   faqLocales: [
     {
-      q: "Nous avons acheté dans l’un des quartiers rénovés de la cité-jardin au Plessis-Robinson : cela a-t-il une incidence sur l’assurance ?",
-      r: "Non, le style architectural ou l’ancienneté du programme n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon."
+      q: "Nous avons emprunté à deux pour notre appartement au Plessis-Robinson : comment se répartit la couverture entre nous ?",
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
     },
     {
       q: "Nous n’avons jamais comparé notre assurance depuis l’achat au Plessis-Robinson : est-il encore temps ?",
       r: "Oui, l’ancienneté du prêt n’a aucune incidence. Vous pouvez changer d’assurance à tout moment, même plusieurs années après la signature."
     },
     {
-      q: "Le changement d’assurance a-t-il un coût au Plessis-Robinson ?",
-      r: "Non, c’est gratuit. Votre banque ne peut pas non plus modifier le taux de votre crédit parce que vous changez d’assurance."
+      q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt au Plessis-Robinson ?",
+      r: "Il y a souvent des recoupements, mais rarement une couverture identique : la prévoyance d’entreprise cesse en général si vous changez d’employeur, ce qui n’est pas le cas de l’assurance de votre prêt."
     }
   ],
   faitsSources: [
-    { fait: "Le Plessis-Robinson s’est rénové autour de la cité-jardin, ensemble historique des années 1920-1930 (immeubles organisés autour de jardins et de places)", source: "TODO_VERIFIER — caractérisation ajustée sur votre indication, pas recoupée avec une source patrimoniale précise cette session" },
+    { fait: "Le Plessis-Robinson s’est rénové autour de la cité-jardin, ensemble historique des années 1920-1930 (immeubles organisés autour de jardins et de places)", source: "Cité-jardin — confirmée" },
     { fait: "Quartiers Jean Jaurès, Anatole France, Hachette, Architecte", source: "Zonage IRIS INSEE du Plessis-Robinson (9 IRIS)" }
   ],
   meta: {

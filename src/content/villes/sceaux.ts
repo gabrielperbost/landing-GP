@@ -27,12 +27,12 @@ export const sceaux: VilleData = {
       r: "Oui, et c’est sur les capitaux les plus élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme plus importante sur la durée."
     },
     {
-      q: "Le parc de Sceaux attire des prix plus élevés dans certains secteurs : cela change-t-il le calcul de l’assurance ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis du bien."
+      q: "Nous avons emprunté à deux pour nous agrandir à Sceaux : comment se répartit la couverture entre nous ?",
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Sceaux ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 25 ans signé il y a 6 ans à Sceaux, pour notre premier achat : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [

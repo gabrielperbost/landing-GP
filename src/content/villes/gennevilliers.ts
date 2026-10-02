@@ -24,16 +24,16 @@ export const gennevilliers: VilleData = {
   angleEditorial: "Budget accessible, marché mixte entre industrie et pavillons.",
   faqLocales: [
     {
-      q: "Gennevilliers a un passé industriel marqué : cela a-t-il une incidence sur l’assurance de prêt pour un bien ancien ?",
-      r: "Non, l’ancienneté ou l’historique du quartier n’a pas d’impact sur vos droits ni sur le tarif de l’assurance."
+      q: "Je viens de changer d’emploi juste après avoir acheté à Gennevilliers : dois-je le signaler pour mon assurance de prêt ?",
+      r: "Pas automatiquement : ce qui compte pour votre contrat, c’est votre état de santé et votre âge au moment de la souscription, pas votre situation professionnelle future."
     },
     {
       q: "Notre budget est plus mesuré à Gennevilliers qu’ailleurs dans le 92 : est-ce que comparer l’assurance change vraiment quelque chose ?",
       r: "Oui, même sur un capital plus mesuré, l’écart entre deux contrats représente souvent plusieurs milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Gennevilliers ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons emprunté à deux à Gennevilliers : comment se répartit la couverture entre nous ?",
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
     }
   ],
   faitsSources: [

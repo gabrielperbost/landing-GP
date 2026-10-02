@@ -23,16 +23,16 @@ export const malakoff: VilleData = {
   angleEditorial: "Aux portes de Paris, entre appartements et maisons de ville.",
   faqLocales: [
     {
-      q: "Nous achetons une maison de ville dans le secteur du Fort à Malakoff : l’assurance a-t-elle un impact particulier sur ce type de bien ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits. Ce qui compte pour le tarif de l’assurance, c’est le capital emprunté et votre profil."
+      q: "Nous avons emprunté à deux pour notre maison de ville à Malakoff : comment se répartit la couverture entre nous ?",
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
     },
     {
-      q: "Malakoff est tout près de Paris : les prix de l’assurance sont-ils différents de ceux de Paris ?",
-      r: "Non, le tarif de l’assurance dépend de votre profil et du capital emprunté, pas de la commune où se situe le bien."
+      q: "J’ai un peu dépassé mon budget pour acheter à Malakoff : l’assurance peut-elle vraiment alléger ma mensualité ?",
+      r: "Oui, souvent plus qu’on ne le pense : sur un capital déjà conséquent, l’écart entre deux contrats se chiffre vite en milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Malakoff ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je viens de changer d’emploi juste après avoir acheté à Malakoff : dois-je le signaler pour mon assurance ?",
+      r: "Pas automatiquement : ce qui compte pour votre contrat, c’est votre état de santé et votre âge au moment de l’étude, pas votre situation professionnelle future."
     }
   ],
   faitsSources: [

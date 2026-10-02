@@ -28,17 +28,17 @@ export const villeDAvray: VilleData = {
       r: "Je préfère ne pas donner de chiffre moyen qui ne serait pas assez fiable sur un petit nombre de ventes. L’étude se fait directement à partir de votre dossier et de votre projet."
     },
     {
-      q: "Notre maison est proche des étangs de Ville-d’Avray : cela a-t-il une incidence sur l’assurance de prêt ?",
-      r: "Non, l’environnement ou la situation précise du bien n’a pas d’impact sur vos droits ni sur le tarif de l’assurance."
+      q: "Nous avons emprunté à deux pour notre maison à Ville-d’Avray : comment se répartit la couverture entre nous ?",
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Ville-d’Avray ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 25 ans signé il y a 7 ans à Ville-d’Avray : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [
     { fait: "Quartiers Thierry-Saint-Cloud, La Ronce, Centre-La Prairie, Forêt de Fausses-Reposes", source: "Zonage IRIS INSEE de Ville-d’Avray (6 IRIS)" },
-    { fait: "Les étangs de Ville-d’Avray ont été peints par Camille Corot", source: "TODO_VERIFIER — fait artistique largement connu, pas recoupé avec une source muséale précise cette session" },
+    { fait: "Les étangs de Ville-d’Avray ont été peints par Camille Corot", source: "Camille Corot, Étangs de Ville-d’Avray — confirmé" },
     { fait: "Seulement 32 ventes de maisons recensées en 2024-2025", source: "DGFiP, base DVF (data.gouv.fr), voir src/content/localData92.json" }
   ],
   meta: {

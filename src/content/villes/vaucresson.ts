@@ -28,12 +28,12 @@ export const vaucresson: VilleData = {
       r: "Oui, et c’est justement sur les capitaux élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme bien plus importante que sur un petit emprunt."
     },
     {
-      q: "Vaucresson est une petite commune : cela limite-t-il le choix des assureurs comparés ?",
-      r: "Non, je compare les mêmes contrats du marché quelle que soit la taille de la commune : ce qui compte, c’est votre profil et le capital emprunté."
+      q: "Nous avons emprunté à deux pour notre maison à Vaucresson : comment se répartit la couverture entre nous ?",
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Vaucresson ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je suis dirigeant d’entreprise avec ma propre prévoyance : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Vaucresson ?",
+      r: "Rarement une couverture identique : une prévoyance de dirigeant est souvent plafonnée différemment de l’assurance de prêt. Je compare les deux contrats pour éviter les trous de garantie."
     }
   ],
   faitsSources: [

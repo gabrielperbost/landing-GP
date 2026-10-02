@@ -28,12 +28,12 @@ export const colombes: VilleData = {
       r: "Oui, et c’est sur les capitaux les plus élevés, souvent liés à l’achat d’une maison, que l’impact est le plus net sur la durée du prêt."
     },
     {
-      q: "Le quartier a-t-il une influence sur le tarif de l’assurance de prêt à Colombes ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis du bien."
+      q: "Nous avons emprunté à deux pour notre maison à Colombes : comment se répartit la couverture entre nous ?",
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
-      q: "Colombes a des quartiers très différents les uns des autres : l’assurance varie-t-elle d’un secteur à l’autre ?",
-      r: "Non, le tarif dépend de votre profil et du capital emprunté, pas du quartier précis où se situe le bien."
+      q: "C’est notre premier achat à Colombes et l’apport est limité : le questionnaire de santé est-il un frein ?",
+      r: "Pas forcément : il est même supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans, ce qui concerne beaucoup de premiers achats."
     }
   ],
   faitsSources: [

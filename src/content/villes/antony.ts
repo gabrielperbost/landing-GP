@@ -28,8 +28,8 @@ export const antony: VilleData = {
       r: "Oui, l’ancienneté du prêt n’a aucune incidence. La loi Lemoine permet de changer à tout moment, même plusieurs années après la signature."
     },
     {
-      q: "Le secteur Croix de Berny a des prix plus élevés : cela change-t-il le calcul de l’assurance ?",
-      r: "Non, ce qui compte pour le tarif de l’assurance, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis du bien."
+      q: "Nous avons emprunté à deux pour notre maison à Antony : comment se répartit la couverture entre nous ?",
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
     },
     {
       q: "Puis-je comparer mon assurance sans remettre en cause mon crédit immobilier ?",

@@ -28,12 +28,12 @@ export const boisColombes: VilleData = {
       r: "Oui, et c’est justement sur les capitaux élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme bien plus importante que sur un petit emprunt."
     },
     {
-      q: "Le marché de Bois-Colombes est particulier (prix élevés, petite commune) : cela change-t-il mes droits ?",
-      r: "Non, vos droits sont les mêmes partout en France : la loi Lemoine s’applique de la même façon, quel que soit le prix ou la taille de la commune."
+      q: "Nous avons emprunté à deux pour notre maison à Bois-Colombes : comment se répartit la couverture entre nous ?",
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
-      q: "Bois-Colombes est une petite commune : cela limite-t-il le choix des assureurs comparés ?",
-      r: "Non, je compare les mêmes contrats du marché quelle que soit la taille de la commune : ce qui compte, c’est votre profil et le capital emprunté."
+      q: "Je suis cadre et j’ai une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",
+      r: "Pas toujours les mêmes garanties : votre prévoyance d’entreprise et l’assurance de votre prêt ne couvrent pas exactement les mêmes risques. Je regarde avec vous ce qui est redondant et ce qui ne l’est pas."
     }
   ],
   faitsSources: [

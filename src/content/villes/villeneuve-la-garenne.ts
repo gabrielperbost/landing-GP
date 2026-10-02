@@ -9,7 +9,7 @@ export const villeneuveLaGarenne: VilleData = {
   codesPostaux: ["92390"],
   departement: "92",
   villesVoisines: ["gennevilliers", "asnieres-sur-seine", "clichy"],
-  quartiers: ["Centre", "Les Fauvelles", "Bord de Seine"],
+  quartiers: ["Centre-Ville", "Ponant-Chanteraines", "Jean-Moulin-Sisley", "Caravelle-Chaillon", "Rive de Seine-Gallieni"],
   profilImmobilier:
     "Villeneuve-la-Garenne a le prix au m² le plus accessible de ce secteur du 92, nettement en dessous de ses communes voisines. Entourée par une boucle de la Seine, la commune mêle grands ensembles et quartiers pavillonnaires plus calmes.",
   prixM2: {
@@ -32,12 +32,12 @@ export const villeneuveLaGarenne: VilleData = {
       r: "Je préfère ne pas afficher de chiffre qui ne serait pas assez fiable sur un petit nombre de ventes, plutôt que de donner une moyenne trompeuse."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Villeneuve-la-Garenne ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous empruntons à deux à Villeneuve-la-Garenne : comment se répartit la couverture entre nous ?",
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Centre, Les Fauvelles, Bord de Seine", source: "TODO_VERIFIER — liste simplifiée à partir du zonage IRIS INSEE, pas recoupée avec le site officiel de la mairie cette session" },
+    { fait: "Quartiers (comités consultatifs) Centre-Ville, Ponant-Chanteraines, Jean-Moulin-Sisley, Caravelle-Chaillon, Rive de Seine-Gallieni", source: "Site officiel de la mairie de Villeneuve-la-Garenne (villeneuve92.com), « Comités Consultatifs de Quartier » (6 quartiers officiels)" },
     { fait: "Villeneuve-la-Garenne est entourée par une boucle de la Seine", source: "TODO_VERIFIER — géographie communément admise, pas recoupée avec une source officielle précise cette session" }
   ],
   meta: {

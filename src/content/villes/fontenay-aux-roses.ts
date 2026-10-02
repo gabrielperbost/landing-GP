@@ -24,16 +24,16 @@ export const fontenayAuxRoses: VilleData = {
   angleEditorial: "Budget accessible, à deux pas de Paris.",
   faqLocales: [
     {
-      q: "Nous achetons une maison de ville à Fontenay-aux-Roses : la loi Lemoine s’applique-t-elle aussi sur ce type de bien ?",
-      r: "Oui, le type de bien n’a aucune incidence sur vos droits. La loi Lemoine s’applique de la même façon à tous les prêts immobiliers."
+      q: "C’est notre premier achat à Fontenay-aux-Roses et l’apport est limité : le questionnaire de santé est-il un frein ?",
+      r: "Pas forcément : il est même supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans, ce qui concerne beaucoup de premiers achats."
     },
     {
       q: "Le budget est plus accessible à Fontenay qu’ailleurs dans le 92 : est-ce que comparer l’assurance change vraiment quelque chose ?",
       r: "Oui, même sur un capital plus mesuré, l’écart entre deux contrats représente souvent plusieurs milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Fontenay-aux-Roses ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons emprunté à deux pour notre maison de ville à Fontenay-aux-Roses : comment se répartit la couverture ?",
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     }
   ],
   faitsSources: [

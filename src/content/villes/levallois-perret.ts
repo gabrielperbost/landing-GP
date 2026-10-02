@@ -24,8 +24,8 @@ export const levalloisPerret: VilleData = {
   angleEditorial: "Marché d’appartements à prix élevé, quasiment sans maisons.",
   faqLocales: [
     {
-      q: "Le marché de Levallois est surtout fait d’appartements, avec très peu de maisons : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Levallois ?",
+      r: "Les deux contrats ne se recouvrent pas forcément : la prévoyance d’entreprise s’arrête souvent avec votre contrat de travail, alors que l’assurance de prêt reste attachée au crédit, quel que soit votre employeur."
     },
     {
       q: "Nous avons un capital important à Levallois-Perret : l’assurance de prêt a-t-elle un vrai impact sur ce type de montant ?",

@@ -28,12 +28,12 @@ export const chaville: VilleData = {
       r: "Oui, l’ancienneté du prêt n’a aucune incidence. La loi Lemoine permet de changer à tout moment, même longtemps après la signature."
     },
     {
-      q: "Le cadre forestier de Chaville a-t-il une incidence sur le tarif de l’assurance de prêt ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas l’environnement du bien."
+      q: "Nous avons emprunté à deux pour notre maison à Chaville : comment se répartit la couverture entre nous ?",
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
     },
     {
-      q: "Nous cherchons une maison à Chaville, entre les deux forêts : le type de bien a-t-il un impact sur l’assurance ?",
-      r: "Non, le type de bien (appartement ou maison) n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon dans tous les cas."
+      q: "J’ai arrêté de fumer il y a un an, depuis l’achat de notre maison à Chaville : cela peut-il faire baisser mon tarif d’assurance ?",
+      r: "Potentiellement oui : le statut fumeur ou non fumeur fait partie des critères du questionnaire de santé. Si votre situation a changé, ça vaut le coup de refaire une étude."
     }
   ],
   faitsSources: [

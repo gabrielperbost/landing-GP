@@ -23,16 +23,16 @@ export const nanterre: VilleData = {
   angleEditorial: "Grande ville mixte, entre université et quartiers d’affaires.",
   faqLocales: [
     {
-      q: "Nous habitons dans le quartier des Groues, proche de La Défense : l’assurance de prêt est-elle différente de celle d’un bien côté Courbevoie ?",
-      r: "Non, le tarif de l’assurance dépend de votre profil et du capital emprunté, pas du secteur précis du bien ou de sa proximité avec La Défense."
+      q: "Je suis tout juste diplômé de l’université Paris Nanterre et je viens d’acheter mon premier appartement : le questionnaire de santé est-il un frein ?",
+      r: "Pas forcément : il est même supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans, ce qui concerne beaucoup de premiers achats."
     },
     {
-      q: "Nanterre a des quartiers très différents les uns des autres : l’assurance varie-t-elle d’un secteur à l’autre ?",
-      r: "Non, ce qui compte, c’est votre profil (âge, santé) et le capital emprunté, pas le quartier précis où se situe le bien."
+      q: "Nous avons emprunté à deux pour notre maison à Nanterre : comment se répartit la couverture entre nous ?",
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Nanterre ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je travaille côté Groues, proche de La Défense, et j’ai une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",
+      r: "Pas nécessairement les mêmes garanties : une prévoyance d’entreprise cesse en général dès que vous quittez votre poste, ce qui n’est pas le cas de l’assurance liée à votre prêt."
     }
   ],
   faitsSources: [

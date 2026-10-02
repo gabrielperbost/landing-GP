@@ -23,16 +23,16 @@ export const meudon: VilleData = {
   angleEditorial: "Cadre boisé, deux visages : le centre et Meudon-la-Forêt.",
   faqLocales: [
     {
-      q: "Les prix sont différents entre Meudon centre et Meudon-la-Forêt : cela a-t-il une incidence sur l’assurance de prêt ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis de Meudon où se situe le bien."
+      q: "Nous avons emprunté à deux pour notre maison à Meudon-la-Forêt : comment se répartit la couverture entre nous ?",
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     },
     {
       q: "Nous avons acheté une maison à Meudon-la-Forêt : l’assurance de prêt a-t-elle un impact sur ce type de capital ?",
       r: "Oui, et c’est sur les capitaux les plus élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme plus importante sur la durée."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Meudon ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "J’ai plus de 50 ans et j’emprunte à Meudon pour la première fois : le changement d’assurance est-il plus compliqué à cet âge ?",
+      r: "Non, pas plus compliqué, mais votre âge fait partie des critères du tarif. C’est justement à partir de 50 ans que comparer les contrats fait souvent la plus grande différence."
     }
   ],
   faitsSources: [

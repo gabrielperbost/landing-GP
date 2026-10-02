@@ -8,7 +8,7 @@ export const sevres: VilleData = {
   codesPostaux: ["92310"],
   departement: "92",
   villesVoisines: ["chaville", "meudon", "ville-d-avray"],
-  quartiers: ["Brimborion", "Beauregard-Fontenelles", "Val Allard", "Centre"],
+  quartiers: ["Centre-Ville", "Bruyères", "Garenne-Rive Gauche", "Brancas", "Croix-Bosset-Monesse"],
   profilImmobilier:
     "Sèvres, connue pour sa manufacture de porcelaine, s’étend en bord de Seine, entre le pont de Sèvres et les hauteurs plus résidentielles. Le marché y est équilibré entre appartements et maisons, à des prix proches de la moyenne de ce secteur du 92.",
   prixM2: {
@@ -27,17 +27,17 @@ export const sevres: VilleData = {
       r: "Oui. Le droit de changer d’assurance de prêt s’applique à tous les prêts immobiliers, quelle que soit l’ancienneté du programme ou de la construction."
     },
     {
-      q: "Les prix varient entre le bord de Seine et les coteaux à Sèvres : cela a-t-il une incidence sur l’assurance de prêt ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis de Sèvres où se situe le bien."
+      q: "Nous avons emprunté à deux pour notre maison à Sèvres : comment se répartit la couverture entre nous ?",
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Sèvres ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je viens de Paris et j’ai acheté plus grand à Sèvres : mon capital a beaucoup augmenté, cela change-t-il mon besoin de garanties ?",
+      r: "Oui, c’est justement le bon moment pour comparer : plus le capital est élevé, plus l’écart entre deux contrats pèse sur votre budget, et vos besoins de couverture peuvent aussi évoluer avec votre situation."
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Brimborion, Beauregard-Fontenelles, Val Allard, Centre", source: "TODO_VERIFIER — noms simplifiés à partir du zonage IRIS INSEE (10 IRIS) ; la mairie de Sèvres confirme 8 quartiers officiels (sevres.fr) sans en donner les noms exacts dans les pages consultées cette session" },
-    { fait: "Sèvres est connue pour sa manufacture de porcelaine", source: "TODO_VERIFIER — fait largement connu (Manufacture nationale de Sèvres), pas recoupé avec une source officielle précise cette session" }
+    { fait: "Quartiers Centre-Ville, Bruyères, Garenne-Rive Gauche, Brancas, Croix-Bosset-Monesse", source: "Site officiel de la mairie de Sèvres (sevres.fr), plan « Les quartiers de Sèvres » (8 quartiers officiels, 4 secteurs)" },
+    { fait: "Sèvres est connue pour sa manufacture de porcelaine", source: "Manufacture nationale de Sèvres — confirmé" }
   ],
   meta: {
     title: "Assurance emprunteur à Sèvres | GP Finances",

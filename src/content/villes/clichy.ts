@@ -25,16 +25,16 @@ export const clichy: VilleData = {
   angleEditorial: "Marché d’appartements à forte densité, prix élevés.",
   faqLocales: [
     {
-      q: "Le marché de Clichy est surtout fait d’appartements, avec peu de maisons : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Nous avons emprunté à deux pour notre premier appartement à Clichy : comment se répartit la couverture entre nous ?",
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
     },
     {
-      q: "Le prix au m² est élevé à Clichy : l’assurance de prêt suit-elle le même mouvement ?",
-      r: "Le coût de l’assurance dépend du capital emprunté, pas directement du prix au m². Sur un capital élevé, comparer les contrats a d’autant plus d’intérêt."
+      q: "J’ai un peu dépassé mon budget pour acheter à Clichy : l’assurance peut-elle vraiment alléger ma mensualité ?",
+      r: "Oui, souvent plus qu’on ne le pense : sur un capital déjà conséquent pour un premier achat, l’écart entre deux contrats se chiffre vite en milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Le marché est tendu à Clichy : l’assurance de prêt coûte-t-elle plus cher dans une commune aussi dense ?",
-      r: "Non, le tarif de l’assurance ne dépend pas de la densité de la commune, mais du capital emprunté et de votre profil (âge, santé)."
+      q: "Je suis en période d’essai dans mon nouvel emploi depuis l’achat à Clichy : dois-je le signaler pour mon assurance ?",
+      r: "Pas automatiquement : ce qui compte pour votre contrat, c’est votre état de santé et votre âge au moment de l’étude, pas votre situation professionnelle future."
     }
   ],
   faitsSources: [

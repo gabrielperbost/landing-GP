@@ -36,8 +36,8 @@ export const paris15e: VilleData = {
       r: "S’il s’agit d’un nouveau prêt, oui, c’est une nouvelle étude. En revanche, si vous gardez le même prêt et changez seulement d’assurance, la démarche de substitution reste la même quel que soit le type de bien."
     },
     {
-      q: "Le marché du 15e est surtout fait d’appartements : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien (appartement ou maison) n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon. Ce qui compte, c’est le capital emprunté, votre âge et votre état de santé."
+      q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",
+      r: "Les garanties ne sont pas identiques : la prévoyance d’entreprise s’arrête en général avec le contrat de travail, l’assurance de prêt reste liée au crédit lui-même. On regarde ensemble ce qui est déjà couvert."
     }
   ],
   faitsSources: [

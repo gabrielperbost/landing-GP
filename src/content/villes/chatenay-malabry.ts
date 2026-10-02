@@ -28,8 +28,8 @@ export const chatenayMalabry: VilleData = {
       r: "Oui, dès la signature du prêt, vous pouvez comparer et changer d’assurance à tout moment, sans attendre une date anniversaire."
     },
     {
-      q: "Le quartier de la Butte Rouge est un secteur historique : cela a-t-il une incidence sur l’assurance de prêt ?",
-      r: "Non, l’ancienneté ou le caractère patrimonial du quartier n’a pas d’impact sur vos droits ni sur le tarif de l’assurance."
+      q: "Nous passons d’un 2 pièces à une maison à Châtenay-Malabry avec un second prêt : faut-il refaire toute l’étude d’assurance ?",
+      r: "Oui, un nouveau prêt implique une nouvelle étude. Mais si vous gardez l’ancien crédit en parallèle, son assurance n’est pas remise en cause par ce second emprunt."
     },
     {
       q: "Notre budget est plus serré à Châtenay-Malabry qu’ailleurs dans le 92 : est-ce que comparer l’assurance change vraiment quelque chose ?",

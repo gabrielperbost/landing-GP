@@ -23,16 +23,16 @@ export const laGarenneColombes: VilleData = {
   angleEditorial: "Petite commune recherchée, prix élevés au m².",
   faqLocales: [
     {
-      q: "Le prix au m² est élevé à La Garenne-Colombes pour une si petite commune : l’assurance de prêt suit-elle le même mouvement ?",
-      r: "Le coût de l’assurance dépend du capital emprunté, pas directement du prix au m². Sur un capital élevé, comparer les contrats a d’autant plus d’intérêt."
+      q: "J’ai un peu dépassé mon budget pour acheter à La Garenne-Colombes : l’assurance peut-elle vraiment alléger ma mensualité ?",
+      r: "Oui, souvent plus qu’on ne le pense : sur un capital déjà conséquent pour un premier achat, l’écart entre deux contrats se chiffre vite en milliers d’euros sur la durée du prêt."
     },
     {
       q: "Nous achetons notre premier appartement à La Garenne-Colombes à deux : comment se répartit la quotité d’assurance ?",
-      r: "Vous choisissez la répartition entre les deux emprunteurs (par exemple 50/50). C’est un point que j’étudie avec vous avant la mise en place."
+      r: "À vous de choisir la clé de répartition entre emprunteurs : 50/50 est fréquent, mais une répartition selon les revenus de chacun est tout aussi possible. On en parle avant la mise en place."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à La Garenne-Colombes ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je suis jeune cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",
+      r: "Cela dépend de ce que couvre exactement votre contrat collectif : certaines prévoyances d’entreprise sont limitées, d’autres très complètes. Je compare les deux avec vous avant de trancher."
     }
   ],
   faitsSources: [

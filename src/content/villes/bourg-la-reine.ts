@@ -18,22 +18,22 @@ export const bourgLaReine: VilleData = {
   },
   population: { valeur: 21019, source: "INSEE, via API Géo (geo.api.gouv.fr)", date: "2026-09-25" },
   profilEmprunteurs:
-    "Un mélange de familles qui achètent une maison pour s’installer durablement, et de cadres qui investissent dans un appartement proche de Paris. Les dossiers à deux emprunteurs sont fréquents, et la question de la répartition de la quotité revient souvent.",
+    "Deux profils cohabitent à Bourg-la-Reine : des familles qui s’installent durablement dans une maison, et des cadres qui investissent dans un appartement pour profiter de la desserte directe vers Paris. Les dossiers à deux emprunteurs sont fréquents, et la question de la répartition de la quotité revient souvent.",
   accesBureau:
     "Le cabinet de GP Finances se trouve à Issy-les-Moulineaux. Les échanges avec les emprunteurs de Bourg-la-Reine passent le plus souvent par téléphone ou par visio, un rendez-vous au cabinet restant possible sur demande.",
   angleEditorial: "Entre ville et maison : deux profils d’emprunteurs à Bourg-la-Reine.",
   faqLocales: [
     {
-      q: "Nous hésitons entre acheter un appartement en centre-ville ou une maison à Bourg-la-Reine : cela change-t-il l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits. Ce qui détermine le tarif de l’assurance, c’est le capital emprunté, votre âge et votre état de santé."
-    },
-    {
       q: "Nous empruntons à deux pour acheter à Bourg-la-Reine : comment se répartit la quotité ?",
-      r: "Vous choisissez la répartition (par exemple 50/50 ou selon les revenus de chacun). C’est un point que j’étudie avec vous pour éviter une mauvaise protection en cas de coup dur."
+      r: "Il n’y a pas de règle imposée : la quotité se décide entre vous, à parts égales ou selon vos revenus respectifs. Je m’assure surtout qu’elle protège correctement votre foyer en cas de coup dur."
     },
     {
-      q: "Le changement d’assurance a-t-il un coût à Bourg-la-Reine comme ailleurs ?",
-      r: "Non, c’est gratuit partout en France. Votre banque ne peut pas non plus modifier le taux de votre crédit parce que vous changez d’assurance."
+      q: "Mon entreprise m’a inscrit à une prévoyance collective : est-ce que ça remplace les garanties de l’assurance de prêt ?",
+      r: "Non, pas automatiquement les mêmes : la prévoyance d’entreprise couvre surtout votre rémunération en cas d’arrêt de travail, tandis que l’assurance de prêt protège spécifiquement le remboursement du crédit. Les deux ont leur utilité propre."
+    },
+    {
+      q: "Nous avons un prêt sur 20 ans signé il y a 6 ans à Bourg-la-Reine : est-ce trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [

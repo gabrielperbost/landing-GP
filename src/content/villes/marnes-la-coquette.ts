@@ -35,8 +35,8 @@ export const marnesLaCoquette: VilleData = {
       r: "Non, le type ou la singularité du bien n’a pas d’incidence sur vos droits. Ce qui compte, c’est le capital emprunté et votre profil (âge, santé)."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Marnes-la-Coquette ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous empruntons à deux pour notre bien à Marnes-la-Coquette : comment se répartit la couverture entre nous ?",
+      r: "C’est vous qui décidez de la répartition entre emprunteurs, par exemple 50/50 ou au prorata des revenus. On en discute ensemble avant de finaliser le contrat."
     }
   ],
   faitsSources: [

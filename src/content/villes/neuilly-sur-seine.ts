@@ -28,12 +28,12 @@ export const neuillySurSeine: VilleData = {
       r: "Oui, et c’est justement sur les capitaux les plus élevés que l’écart se chiffre en dizaines de milliers d’euros sur la durée du prêt. C’est le type de dossier où comparer compte le plus."
     },
     {
-      q: "Le marché à Neuilly est surtout fait d’appartements : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Je suis profession libérale sans prévoyance collective : le questionnaire de santé est-il différent pour moi à Neuilly ?",
+      r: "Le questionnaire est le même pour tous les profils. En revanche, sans couverture collective par ailleurs, les garanties de l’assurance de prêt méritent d’autant plus d’attention."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Neuilly-sur-Seine ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 20 ans signé il y a 7 ans à Neuilly-sur-Seine : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [

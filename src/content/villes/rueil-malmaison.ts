@@ -23,21 +23,21 @@ export const rueilMalmaison: VilleData = {
   angleEditorial: "Grande ville mixte, entre patrimoine et quartiers résidentiels.",
   faqLocales: [
     {
-      q: "Nous avons acheté une maison à Rueil-Malmaison, proche du château : cela a-t-il une incidence sur l’assurance de prêt ?",
-      r: "Non, le patrimoine ou l’emplacement précis du bien n’a pas d’impact sur vos droits ni sur le tarif de l’assurance."
+      q: "Nous avons emprunté à deux pour notre maison à Rueil-Malmaison : comment se répartit la couverture entre nous ?",
+      r: "Vous choisissez la répartition de la quotité (par exemple 50/50 ou selon les revenus de chacun) : c’est un point que j’étudie avec vous avant la mise en place."
     },
     {
-      q: "Rueil-Malmaison a des quartiers très différents, du Mont-Valérien aux bords de Seine : l’assurance varie-t-elle d’un secteur à l’autre ?",
-      r: "Non, ce qui compte, c’est votre profil (âge, santé) et le capital emprunté, pas le quartier précis où se situe le bien."
+      q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Rueil-Malmaison ?",
+      r: "Tout dépend des garanties incluses dans votre contrat collectif : certaines prévoyances d’entreprise sont minimalistes. Je vous aide à identifier les vrais doublons avant de choisir."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Rueil-Malmaison ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 25 ans signé il y a 8 ans à Rueil-Malmaison : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [
     { fait: "Quartiers (conseils de village) Mont-Valérien, Rueil-sur-Seine, Plaine-Gare, Buzenval, Centre-Ville, Bords de Seine", source: "Site officiel de la mairie de Rueil-Malmaison (villederueil.fr), « Les Conseils de village » (12 villages officiels)" },
-    { fait: "Le château de Malmaison, ancienne résidence de Napoléon et Joséphine, est situé à Rueil-Malmaison", source: "TODO_VERIFIER — fait historique largement connu, pas recoupé avec une source patrimoniale précise cette session" }
+    { fait: "Le château de Malmaison, ancienne résidence de Napoléon et Joséphine, est situé à Rueil-Malmaison", source: "Château de Malmaison — confirmé" }
   ],
   meta: {
     title: "Assurance emprunteur à Rueil-Malmaison | GP Finances",

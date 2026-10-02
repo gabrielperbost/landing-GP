@@ -27,12 +27,12 @@ export const vanves: VilleData = {
       r: "Oui, le cabinet est à Issy, commune limitrophe de Vanves. Un rendez-vous en personne est tout à fait possible, ou par téléphone/visio si c’est plus pratique."
     },
     {
-      q: "Le marché à Vanves est surtout fait d’appartements proches de Paris : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien ou la proximité de Paris n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon partout."
+      q: "J’ai un peu dépassé mon budget pour acheter à Vanves : l’assurance peut-elle vraiment alléger ma mensualité ?",
+      r: "Oui, souvent plus qu’on ne le pense : sur un capital déjà conséquent pour un premier achat, l’écart entre deux contrats se chiffre vite en milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Vanves ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons emprunté à deux pour notre appartement à Vanves : comment se répartit la couverture entre nous ?",
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     }
   ],
   faitsSources: [

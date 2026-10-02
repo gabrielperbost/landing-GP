@@ -191,16 +191,37 @@ fs.mkdirSync(VILLES, { recursive: true });
 // FAQ générales (questions non spécifiques à une ville) : un pool plus large que ce qui est
 // affiché, pour qu'un sous-ensemble tournant (3-4 questions) varie d'une ville à l'autre plutôt
 // que de répéter toujours les mêmes questions sur les 36 pages.
+// `topic` : sert à exclure une question générale si une question locale traite déjà du même
+// sujet (voir isTopicCoveredLocally plus bas) — par exemple « Puis-je changer d'assurance de prêt
+// à tout moment à Suresnes ? » (locale, sujet timing) ne doit jamais se retrouver sur la même
+// page que « Puis-je changer d'assurance de prêt à tout moment ? » (générale, même sujet).
 const GENERAL_FAQ_POOL = [
-  { q: 'Puis-je changer d’assurance de prêt à tout moment ?', a: 'Oui. Depuis la loi Lemoine (2022), vous pouvez résilier l’assurance de votre prêt immobilier quand vous le souhaitez, sans attendre une date anniversaire.' },
-  { q: 'Le changement d’assurance a-t-il un coût ?', a: 'Non, c’est gratuit. Votre banque ne peut pas non plus modifier le taux de votre crédit parce que vous changez d’assurance.' },
-  { q: 'Ma banque peut-elle refuser le nouveau contrat ?', a: 'Seulement si les garanties proposées ne sont pas équivalentes à celles exigées initialement. Je vérifie cette équivalence avant toute demande, pour éviter un refus.' },
-  { q: 'Le questionnaire de santé est-il toujours nécessaire ?', a: 'Pas toujours : il est supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans.' },
-  { q: 'Dois-je prévenir ma banque moi-même ?', a: 'Non, je m’occupe de toutes les démarches, y compris de la résiliation de votre ancien contrat auprès de votre banque.' },
-  { q: 'Les garanties restent-elles les mêmes ?', a: 'Je ne propose que des contrats avec des garanties équivalentes ou supérieures à celles de votre contrat actuel.' },
-  { q: 'Combien de temps prend le changement ?', a: 'Votre banque a 10 jours ouvrés pour répondre à la demande une fois le dossier complet envoyé.' },
-  { q: 'Puis-je changer si mon prêt est déjà ancien ?', a: 'Oui, l’ancienneté du prêt n’a aucune incidence : le droit au changement s’applique à tout moment, quelle que soit la date de signature.' }
+  { q: 'Puis-je changer d’assurance de prêt à tout moment ?', a: 'Oui. Depuis la loi Lemoine (2022), vous pouvez résilier l’assurance de votre prêt immobilier quand vous le souhaitez, sans attendre une date anniversaire.', topic: 'timing' },
+  { q: 'Le changement d’assurance a-t-il un coût ?', a: 'Non, c’est gratuit. Votre banque ne peut pas non plus modifier le taux de votre crédit parce que vous changez d’assurance.', topic: 'cost' },
+  { q: 'Ma banque peut-elle refuser le nouveau contrat ?', a: 'Seulement si les garanties proposées ne sont pas équivalentes à celles exigées initialement. Je vérifie cette équivalence avant toute demande, pour éviter un refus.', topic: 'bank-refusal' },
+  { q: 'Le questionnaire de santé est-il toujours nécessaire ?', a: 'Pas toujours : il est supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans.', topic: 'health-questionnaire' },
+  { q: 'Dois-je prévenir ma banque moi-même ?', a: 'Non, je m’occupe de toutes les démarches, y compris de la résiliation de votre ancien contrat auprès de votre banque.', topic: 'bank-notification' },
+  { q: 'Les garanties restent-elles les mêmes ?', a: 'Je ne propose que des contrats avec des garanties équivalentes ou supérieures à celles de votre contrat actuel.', topic: 'guarantees' },
+  { q: 'Combien de temps prend le changement ?', a: 'Votre banque a 10 jours ouvrés pour répondre à la demande une fois le dossier complet envoyé.', topic: 'duration' },
+  { q: 'Puis-je changer si mon prêt est déjà ancien ?', a: 'Oui, l’ancienneté du prêt n’a aucune incidence : le droit au changement s’applique à tout moment, quelle que soit la date de signature.', topic: 'loan-age' }
 ];
+// Mots-clés qui trahissent, dans la QUESTION d'une FAQ locale, le même sujet qu'une question
+// générale — pour éviter qu'un emprunteur voie deux fois la même idée sur la même page (ex. une
+// question locale sur « est-il trop tard » puis la question générale « prêt déjà ancien »).
+const TOPIC_KEYWORDS = {
+  timing: /à tout moment/i,
+  'loan-age': /déjà ancien|est-il (encore temps|trop tard)|signé il y a \d/i,
+  cost: /a-t-il un coût|gratuit/i,
+  'bank-refusal': /banque (peut|peut-elle) refuser/i,
+  'health-questionnaire': /questionnaire de santé/i,
+  'bank-notification': /prévenir ma banque/i,
+  guarantees: /garanties (restent|identiques)/i,
+  duration: /combien de temps (prend|dure)/i
+};
+const isTopicCoveredLocally = (topic, localFaq) => {
+  const re = TOPIC_KEYWORDS[topic];
+  return !!re && (localFaq || []).some(q => re.test(q.q));
+};
 // Hash djb2 (pas une simple somme de codes de caractères) : une somme simple fait coïncider deux
 // slugs dès que la différence de leurs sommes est un multiple des petits modulos utilisés plus
 // bas (2, 3, 8) — ce qui arrive plus souvent qu'il n'y paraît sur des noms de ville — et fait
@@ -324,9 +345,18 @@ const phrase = (key, slug, ...args) => {
   const options = PHRASES[key](...args);
   return options[PHRASE_ASSIGNMENTS[key].get(slug) ?? 0];
 };
-const rotatingGeneralFaq = (slug, count = 4) => {
+// `localFaq` : la FAQ propre à la ville (ville.faqLocales), pour exclure toute question générale
+// dont le sujet est déjà traité localement — une question générale tournante ne doit jamais faire
+// doublon avec une question locale (ex. Suresnes : la locale « à tout moment » excluait déjà la
+// générale du même sujet).
+const rotatingGeneralFaq = (slug, count = 4, localFaq = []) => {
   const start = FAQ_START_ASSIGNMENT.get(slug) ?? 0;
-  return Array.from({ length: count }, (_, i) => GENERAL_FAQ_POOL[(start + i) % GENERAL_FAQ_POOL.length]);
+  const eligible = GENERAL_FAQ_POOL.filter(q => !isTopicCoveredLocally(q.topic, localFaq));
+  if (!eligible.length) return [];
+  // on tourne dans la liste déjà filtrée (pas dans le pool complet), pour ne jamais retomber sur
+  // une question exclue tout en gardant une rotation stable par ville
+  const startInEligible = start % eligible.length;
+  return Array.from({ length: Math.min(count, eligible.length) }, (_, i) => eligible[(startInEligible + i) % eligible.length]);
 };
 const YEARS_TEXT = LOCAL.years.join(' et ');
 const RETRIEVED = new Date(LOCAL.retrievedAt + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
@@ -528,7 +558,7 @@ for (const c of CITIES_ALL) {
     // Ville migrée (fichier src/content/villes/{slug}.ts) : structure validée sur les 3 pages
     // pilotes — assurance d'abord (simulateur, méthode, cas concret, FAQ, témoignages), ville
     // ensuite (bloc court en bas de page). Voir condenseForCityPage pour l'assemblage complet.
-    faq.push(...ville.faqLocales.map(q => ({ q: q.q, a: q.r, local: true })), ...rotatingGeneralFaq(c.slug, 2));
+    faq.push(...ville.faqLocales.map(q => ({ q: q.q, a: q.r, local: true })), ...rotatingGeneralFaq(c.slug, 2, ville.faqLocales));
 
     // 2 tuiles au lieu de 4 : prix au m² + capital typique emprunté (celui-là même qui sert
     // d'exemple de financement juste en dessous). Balisées locales : ce sont des faits propres à

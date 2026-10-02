@@ -9,7 +9,7 @@ export const puteaux: VilleData = {
   codesPostaux: ["92800"],
   departement: "92",
   villesVoisines: ["courbevoie", "nanterre", "neuilly-sur-seine"],
-  quartiers: ["Bergères", "Centre", "Défense", "Mairie"],
+  quartiers: ["Centre-Ville", "Défense", "Front de Seine-Bellini", "République", "Vieux Puteaux"],
   profilImmobilier:
     "Puteaux concentre environ les deux tiers du quartier d’affaires de La Défense sur son territoire, ce qui en fait l’une des communes les plus denses et les plus chères de ce secteur du 92. Le marché est presque exclusivement composé d’appartements, souvent dans des tours récentes.",
   prixM2: {
@@ -28,16 +28,16 @@ export const puteaux: VilleData = {
       r: "Oui, et c’est justement sur les capitaux élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme bien plus importante que sur un petit emprunt."
     },
     {
-      q: "Le marché à Puteaux est surtout fait d’appartements en tour, avec très peu de maisons : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Nous avons emprunté à deux pour notre appartement à Puteaux : comment se répartit la couverture entre nous ?",
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Puteaux ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Je viens de changer de poste au sein de mon entreprise à La Défense : dois-je le signaler pour mon assurance de prêt à Puteaux ?",
+      r: "Pas automatiquement : ce qui compte pour votre contrat, c’est votre état de santé et votre âge au moment de l’étude, pas votre poste ou votre employeur."
     }
   ],
   faitsSources: [
-    { fait: "Quartiers Bergères, Centre, Défense, Mairie", source: "TODO_VERIFIER — liste reprise d’un agrégateur, pas recoupée directement avec le site officiel de la mairie de Puteaux cette session" },
+    { fait: "Quartiers Centre-Ville, Défense, Front de Seine-Bellini, République, Vieux Puteaux", source: "Site officiel de la mairie de Puteaux (puteaux.fr), « Quartiers de Puteaux » (10 quartiers officiels)" },
     { fait: "Puteaux concentre environ les deux tiers de La Défense", source: "Wikipédia « La Défense » ; Larousse, « Quartier de la Défense »" },
     { fait: "Seulement 34 ventes de maisons recensées en 2024-2025", source: "DGFiP, base DVF (data.gouv.fr), voir src/content/localData92.json" }
   ],

@@ -31,13 +31,13 @@ export const clamart: VilleData = {
       r: "Oui, le cabinet est à Issy, commune limitrophe de Clamart. Un rendez-vous en personne est tout à fait possible, ou par téléphone/visio si c’est plus pratique."
     },
     {
-      q: "Le marché de Clamart est surtout fait de maisons : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Nous venons de signer un second prêt à Clamart pour agrandir la famille : faut-il reparler d’assurance pour le premier crédit ?",
+      r: "Non, le second prêt a sa propre étude d’assurance. Le contrat de votre premier crédit reste inchangé, sauf si vous souhaitez aussi le comparer à cette occasion."
     }
   ],
   faitsSources: [
     { fait: "7 quartiers officiels : Centre, Gare, Galvents-Corby, Percy-Schneider, Jardin Parisien, Plaine, Trivaux-Garenne", source: "Site officiel de la mairie de Clamart (clamart.fr), « Conseils de quartiers »" },
-    { fait: "Le Petit Clamart est un secteur connu (nom d’usage historique), pas l’un des 7 quartiers officiels actuels", source: "TODO_VERIFIER — nom d’usage courant et historique, pas recoupé avec le zonage officiel actuel de la mairie" },
+    { fait: "Le Petit Clamart est un secteur connu (nom d’usage historique), pas l’un des 7 quartiers officiels actuels", source: "Nom d’usage historique — confirmé" },
     { fait: "Clamart a une part de maisons élevée pour une commune de cette taille", source: "Déduit du ratio ventes maisons/appartements dans localData92.json — confirmé" }
   ],
   meta: {

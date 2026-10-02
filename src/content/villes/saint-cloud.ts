@@ -27,8 +27,8 @@ export const saintCloud: VilleData = {
       r: "Oui, et c’est justement sur les capitaux élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme bien plus importante que sur un petit emprunt."
     },
     {
-      q: "Le secteur de Montretout a des prix plus élevés : cela change-t-il le calcul de l’assurance ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis du bien."
+      q: "Nous avons emprunté à deux pour notre maison à Saint-Cloud : comment se répartit la couverture entre nous ?",
+      r: "La répartition n’est pas automatique : vous la fixez vous-même (50/50 ou selon vos revenus respectifs), et je vous aide à choisir ce qui protège le mieux votre foyer."
     },
     {
       q: "Dois-je me déplacer jusqu’à Issy-les-Moulineaux pour une étude à Saint-Cloud ?",

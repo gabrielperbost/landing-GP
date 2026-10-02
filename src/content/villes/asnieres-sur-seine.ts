@@ -27,12 +27,12 @@ export const asnieresSurSeine: VilleData = {
       r: "Oui, sans condition de surface ni d’ancienneté du bien. Le droit de changer d’assurance s’applique à tout prêt immobilier en cours."
     },
     {
-      q: "Le prix au m² est élevé à Asnières : est-ce que cela augmente le coût de l’assurance ?",
-      r: "Le coût de l’assurance dépend du capital emprunté, pas directement du prix au m². Sur un capital élevé, comparer les contrats a d’autant plus d’intérêt."
+      q: "J’ai un peu dépassé mon budget pour acheter à Asnières et mes mensualités sont tendues : l’assurance peut-elle vraiment faire une différence ?",
+      r: "Oui, souvent plus qu’on ne le pense : sur un capital déjà conséquent pour un premier achat, l’écart entre deux contrats se chiffre vite en milliers d’euros sur la durée du prêt."
     },
     {
-      q: "Le marché à Asnières est tendu, avec des appartements souvent plus petits qu’ailleurs : cela a-t-il un impact sur l’assurance ?",
-      r: "Non, la surface du bien n’entre pas dans le calcul de l’assurance de prêt. Ce qui compte, c’est le capital emprunté et votre profil (âge, santé)."
+      q: "Je suis en CDD mais j’ai un prêt en cours à Asnières : puis-je quand même changer d’assurance ?",
+      r: "Oui, votre statut professionnel actuel n’a pas d’incidence sur ce droit. Ce qui compte pour le nouveau contrat, c’est votre profil au moment de l’étude (âge, santé)."
     }
   ],
   faitsSources: [

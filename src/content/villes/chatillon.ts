@@ -28,12 +28,12 @@ export const chatillon: VilleData = {
       r: "Non, vous choisissez la répartition entre les deux emprunteurs (par exemple 50/50). C’est un point que j’étudie avec vous avant la mise en place."
     },
     {
-      q: "Châtillon est proche de Paris : les prix de l’assurance sont-ils différents de ceux de Paris ?",
-      r: "Non, le tarif de l’assurance dépend de votre profil et du capital emprunté, pas de la commune où se situe le bien."
+      q: "Je viens de changer d’emploi juste après avoir acheté à Châtillon : dois-je le signaler pour mon assurance de prêt ?",
+      r: "Pas automatiquement : ce qui compte pour votre contrat, c’est votre état de santé et votre âge au moment de la souscription, pas votre situation professionnelle future."
     },
     {
-      q: "Châtillon est proche de Paris : dois-je passer par un assureur parisien en particulier ?",
-      r: "Non, les assureurs que je compare interviennent partout en France : la localisation précise du bien n’impose pas un assureur particulier."
+      q: "Nous avons un prêt sur 25 ans à Châtillon, signé il y a 4 ans : est-il trop tard pour changer d’assurance ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [

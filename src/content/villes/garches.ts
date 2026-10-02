@@ -28,8 +28,8 @@ export const garches: VilleData = {
       r: "Oui, et c’est justement sur les capitaux élevés que l’impact est le plus net : chaque point de taux d’assurance représente une somme bien plus importante que sur un petit emprunt."
     },
     {
-      q: "Le secteur de Buzenval a des prix plus élevés : cela change-t-il le calcul de l’assurance ?",
-      r: "Non, ce qui compte pour le tarif, c’est le capital emprunté et votre profil (âge, santé), pas le secteur précis du bien."
+      q: "Je suis dirigeant d’entreprise et j’ai ma propre prévoyance : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Garches ?",
+      r: "Pas forcément les mêmes garanties : votre prévoyance personnelle et l’assurance de votre prêt ne couvrent pas exactement les mêmes risques. Je regarde avec vous ce qui fait doublon et ce qui ne l’est pas."
     },
     {
       q: "Dois-je me déplacer jusqu’à Issy-les-Moulineaux pour une étude à Garches ?",

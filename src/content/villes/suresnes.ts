@@ -10,7 +10,7 @@ export const suresnes: VilleData = {
   villesVoisines: ["puteaux", "saint-cloud", "rueil-malmaison"],
   quartiers: ["Centre-Ville", "Mont-Valérien", "République", "Écluse-Belvédère", "Liberté", "Cité-Jardins"],
   profilImmobilier:
-    "Suresnes s’étend du bord de Seine jusqu’au Mont-Valérien, avec un marché mixte entre appartements du centre et maisons des quartiers résidentiels comme la Cité-Jardins, un ensemble historique du début du 20e siècle. Les prix restent plus accessibles que dans les communes immédiatement au nord.",
+    "Suresnes s’étend du bord de Seine jusqu’au Mont-Valérien, avec un marché mixte entre appartements du centre et maisons des quartiers résidentiels comme la Cité-Jardins, un ensemble historique construit dans l’entre-deux-guerres. Les prix restent plus accessibles que dans les communes immédiatement au nord.",
   prixM2: {
     appartements: { valeur: 6649, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" },
     maisons: { valeur: 8410, source: "DGFiP, base DVF (data.gouv.fr)", date: "2026-09-25" }
@@ -23,16 +23,16 @@ export const suresnes: VilleData = {
   angleEditorial: "Du bord de Seine au Mont-Valérien, un marché mixte.",
   faqLocales: [
     {
-      q: "Nous achetons une maison dans la Cité-Jardins à Suresnes : l’ancienneté du quartier a-t-elle une incidence sur l’assurance ?",
-      r: "Non, l’ancienneté du quartier ou du bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon à tous les prêts."
+      q: "Nous avons emprunté à deux pour notre maison dans la Cité-Jardins à Suresnes : comment se répartit la couverture entre nous ?",
+      r: "Rien d’automatique ici : la quotité se négocie entre vous deux, souvent 50/50 mais parfois ajustée selon les revenus. C’est un choix qu’on affine ensemble."
     },
     {
-      q: "Suresnes a des quartiers très différents, du Mont-Valérien aux bords de Seine : l’assurance varie-t-elle d’un secteur à l’autre ?",
-      r: "Non, ce qui compte, c’est votre profil (âge, santé) et le capital emprunté, pas le quartier précis où se situe le bien."
+      q: "Je suis cadre avec une prévoyance d’entreprise : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt à Suresnes ?",
+      r: "Non, pas systématiquement : la prévoyance d’entreprise est souvent liée à votre poste et peut s’arrêter en cas de changement d’emploi, contrairement à l’assurance de votre prêt qui reste stable."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Suresnes ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 20 ans signé il y a 5 ans à Suresnes : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [

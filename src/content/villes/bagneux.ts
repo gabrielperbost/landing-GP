@@ -23,8 +23,8 @@ export const bagneux: VilleData = {
   angleEditorial: "Budget plus accessible : chaque euro économisé compte davantage.",
   faqLocales: [
     {
-      q: "Nous avons acheté un appartement récent à Bagneux dans un secteur rénové : y a-t-il une particularité pour l’assurance ?",
-      r: "Non, l’ancienneté ou la rénovation du quartier n’a pas d’impact sur vos droits. La loi Lemoine s’applique de la même façon à tous les prêts."
+      q: "C’est notre tout premier achat à Bagneux et l’apport est limité : le questionnaire de santé est-il un frein ?",
+      r: "Pas forcément : il est même supprimé si la part assurée est inférieure à 200 000 € par personne et que le prêt se termine avant vos 60 ans, ce qui concerne beaucoup de premiers achats."
     },
     {
       q: "Notre capital emprunté à Bagneux est plus modeste qu’ailleurs dans le 92 : est-ce que comparer l’assurance vaut vraiment le coup ?",

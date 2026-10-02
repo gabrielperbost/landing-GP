@@ -24,16 +24,16 @@ export const montrouge: VilleData = {
   angleEditorial: "Aux portes de Paris, prix élevés, surtout des appartements.",
   faqLocales: [
     {
-      q: "Montrouge est directement collée à Paris : les prix de l’assurance sont-ils différents de ceux de Paris 14e ?",
-      r: "Non, le tarif de l’assurance dépend de votre profil et du capital emprunté, pas de la commune précise où se situe le bien."
+      q: "Je travaille à Paris et j’ai une prévoyance d’entreprise depuis l’achat à Montrouge : ai-je vraiment besoin de toutes les garanties de l’assurance de prêt ?",
+      r: "Ça dépend de ce que couvre précisément votre contrat d’entreprise : je vous aide à repérer les garanties qui font vraiment doublon avec l’assurance de prêt, et celles qui ne le sont pas."
     },
     {
-      q: "Le marché à Montrouge est surtout fait d’appartements, avec très peu de maisons : est-ce que ça change quelque chose pour l’assurance ?",
-      r: "Non, le type de bien n’a pas d’impact sur vos droits : la loi Lemoine s’applique de la même façon, qu’il s’agisse d’un appartement ou d’une maison."
+      q: "Nous avons emprunté à deux pour notre appartement à Montrouge : comment se répartit la couverture entre nous ?",
+      r: "Vous êtes libres de fixer cette répartition (50/50 ou au prorata des revenus, par exemple). Une mauvaise répartition peut mal protéger le foyer, donc je regarde ça avec vous en détail."
     },
     {
-      q: "Puis-je changer d’assurance de prêt à tout moment à Montrouge ?",
-      r: "Oui, comme partout en France, sans attendre une date anniversaire et sans frais, en proposant des garanties équivalentes."
+      q: "Nous avons un prêt sur 20 ans signé il y a 5 ans à Montrouge : est-il trop tard pour comparer les contrats ?",
+      r: "Non, l’ancienneté du prêt n’a aucune incidence : vous pouvez comparer et changer d’assurance à tout moment, même plusieurs années après la signature."
     }
   ],
   faitsSources: [
