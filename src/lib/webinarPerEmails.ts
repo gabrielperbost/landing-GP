@@ -18,7 +18,19 @@ export type WebinarPerEmail = { subject: string; html: string; text: string };
 const escapeHtml = (value: string) =>
   value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 
-const firstName = (contact: WebinarPerContact) => escapeHtml(contact.prenom.trim() || "Bonjour");
+// Normalise la casse d'un prénom pour les e-mails/SMS : certains inscrits tapent leur prénom
+// tout en minuscules ou tout en majuscules dans le formulaire, et la valeur est stockée telle
+// quelle dans le Sheet (voir src/app/api/webinar-per/register/route.ts). On met une majuscule
+// en début de prénom et après chaque tiret, apostrophe ou espace ("pietro" -> "Pietro",
+// "jean-pierre" -> "Jean-Pierre"), sans jamais modifier la valeur stockée elle-même : seuls les
+// e-mails envoyés sont concernés, donc l'effet s'applique aussi aux inscrits déjà enregistrés.
+const toDisplayName = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/(^|[\s'’-])([a-zà-öø-ÿ])/g, (_match, sep: string, letter: string) => sep + letter.toUpperCase());
+
+const firstName = (contact: WebinarPerContact) => escapeHtml(toDisplayName(contact.prenom) || "Bonjour");
 
 const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string; contact: WebinarPerContact; contentHtml: string; unsubscribeUrl: string }) => `
 <div style="background:#f5f8ff;padding:26px 14px;">
