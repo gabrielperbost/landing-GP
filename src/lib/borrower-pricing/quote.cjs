@@ -53,7 +53,12 @@ async function quote(input, client) {
     const built = buildRequest(input, {commission:OFFER.commission, product});
     if (!built.valid) return {invalid:true};
     try { return {product, response:await client.price(built.request)}; }
-    catch (error) { return {product, status:error?.status}; }
+    catch (error) {
+      // TEMP diagnostic (branch debug-borrower-quote-service-unavailable): never
+      // leaked to the client, only to server logs, to find why every product fails.
+      console.warn('[borrower-quote] product-error', product.productCode, product.contributionType, error?.code, error?.status);
+      return {product, status:error?.status};
+    }
   }));
   if (outcomes.some(o => o.invalid)) return call('REQUEST_INVALID');
   const priced = [];
