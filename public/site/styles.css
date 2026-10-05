@@ -183,6 +183,7 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .guide-card:hover{transform:translateY(-3px);border-color:var(--gold)}
 .guide-card strong{font-family:var(--serif);font-size:22px;line-height:1.25;color:var(--navy);font-weight:500}
 .guide-card p{margin:0;font-size:14.5px;line-height:1.65;color:#4d6177}.guide-card .text-link{margin-top:auto;padding-top:6px}
+.guide-video-card{border-radius:20px}.guide-video-card .article-art{height:auto;aspect-ratio:16/9}
 .draft-badge{display:inline-block;margin-left:8px;padding:3px 10px;border-radius:20px;background:#fff1cc;color:#8a5b00;font-size:11px;font-weight:600;letter-spacing:.02em;text-transform:none}
 .draft-banner{background:#fff8e1;border:1px solid #f0d78a;border-radius:12px;padding:12px 16px;font-size:14px;line-height:1.6;color:#5c4400;margin:0 0 22px}
 .article-layout{max-width:780px}
