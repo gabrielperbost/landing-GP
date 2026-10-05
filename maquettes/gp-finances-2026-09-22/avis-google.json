@@ -2,8 +2,44 @@
   "profileUrl": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr",
   "rating": 5,
   "reviewCount": 17,
-  "verifiedAt": "2026-09-24",
+  "verifiedAt": "2026-10-05",
   "reviews": [
+    {
+      "id": "a-o-2026-10",
+      "author": "A O",
+      "rating": 5,
+      "text": "Très bien conseillé par Gabriel, je recommande les yeux fermés si vous cherchez quelqu’un d’humain, compétent, et passionné par son métier ! Merci !",
+      "excerpt": false,
+      "publishedAt": "2026-10",
+      "url": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr"
+    },
+    {
+      "id": "olivia-blivet-2026-10",
+      "author": "Olivia Blivet",
+      "rating": 5,
+      "text": "Je recommande vivement Gabriel Perbost pour son accompagnement et ses conseils. …",
+      "excerpt": true,
+      "publishedAt": "2026-10",
+      "url": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr"
+    },
+    {
+      "id": "loukas-koikas-2026-10",
+      "author": "Loukas KOIKAS",
+      "rating": 5,
+      "text": "Gabriel m’a accompagné sur le renégociation de mon assurance de prêt. J’ai économisé 62% en augmentant les garanties. Merci Gabriel !",
+      "excerpt": false,
+      "publishedAt": "2026-10",
+      "url": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr"
+    },
+    {
+      "id": "claire-guillout-lacomblez-2026-10",
+      "author": "Claire Guillout Lacomblez",
+      "rating": 5,
+      "text": "J’ai économisé 14 000€ sur mon assurance de prêt. Merci Gabriel. Je recommande !",
+      "excerpt": false,
+      "publishedAt": "2026-10",
+      "url": "https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z/data=!4m8!3m7!1s0x47e67b4268d18555:0x77ce3efc101ceda2!8m2!3d48.8266378!4d2.2708441!9m1!1b1!16s%2Fg%2F11nvx_gz_z?hl=fr"
+    },
     {
       "id": "leo-boutal-2026-09",
       "author": "Léo Boutal",
