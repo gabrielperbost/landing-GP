@@ -41,6 +41,13 @@ type TallySubmissionsPayload = {
 const getBaseUrl = (request: NextRequest) =>
   (process.env.NEXT_PUBLIC_BASE_URL || `${request.nextUrl.protocol}//${request.nextUrl.host}`).replace(/\/+$/, "");
 
+const getProvidedSecretSource = (request: NextRequest) => {
+  if (request.headers.get("x-per-partials-secret")) return "header:x-per-partials-secret";
+  if (request.headers.get("authorization")) return "header:authorization";
+  if (new URL(request.url).searchParams.get("secret")) return "query:secret";
+  return "none";
+};
+
 const getProvidedSecret = (request: NextRequest) => {
   const url = new URL(request.url);
   return (
@@ -50,11 +57,30 @@ const getProvidedSecret = (request: NextRequest) => {
   );
 };
 
+// Diagnostic ajouté le 2026-10-05 suite à des échecs 401 intermittents et récurrents (sans lien
+// avec un redéploiement) signalés par l'utilisateur sur le cron GitHub Actions toutes les 5 min.
+// N'écrit jamais la valeur réelle d'un secret : seulement sa longueur et sa provenance, pour
+// confirmer si le secret envoyé par GitHub correspond (même longueur) à l'un des secrets attendus
+// côté Vercel, sans avoir à comparer les valeurs en clair dans les logs.
+const logAuthFailure = (request: NextRequest, expectedSecrets: Array<string | undefined>) => {
+  const provided = getProvidedSecret(request)?.trim();
+  console.error("[tally-per-partials] 401 unauthorized", {
+    source: getProvidedSecretSource(request),
+    providedLength: provided?.length ?? 0,
+    providedPreview: provided ? `${provided.slice(0, 4)}…${provided.slice(-4)}` : null,
+    expectedCount: expectedSecrets.length,
+    expectedLengths: expectedSecrets.map((s) => s?.length ?? 0),
+    matchesAnyLength: expectedSecrets.some((s) => s && s.length === (provided?.length ?? -1))
+  });
+};
+
 const isAuthorized = (request: NextRequest) => {
   const expectedSecrets = [getPerImportSecret(), getPerSequenceSecret(), getPerWebhookSecret()].filter(Boolean);
   if (expectedSecrets.length === 0) return true;
   const provided = getProvidedSecret(request)?.trim();
-  return Boolean(provided && expectedSecrets.includes(provided));
+  const ok = Boolean(provided && expectedSecrets.includes(provided));
+  if (!ok) logAuthFailure(request, expectedSecrets);
+  return ok;
 };
 
 const getTallyApiKey = () =>
