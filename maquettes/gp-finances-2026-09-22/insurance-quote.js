@@ -5,7 +5,9 @@
 (function () {
   'use strict';
   const refs = window.GPBorrowerReferences || {professionalCategories:[], professions:[]};
-  const euro = v => new Intl.NumberFormat('fr-FR', {style:'currency', currency:'EUR', maximumFractionDigits:v % 1 ? 2 : 0}).format(v);
+  // Espace fine (U+202F) remplacée par une espace insécable normale : plus lisible
+  // sur les gros montants, surtout combinée au letter-spacing négatif de .bq-total.
+  const euro = v => new Intl.NumberFormat('fr-FR', {style:'currency', currency:'EUR', maximumFractionDigits:v % 1 ? 2 : 0}).format(v).replace(/ /g, ' ');
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const CALL = 'Votre situation demande quelques précisions : appelez GP FINANCES, nous affinons votre étude avec vous.';
   const RISKS = [
