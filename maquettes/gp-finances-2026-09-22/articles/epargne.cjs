@@ -9,7 +9,7 @@ module.exports = [
   seoTitle: 'PER et impôts : combien pouvez-vous économiser ?',
   description: 'Le Plan Épargne Retraite permet de déduire vos versements de votre revenu imposable. Comment calculer l’économie d’impôt, le plafond et les limites.',
   readMinutes: 6,
-  updated: '2026-09-25',
+  updated: '2026-10-08',
   intro: 'Le Plan Épargne Retraite (PER) est souvent présenté comme un moyen de payer moins d’impôt. C’est vrai, mais l’économie réelle dépend de votre situation. Voici comment la calculer, quel plafond respecter et pourquoi il s’agit d’un report d’impôt plutôt que d’une exonération.',
   sections: [
     { h2: 'Le principe : déduire vos versements de votre revenu imposable', html: `
@@ -28,7 +28,7 @@ module.exports = [
     { h2: 'Le plafond de déduction', html: `
 <p>Vous ne pouvez pas tout déduire. Le plafond annuel correspond à <strong>10 % de vos revenus d’activité professionnelle de l’année précédente</strong>, ces revenus n’étant retenus que dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS). Il ne peut pas être inférieur à <strong>10 % du PASS</strong>, même avec de faibles revenus.</p>
 <ul>
-<li>Le plafond que vous n’utilisez pas peut être <strong>reporté pendant 3 ans</strong>.</li>
+<li>Le plafond que vous n’utilisez pas peut être <strong>reporté pendant 5 ans</strong> pour les plafonds générés à partir de 2026 (la loi de finances 2026 a porté ce report de 3 à 5 ans). Les plafonds non consommés de 2024 et 2025 restent soumis à l’ancienne règle de 3 ans.</li>
 <li>Dans un couple soumis à une imposition commune, les plafonds peuvent être <strong>mutualisés</strong> si vous le choisissez.</li>
 <li>Votre plafond disponible est indiqué sur votre <strong>avis d’imposition</strong>.</li>
 </ul>
@@ -45,7 +45,7 @@ module.exports = [
 <div class="art-callout"><strong>En pratique :</strong> avant de verser, faites le calcul avec votre situation réelle (revenus, foyer, plafond disponible). Le simulateur PER de GP Finances vous donne une estimation en trois étapes.</div>` }
   ],
   faq: [
-    { q: 'Puis-je déduire tout ce que je verse sur mon PER ?', a: 'Non, seulement dans la limite de votre plafond de déduction, indiqué sur votre avis d’imposition. Le plafond non utilisé peut être reporté pendant 3 ans.' },
+    { q: 'Puis-je déduire tout ce que je verse sur mon PER ?', a: 'Non, seulement dans la limite de votre plafond de déduction, indiqué sur votre avis d’imposition. Depuis la loi de finances 2026, le plafond non utilisé peut être reporté pendant 5 ans (3 ans pour les plafonds de 2024 et 2025, non rétroactif).' },
     { q: 'Le PER fait-il économiser 30 % de mon versement ?', a: 'Seulement si votre tranche marginale d’imposition est de 30 %. L’économie est égale au versement multiplié par votre TMI, dans la limite du plafond.' },
     { q: 'Mon argent est-il bloqué ?', a: 'Jusqu’à la retraite, en principe, sauf cas de déblocage anticipé prévus par la loi (achat de la résidence principale, accidents de la vie…).' },
     { q: 'Et si je ne suis pas imposable ?', a: 'L’avantage fiscal est nul. Le PER peut malgré tout servir à épargner pour la retraite, mais sans économie d’impôt immédiate.' }
@@ -56,7 +56,7 @@ module.exports = [
     { label: 'impots.gouv.fr : épargne retraite', url: 'https://www.impots.gouv.fr/particulier/epargne-retraite' },
     { label: 'Bofip : limites de déduction des cotisations d’épargne retraite', url: 'https://bofip.impots.gouv.fr/bofip/1124-PGP.html/identifiant=BOI-IR-BASE-20-50-20-20260217' }
   ],
-  related: ['per-sortie-capital-rente-deblocage', 'clause-beneficiaire-assurance-vie-transmission']
+  related: ['per-sortie-capital-rente-deblocage', 'clause-beneficiaire-assurance-vie-transmission', 'per-loi-de-finances-2026-changements']
 },
 {
   slug: 'per-sortie-capital-rente-deblocage',
@@ -122,7 +122,65 @@ module.exports = [
     { label: 'Ministère de l’Économie : fonctionnement du PER', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/comment-fonctionne-le-plan-depargne-retraite-individuel' },
     { label: 'Direction générale du Trésor : le PER, questions-réponses pour les épargnants', url: 'https://www.tresor.economie.gouv.fr/banque-assurance-finance/les-mesures-de-la-loi-pacte-pour-le-financement-de-l-economie/questions-reponses-le-nouveau-per-pour-les-epargnants' }
   ],
-  related: ['per-impots-combien-economiser', 'assurance-vie-fonctionnement-fonds-euros-unites-de-compte']
+  related: ['per-impots-combien-economiser', 'assurance-vie-fonctionnement-fonds-euros-unites-de-compte', 'per-loi-de-finances-2026-changements']
+},
+{
+  slug: 'per-loi-de-finances-2026-changements',
+  service: 'per',
+  published: true,
+  title: 'PER : ce que la loi de finances 2026 a changé, et pourquoi c’est le moment d’y penser',
+  seoTitle: 'PER : ce que la loi de finances 2026 a changé',
+  description: 'Plafonds reportés sur 5 ans, fin de l’avantage fiscal après 70 ans, nouveau cas de déblocage : le PER a évolué en 2026. Le point avant la fin de l’année.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Plafonds reportés sur 5 ans, fin de l’avantage fiscal après 70 ans, nouveau cas de déblocage… Le Plan d’Épargne Retraite a évolué cette année. À trois mois de la fin de l’année, c’est le bon moment pour faire le point.',
+  sections: [
+    { h2: 'Le PER en deux phrases', html: `
+<p>Le PER permet d’épargner pour votre retraite tout en réduisant vos impôts dès aujourd’hui : les sommes versées sont déduites de votre revenu imposable. En contrepartie, l’argent est en principe bloqué jusqu’à la retraite, et la fiscalité s’applique à la sortie.</p>
+<p>Plus votre taux d’imposition est élevé, plus l’avantage est fort. Un versement de 5 000 euros fait économiser 1 500 euros d’impôt à une personne dont la tranche marginale est de 30 %, et 2 050 euros à 41 %.</p>` },
+    { h2: 'Ce qui a changé en 2026', html: `
+<ul>
+<li><strong>Des plafonds reportés sur 5 ans au lieu de 3.</strong> Si vous n’avez pas utilisé votre plafond de déduction certaines années, vous disposez désormais de plus de temps pour le rattraper.</li>
+<li><strong>Plus de déduction après 70 ans.</strong> Les versements restent possibles, mais ils ne réduisent plus l’impôt.</li>
+<li><strong>Un nouveau cas de déblocage anticipé</strong> en cas de maladie grave, de handicap ou d’accident grave d’un enfant à charge.</li>
+<li><strong>Des plafonds qui augmentent légèrement</strong>, avec le plafond de la Sécurité sociale porté à 48 060 euros en 2026.</li>
+</ul>
+<p class="art-note">Le report à 5 ans ne concerne que les plafonds générés à partir de 2026 : ceux de 2024 et 2025 restent soumis à l’ancienne règle de 3 ans, la mesure n’étant pas rétroactive.</p>` },
+    { h2: 'Combien pouvez-vous déduire cette année ?', html: `
+<table class="local-table local-table-small"><thead><tr><th>Profil</th><th>Plafond de déduction pour les versements 2026</th></tr></thead><tbody>
+<tr><td>Salarié ou fonctionnaire</td><td>10 % des revenus professionnels 2025, entre 4 710 € et 37 680 €</td></tr>
+<tr><td>Indépendant (TNS)</td><td>Jusqu’à 88 911 € selon le bénéfice 2026</td></tr>
+</tbody></table>
+<p>Votre plafond exact figure sur votre dernier avis d’imposition, rubrique « plafond épargne retraite ». Il tient compte des plafonds non utilisés des années précédentes. Les couples mariés ou pacsés peuvent aussi mettre leurs plafonds en commun.</p>` },
+    { h2: 'Un placement plus intéressant qu’il n’y paraît', html: `
+<p>Avec un Livret A à 1,7 % depuis le 1er août 2026, beaucoup d’épargnants cherchent où placer leur argent. Le PER n’est pas fait pour l’épargne de précaution, mais pour l’argent dont vous n’aurez pas besoin avant la retraite, il combine deux intérêts : l’économie d’impôt immédiate et un placement sur le long terme.</p>
+<p>Il peut aussi servir à acheter votre résidence principale : c’est l’un des rares cas où l’argent peut être récupéré avant la retraite.</p>` },
+    { h2: 'Quatre erreurs à éviter', html: `
+<ol>
+<li><strong>Ouvrir un PER sans regarder son taux d’imposition.</strong> Si vous n’êtes pas imposable, ou peu, l’avantage fiscal est faible et la sortie peut coûter plus qu’elle n’a rapporté.</li>
+<li><strong>Attendre le 31 décembre.</strong> Un versement fait dans l’urgence se place souvent mal. Mieux vaut le prévoir dès l’automne.</li>
+<li><strong>Négliger les frais.</strong> Sur 20 ou 30 ans, 1 % de frais en plus chaque année peut coûter plusieurs milliers d’euros.</li>
+<li><strong>Choisir une gestion inadaptée à son âge.</strong> À 40 ans, un placement trop prudent rapporte peu ; à 60 ans, un placement trop risqué peut faire perdre beaucoup juste avant la retraite.</li>
+</ol>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>Le PER réduit vos impôts dès l’année du versement.</li>
+<li>Il est d’autant plus intéressant que votre tranche d’imposition est élevée.</li>
+<li>Depuis 2026, vous pouvez rattraper vos plafonds non utilisés sur une période allongée.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'Les versements après 70 ans sont-ils toujours possibles ?', a: 'Oui, ils restent possibles, mais ils ne réduisent plus votre revenu imposable depuis 2026.' },
+    { q: 'Où trouver mon plafond de déduction exact ?', a: 'Sur votre dernier avis d’imposition, rubrique « plafond épargne retraite ». Il intègre les plafonds non utilisés des années précédentes.' },
+    { q: 'Le PER est-il plus intéressant qu’un Livret A ?', a: 'Ce ne sont pas les mêmes usages : le Livret A (1,7 % depuis août 2026) reste disponible à tout moment, quand le PER bloque l’épargne jusqu’à la retraite en échange d’un avantage fiscal immédiat.' },
+    { q: 'Quand faut-il verser sur son PER pour l’année en cours ?', a: 'Le plus tôt possible dans l’année plutôt que dans l’urgence le 31 décembre : un versement précipité se place souvent moins bien.' }
+  ],
+  cta: { kind: 'call', project: 'PER', label: 'Faire le point sur mon PER', text: 'Je calcule avec vous l’économie d’impôt réelle et je compare les contrats du marché pour trouver celui qui vous correspond.' },
+  sources: [
+    { label: 'Linxea : PER, fiscalité et nouveaux plafonds', url: 'https://www.linxea.com/tout-savoir-sur/per/per-fiscalite-nouveaux-plafonds/' },
+    { label: 'info.gouv.fr : augmentation du taux du Livret A au 1er août 2026', url: 'https://www.info.gouv.fr/actualite/augmentation-du-taux-du-livret-a-a-compter-du-1er-aout-2026' }
+  ],
+  related: ['per-impots-combien-economiser', 'per-sortie-capital-rente-deblocage']
 },
 {
   slug: 'assurance-vie-fonctionnement-fonds-euros-unites-de-compte',
@@ -182,7 +240,7 @@ module.exports = [
     { label: 'Service-public.fr : fonctionnement du contrat d’assurance-vie', url: 'https://www.service-public.fr/particuliers/vosdroits/F15274' },
     { label: 'AMF : investir en unités de compte', url: 'https://www.amf-france.org' }
   ],
-  related: ['clause-beneficiaire-assurance-vie-transmission', 'per-sortie-capital-rente-deblocage']
+  related: ['clause-beneficiaire-assurance-vie-transmission', 'per-sortie-capital-rente-deblocage', 'assurance-vie-collecte-record-2026']
 },
 {
   slug: 'clause-beneficiaire-assurance-vie-transmission',
@@ -235,6 +293,69 @@ module.exports = [
     { label: 'impots.gouv.fr : bénéficiaire d’une assurance-vie, comment la déclarer ?', url: 'https://www.impots.gouv.fr/particulier/questions/je-suis-beneficiaire-dune-assurance-vie-comment-la-declarer' },
     { label: 'Ministère de l’Économie : pourquoi souscrire un contrat d’assurance-vie ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/gerer-mon-budget-et-mon-epargne/pourquoi-souscrire-un-contrat-dassurance-vie' }
   ],
-  related: ['assurance-vie-fonctionnement-fonds-euros-unites-de-compte', 'per-impots-combien-economiser']
+  related: ['assurance-vie-fonctionnement-fonds-euros-unites-de-compte', 'per-impots-combien-economiser', 'assurance-vie-collecte-record-2026']
+},
+{
+  slug: 'assurance-vie-collecte-record-2026',
+  service: 'assurance-vie',
+  published: true,
+  title: 'Assurance-vie : pourquoi les Français n’y ont jamais autant placé',
+  seoTitle: 'Assurance-vie 2026 : pourquoi une collecte record',
+  description: 'Collecte record, fiscalité épargnée par la hausse des prélèvements sociaux, Livret A peu rémunérateur : l’assurance-vie confirme en 2026 sa place de placement préféré.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Collecte record, fiscalité épargnée par la dernière hausse des prélèvements sociaux, Livret A peu rémunérateur : l’assurance-vie confirme en 2026 sa place de placement préféré des Français. Encore faut-il bien choisir son contrat.',
+  sections: [
+    { h2: 'Une année record', html: `
+<p>De janvier à août 2026, les Français ont versé <strong>43,5 milliards d’euros</strong> de plus qu’ils n’ont retiré de leurs contrats d’assurance-vie, selon France Assureurs. L’encours total atteint 2 171 milliards d’euros, en hausse de 5,7 % sur un an. Le rythme a toutefois ralenti cet été : 4,7 milliards de collecte nette en juillet, légèrement moins qu’un an plus tôt, puis 2 milliards en août, avec des retraits en hausse liés aux tensions sur le pouvoir d’achat.</p>
+<p>Plusieurs raisons expliquent cet engouement :</p>
+<ul>
+<li>le <strong>Livret A ne rapporte que 1,7 %</strong> depuis août 2026, loin des 2,6 % rapportés en moyenne par les fonds en euros en 2025 ;</li>
+<li>l’assurance-vie a <strong>échappé à la hausse de la CSG</strong> votée pour 2026 : ses gains restent soumis à 17,2 % de prélèvements sociaux, quand ceux d’un compte-titres ou d’un livret fiscalisé passent à 18,6 % ;</li>
+<li>les <strong>unités de compte ont bien rapporté</strong> : 4,7 % net en moyenne en 2025.</li>
+</ul>` },
+    { h2: 'Fonds en euros ou unités de compte ?', html: `
+<p>Un contrat d’assurance-vie peut contenir deux grands types de supports.</p>
+<table class="local-table local-table-small"><thead><tr><th>Support</th><th>Ce que c’est</th><th>Rendement moyen 2025</th><th>Risque</th></tr></thead><tbody>
+<tr><td>Fonds en euros</td><td>Capital garanti, intérêts acquis chaque année</td><td>2,6 %</td><td>Très faible</td></tr>
+<tr><td>Unités de compte</td><td>Actions, obligations, immobilier…</td><td>4,7 %</td><td>Variable, capital non garanti</td></tr>
+</tbody></table>
+<p>La bonne répartition dépend de votre horizon de placement et de votre tolérance aux variations. Pour un projet à 3 ans, mieux vaut privilégier le fonds en euros ; pour une épargne à 15 ans, une part d’unités de compte a du sens.</p>` },
+    { h2: 'Une fiscalité qui s’adoucit avec le temps', html: `
+<p>L’assurance-vie devient vraiment intéressante après 8 ans. Lors d’un retrait, les gains bénéficient alors d’un abattement annuel de 4 600 euros pour une personne seule, ou 9 200 euros pour un couple. Au-delà, ils sont taxés à un taux réduit.</p>
+<p>C’est pourquoi on conseille souvent d’ouvrir un contrat tôt, même avec un petit montant : c’est la <strong>date d’ouverture</strong> qui fait courir le délai, pas la date des versements.</p>` },
+    { h2: 'Un outil de transmission', html: `
+<p>L’assurance-vie permet aussi de transmettre un capital dans de bonnes conditions. Pour les sommes versées avant 70 ans, chaque bénéficiaire peut recevoir jusqu’à 152 500 euros sans droits de succession. Après 70 ans, l’avantage est plus limité mais existe toujours.</p>
+<p>La clause bénéficiaire est la pièce maîtresse : une clause mal rédigée ou jamais mise à jour peut défaire tout ce que vous aviez prévu.</p>` },
+    { h2: 'Bien choisir son contrat', html: `
+<p>Tous les contrats ne se valent pas. Avant de signer, vérifiez :</p>
+<ul>
+<li>les <strong>frais</strong> sur versements, de gestion et d’arbitrage ;</li>
+<li>le <strong>rendement du fonds en euros</strong> sur plusieurs années, pas seulement la dernière ;</li>
+<li>la <strong>qualité et la diversité</strong> des unités de compte proposées ;</li>
+<li>les <strong>conditions d’accès</strong> au fonds en euros, parfois limité ou conditionné.</li>
+</ul>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>L’assurance-vie reste le placement préféré des Français, avec une collecte record en 2026.</li>
+<li>Elle a été épargnée par la hausse des prélèvements sociaux.</li>
+<li>Ouvrir un contrat tôt permet de profiter plus vite de la fiscalité avantageuse après 8 ans.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'Pourquoi l’assurance-vie a-t-elle autant collecté en 2026 ?', a: 'Plusieurs facteurs se combinent : un Livret A peu rémunérateur (1,7 % depuis août 2026), une fiscalité épargnée par la hausse de la CSG, et de bons rendements sur les unités de compte en 2025 (4,7 % net en moyenne).' },
+    { q: 'L’assurance-vie est-elle mieux taxée que le Livret A ou un compte-titres ?', a: 'Elle a échappé à la hausse de la CSG votée pour 2026 : ses gains restent soumis à 17,2 % de prélèvements sociaux, contre 18,6 % pour un compte-titres ou un livret fiscalisé.' },
+    { q: 'Faut-il tout mettre en fonds en euros ou en unités de compte ?', a: 'Cela dépend de votre horizon et de votre tolérance au risque : le fonds en euros garantit le capital avec un rendement plus modeste (2,6 % en 2025), les unités de compte offrent un potentiel plus élevé (4,7 % net en 2025) mais sans garantie.' },
+    { q: 'Pourquoi ouvrir un contrat tôt, même avec un petit montant ?', a: 'Parce que c’est la date d’ouverture du contrat qui fait courir le délai fiscal de 8 ans, pas la date des versements. Un contrat ouvert tôt profite plus vite de l’abattement.' }
+  ],
+  cta: { kind: 'call', project: 'Assurance-Vie', label: 'Faire analyser mon contrat', text: 'Je peux analyser votre contrat actuel, ses frais et sa répartition, et vous proposer une solution adaptée à vos projets.' },
+  sources: [
+    { label: 'France Assureurs : cotisations assurance-vie, août 2026', url: 'https://www.franceassureurs.fr/espace-presse/les-communiques-de-presse/assurance-vie-cotisations-aout-2026' },
+    { label: 'France Assureurs : cotisations assurance-vie, juillet 2026', url: 'https://www.franceassureurs.fr/espace-presse/les-communiques-de-presse/cotisations-assurance-vie-juillet-2026/' },
+    { label: 'Club Patrimoine : hausse de la CSG 2026 et assurance-vie', url: 'https://www.clubpatrimoine.com/contenus/plfss-csg' },
+    { label: 'Meilleurtaux Placement : rendements des fonds en euros en 2025', url: 'https://placement.meilleurtaux.com/assurance-vie/actualites/2026-mars/assurance-vie-fonds-euros-a-2-6-en-2025-selon-lacpr.html' },
+    { label: 'info.gouv.fr : augmentation du taux du Livret A au 1er août 2026', url: 'https://www.info.gouv.fr/actualite/augmentation-du-taux-du-livret-a-a-compter-du-1er-aout-2026' }
+  ],
+  related: ['assurance-vie-fonctionnement-fonds-euros-unites-de-compte', 'clause-beneficiaire-assurance-vie-transmission']
 }
 ];

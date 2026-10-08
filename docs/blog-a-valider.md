@@ -84,3 +84,22 @@ Certains liens pointent vers la page d'accueil d'un organisme (service-public.fr
 ## Relecture : ce que j'attends de vous
 - Corriger tout ce qui ne correspond pas à votre pratique ou aux règles actuelles.
 - Ajouter, si possible, un cas client anonymisé par article (avec l'accord du client) : c'est ce qui rend un article vraiment utile et différent de ceux des concurrents.
+
+## Lot du 8 octobre 2026 : 6 nouveaux articles (un par produit), à valider avant publication
+
+État au 8 octobre 2026 : 6 nouveaux articles ont été ajoutés en brouillon (`published: false`), à partir d'un document fourni par Gabriel (« Articles conseils GP Finances - version corrigée », daté du 8 octobre 2026, sources citées pour chaque chiffre). Ils ne sont visibles que dans l'aperçu de la maquette, pas en production, tant qu'ils ne sont pas passés à `published: true`.
+
+- `hausse-taux-credit-immobilier-assurance-emprunteur` (Assurance de prêt)
+- `per-loi-de-finances-2026-changements` (PER)
+- `assurance-vie-collecte-record-2026` (Assurance-vie)
+- `prevoyance-indemnites-journalieres-secu-plafond` (Prévoyance)
+- `mutuelle-hausse-2027-comment-ne-pas-la-subir` (Mutuelle)
+- `regroupement-credits-solution-pour-souffler` (Regroupement de crédits)
+
+**Point tranché le 8 octobre 2026 — contradiction résolue :**
+L'article PER déjà publié (`per-impots-combien-economiser`) indiquait, après vérification du 25 septembre 2026, que le plafond de déduction non utilisé pouvait être reporté 3 ans. Recherche faite à la demande de Gabriel : la loi de finances 2026 porte bien ce report à **5 ans**, confirmé par plusieurs sources indépendantes (Linxea, Swiss Life, Patrimoine Magazine, infoper.fr), avec une nuance : la mesure n'est **pas rétroactive**, seuls les plafonds générés à partir de 2026 bénéficient des 5 ans ; ceux de 2024 et 2025 restent sur l'ancienne règle de 3 ans. `per-impots-combien-economiser` a été corrigé en conséquence (section « Le plafond de déduction » et FAQ). Les 6 nouveaux articles sont passés en `published: true` et déployés.
+
+**Autres points relevés, sans contradiction mais à garder en tête :**
+- Tous les chiffres (taux, plafonds, barèmes de hausse, OAT 10 ans, Livret A, indemnités journalières, surendettement) viennent du document fourni, avec sa propre source ; je ne les ai pas vérifiés de façon indépendante au-delà des recoupements arithmétiques (tous corrects : exemples de l'assurance de prêt, de la prévoyance et du regroupement de crédits recalculés et cohérents avec les chiffres donnés).
+- Les deux lots d'articles PER (ancien et nouveau) mentionnent chacun les tranches marginales d'imposition (30 %, 41 %) : cohérent entre eux.
+- Maillage interne : chaque nouvel article a été ajouté aux liens « À lire aussi » des 2 articles existants de sa catégorie, et renvoie lui-même vers ces 2 articles.
