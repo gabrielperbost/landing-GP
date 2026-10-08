@@ -9,7 +9,7 @@ module.exports = [
   seoTitle: 'PER et impôts : combien pouvez-vous économiser ?',
   description: 'Le Plan Épargne Retraite permet de déduire vos versements de votre revenu imposable. Comment calculer l’économie d’impôt, le plafond et les limites.',
   readMinutes: 6,
-  updated: '2026-09-25',
+  updated: '2026-10-08',
   intro: 'Le Plan Épargne Retraite (PER) est souvent présenté comme un moyen de payer moins d’impôt. C’est vrai, mais l’économie réelle dépend de votre situation. Voici comment la calculer, quel plafond respecter et pourquoi il s’agit d’un report d’impôt plutôt que d’une exonération.',
   sections: [
     { h2: 'Le principe : déduire vos versements de votre revenu imposable', html: `
@@ -28,7 +28,7 @@ module.exports = [
     { h2: 'Le plafond de déduction', html: `
 <p>Vous ne pouvez pas tout déduire. Le plafond annuel correspond à <strong>10 % de vos revenus d’activité professionnelle de l’année précédente</strong>, ces revenus n’étant retenus que dans la limite de 8 fois le plafond annuel de la Sécurité sociale (PASS). Il ne peut pas être inférieur à <strong>10 % du PASS</strong>, même avec de faibles revenus.</p>
 <ul>
-<li>Le plafond que vous n’utilisez pas peut être <strong>reporté pendant 3 ans</strong>.</li>
+<li>Le plafond que vous n’utilisez pas peut être <strong>reporté pendant 5 ans</strong> pour les plafonds générés à partir de 2026 (la loi de finances 2026 a porté ce report de 3 à 5 ans). Les plafonds non consommés de 2024 et 2025 restent soumis à l’ancienne règle de 3 ans.</li>
 <li>Dans un couple soumis à une imposition commune, les plafonds peuvent être <strong>mutualisés</strong> si vous le choisissez.</li>
 <li>Votre plafond disponible est indiqué sur votre <strong>avis d’imposition</strong>.</li>
 </ul>
@@ -45,7 +45,7 @@ module.exports = [
 <div class="art-callout"><strong>En pratique :</strong> avant de verser, faites le calcul avec votre situation réelle (revenus, foyer, plafond disponible). Le simulateur PER de GP Finances vous donne une estimation en trois étapes.</div>` }
   ],
   faq: [
-    { q: 'Puis-je déduire tout ce que je verse sur mon PER ?', a: 'Non, seulement dans la limite de votre plafond de déduction, indiqué sur votre avis d’imposition. Le plafond non utilisé peut être reporté pendant 3 ans.' },
+    { q: 'Puis-je déduire tout ce que je verse sur mon PER ?', a: 'Non, seulement dans la limite de votre plafond de déduction, indiqué sur votre avis d’imposition. Depuis la loi de finances 2026, le plafond non utilisé peut être reporté pendant 5 ans (3 ans pour les plafonds de 2024 et 2025, non rétroactif).' },
     { q: 'Le PER fait-il économiser 30 % de mon versement ?', a: 'Seulement si votre tranche marginale d’imposition est de 30 %. L’économie est égale au versement multiplié par votre TMI, dans la limite du plafond.' },
     { q: 'Mon argent est-il bloqué ?', a: 'Jusqu’à la retraite, en principe, sauf cas de déblocage anticipé prévus par la loi (achat de la résidence principale, accidents de la vie…).' },
     { q: 'Et si je ne suis pas imposable ?', a: 'L’avantage fiscal est nul. Le PER peut malgré tout servir à épargner pour la retraite, mais sans économie d’impôt immédiate.' }
@@ -127,7 +127,7 @@ module.exports = [
 {
   slug: 'per-loi-de-finances-2026-changements',
   service: 'per',
-  published: false,
+  published: true,
   title: 'PER : ce que la loi de finances 2026 a changé, et pourquoi c’est le moment d’y penser',
   seoTitle: 'PER : ce que la loi de finances 2026 a changé',
   description: 'Plafonds reportés sur 5 ans, fin de l’avantage fiscal après 70 ans, nouveau cas de déblocage : le PER a évolué en 2026. Le point avant la fin de l’année.',
@@ -145,7 +145,7 @@ module.exports = [
 <li><strong>Un nouveau cas de déblocage anticipé</strong> en cas de maladie grave, de handicap ou d’accident grave d’un enfant à charge.</li>
 <li><strong>Des plafonds qui augmentent légèrement</strong>, avec le plafond de la Sécurité sociale porté à 48 060 euros en 2026.</li>
 </ul>
-<p class="art-note">Ce dernier point (report sur 5 ans) mérite d’être revérifié avant publication : nos articles précédents indiquaient un report sur 3 ans, règle confirmée début 2026. À confirmer avec vous avant mise en ligne.</p>` },
+<p class="art-note">Le report à 5 ans ne concerne que les plafonds générés à partir de 2026 : ceux de 2024 et 2025 restent soumis à l’ancienne règle de 3 ans, la mesure n’étant pas rétroactive.</p>` },
     { h2: 'Combien pouvez-vous déduire cette année ?', html: `
 <table class="local-table local-table-small"><thead><tr><th>Profil</th><th>Plafond de déduction pour les versements 2026</th></tr></thead><tbody>
 <tr><td>Salarié ou fonctionnaire</td><td>10 % des revenus professionnels 2025, entre 4 710 € et 37 680 €</td></tr>
@@ -298,7 +298,7 @@ module.exports = [
 {
   slug: 'assurance-vie-collecte-record-2026',
   service: 'assurance-vie',
-  published: false,
+  published: true,
   title: 'Assurance-vie : pourquoi les Français n’y ont jamais autant placé',
   seoTitle: 'Assurance-vie 2026 : pourquoi une collecte record',
   description: 'Collecte record, fiscalité épargnée par la hausse des prélèvements sociaux, Livret A peu rémunérateur : l’assurance-vie confirme en 2026 sa place de placement préféré.',

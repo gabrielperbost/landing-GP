@@ -118,7 +118,7 @@ module.exports = [
 {
   slug: 'hausse-taux-credit-immobilier-assurance-emprunteur',
   service: 'assurance-emprunteur',
-  published: false,
+  published: true,
   title: 'Assurance emprunteur : les taux remontent, votre assurance de prêt peut compenser',
   seoTitle: 'Taux immobilier en hausse : l’assurance de prêt compense',
   description: 'Les taux de crédit immobilier ont nettement augmenté à la rentrée 2026. Il existe un levier simple pour alléger la facture : changer d’assurance emprunteur.',

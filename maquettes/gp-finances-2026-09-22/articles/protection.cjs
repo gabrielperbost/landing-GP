@@ -112,7 +112,7 @@ module.exports = [
 {
   slug: 'prevoyance-indemnites-journalieres-secu-plafond',
   service: 'prevoyance',
-  published: false,
+  published: true,
   title: 'Prévoyance : en cas d’arrêt de travail, la Sécu vous verse au maximum 43 euros par jour',
   seoTitle: 'Arrêt de travail : la Sécu verse au maximum 43 €/jour',
   description: 'Depuis 2025, les indemnités de la Sécurité sociale en cas d’arrêt maladie ont été réduites pour les revenus moyens et élevés. La prévoyance sert à combler ce trou.',
@@ -265,7 +265,7 @@ module.exports = [
 {
   slug: 'mutuelle-hausse-2027-comment-ne-pas-la-subir',
   service: 'mutuelle',
-  published: false,
+  published: true,
   title: 'Mutuelle : jusqu’à 8 % de hausse annoncée pour 2027, comment ne pas la subir',
   seoTitle: 'Mutuelle : jusqu’à 8 % de hausse prévue en 2027',
   description: 'Après cinq années de hausses successives, les cotisations des mutuelles devraient encore augmenter nettement en 2027. Vous n’êtes pas obligé de l’accepter sans rien faire.',
@@ -437,7 +437,7 @@ module.exports = [
 {
   slug: 'regroupement-credits-solution-pour-souffler',
   service: 'regroupement-credits',
-  published: false,
+  published: true,
   title: 'Regroupement de crédits : une solution pour souffler, à condition de bien la comprendre',
   seoTitle: 'Regroupement de crédits : une solution pour souffler',
   description: 'Les dossiers de surendettement ont augmenté de près de 11 % en 2026. Regrouper ses crédits peut redonner de l’air à un budget, mais ce n’est pas une solution miracle.',
