@@ -52,7 +52,7 @@ module.exports = [
     { label: 'Service-public.fr : protection sociale des indépendants', url: 'https://www.service-public.fr' },
     { label: 'Sécurité sociale des indépendants', url: 'https://www.secu-independants.fr' }
   ],
-  related: ['prevoyance-protection-famille-capital-deces', 'changer-assurance-de-pret-loi-lemoine']
+  related: ['prevoyance-protection-famille-capital-deces', 'changer-assurance-de-pret-loi-lemoine', 'prevoyance-indemnites-journalieres-secu-plafond']
 },
 {
   slug: 'prevoyance-protection-famille-capital-deces',
@@ -107,7 +107,63 @@ module.exports = [
     { label: 'Service-public.fr : décès, capital décès et protection des proches', url: 'https://www.service-public.fr' },
     { label: 'France Assureurs', url: 'https://www.franceassureurs.fr' }
   ],
-  related: ['prevoyance-independants-arret-de-travail', 'clause-beneficiaire-assurance-vie-transmission']
+  related: ['prevoyance-independants-arret-de-travail', 'clause-beneficiaire-assurance-vie-transmission', 'prevoyance-indemnites-journalieres-secu-plafond']
+},
+{
+  slug: 'prevoyance-indemnites-journalieres-secu-plafond',
+  service: 'prevoyance',
+  published: false,
+  title: 'Prévoyance : en cas d’arrêt de travail, la Sécu vous verse au maximum 43 euros par jour',
+  seoTitle: 'Arrêt de travail : la Sécu verse au maximum 43 €/jour',
+  description: 'Depuis 2025, les indemnités de la Sécurité sociale en cas d’arrêt maladie ont été réduites pour les revenus moyens et élevés. La prévoyance sert à combler ce trou.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Depuis 2025, les indemnités de la Sécurité sociale en cas d’arrêt maladie ont été réduites pour les revenus moyens et élevés. Un arrêt de quelques mois peut déséquilibrer un budget. La prévoyance sert justement à combler ce trou.',
+  sections: [
+    { h2: 'Ce qui a changé', html: `
+<p>Depuis le 1er avril 2025, les indemnités journalières de l’Assurance maladie sont calculées sur un salaire plafonné à <strong>1,4 SMIC</strong>, contre 1,8 SMIC auparavant. Concrètement, depuis l’été 2026, l’indemnité maximale est de <strong>42,97 euros brut par jour</strong>, quel que soit votre salaire.</p>
+<p>Et ce montant n’est versé qu’à partir du <strong>4e jour d’arrêt</strong> : les trois premiers jours, appelés jours de carence, ne sont en général pas indemnisés par la Sécurité sociale.</p>` },
+    { h2: 'Ce que cela représente pour un cadre', html: `
+<p>Prenons un salarié cadre qui gagne 5 000 euros brut par mois. <em>Exemple illustratif.</em></p>
+<table class="local-table local-table-small"><thead><tr><th></th><th>Montant mensuel brut</th></tr></thead><tbody>
+<tr><td>Salaire habituel</td><td>5 000 €</td></tr>
+<tr><td>Indemnités de la Sécurité sociale (30 jours × 42,97 €)</td><td>environ 1 290 €</td></tr>
+<tr><td><strong>Perte avant complément de l’employeur ou de la prévoyance</strong></td><td><strong>environ 3 710 €</strong></td></tr>
+</tbody></table>
+<p>La loi oblige l’employeur, dès un an d’ancienneté, à compléter ces indemnités : 90 % du salaire brut pendant 30 jours, puis deux tiers pendant 30 jours, des durées qui s’allongent avec l’ancienneté. Beaucoup de conventions collectives prévoient mieux. Mais au-delà de cette période, c’est le contrat de prévoyance qui prend le relais, et ses garanties sont souvent plus limitées qu’on ne le croit.</p>` },
+    { h2: 'Indépendants : la situation la plus fragile', html: `
+<p>Pour un chef d’entreprise, un artisan ou une profession libérale, les indemnités du régime obligatoire sont souvent faibles et le délai de carence peut être plus long. Et pendant l’arrêt, les charges continuent : loyer du cabinet ou du local, salariés, cotisations, crédits.</p>
+<p>Une bonne prévoyance pour un indépendant couvre donc deux choses : le revenu personnel, et parfois les frais généraux de l’activité. Bonne nouvelle : les cotisations sont en grande partie déductibles du bénéfice imposable grâce au dispositif Madelin.</p>` },
+    { h2: 'Les trois garanties à vérifier', html: `
+<ol>
+<li><strong>L’incapacité temporaire de travail</strong> : le maintien d’un revenu pendant un arrêt. Regardez le délai avant le premier versement (la « franchise ») et le niveau de revenu garanti.</li>
+<li><strong>L’invalidité</strong> : une rente si vous ne pouvez plus travailler, totalement ou partiellement. Attention aux contrats qui ne versent rien en dessous d’un certain taux d’invalidité.</li>
+<li><strong>Le décès</strong> : un capital ou une rente pour vos proches, notamment pour vos enfants s’ils sont encore à charge.</li>
+</ol>` },
+    { h2: 'Les pièges les plus courants', html: `
+<ul>
+<li>Penser que la prévoyance d’entreprise suffit, sans avoir vérifié ses plafonds.</li>
+<li>Choisir un contrat qui exclut certaines pathologies, comme le mal de dos ou les troubles psychologiques, causes très fréquentes d’arrêt.</li>
+<li>Ne pas mettre à jour sa couverture après une naissance, un achat immobilier ou une hausse de revenus.</li>
+</ul>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>Depuis l’été 2026, la Sécurité sociale verse au plus 42,97 euros brut par jour d’arrêt.</li>
+<li>Plus votre revenu est élevé, plus l’écart avec votre salaire est important.</li>
+<li>Les indépendants sont les plus exposés, mais peuvent déduire leurs cotisations.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'Quel est le montant maximum versé par la Sécurité sociale en cas d’arrêt maladie ?', a: 'Depuis l’été 2026, l’indemnité journalière maximale est de 42,97 euros brut par jour, versée à partir du 4e jour d’arrêt, quel que soit votre salaire.' },
+    { q: 'Mon employeur complète-t-il automatiquement ces indemnités ?', a: 'Oui, dès un an d’ancienneté : 90 % du salaire brut pendant 30 jours puis deux tiers pendant 30 jours, des durées qui s’allongent avec l’ancienneté. Beaucoup de conventions collectives prévoient mieux.' },
+    { q: 'Les indépendants sont-ils moins bien couverts ?', a: 'Oui, en général. Les indemnités du régime obligatoire sont souvent plus faibles, avec un délai de carence qui peut être plus long, alors que les charges professionnelles continuent pendant l’arrêt.' },
+    { q: 'Les cotisations de prévoyance sont-elles déductibles ?', a: 'Pour un indépendant, oui en grande partie, grâce au dispositif Madelin, dans certaines limites.' }
+  ],
+  cta: { kind: 'call', project: 'Prévoyance', label: 'Faire le point sur ma couverture', text: 'Je fais le point avec vous sur votre couverture actuelle et je compare les contrats pour combler ce qui manque.' },
+  sources: [
+    { label: 'APICIL : calcul des indemnités journalières de la Sécurité sociale', url: 'https://pro.apicil.com/prevoyance/calcul-des-ijss/' }
+  ],
+  related: ['prevoyance-independants-arret-de-travail', 'prevoyance-protection-famille-capital-deces']
 },
 {
   slug: 'mutuelle-comment-choisir-niveau-de-garanties',
@@ -155,7 +211,7 @@ module.exports = [
     { label: 'Ministère de l’Économie : tout savoir sur les complémentaires santé', url: 'https://www.economie.gouv.fr/particuliers/emprunter-et-sassurer/tout-savoir-sur-les-complementaires-sante-mutuelle' },
     { label: 'Ministère de l’Économie : complémentaire santé obligatoire en entreprise', url: 'https://www.economie.gouv.fr/entreprises/entreprises-vous-avez-lobligation-de-proposer-une-mutuelle-de-sante-vos-salaries' }
   ],
-  related: ['mutuelle-changer-resiliation-infra-annuelle', 'prevoyance-independants-arret-de-travail']
+  related: ['mutuelle-changer-resiliation-infra-annuelle', 'prevoyance-independants-arret-de-travail', 'mutuelle-hausse-2027-comment-ne-pas-la-subir']
 },
 {
   slug: 'mutuelle-changer-resiliation-infra-annuelle',
@@ -204,7 +260,70 @@ module.exports = [
     { label: 'Ministère de l’Économie : résiliation infra-annuelle des complémentaires santé (1er décembre 2020)', url: 'https://presse.economie.gouv.fr/407-ouverture-de-la-resiliation-infra-annuelle-des-contrats-de-complementaire-sante-sans-frais-ni-penalite-a-compter-du-1er-decembre-2020/' },
     { label: 'Ministère de l’Économie : comment résilier son contrat ?', url: 'https://www.economie.gouv.fr/particuliers/resiliation-assurance' }
   ],
-  related: ['mutuelle-comment-choisir-niveau-de-garanties', 'changer-assurance-de-pret-loi-lemoine']
+  related: ['mutuelle-comment-choisir-niveau-de-garanties', 'changer-assurance-de-pret-loi-lemoine', 'mutuelle-hausse-2027-comment-ne-pas-la-subir']
+},
+{
+  slug: 'mutuelle-hausse-2027-comment-ne-pas-la-subir',
+  service: 'mutuelle',
+  published: false,
+  title: 'Mutuelle : jusqu’à 8 % de hausse annoncée pour 2027, comment ne pas la subir',
+  seoTitle: 'Mutuelle : jusqu’à 8 % de hausse prévue en 2027',
+  description: 'Après cinq années de hausses successives, les cotisations des mutuelles devraient encore augmenter nettement en 2027. Vous n’êtes pas obligé de l’accepter sans rien faire.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Après cinq années de hausses successives, les cotisations des mutuelles devraient encore augmenter nettement en 2027. Bonne nouvelle : vous n’êtes pas obligé de l’accepter sans rien faire.',
+  sections: [
+    { h2: 'Une hausse qui ne faiblit pas', html: `
+<p>Selon les cabinets Fact &amp; Figures et Addactis, les contrats individuels devraient augmenter de <strong>7 à 8,3 %</strong> en moyenne en 2027, hors effet de l’âge. Les contrats d’entreprise suivraient une tendance proche, autour de 7 %.</p>
+<p>Cette hausse s’ajoute à celles des années précédentes, relevées par la Mutualité française :</p>
+<table class="local-table local-table-small"><thead><tr><th>Année</th><th>Hausse moyenne (contrats individuels)</th></tr></thead><tbody>
+<tr><td>2023</td><td>4,7 %</td></tr>
+<tr><td>2024</td><td>8,1 %</td></tr>
+<tr><td>2025</td><td>6 %</td></tr>
+<tr><td>2026</td><td>4,3 %</td></tr>
+<tr><td>2027 (prévision)</td><td>7 à 8,3 %</td></tr>
+</tbody></table>
+<p>Entre début 2023 et 2026, une cotisation de 100 euros par mois est ainsi passée à environ 125 euros.</p>` },
+    { h2: 'Pourquoi les prix augmentent', html: `
+<ul>
+<li><strong>Le vieillissement de la population</strong>, qui fait croître les dépenses de santé.</li>
+<li><strong>Le transfert de certains remboursements</strong> de l’Assurance maladie vers les complémentaires.</li>
+<li><strong>Le coût des innovations médicales</strong> et du dispositif 100 % santé (lunettes, aides auditives, prothèses dentaires sans reste à charge).</li>
+<li><strong>Une taxe de 2,05 %</strong> sur les cotisations des complémentaires, créée par le budget de la Sécurité sociale pour 2026.</li>
+</ul>` },
+    { h2: 'Vous pouvez changer de mutuelle à tout moment', html: `
+<p>Beaucoup l’ignorent encore : depuis décembre 2020, vous pouvez résilier votre mutuelle à tout moment après un an de contrat, sans frais et sans justification. La résiliation prend effet un mois après la demande, et votre nouvel assureur peut s’occuper des démarches.</p>
+<p>C’est une vraie opportunité au moment où tombe l’avis d’échéance, en général entre octobre et décembre.</p>` },
+    { h2: 'Bien comparer, ce n’est pas seulement comparer les prix', html: `
+<p>Une mutuelle moins chère mais qui rembourse mal vos soins habituels ne vous fera rien gagner. Avant de changer, regardez :</p>
+<ol>
+<li><strong>Vos dépenses réelles</strong> : consultations chez des spécialistes, optique, dentaire, médecines douces.</li>
+<li><strong>Les dépassements d’honoraires</strong> : en Île-de-France, beaucoup de spécialistes en pratiquent, et le niveau de remboursement fait alors toute la différence.</li>
+<li><strong>Les délais d’attente</strong>, parfois appliqués sur le dentaire ou l’optique.</li>
+<li><strong>L’évolution du tarif avec l’âge</strong>, surtout après 60 ans.</li>
+</ol>` },
+    { h2: 'Retraités et indépendants, les plus exposés', html: `
+<p>Les salariés bénéficient d’une mutuelle d’entreprise financée au moins pour moitié par l’employeur. Les retraités et les indépendants, eux, paient seuls l’intégralité de leur cotisation, qui augmente aussi avec l’âge.</p>
+<p>Pour les indépendants, une bonne nouvelle : les cotisations d’une mutuelle dite « Madelin » peuvent être déduites du bénéfice imposable, dans certaines limites.</p>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>Une nouvelle hausse de 7 à 8 % est attendue en 2027.</li>
+<li>Vous pouvez changer de mutuelle à tout moment après un an.</li>
+<li>Un bon comparatif part de vos soins réels, pas seulement du prix.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'Pourquoi les cotisations des mutuelles augmentent-elles autant ?', a: 'Plusieurs facteurs se cumulent : le vieillissement de la population, le transfert de certains remboursements vers les complémentaires, le coût des innovations médicales et une nouvelle taxe de 2,05 % créée par le budget de la Sécurité sociale pour 2026.' },
+    { q: 'De combien les mutuelles ont-elles augmenté depuis 2023 ?', a: 'Entre début 2023 et 2026, une cotisation de 100 euros par mois est passée à environ 125 euros, selon la Mutualité française. Une nouvelle hausse de 7 à 8,3 % est prévue pour 2027.' },
+    { q: 'Puis-je changer de mutuelle dès que mon avis d’échéance arrive ?', a: 'Oui, et même sans attendre cette date : depuis décembre 2020, vous pouvez résilier à tout moment après un an de contrat, sans frais ni justification.' },
+    { q: 'Les retraités paient-ils plus cher que les salariés ?', a: 'Oui, en général. Les salariés bénéficient d’une mutuelle d’entreprise financée au moins pour moitié par l’employeur, alors que les retraités et les indépendants paient seuls l’intégralité de leur cotisation.' }
+  ],
+  cta: { kind: 'call', project: 'Mutuelle', label: 'Comparer mon contrat', text: 'Envoyez-moi votre avis d’échéance : je compare votre contrat actuel avec les offres du marché, à garanties équivalentes ou mieux adaptées à vos besoins.' },
+  sources: [
+    { label: 'MoneyVox : mutuelles santé, des hausses de tarifs entre 4 et 10 % en 2027 selon Fact & Figures et Addactis', url: 'https://www.moneyvox.fr/assurance/actualites/110539/mutuelles-sante-des-hausses-de-tarifs-entre-4-et-10-en-2027-selon-fact-figures-et-addactis' },
+    { label: 'Public Sénat : complémentaires santé, la hausse des tarifs pour 2026 est-elle illégale ?', url: 'https://www.publicsenat.fr/actualites/politique/complementaires-sante-la-hausse-des-tarifs-pour-2026-est-elle-illegale' }
+  ],
+  related: ['mutuelle-comment-choisir-niveau-de-garanties', 'mutuelle-changer-resiliation-infra-annuelle']
 },
 {
   slug: 'regroupement-de-credits-quand-est-ce-interessant',
@@ -257,7 +376,7 @@ module.exports = [
     { label: 'Ministère de l’Économie : rembourser son crédit immobilier avant le terme', url: 'https://www.economie.gouv.fr/particuliers/rembourser-credit-immobilier-avant-terme-anticipation' },
     { label: 'Service-public.fr : crédit à la consommation, obligations de la banque', url: 'https://www.service-public.fr/particuliers/vosdroits/F2440' }
   ],
-  related: ['regroupement-de-credits-calcul-avant-de-signer', 'capital-initial-ou-capital-restant-du']
+  related: ['regroupement-de-credits-calcul-avant-de-signer', 'capital-initial-ou-capital-restant-du', 'regroupement-credits-solution-pour-souffler']
 },
 {
   slug: 'regroupement-de-credits-calcul-avant-de-signer',
@@ -313,6 +432,71 @@ module.exports = [
     { label: 'Ministère de l’Économie : les délais de réflexion ou de rétractation', url: 'https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/les-delais-de-reflexion-ou-de-retractation' },
     { label: 'Ministère de l’Économie : crédit immobilier, comment ça marche ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/emprunter-et-sassurer/credit-immobilier-comment-ca-marche' }
   ],
-  related: ['regroupement-de-credits-quand-est-ce-interessant', 'capital-initial-ou-capital-restant-du']
+  related: ['regroupement-de-credits-quand-est-ce-interessant', 'capital-initial-ou-capital-restant-du', 'regroupement-credits-solution-pour-souffler']
+},
+{
+  slug: 'regroupement-credits-solution-pour-souffler',
+  service: 'regroupement-credits',
+  published: false,
+  title: 'Regroupement de crédits : une solution pour souffler, à condition de bien la comprendre',
+  seoTitle: 'Regroupement de crédits : une solution pour souffler',
+  description: 'Les dossiers de surendettement ont augmenté de près de 11 % en 2026. Regrouper ses crédits peut redonner de l’air à un budget, mais ce n’est pas une solution miracle.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Les dossiers de surendettement ont augmenté de près de 11 % sur les sept premiers mois de 2026. Avant d’en arriver là, regrouper ses crédits peut redonner de l’air à un budget. Mais ce n’est pas une solution miracle, et il faut en connaître le coût réel.',
+  sections: [
+    { h2: 'Un contexte tendu pour les budgets', html: `
+<p>Selon la Banque de France, les dépôts de dossiers de surendettement ont progressé de <strong>10,9 %</strong> entre janvier et juillet 2026 par rapport à la même période de 2025. Dans le même temps, les taux de crédit sont repartis à la hausse à la rentrée.</p>
+<p>Beaucoup de ménages cumulent un crédit immobilier, un prêt auto, un crédit renouvelable et parfois un prêt travaux. Chaque mensualité paraît raisonnable, mais leur addition devient lourde.</p>` },
+    { h2: 'Le principe', html: `
+<p>Le regroupement de crédits, aussi appelé rachat de crédits, consiste à remplacer plusieurs prêts par un seul, avec :</p>
+<ul>
+<li><strong>une seule mensualité</strong>, plus faible que la somme des anciennes ;</li>
+<li><strong>un seul taux et une seule date</strong> de prélèvement ;</li>
+<li><strong>une durée de remboursement en général plus longue</strong>.</li>
+</ul>
+<p>Il est aussi possible d’intégrer un nouveau besoin de financement dans l’opération, par exemple des travaux ou un achat.</p>` },
+    { h2: 'Le point que l’on vous dit rarement', html: `
+<p>Baisser la mensualité en allongeant la durée augmente presque toujours le <strong>coût total</strong> du crédit. <em>Exemple illustratif :</em></p>
+<table class="local-table local-table-small"><thead><tr><th></th><th>Avant</th><th>Après regroupement</th></tr></thead><tbody>
+<tr><td>Nombre de crédits</td><td>3</td><td>1</td></tr>
+<tr><td>Mensualité totale</td><td>900 €</td><td>650 €</td></tr>
+<tr><td>Durée restante</td><td>5 ans</td><td>8 ans</td></tr>
+<tr><td>Total restant à payer</td><td>54 000 €</td><td>62 400 €</td></tr>
+</tbody></table>
+<p>Dans cet exemple, le ménage gagne 250 euros par mois de marge, mais paie environ 8 400 euros de plus au total. C’est un choix qui peut être tout à fait pertinent, à condition d’être fait en connaissance de cause.</p>` },
+    { h2: 'Pour qui est-ce intéressant ?', html: `
+<ul>
+<li>Les ménages dont le <strong>taux d’endettement</strong> dépasse ce qu’ils peuvent supporter durablement.</li>
+<li>Ceux qui ont plusieurs <strong>crédits à la consommation à taux élevés</strong>, notamment des crédits renouvelables.</li>
+<li>Ceux qui veulent <strong>financer un nouveau projet</strong> sans ajouter une mensualité de plus.</li>
+</ul>
+<p>En revanche, ce n’est généralement pas adapté si vos crédits se terminent bientôt, ou si vous êtes déjà en situation de surendettement : dans ce cas, la commission de la Banque de France est le bon interlocuteur.</p>` },
+    { h2: 'Ce qu’il faut vérifier', html: `
+<ol>
+<li>Les <strong>indemnités de remboursement anticipé</strong> des anciens crédits, que la banque peut facturer.</li>
+<li>Les <strong>frais de dossier</strong> et, le cas échéant, de garantie.</li>
+<li>L’<strong>assurance emprunteur</strong> du nouveau prêt, qui peut peser lourd sur une longue durée et que vous pouvez choisir librement.</li>
+<li>Le <strong>TAEG</strong>, qui inclut tous les coûts et permet de comparer les offres.</li>
+</ol>
+<p>Un intermédiaire en crédit ne peut jamais vous demander d’argent avant le déblocage des fonds. Toute demande de paiement à l’avance doit vous alerter. Vérifiez aussi qu’il est bien inscrit à l’ORIAS, le registre officiel des intermédiaires.</p>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>Un regroupement réduit la mensualité, mais augmente souvent le coût total.</li>
+<li>Il est pertinent pour retrouver de la marge durablement ou financer un projet.</li>
+<li>Comparez le TAEG et les frais, et ne payez jamais avant le déblocage des fonds.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'Le surendettement a-t-il vraiment augmenté en 2026 ?', a: 'Oui, selon la Banque de France, les dépôts de dossiers de surendettement ont progressé de 10,9 % entre janvier et juillet 2026 par rapport à la même période de 2025.' },
+    { q: 'Un regroupement de crédits fait-il toujours gagner de l’argent ?', a: 'Non, c’est même rarement le cas sur le coût total : baisser la mensualité en allongeant la durée augmente presque toujours ce que vous payez au total. Dans l’exemple de cet article, 250 € de marge mensuelle en plus coûtent environ 8 400 € de plus au total.' },
+    { q: 'Puis-je choisir librement l’assurance du nouveau prêt ?', a: 'Oui. L’assurance emprunteur du prêt de regroupement peut peser lourd sur une longue durée, et vous êtes libre de la choisir en dehors de celle proposée par l’organisme prêteur.' },
+    { q: 'Un courtier peut-il me demander de l’argent avant le déblocage des fonds ?', a: 'Non, jamais. C’est interdit pour un intermédiaire en crédit. Toute demande de paiement à l’avance doit vous alerter ; vérifiez aussi son inscription à l’ORIAS.' }
+  ],
+  cta: { kind: 'call', project: 'Regroupement de crédits', label: 'Étudier mes mensualités', text: 'J’étudie votre situation, je calcule le coût réel d’un regroupement et je vous dis franchement s’il est intéressant pour vous.' },
+  sources: [
+    { label: 'Partners Finances : surendettement, hausse du nombre de dossiers en 2026', url: 'https://www.partners-finances.fr/rachat-de-credits/actualites/2026/1054-surendettement-nombre-dossiers-hausse-2026' }
+  ],
+  related: ['regroupement-de-credits-quand-est-ce-interessant', 'regroupement-de-credits-calcul-avant-de-signer']
 }
 ];

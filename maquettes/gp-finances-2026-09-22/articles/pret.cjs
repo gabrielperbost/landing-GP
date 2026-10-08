@@ -59,7 +59,7 @@ module.exports = [
     { label: 'Ministère de l’Économie : questionnaire de santé, quand est-il obligatoire ?', url: 'https://www.economie.gouv.fr/particuliers/gerer-mon-argent/emprunter-et-sassurer/assurance-emprunteur-questionnaire-de-sante-quand-est-ce-obligatoire' },
     { label: 'ABE Infoservice : que faut-il savoir sur l’assurance emprunteur ?', url: 'https://www.abe-infoservice.fr/fr/assurance/assurance-emprunteur/que-faut-il-savoir-sur-lassurance-emprunteur' }
   ],
-  related: ['capital-initial-ou-capital-restant-du', 'per-impots-combien-economiser']
+  related: ['capital-initial-ou-capital-restant-du', 'per-impots-combien-economiser', 'hausse-taux-credit-immobilier-assurance-emprunteur']
 },
 {
   slug: 'capital-initial-ou-capital-restant-du',
@@ -113,6 +113,65 @@ module.exports = [
     { label: 'ABE Infoservice : assurance emprunteur', url: 'https://www.abe-infoservice.fr/fr/assurance/assurance-emprunteur/que-faut-il-savoir-sur-lassurance-emprunteur' },
     { label: 'Service-public.fr : assurance de prêt immobilier', url: 'https://www.service-public.fr/particuliers/vosdroits/F1671' }
   ],
-  related: ['changer-assurance-de-pret-loi-lemoine', 'regroupement-de-credits-quand-est-ce-interessant']
+  related: ['changer-assurance-de-pret-loi-lemoine', 'regroupement-de-credits-quand-est-ce-interessant', 'hausse-taux-credit-immobilier-assurance-emprunteur']
+},
+{
+  slug: 'hausse-taux-credit-immobilier-assurance-emprunteur',
+  service: 'assurance-emprunteur',
+  published: false,
+  title: 'Assurance emprunteur : les taux remontent, votre assurance de prêt peut compenser',
+  seoTitle: 'Taux immobilier en hausse : l’assurance de prêt compense',
+  description: 'Les taux de crédit immobilier ont nettement augmenté à la rentrée 2026. Il existe un levier simple pour alléger la facture : changer d’assurance emprunteur.',
+  readMinutes: 6,
+  updated: '2026-10-08',
+  intro: 'Les taux de crédit immobilier ont nettement augmenté à la rentrée 2026. Pour ceux qui ont déjà un prêt, il existe pourtant un levier simple pour alléger la facture, et beaucoup l’ignorent encore : changer d’assurance emprunteur.',
+  sections: [
+    { h2: 'Une rentrée marquée par la hausse des taux', html: `
+<p>En octobre 2026, le taux moyen d’un crédit immobilier atteint <strong>3,66 % sur 20 ans</strong>, contre 3,17 % au premier trimestre, selon le baromètre Pretto. Sur 25 ans, il passe à 3,75 %.</p>
+<p>La cause principale : le taux auquel l’État français emprunte sur 10 ans a bondi d’environ un point en trois mois, jusqu’à 4,94 % le 1er octobre, son plus haut niveau depuis 2002. Les banques répercutent cette hausse sur leurs offres. Pour les nouveaux acheteurs, chaque dixième de point compte.</p>` },
+    { h2: 'Le levier que l’on oublie : l’assurance du prêt', html: `
+<p>L’assurance emprunteur pèse lourd dans le coût total d’un crédit : souvent plusieurs milliers, voire plusieurs dizaines de milliers d’euros sur la durée du prêt. La plupart des emprunteurs prennent celle proposée par leur banque, par simplicité, le jour de la signature.</p>
+<p>Depuis la loi Lemoine de 2022, vous pouvez en changer <strong>à tout moment</strong>, sans frais et sans attendre la date anniversaire du contrat. Une seule condition : le nouveau contrat doit offrir des garanties au moins équivalentes à celles exigées par votre banque.</p>
+<p>Ce que la loi garantit concrètement :</p>
+<ul>
+<li>la banque a <strong>10 jours ouvrés</strong> pour répondre à votre demande ;</li>
+<li>elle ne peut pas modifier le taux de votre crédit en contrepartie ;</li>
+<li>tout refus doit être motivé par écrit.</li>
+</ul>` },
+    { h2: 'Des banques encore réticentes', html: `
+<p>Quatre ans après la loi, les banques conservent encore l’essentiel du marché de l’assurance emprunteur, autour de <strong>80 à 85 %</strong> selon les estimations du secteur. Les retards de réponse restent fréquents. En octobre 2025, la DGCCRF a sanctionné quatre banques, dont trois réseaux d’Île-de-France, pour non-respect du délai de 10 jours : près de <strong>900 000 euros</strong> d’amendes au total, dont plus de 320 000 euros pour la plus lourde.</p>
+<p>C’est là qu’un courtier est utile : il compare les contrats, vérifie l’équivalence des garanties et gère les échanges avec la banque jusqu’à l’avenant.</p>` },
+    { h2: 'Combien peut-on économiser ? Un exemple', html: `
+<p>Prenons un prêt de 250 000 euros sur 20 ans, pour un emprunteur de 35 ans non-fumeur. <em>Exemple illustratif, calculé sur le capital initial.</em></p>
+<table class="local-table local-table-small"><thead><tr><th>Contrat</th><th>Taux d’assurance</th><th>Coût total sur 20 ans</th></tr></thead><tbody>
+<tr><td>Contrat groupé de la banque</td><td>0,30 %</td><td>15 000 €</td></tr>
+<tr><td>Contrat individuel</td><td>0,10 %</td><td>5 000 €</td></tr>
+<tr><td><strong>Économie</strong></td><td></td><td><strong>10 000 €</strong></td></tr>
+</tbody></table>
+<p>Le résultat dépend de votre âge, de votre santé, de votre métier et des garanties exigées. Mais l’écart est souvent important, surtout pour les emprunteurs jeunes et en bonne santé.</p>` },
+    { h2: 'Le questionnaire de santé, parfois supprimé', html: `
+<p>La loi Lemoine a aussi supprimé le questionnaire médical dans un cas précis : quand la part assurée ne dépasse pas 200 000 euros par personne et que le prêt se termine avant vos 60 ans. Les deux conditions doivent être réunies.</p>
+<p>Pour les anciens malades du cancer ou de l’hépatite C, le <strong>droit à l’oubli</strong> s’applique 5 ans après la fin du protocole thérapeutique, dans le cadre de la convention AERAS.</p>` },
+    { h2: 'Ce qu’il faut retenir', html: `
+<ul>
+<li>Vous pouvez changer d’assurance de prêt à tout moment, même des années après la signature.</li>
+<li>Le changement ne coûte rien et ne touche pas au taux de votre crédit.</li>
+<li>Plus vous changez tôt, plus l’économie est grande.</li>
+</ul>` }
+  ],
+  faq: [
+    { q: 'La hausse des taux de crédit change-t-elle le taux de mon assurance de prêt ?', a: 'Non, ce sont deux taux indépendants. Le taux de votre crédit immobilier ne bouge pas quand vous changez d’assurance emprunteur : seul le coût de l’assurance est mis à jour par avenant.' },
+    { q: 'Les banques respectent-elles le délai de 10 jours ?', a: 'Pas toujours. En octobre 2025, la DGCCRF a sanctionné quatre banques pour non-respect de ce délai, pour près de 900 000 euros d’amendes au total.' },
+    { q: 'Combien puis-je économiser en changeant d’assurance ?', a: 'Cela dépend de votre profil, mais l’écart est souvent important : sur un prêt de 250 000 € sur 20 ans, passer de 0,30 % à 0,10 % représente environ 10 000 € sur la durée du prêt.' },
+    { q: 'Le questionnaire médical est-il toujours obligatoire ?', a: 'Non. Il est supprimé si le capital assuré par personne ne dépasse pas 200 000 € et que le prêt se termine avant vos 60 ans. Un droit à l’oubli s’applique aussi pour d’anciennes maladies, sous conditions.' }
+  ],
+  cta: { kind: 'simulator', href: '/assurance-emprunteur#simuler-assurance', label: 'Estimer mon économie', text: 'Estimez en 2 minutes ce que vous pourriez économiser avec notre simulateur, ou prenez rendez-vous : je m’occupe de toutes les démarches, y compris auprès de votre banque.' },
+  sources: [
+    { label: 'Pretto : analyse des taux immobiliers, octobre 2026', url: 'https://www.pretto.fr/taux-immobilier/historique-taux-immobilier/2026/analyse-taux-immobilier-octobre-2026/' },
+    { label: 'Club Patrimoine : taux des emprunts d’État à 10 ans', url: 'https://www.clubpatrimoine.com/contenus/graph-du-jour-taux-emprunts-etat-10-ans' },
+    { label: 'Magnolia : assurance emprunteur, les banques enfin prêtes à respecter la loi Lemoine en 2026 ?', url: 'https://www.magnolia.fr/actualites/assurance-emprunteur/assurance-emprunteur-banques-enfin-respecter-loi-lemoine-en-2026' },
+    { label: 'Profession CGP : quatre banques sanctionnées sur l’assurance emprunteur', url: 'https://www.professioncgp.com/article/les-acteurs/actu/assurance-emprunteur-quatre-banques-sanctionnees.html' }
+  ],
+  related: ['changer-assurance-de-pret-loi-lemoine', 'capital-initial-ou-capital-restant-du']
 }
 ];
