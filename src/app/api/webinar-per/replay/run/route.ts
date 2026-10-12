@@ -20,7 +20,10 @@ const normalizeEnv = (value: string | undefined) => {
   return trimmed || undefined;
 };
 
-const getReplaySecret = () => normalizeEnv(process.env.WEBINAR_PER_REMINDER_SECRET) ?? normalizeEnv(process.env.CRON_SECRET);
+const getReplaySecret = () =>
+  normalizeEnv(process.env.WEBINAR_PER_REPLAY_SECRET) ??
+  normalizeEnv(process.env.WEBINAR_PER_REMINDER_SECRET) ??
+  normalizeEnv(process.env.CRON_SECRET);
 
 const isAuthorized = (request: NextRequest) => {
   const expected = getReplaySecret();
