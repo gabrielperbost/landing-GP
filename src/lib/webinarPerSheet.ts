@@ -27,7 +27,8 @@ export type WebinarPerReminderKey =
   | "reminder_5d_sent_at"
   | "reminder_3d_sent_at"
   | "reminder_1d_sent_at"
-  | "reminder_morning_sent_at";
+  | "reminder_morning_sent_at"
+  | "replay_sent_at";
 
 export type WebinarPerParticipant = {
   created_at: string;
@@ -46,6 +47,7 @@ export type WebinarPerParticipant = {
   reminder_11d_sent_at: string;
   reminder_9d_sent_at: string;
   reminder_5d_sent_at: string;
+  replay_sent_at?: string;
 };
 
 const normalizeEnv = (value: string | undefined): string | undefined => {
