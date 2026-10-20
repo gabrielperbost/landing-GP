@@ -1,14 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, GPF_STATUTS, type GpfClient, type GpfDossier } from "@/lib/gpf/types";
 
 export default function GpfClientPage({ params }: { params: { id: string } }) {
   const { id } = params;
+  const router = useRouter();
   const [client, setClient] = useState<GpfClient | null>(null);
   const [dossiers, setDossiers] = useState<GpfDossier[]>([]);
   const [loading, setLoading] = useState(true);
   const [showNewDossier, setShowNewDossier] = useState(false);
+
+  const deleteClient = async () => {
+    if (!confirm(`Supprimer ${client?.prenom} ${client?.nom} ? Impossible s'il a encore des dossiers.`)) return;
+    const res = await fetch(`/api/gpf/clients/${id}`, { method: "DELETE" });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error?.includes("foreign key") ? "Impossible : ce client a encore des dossiers." : "Échec de la suppression.");
+      return;
+    }
+    router.replace("/gpf/clients");
+  };
 
   const load = async () => {
     const res = await fetch(`/api/gpf/clients/${id}`);
@@ -30,9 +43,14 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <Link href="/gpf/clients" style={{ fontSize: 13, color: "#64717d" }}>
-        ← Clients
-      </Link>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/gpf/clients" style={{ fontSize: 13, color: "#64717d" }}>
+          ← Clients
+        </Link>
+        <button onClick={deleteClient} style={{ background: "transparent", border: 0, color: "#c0392b", fontSize: 12, cursor: "pointer" }}>
+          Supprimer ce client
+        </button>
+      </div>
 
       <h1 style={{ fontSize: 22, margin: "10px 0 4px" }}>
         {client.civilite ? `${client.civilite} ` : ""}{client.prenom} {client.nom}

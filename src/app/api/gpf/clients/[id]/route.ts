@@ -37,3 +37,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true, client: data });
 }
+
+export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
+  if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  const { id } = params;
+  // Les dossiers référencent le client avec "on delete restrict" : s'il existe encore
+  // des dossiers, la suppression échoue proprement plutôt que de perdre des données.
+  const { error } = await supabaseAdmin.from("gpf_clients").delete().eq("id", id);
+  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true });
+}
