@@ -1,17 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { GpfClient } from "@/lib/gpf/types";
+import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, type GpfClientListItem } from "@/lib/gpf/types";
 
 export default function GpfClientsPage() {
-  const [clients, setClients] = useState<GpfClient[]>([]);
+  const [clients, setClients] = useState<GpfClientListItem[]>([]);
   const [q, setQ] = useState("");
+  const [produit, setProduit] = useState("");
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
-  const load = async (query = "") => {
+  const load = async (query = "", produitFilter = "") => {
     setLoading(true);
-    const res = await fetch(`/api/gpf/clients${query ? `?q=${encodeURIComponent(query)}` : ""}`);
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (produitFilter) params.set("produit", produitFilter);
+    const res = await fetch(`/api/gpf/clients${params.toString() ? `?${params}` : ""}`);
     const data = await res.json();
     if (data.ok) setClients(data.clients);
     setLoading(false);
@@ -22,10 +26,10 @@ export default function GpfClientsPage() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => load(q), 250);
+    const t = setTimeout(() => load(q, produit), 250);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
+  }, [q, produit]);
 
   return (
     <div>
@@ -38,41 +42,79 @@ export default function GpfClientsPage() {
 
       {showForm ? <NewClientForm onCreated={() => { setShowForm(false); load(q); }} /> : null}
 
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Rechercher un client (nom, prénom, e-mail)..."
-        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 15, boxSizing: "border-box", marginBottom: 16 }}
-      />
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Rechercher un client (nom, prénom, e-mail)..."
+          style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 15, boxSizing: "border-box" }}
+        />
+        <select
+          value={produit}
+          onChange={(e) => setProduit(e.target.value)}
+          style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 14, background: "#fff" }}
+        >
+          <option value="">Tous les produits</option>
+          {GPF_PRODUITS.map((p) => (
+            <option key={p} value={p}>
+              {GPF_PRODUIT_LABEL[p]}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {loading ? (
         <p style={{ color: "#64717d" }}>Chargement...</p>
       ) : clients.length === 0 ? (
-        <p style={{ color: "#64717d" }}>Aucun client.</p>
+        <p style={{ color: "#64717d" }}>Aucun client{produit ? ` pour « ${GPF_PRODUIT_LABEL[produit as keyof typeof GPF_PRODUIT_LABEL]} »` : ""}.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-          {clients.map((c) => (
-            <li key={c.id}>
-              <Link
-                href={`/gpf/clients/${c.id}`}
-                style={{
-                  display: "block",
-                  padding: "14px 16px",
-                  background: "#fff",
-                  borderRadius: 10,
-                  border: "1px solid #e2e5e9",
-                  textDecoration: "none",
-                  color: "#0d1f3c"
-                }}
-              >
-                <strong>{c.prenom} {c.nom}</strong>
-                <div style={{ fontSize: 13, color: "#64717d", marginTop: 2 }}>
-                  {[c.email, c.telephone, c.ville].filter(Boolean).join(" · ") || "Pas d'information de contact"}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <>
+          <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 10px" }}>{clients.length} client{clients.length > 1 ? "s" : ""}</p>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+            {clients.map((c) => (
+              <li key={c.id}>
+                <Link
+                  href={`/gpf/clients/${c.id}`}
+                  style={{
+                    display: "block",
+                    padding: "14px 16px",
+                    background: "#fff",
+                    borderRadius: 10,
+                    border: "1px solid #e2e5e9",
+                    textDecoration: "none",
+                    color: "#0d1f3c"
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <strong>{c.prenom} {c.nom}</strong>
+                    <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                      {c.produits.length === 0 ? (
+                        <span style={{ fontSize: 10, color: "#9aa3ab" }}>Aucun dossier</span>
+                      ) : (
+                        c.produits.map((p) => (
+                          <span
+                            key={p}
+                            style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 100, background: "#eff3f7", color: "#0d1f3c" }}
+                          >
+                            {GPF_PRODUIT_LABEL[p]}
+                          </span>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 13, color: "#64717d", marginTop: 4 }}>
+                    {[c.email, c.telephone, c.ville].filter(Boolean).join(" · ") || "Pas d'information de contact"}
+                  </div>
+                  {c.statuts.length > 0 ? (
+                    <div style={{ fontSize: 11, color: "#9aa3ab", marginTop: 4 }}>
+                      {c.statuts.map((s) => GPF_STATUT_LABEL[s]).join(" · ")}
+                    </div>
+                  ) : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   );

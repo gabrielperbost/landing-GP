@@ -1,3 +1,5 @@
+export type GpfClientListItem = GpfClient & { produits: GpfProduit[]; statuts: GpfStatut[] };
+
 export type GpfClient = {
   id: string;
   civilite: string | null;
