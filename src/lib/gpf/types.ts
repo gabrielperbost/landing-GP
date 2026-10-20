@@ -88,6 +88,11 @@ export type GpfDossier = {
   date_derniere_relance: string | null;
   relances_envoyees: number;
   remuneration_apporteur_pct: number | null;
+  assureur_nom: string | null;
+  frais_dossier: number | null;
+  precompte_lineaire_1ere_annee: number | null;
+  lineaire_n1: number | null;
+  frais_entree: number | null;
   created_at: string;
   updated_at: string;
 };

@@ -82,6 +82,15 @@ create table if not exists gpf_dossiers (
 
   remuneration_apporteur_pct numeric(6,4),   -- part reversée à un apporteur, si applicable
 
+  -- Repris tels quels de Monday lors de la migration (snapshot historique, pas
+  -- encore relié à un vrai bordereau) : assureur en texte libre tant que
+  -- gpf_insurers n'est pas peuplé/apparié, montants ponctuels observés.
+  assureur_nom text,
+  frais_dossier numeric(10,2),
+  precompte_lineaire_1ere_annee numeric(10,2),
+  lineaire_n1 numeric(10,2),
+  frais_entree numeric(10,2),
+
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
