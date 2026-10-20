@@ -53,7 +53,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
       ) : null}
 
       {dossiers.length === 0 ? (
-        <p style={{ color: "#64717d" }}>Aucun dossier pour l'instant.</p>
+        <p style={{ color: "#64717d" }}>Aucun dossier pour l&apos;instant.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {dossiers.map((d) => (
