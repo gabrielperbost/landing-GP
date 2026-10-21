@@ -1,8 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, GPF_STATUTS, type GpfClient, type GpfDossier } from "@/lib/gpf/types";
+import {
+  GPF_PRODUIT_COLOR,
+  GPF_PRODUIT_LABEL,
+  GPF_PRODUITS,
+  GPF_STATUT_COLOR,
+  GPF_STATUT_LABEL,
+  GPF_STATUTS,
+  type GpfClient,
+  type GpfDossier
+} from "@/lib/gpf/types";
+
+const euro = (v: number | null) => (v == null ? null : new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(v));
+const frDate = (v: string | null) => (v ? new Date(v + "T00:00:00").toLocaleDateString("fr-FR") : null);
+
+const EN_COURS: ReadonlySet<string> = new Set([
+  "a_traiter", "nrp", "devis_a_realiser", "devis_envoye", "en_cours_souscription",
+  "attente_accord_banque", "attente_prise_effet", "attente_reglement", "attente_documents"
+]);
+
+type Tab = "accueil" | "dossiers" | "coordonnees";
 
 export default function GpfClientPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -10,18 +29,8 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
   const [client, setClient] = useState<GpfClient | null>(null);
   const [dossiers, setDossiers] = useState<GpfDossier[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showNewDossier, setShowNewDossier] = useState(false);
-
-  const deleteClient = async () => {
-    if (!confirm(`Supprimer ${client?.prenom} ${client?.nom} ? Impossible s'il a encore des dossiers.`)) return;
-    const res = await fetch(`/api/gpf/clients/${id}`, { method: "DELETE" });
-    const data = await res.json();
-    if (!res.ok || !data.ok) {
-      alert(data.error?.includes("foreign key") ? "Impossible : ce client a encore des dossiers." : "Échec de la suppression.");
-      return;
-    }
-    router.replace("/gpf/clients");
-  };
+  const [tab, setTab] = useState<Tab>("accueil");
+  const [selectedDossierId, setSelectedDossierId] = useState<string | null>(null);
 
   const load = async () => {
     const res = await fetch(`/api/gpf/clients/${id}`);
@@ -38,57 +47,225 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loading) return <p style={{ color: "#64717d" }}>Chargement...</p>;
-  if (!client) return <p>Client introuvable.</p>;
+  const deleteClient = async () => {
+    if (!confirm(`Supprimer ${client?.prenom} ${client?.nom} ? Impossible s'il a encore des dossiers.`)) return;
+    const res = await fetch(`/api/gpf/clients/${id}`, { method: "DELETE" });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error?.includes("foreign key") ? "Impossible : ce client a encore des dossiers." : "Échec de la suppression.");
+      return;
+    }
+    router.replace("/gpf/clients");
+  };
+
+  const stats = useMemo(() => {
+    const enCours = dossiers.filter((d) => EN_COURS.has(d.statut)).length;
+    const effectifs = dossiers.filter((d) => d.statut === "effectif").length;
+    const parProduit = new Map<string, number>();
+    for (const d of dossiers) parProduit.set(d.produit, (parProduit.get(d.produit) ?? 0) + 1);
+    return { enCours, effectifs, parProduit };
+  }, [dossiers]);
+
+  const selectedDossier = dossiers.find((d) => d.id === selectedDossierId) ?? null;
+
+  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
+  if (!client) return <p className="text-sm text-[#64717d]">Client introuvable.</p>;
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/gpf/clients" style={{ fontSize: 13, color: "#64717d" }}>
-          ← Clients
-        </Link>
-        <button onClick={deleteClient} style={{ background: "transparent", border: 0, color: "#c0392b", fontSize: 12, cursor: "pointer" }}>
-          Supprimer ce client
-        </button>
+    <div className="flex flex-col gap-5">
+      <Link href="/gpf/clients" className="text-xs text-[#64717d] hover:text-[#0d1f3c] w-fit">
+        ← Clients
+      </Link>
+
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-semibold text-[#0d1f3c]">
+              {client.civilite ? `${client.civilite} ` : ""}
+              {client.prenom} {client.nom}
+            </h1>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-[#64717d] bg-[#eff3f7] rounded-full px-2 py-0.5">Client</span>
+          </div>
+          <p className="text-sm text-[#64717d] mt-1">
+            {[client.email, client.telephone, [client.ville, client.code_postal].filter(Boolean).join(" ")].filter(Boolean).join(" · ") || "Aucune coordonnée"}
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">Dossiers actifs</div>
+            <div className="text-xl font-semibold text-[#0d1f3c]">{stats.enCours + stats.effectifs}</div>
+          </div>
+          <button
+            onClick={deleteClient}
+            title="Supprimer ce client"
+            className="text-[#c0392b] hover:bg-[#fdecea] rounded-lg w-9 h-9 flex items-center justify-center"
+          >
+            🗑
+          </button>
+        </div>
       </div>
 
-      <h1 style={{ fontSize: 22, margin: "10px 0 4px" }}>
-        {client.civilite ? `${client.civilite} ` : ""}{client.prenom} {client.nom}
-      </h1>
-      <p style={{ color: "#64717d", fontSize: 14, margin: "0 0 20px" }}>
-        {[client.email, client.telephone, [client.ville, client.code_postal].filter(Boolean).join(" ")].filter(Boolean).join(" · ") || "Aucune coordonnée"}
-      </p>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 0 10px" }}>
-        <h2 style={{ fontSize: 16, margin: 0 }}>Ce que ce client a chez GP Finances</h2>
-        <button onClick={() => setShowNewDossier((v) => !v)} style={buttonStyle}>
-          {showNewDossier ? "Annuler" : "+ Nouveau dossier"}
-        </button>
+      <div className="flex gap-1 border-b border-[#e2e5e9]">
+        {(
+          [
+            ["accueil", "Accueil"],
+            ["dossiers", `Dossiers (${dossiers.length})`],
+            ["coordonnees", "Coordonnées"]
+          ] as [Tab, string][]
+        ).map(([key, label]) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`px-3 py-2 text-sm -mb-px border-b-2 transition-colors ${
+              tab === key ? "border-[#0d1f3c] text-[#0d1f3c] font-semibold" : "border-transparent text-[#64717d] hover:text-[#0d1f3c]"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
-      {showNewDossier ? (
-        <NewDossierForm clientId={id} onCreated={() => { setShowNewDossier(false); load(); }} />
+      {tab === "accueil" ? (
+        <AccueilTab dossiers={dossiers} stats={stats} onOpenDossier={(dId) => setSelectedDossierId(dId)} onSeeAll={() => setTab("dossiers")} />
       ) : null}
 
-      {dossiers.length === 0 ? (
-        <p style={{ color: "#64717d" }}>Aucun dossier pour l&apos;instant.</p>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {dossiers.map((d) => (
-            <DossierCard key={d.id} dossier={d} onChanged={load} />
-          ))}
-        </div>
-      )}
+      {tab === "dossiers" ? (
+        <DossiersTab clientId={id} dossiers={dossiers} onChanged={load} onOpenDossier={(dId) => setSelectedDossierId(dId)} />
+      ) : null}
+
+      {tab === "coordonnees" ? <CoordonneesTab client={client} onSaved={load} /> : null}
+
+      {selectedDossier ? (
+        <DossierModal dossier={selectedDossier} onClose={() => setSelectedDossierId(null)} onChanged={load} />
+      ) : null}
     </div>
   );
 }
 
-const euro = (v: number | null) => (v == null ? null : new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(v));
-const frDate = (v: string | null) => (v ? new Date(v + "T00:00:00").toLocaleDateString("fr-FR") : null);
+function AccueilTab({
+  dossiers,
+  stats,
+  onOpenDossier,
+  onSeeAll
+}: {
+  dossiers: GpfDossier[];
+  stats: { enCours: number; effectifs: number; parProduit: Map<string, number> };
+  onOpenDossier: (id: string) => void;
+  onSeeAll: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-3 gap-3">
+        <KpiTile label="En cours" value={stats.enCours} accent="#579bfc" />
+        <KpiTile label="Effectifs" value={stats.effectifs} accent="#00c875" />
+        <KpiTile label="Total" value={dossiers.length} />
+      </div>
 
-function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: () => void }) {
+      {stats.parProduit.size > 0 ? (
+        <div className="bg-white border border-[#e2e5e9] rounded-xl p-4">
+          <h2 className="text-sm font-semibold text-[#0d1f3c] mb-3">Répartition par produit</h2>
+          <div className="flex flex-col gap-2">
+            {[...stats.parProduit.entries()].map(([produit, count]) => (
+              <div key={produit} className="flex items-center gap-3">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: GPF_PRODUIT_COLOR[produit as keyof typeof GPF_PRODUIT_COLOR] }} />
+                <span className="text-xs text-[#64717d] flex-1">{GPF_PRODUIT_LABEL[produit as keyof typeof GPF_PRODUIT_LABEL]}</span>
+                <span className="text-xs text-[#9aa3ab]">{count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#e2e5e9]">
+          <h2 className="text-sm font-semibold text-[#0d1f3c]">Dossiers</h2>
+          <button onClick={onSeeAll} className="text-xs text-[#64717d] hover:text-[#0d1f3c]">
+            Voir tout →
+          </button>
+        </div>
+        {dossiers.length === 0 ? (
+          <p className="text-sm text-[#9aa3ab] px-4 py-6 text-center">Aucun dossier pour l&apos;instant.</p>
+        ) : (
+          dossiers.slice(0, 5).map((d) => <DossierRow key={d.id} dossier={d} onClick={() => onOpenDossier(d.id)} />)
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DossiersTab({
+  clientId,
+  dossiers,
+  onChanged,
+  onOpenDossier
+}: {
+  clientId: string;
+  dossiers: GpfDossier[];
+  onChanged: () => void;
+  onOpenDossier: (id: string) => void;
+}) {
+  const [showForm, setShowForm] = useState(false);
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex justify-end">
+        <button onClick={() => setShowForm((v) => !v)} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2">
+          {showForm ? "Annuler" : "+ Nouveau dossier"}
+        </button>
+      </div>
+      {showForm ? (
+        <NewDossierForm
+          clientId={clientId}
+          onCreated={() => {
+            setShowForm(false);
+            onChanged();
+          }}
+        />
+      ) : null}
+      <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
+        {dossiers.length === 0 ? (
+          <p className="text-sm text-[#9aa3ab] px-4 py-6 text-center">Aucun dossier pour l&apos;instant.</p>
+        ) : (
+          dossiers.map((d) => <DossierRow key={d.id} dossier={d} onClick={() => onOpenDossier(d.id)} />)
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DossierRow({ dossier, onClick }: { dossier: GpfDossier; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="w-full flex items-center gap-3 px-4 py-3 border-b border-[#f1f2f4] last:border-0 hover:bg-[#fafbfc] text-left">
+      <span
+        className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+        style={{ background: GPF_PRODUIT_COLOR[dossier.produit] }}
+      >
+        {GPF_PRODUIT_LABEL[dossier.produit].charAt(0)}
+      </span>
+      <span className="flex-1 min-w-0">
+        <span className="block text-sm font-medium text-[#0d1f3c] truncate">{GPF_PRODUIT_LABEL[dossier.produit]}</span>
+        <span className="block text-xs text-[#9aa3ab] truncate">{dossier.assureur_nom ?? "Assureur non renseigné"}</span>
+      </span>
+      <span className="text-xs font-semibold text-white rounded-full px-2 py-0.5 shrink-0" style={{ background: GPF_STATUT_COLOR[dossier.statut] }}>
+        {GPF_STATUT_LABEL[dossier.statut]}
+      </span>
+      <span className="text-[#9aa3ab] text-sm shrink-0">›</span>
+    </button>
+  );
+}
+
+function KpiTile({ label, value, accent }: { label: string; value: number; accent?: string }) {
+  return (
+    <div className="bg-white border border-[#e2e5e9] rounded-xl p-4">
+      <div className="text-xs text-[#64717d] mb-1">{label}</div>
+      <div className="text-2xl font-semibold" style={{ color: accent ?? "#0d1f3c" }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; onClose: () => void; onChanged: () => void }) {
   const [saving, setSaving] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
   const changeStatut = async (statut: string) => {
     setSaving(true);
@@ -101,32 +278,35 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
     onChanged();
   };
 
-  const deleteDossier = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const deleteDossier = async () => {
     if (!confirm(`Supprimer ce dossier (${GPF_PRODUIT_LABEL[dossier.produit]}) ? Cette action est définitive.`)) return;
     await fetch(`/api/gpf/dossiers/${dossier.id}`, { method: "DELETE" });
     onChanged();
+    onClose();
   };
 
-  // Tous les champs qui ont une valeur, prêts à afficher : rien n'est caché une
-  // fois le dossier ouvert (vous avez demandé « toutes les infos sur les
-  // produits »). Les champs vides sont simplement omis.
+  const montantPrincipal =
+    dossier.produit === "per" || dossier.produit === "assurance_vie" ? euro(dossier.placement_initial) : euro(dossier.montant_pret);
+
+  const kpis: [string, string | null][] = [
+    ["Montant", montantPrincipal],
+    ["Frais de dossier", euro(dossier.frais_dossier)],
+    ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
+    ["Linéaire N+1", euro(dossier.lineaire_n1)]
+  ].filter(([, v]) => v) as [string, string | null][];
+
   const details = (
     [
       ["Assureur", dossier.assureur_nom],
       ["Référence contrat", dossier.reference_contrat],
       ["Date d'effet", frDate(dossier.date_effet)],
-      ["Montant du prêt", euro(dossier.montant_pret)],
       ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
       ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
-      ["Frais de dossier", euro(dossier.frais_dossier)],
-      ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
-      ["Linéaire N+1", euro(dossier.lineaire_n1)],
-      ["Placement initial", euro(dossier.placement_initial)],
       ["Placement mensuel", euro(dossier.placement_mensuel)],
       ["Frais d'entrée", euro(dossier.frais_entree)],
       ["Frais de gestion", dossier.frais_gestion_pct != null ? `${dossier.frais_gestion_pct} %` : null],
       ["Rémunération apporteur", dossier.remuneration_apporteur_pct != null ? `${dossier.remuneration_apporteur_pct} %` : null],
+      ["Source", dossier.source],
       ["Date de dépôt", frDate(dossier.date_depot)],
       ["Relances envoyées", dossier.relances_envoyees > 0 ? String(dossier.relances_envoyees) : null],
       ["Lien du dossier", dossier.lien_dossier]
@@ -134,64 +314,79 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
   ).filter(([, v]) => v);
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #e2e5e9", borderRadius: 10, padding: 14 }}>
-      <div
-        onClick={() => setExpanded((v) => !v)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && setExpanded((v) => !v)}
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", width: "100%", cursor: "pointer" }}
-      >
-        <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: "#9aa3ab" }}>{expanded ? "▾" : "▸"}</span>
-          <strong>{GPF_PRODUIT_LABEL[dossier.produit]}</strong>
-          {dossier.assureur_nom ? <span style={{ fontSize: 12, color: "#64717d" }}>· {dossier.assureur_nom}</span> : null}
-        </span>
-        <select
-          value={dossier.statut}
-          disabled={saving}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => changeStatut(e.target.value)}
-          style={{ ...inputStyle, width: "auto", fontSize: 13, padding: "6px 10px" }}
-        >
-          {GPF_STATUTS.map((s) => (
-            <option key={s} value={s}>
-              {GPF_STATUT_LABEL[s]}
-            </option>
-          ))}
-        </select>
-        <button
-          onClick={deleteDossier}
-          title="Supprimer ce dossier"
-          style={{ background: "transparent", border: 0, color: "#c0392b", fontSize: 16, cursor: "pointer", padding: "4px 6px" }}
-        >
-          ✕
-        </button>
-      </div>
-      {dossier.source ? <p style={{ margin: "6px 0 0", fontSize: 12, color: "#64717d" }}>Source : {dossier.source}</p> : null}
+    <div className="fixed inset-0 bg-black/40 flex items-start md:items-center justify-center z-50 p-4 overflow-y-auto" onClick={onClose}>
+      <div className="bg-white rounded-xl w-full max-w-2xl my-8" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-[#eef0f2]">
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-base font-semibold text-[#0d1f3c]">{GPF_PRODUIT_LABEL[dossier.produit]}</h3>
+              <span className="text-xs font-semibold text-white rounded-full px-2 py-0.5" style={{ background: GPF_STATUT_COLOR[dossier.statut] }}>
+                {GPF_STATUT_LABEL[dossier.statut]}
+              </span>
+            </div>
+            {dossier.assureur_nom ? <p className="text-xs text-[#64717d] mt-0.5">{dossier.assureur_nom}</p> : null}
+          </div>
+          <div className="flex items-center gap-1">
+            <button onClick={deleteDossier} title="Supprimer" className="text-[#c0392b] hover:bg-[#fdecea] rounded-lg w-8 h-8 flex items-center justify-center text-sm">
+              🗑
+            </button>
+            <button onClick={onClose} className="text-[#64717d] hover:bg-[#f1f2f4] rounded-lg w-8 h-8 flex items-center justify-center text-sm">
+              ✕
+            </button>
+          </div>
+        </div>
 
-      {expanded ? (
-        details.length === 0 ? (
-          <p style={{ margin: "10px 0 0", fontSize: 12, color: "#9aa3ab" }}>Aucune autre information sur ce dossier.</p>
-        ) : (
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #eef0f2", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
-            {details.map(([label, value]) => (
-              <div key={label}>
-                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.03em", color: "#9aa3ab" }}>{label}</div>
-                <div style={{ fontSize: 13, color: "#0d1f3c", marginTop: 1 }}>
-                  {label === "Lien du dossier" ? (
-                    <a href={value!} target="_blank" rel="noopener" style={{ color: "#0d1f3c" }}>
-                      Ouvrir
-                    </a>
-                  ) : (
-                    value
-                  )}
-                </div>
+        {kpis.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#eef0f2] border-b border-[#eef0f2]">
+            {kpis.map(([label, value]) => (
+              <div key={label} className="bg-white p-3">
+                <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">{label}</div>
+                <div className="text-sm font-semibold text-[#0d1f3c] mt-0.5">{value}</div>
               </div>
             ))}
           </div>
-        )
-      ) : null}
+        ) : null}
+
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold uppercase tracking-wide text-[#9aa3ab]">Statut</span>
+            <select
+              value={dossier.statut}
+              disabled={saving}
+              onChange={(e) => changeStatut(e.target.value)}
+              className="text-xs font-semibold text-white rounded-full px-3 py-1.5 border-0 cursor-pointer"
+              style={{ background: GPF_STATUT_COLOR[dossier.statut] }}
+            >
+              {GPF_STATUTS.map((s) => (
+                <option key={s} value={s} style={{ color: "#000", background: "#fff" }}>
+                  {GPF_STATUT_LABEL[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {details.length === 0 ? (
+            <p className="text-xs text-[#9aa3ab]">Aucune autre information sur ce dossier.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              {details.map(([label, value]) => (
+                <div key={label}>
+                  <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">{label}</div>
+                  <div className="text-sm text-[#0d1f3c] mt-0.5">
+                    {label === "Lien du dossier" ? (
+                      <a href={value!} target="_blank" rel="noopener" className="text-[#0d1f3c] underline">
+                        Ouvrir
+                      </a>
+                    ) : (
+                      value
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -214,21 +409,97 @@ function NewDossierForm({ clientId, onCreated }: { clientId: string; onCreated: 
   };
 
   return (
-    <form onSubmit={submit} style={{ background: "#fff", border: "1px solid #e2e5e9", borderRadius: 10, padding: 14, marginBottom: 12, display: "grid", gap: 10 }}>
-      <select value={produit} onChange={(e) => setProduit(e.target.value)} style={inputStyle}>
+    <form onSubmit={submit} className="bg-white border border-[#e2e5e9] rounded-xl p-4 grid gap-3">
+      <select value={produit} onChange={(e) => setProduit(e.target.value)} className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm">
         {GPF_PRODUITS.map((p) => (
           <option key={p} value={p}>
             {GPF_PRODUIT_LABEL[p]}
           </option>
         ))}
       </select>
-      <input value={source} onChange={(e) => setSource(e.target.value)} placeholder="Source (optionnel)" style={inputStyle} />
-      <button type="submit" disabled={saving} style={{ ...buttonStyle, justifySelf: "start" }}>
+      <input
+        value={source}
+        onChange={(e) => setSource(e.target.value)}
+        placeholder="Source (optionnel)"
+        className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm"
+      />
+      <button type="submit" disabled={saving} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2 w-fit">
         {saving ? "..." : "Ajouter le dossier"}
       </button>
     </form>
   );
 }
 
-const inputStyle: React.CSSProperties = { padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 14, boxSizing: "border-box" };
-const buttonStyle: React.CSSProperties = { padding: "9px 16px", borderRadius: 100, border: 0, background: "#0d1f3c", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer" };
+const FIELDS: { key: keyof GpfClient; label: string; type?: string }[] = [
+  { key: "civilite", label: "Civilité" },
+  { key: "prenom", label: "Prénom" },
+  { key: "nom", label: "Nom" },
+  { key: "email", label: "E-mail", type: "email" },
+  { key: "telephone", label: "Téléphone" },
+  { key: "adresse", label: "Adresse" },
+  { key: "ville", label: "Ville" },
+  { key: "code_postal", label: "Code postal" },
+  { key: "annee_naissance", label: "Année de naissance", type: "number" },
+  { key: "profession", label: "Profession" }
+];
+
+function CoordonneesTab({ client, onSaved }: { client: GpfClient; onSaved: () => void }) {
+  const [form, setForm] = useState<Record<string, string>>(() =>
+    Object.fromEntries(FIELDS.map((f) => [f.key, client[f.key] != null ? String(client[f.key]) : ""]))
+  );
+  const [notes, setNotes] = useState(client.notes ?? "");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setSaved(false);
+    const body: Record<string, string | number | null> = { notes: notes || null };
+    for (const f of FIELDS) {
+      const raw = form[f.key] as string;
+      body[f.key] = raw === "" ? null : f.type === "number" ? Number(raw) : raw;
+    }
+    await fetch(`/api/gpf/clients/${client.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    setSaving(false);
+    setSaved(true);
+    onSaved();
+  };
+
+  return (
+    <form onSubmit={submit} className="bg-white border border-[#e2e5e9] rounded-xl p-5 grid gap-4 max-w-xl">
+      <div className="grid grid-cols-2 gap-3">
+        {FIELDS.map((f) => (
+          <label key={f.key} className="text-xs text-[#64717d] flex flex-col gap-1">
+            {f.label}
+            <input
+              type={f.type ?? "text"}
+              value={form[f.key] ?? ""}
+              onChange={(e) => setForm((prev) => ({ ...prev, [f.key]: e.target.value }))}
+              className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#0d1f3c]"
+            />
+          </label>
+        ))}
+      </div>
+      <label className="text-xs text-[#64717d] flex flex-col gap-1">
+        Notes
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={3}
+          className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#0d1f3c]"
+        />
+      </label>
+      <div className="flex items-center gap-3">
+        <button type="submit" disabled={saving} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2 w-fit">
+          {saving ? "..." : "Enregistrer"}
+        </button>
+        {saved ? <span className="text-xs text-[#00c875]">Enregistré ✓</span> : null}
+      </div>
+    </form>
+  );
+}

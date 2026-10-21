@@ -58,6 +58,15 @@ export const GPF_STATUTS = [
 ] as const;
 export type GpfStatut = (typeof GPF_STATUTS)[number];
 
+export const GPF_PRODUIT_COLOR: Record<GpfProduit, string> = {
+  assurance_emprunteur: "#fdab3d",
+  per: "#00c875",
+  assurance_vie: "#579bfc",
+  mutuelle: "#a25ddc",
+  prevoyance: "#e2445c",
+  regroupement_credits: "#66ccff"
+};
+
 export const GPF_STATUT_LABEL: Record<GpfStatut, string> = {
   a_traiter: "À traiter",
   nrp: "NRP",
