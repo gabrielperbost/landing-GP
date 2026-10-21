@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 const LINKS = [
   { href: "/gpf", label: "Tableau de bord", exact: true },
   { href: "/gpf/dossiers", label: "Dossiers", exact: false },
-  { href: "/gpf/clients", label: "Clients", exact: false }
+  { href: "/gpf/clients", label: "Clients", exact: false },
+  { href: "/gpf/corbeille", label: "Corbeille", exact: false },
+  { href: "/gpf/activite", label: "Journal d'activité", exact: false }
 ];
 
 function isActive(pathname: string | null, href: string, exact: boolean) {

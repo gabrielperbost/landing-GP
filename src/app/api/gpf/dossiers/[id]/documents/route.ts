@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
+import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     .from("gpf_documents")
     .select("*")
     .eq("dossier_id", params.id)
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true, documents: data ?? [] });
@@ -55,5 +57,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
 
+  await logActivity("create", "document", data.id, `${type} · ${file.name}`);
   return NextResponse.json({ ok: true, document: data });
 }

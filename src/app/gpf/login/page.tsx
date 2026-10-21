@@ -1,12 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function GpfLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  const [totp, setTotp] = useState("");
+  const [totpConfigured, setTotpConfigured] = useState(false);
+  const [totpRequired, setTotpRequired] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/gpf/auth")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.ok) {
+          setTotpConfigured(Boolean(data.totpConfigured));
+          setTotpRequired(Boolean(data.totpRequired));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -16,10 +31,11 @@ export default function GpfLoginPage() {
       const response = await fetch("/api/gpf/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
+        body: JSON.stringify({ password, totp: totp || undefined })
       });
       if (!response.ok) {
-        setError("Mot de passe incorrect.");
+        const data = await response.json().catch(() => ({}));
+        setError(data.error === "invalid_totp" ? "Code à 6 chiffres incorrect." : "Mot de passe incorrect.");
         return;
       }
       router.replace("/gpf");
@@ -48,6 +64,17 @@ export default function GpfLoginPage() {
           placeholder="Mot de passe"
           style={{ width: "100%", padding: "11px 13px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 15, boxSizing: "border-box" }}
         />
+        {totpConfigured ? (
+          <input
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            value={totp}
+            onChange={(e) => setTotp(e.target.value)}
+            placeholder={totpRequired ? "Code à 6 chiffres" : "Code à 6 chiffres (si activé)"}
+            style={{ width: "100%", padding: "11px 13px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 15, boxSizing: "border-box", marginTop: 10 }}
+          />
+        ) : null}
         {error ? <p style={{ color: "#c0392b", fontSize: 13, margin: "10px 0 0" }}>{error}</p> : null}
         <button
           type="submit"

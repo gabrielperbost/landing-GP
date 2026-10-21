@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
+import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const { id } = params;
 
-  const { data: client, error } = await supabaseAdmin.from("gpf_clients").select("*").eq("id", id).single();
+  const { data: client, error } = await supabaseAdmin.from("gpf_clients").select("*").eq("id", id).is("deleted_at", null).single();
   if (error || !client) return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
 
   // Un dossier peut lister ce client comme emprunteur principal OU co-emprunteur :
@@ -18,6 +19,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     .from("gpf_dossiers")
     .select("*")
     .or(`client_id.eq.${id},co_client_id.eq.${id}`)
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
   return NextResponse.json({ ok: true, client, dossiers: dossiers ?? [] });
@@ -35,15 +37,32 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
   const { data, error } = await supabaseAdmin.from("gpf_clients").update(patch).eq("id", id).select("*").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  await logActivity("update", "client", id, `${data.prenom} ${data.nom}`.trim());
   return NextResponse.json({ ok: true, client: data });
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const { id } = params;
-  // Les dossiers référencent le client avec "on delete restrict" : s'il existe encore
-  // des dossiers, la suppression échoue proprement plutôt que de perdre des données.
-  const { error } = await supabaseAdmin.from("gpf_clients").delete().eq("id", id);
+
+  // Suppression douce : on bloque si des dossiers actifs (non supprimés)
+  // existent encore, pour éviter un client "disparu" avec des dossiers en cours.
+  const { count } = await supabaseAdmin
+    .from("gpf_dossiers")
+    .select("id", { count: "exact", head: true })
+    .or(`client_id.eq.${id},co_client_id.eq.${id}`)
+    .is("deleted_at", null);
+  if (count && count > 0) {
+    return NextResponse.json({ ok: false, error: "dossiers_actifs" }, { status: 409 });
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("gpf_clients")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id)
+    .select("prenom, nom")
+    .single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  await logActivity("delete", "client", id, data ? `${data.prenom} ${data.nom}`.trim() : undefined);
   return NextResponse.json({ ok: true });
 }

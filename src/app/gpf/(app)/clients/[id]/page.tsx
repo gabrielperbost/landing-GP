@@ -51,11 +51,11 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
   }, [id]);
 
   const deleteClient = async () => {
-    if (!confirm(`Supprimer ${client?.prenom} ${client?.nom} ? Impossible s'il a encore des dossiers.`)) return;
+    if (!confirm(`Déplacer ${client?.prenom} ${client?.nom} vers la corbeille ? Restaurable pendant 30 jours.`)) return;
     const res = await fetch(`/api/gpf/clients/${id}`, { method: "DELETE" });
     const data = await res.json();
     if (!res.ok || !data.ok) {
-      alert(data.error?.includes("foreign key") ? "Impossible : ce client a encore des dossiers." : "Échec de la suppression.");
+      alert(data.error === "dossiers_actifs" ? "Impossible : ce client a encore des dossiers actifs." : "Échec de la suppression.");
       return;
     }
     router.replace("/gpf/clients");
@@ -308,7 +308,7 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
   };
 
   const deleteDossier = async () => {
-    if (!confirm(`Supprimer ce dossier (${GPF_PRODUIT_LABEL[dossier.produit]}) ? Cette action est définitive.`)) return;
+    if (!confirm(`Supprimer ce dossier (${GPF_PRODUIT_LABEL[dossier.produit]}) ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
     await fetch(`/api/gpf/dossiers/${dossier.id}`, { method: "DELETE" });
     onChanged();
     onClose();
@@ -457,7 +457,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
   };
 
   const deleteDocument = async (docId: string) => {
-    if (!confirm("Supprimer ce document ?")) return;
+    if (!confirm("Supprimer ce document ? Déplacé vers la corbeille, restaurable 30 jours.")) return;
     await fetch(`/api/gpf/documents/${docId}`, { method: "DELETE" });
     load();
   };
@@ -488,6 +488,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
           />
         </label>
       </div>
+      <p className="text-[10px] text-[#9aa3ab] -mt-2 mb-3">Ne déposez pas de documents médicaux (questionnaires de santé, diagnostics).</p>
 
       {loading ? (
         <p className="text-xs text-[#9aa3ab]">Chargement...</p>

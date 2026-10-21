@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
+import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
   const produitFilter = request.nextUrl.searchParams.get("produit")?.trim();
   const segment = request.nextUrl.searchParams.get("segment")?.trim(); // "client" | "prospect"
 
-  let query = supabaseAdmin.from("gpf_clients").select("*").order("nom", { ascending: true });
+  let query = supabaseAdmin.from("gpf_clients").select("*").is("deleted_at", null).order("nom", { ascending: true });
   if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,email.ilike.%${q}%`);
 
   const { data, error } = await query;
@@ -28,7 +29,8 @@ export async function GET(request: NextRequest) {
     const { data: dossiers } = await supabaseAdmin
       .from("gpf_dossiers")
       .select("client_id, co_client_id, produit, statut")
-      .or(`client_id.in.(${clientIds.join(",")}),co_client_id.in.(${clientIds.join(",")})`);
+      .or(`client_id.in.(${clientIds.join(",")}),co_client_id.in.(${clientIds.join(",")})`)
+      .is("deleted_at", null);
     for (const d of dossiers ?? []) {
       for (const cid of [d.client_id, d.co_client_id].filter(Boolean) as string[]) {
         if (!produitsByClient.has(cid)) produitsByClient.set(cid, []);
@@ -84,5 +86,6 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  await logActivity("create", "client", data.id, `${data.prenom} ${data.nom}`.trim());
   return NextResponse.json({ ok: true, client: data });
 }

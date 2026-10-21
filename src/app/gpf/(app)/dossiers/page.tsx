@@ -64,13 +64,13 @@ export default function GpfDossiersPage() {
 
   const deleteDossier = async (d: GpfDossierWithClient) => {
     const nom = d.client ? `${d.client.prenom} ${d.client.nom}` : "ce dossier";
-    if (!confirm(`Supprimer le dossier ${GPF_PRODUIT_LABEL[d.produit]} de ${nom} ? Cette action est définitive.`)) return;
+    if (!confirm(`Supprimer le dossier ${GPF_PRODUIT_LABEL[d.produit]} de ${nom} ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
     setDossiers((prev) => prev.filter((x) => x.id !== d.id));
     await fetch(`/api/gpf/dossiers/${d.id}`, { method: "DELETE" });
   };
 
   const deleteSelected = async () => {
-    if (!confirm(`Supprimer les ${selected.size} dossiers sélectionnés ? Cette action est définitive.`)) return;
+    if (!confirm(`Supprimer les ${selected.size} dossiers sélectionnés ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
     const ids = [...selected];
     setDossiers((prev) => prev.filter((d) => !selected.has(d.id)));
     setSelected(new Set());

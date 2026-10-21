@@ -11,7 +11,11 @@ export const dynamic = "force-dynamic";
 export async function GET(_request: NextRequest) {
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 
-  const { data: dossiers, error } = await supabaseAdmin.from("gpf_dossiers").select("*").order("created_at", { ascending: false });
+  const { data: dossiers, error } = await supabaseAdmin
+    .from("gpf_dossiers")
+    .select("*")
+    .is("deleted_at", null)
+    .order("created_at", { ascending: false });
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
 
   const clientIds = Array.from(new Set((dossiers ?? []).flatMap((d) => [d.client_id, d.co_client_id]).filter(Boolean) as string[]));

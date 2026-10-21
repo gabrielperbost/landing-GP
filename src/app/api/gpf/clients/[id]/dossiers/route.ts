@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
+import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
 
   await supabaseAdmin.from("gpf_status_history").insert({ dossier_id: data.id, ancien_statut: null, nouveau_statut: statut });
+  await logActivity("create", "dossier", data.id, data.produit);
 
   return NextResponse.json({ ok: true, dossier: data });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
+import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,13 +41,23 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     await supabaseAdmin.from("gpf_status_history").insert({ dossier_id: id, ancien_statut: before.statut, nouveau_statut: body.statut });
   }
 
+  await logActivity("update", "dossier", id, data.produit);
   return NextResponse.json({ ok: true, dossier: data });
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const { id } = params;
-  const { error } = await supabaseAdmin.from("gpf_dossiers").delete().eq("id", id);
+  const deletedAt = new Date().toISOString();
+  const { data, error } = await supabaseAdmin.from("gpf_dossiers").update({ deleted_at: deletedAt }).eq("id", id).select("produit").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+
+  // Les documents du dossier partent avec lui en corbeille (même horodatage,
+  // donc même échéance de purge à 30 jours) : sinon ils resteraient visibles
+  // alors que leur dossier a disparu, ou pire, seraient purgés plus tard en
+  // cascade DB sans jamais être passés par la corbeille.
+  await supabaseAdmin.from("gpf_documents").update({ deleted_at: deletedAt }).eq("dossier_id", id).is("deleted_at", null);
+
+  await logActivity("delete", "dossier", id, data?.produit);
   return NextResponse.json({ ok: true });
 }
