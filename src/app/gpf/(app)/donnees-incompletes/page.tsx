@@ -45,10 +45,10 @@ export default function GpfDonneesIncompletesPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
+        <h1 className="text-2xl text-[var(--gpf-ink)]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
           Données incomplètes
         </h1>
-        <p className="text-sm text-[#64717d] mt-1">
+        <p className="text-sm text-[var(--gpf-muted)] mt-1">
           Dossiers effectifs auxquels il manque l&apos;assureur, la prime, la date d&apos;effet ou la commission. Les cases à compléter sont
           entourées en rouge.
         </p>
@@ -57,18 +57,18 @@ export default function GpfDonneesIncompletesPage() {
       {loading ? (
         <SkeletonLines rows={8} />
       ) : erreur ? (
-        <p className="text-sm text-[#b3463f] bg-[#fdf3f2] border border-[#f3d4d1] rounded-lg px-4 py-3">
+        <p className="text-sm text-[#b3463f] bg-[var(--gpf-danger-tint)] border border-[#f3d4d1] rounded-lg px-4 py-3">
           Page indisponible : la migration SQL 004 doit d&apos;abord être exécutée dans Supabase. ({erreur})
         </p>
       ) : rows.length === 0 ? (
         <p className="text-sm text-[#2f9e6e]">Tous les dossiers effectifs sont complets.</p>
       ) : (
         <>
-          <p className="text-xs text-[#9aa3ab]">{rows.length} dossier{rows.length > 1 ? "s" : ""} à compléter</p>
-          <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-x-auto">
+          <p className="text-xs text-[var(--gpf-subtle)]">{rows.length} dossier{rows.length > 1 ? "s" : ""} à compléter</p>
+          <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[11px] uppercase tracking-wide text-[#9aa3ab] bg-[#fafbfc] border-b border-[#e2e5e9]">
+                <tr className="text-[11px] uppercase tracking-wide text-[var(--gpf-subtle)] bg-[var(--gpf-surface-alt)] border-b border-[var(--gpf-border)]">
                   <th className="text-left font-normal px-3 py-2">Client</th>
                   <th className="text-left font-normal px-3 py-2">Assureur</th>
                   <th className="text-left font-normal px-3 py-2">Date d&apos;effet</th>
@@ -111,7 +111,7 @@ function EditableRow({ row, onSaved }: { row: Row; onSaved: () => void }) {
 
   const save = async () => {
     setSaving(true);
-    await fetch(`/api/gpf/dossiers/${row.id}`, {
+    await fetch(`/api/gpf/commercial/${row.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -129,20 +129,20 @@ function EditableRow({ row, onSaved }: { row: Row; onSaved: () => void }) {
 
   const missing = (key: string) => row.manque.includes(key);
   const cls = (isMissing: boolean) =>
-    `w-full rounded-md border px-2 py-1.5 text-sm ${isMissing ? "border-[#e8a39d] bg-[#fdf3f2]" : "border-[#e2e5e9]"}`;
+    `w-full rounded-md border px-2 py-1.5 text-sm ${isMissing ? "border-[#e8a39d] bg-[var(--gpf-danger-tint)]" : "border-[var(--gpf-border)]"}`;
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
   return (
-    <tr className="border-b border-[#f1f2f4] last:border-0 align-top">
+    <tr className="border-b border-[var(--gpf-border-soft)] last:border-0 align-top">
       <td className="px-3 py-2 min-w-[160px]">
         {row.client ? (
-          <Link href={`/gpf/clients/${row.client.id}`} className="font-medium text-[#071C2C] hover:underline">
+          <Link href={`/gpf/contacts/${row.client.id}`} className="font-medium text-[var(--gpf-ink)] hover:underline">
             {formatNom(row.client)}
           </Link>
         ) : (
           "—"
         )}
-        <div className="text-xs text-[#9aa3ab]">{GPF_PRODUIT_LABEL[row.produit]}</div>
+        <div className="text-xs text-[var(--gpf-subtle)]">{GPF_PRODUIT_LABEL[row.produit]}</div>
       </td>
       <td className="px-3 py-2 min-w-[130px]">
         <input value={form.assureur_nom} onChange={set("assureur_nom")} className={cls(missing("assureur"))} placeholder="Alptis, April…" />
@@ -172,7 +172,7 @@ function EditableRow({ row, onSaved }: { row: Row; onSaved: () => void }) {
         <button
           onClick={save}
           disabled={!dirty || saving}
-          className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-3 py-1.5 disabled:opacity-40 whitespace-nowrap"
+          className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-3 py-1.5 disabled:opacity-40 whitespace-nowrap"
         >
           {saving ? "..." : "Enregistrer"}
         </button>

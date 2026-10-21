@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
-import { GPF_MOTIFS_REFUS, GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
+import { GPF_CONTRAT_STATUTS, GPF_MOTIFS_REFUS, GPF_PRODUITS, GPF_STATUTS, GPF_STATUTS_SIGNES } from "@/lib/gpf/types";
 import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
@@ -12,7 +12,8 @@ const EDITABLE_FIELDS = [
   "placement_initial", "placement_mensuel", "frais_gestion_pct", "lien_dossier", "date_depot",
   "date_entree_attente_docs", "date_derniere_relance", "relances_envoyees", "remuneration_apporteur_pct",
   "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree",
-  "motif_refus", "prime_mensuelle", "prime_annuelle"
+  "motif_refus", "prime_mensuelle", "prime_annuelle",
+  "contrat_statut", "date_signature", "date_echeance", "date_resiliation"
 ];
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
@@ -31,7 +32,11 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     return NextResponse.json({ ok: false, error: "motif_refus_invalide" }, { status: 400 });
   }
 
-  const { data: before } = await supabaseAdmin.from("gpf_dossiers").select("statut").eq("id", id).single();
+  if ("contrat_statut" in body && body.contrat_statut != null && !(GPF_CONTRAT_STATUTS as readonly string[]).includes(body.contrat_statut)) {
+    return NextResponse.json({ ok: false, error: "contrat_statut_invalide" }, { status: 400 });
+  }
+
+  const { data: before } = await supabaseAdmin.from("gpf_dossiers").select("*").eq("id", id).single();
 
   // Motif obligatoire au moment où un dossier passe en Refusé (pas pour les
   // anciens refus importés de Monday, qui doivent rester modifiables).
@@ -41,6 +46,14 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
   for (const key of EDITABLE_FIELDS) if (key in body) patch[key] = body[key];
+
+  const today = new Date().toISOString().slice(0, 10);
+  // Une affaire qui passe en Effectif devient un contrat actif.
+  if (before && "contrat_statut" in before && GPF_STATUTS_SIGNES.has(body.statut) && !before.contrat_statut && !("contrat_statut" in body)) {
+    patch.contrat_statut = "actif";
+    if (!before.date_signature) patch.date_signature = today;
+  }
+  if (body.contrat_statut === "resilie" && before && !before.date_resiliation && !body.date_resiliation) patch.date_resiliation = today;
 
   const { data, error } = await supabaseAdmin.from("gpf_dossiers").update(patch).eq("id", id).select("*").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });

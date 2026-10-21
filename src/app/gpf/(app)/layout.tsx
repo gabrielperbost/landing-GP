@@ -1,14 +1,9 @@
 import { redirect } from "next/navigation";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
-import { GpfSidebar } from "@/components/gpf/GpfSidebar";
+import { GpfShell } from "@/components/gpf/GpfShell";
 
 export default async function GpfAppLayout({ children }: { children: React.ReactNode }) {
   const authed = await hasValidGpfSession();
   if (!authed) redirect("/gpf/login");
-  return (
-    <div className="min-h-dvh md:flex bg-[#F7F6F2]">
-      <GpfSidebar />
-      <main className="flex-1 min-w-0 p-4 md:p-8 max-w-5xl mx-auto w-full">{children}</main>
-    </div>
-  );
+  return <GpfShell>{children}</GpfShell>;
 }

@@ -32,6 +32,27 @@ export type GpfDocument = {
   created_at: string;
 };
 
+// Un dossier signé devient un contrat (statut de contrat renseigné) ; sinon
+// c'est une affaire du pipeline commercial.
+export const GPF_CONTRAT_STATUTS = ["actif", "a_relancer", "resilie"] as const;
+export type GpfContratStatut = (typeof GPF_CONTRAT_STATUTS)[number];
+export const GPF_CONTRAT_STATUT_LABEL: Record<GpfContratStatut, string> = {
+  actif: "Actif",
+  a_relancer: "À relancer",
+  resilie: "Résilié"
+};
+export const GPF_CONTRAT_STATUT_COLOR: Record<GpfContratStatut, string> = {
+  actif: "#2f9e6e",
+  a_relancer: "#c98a1f",
+  resilie: "#b3463f"
+};
+// Statuts du pipeline qui signifient « signé » : passage automatique en contrat.
+export const GPF_STATUTS_SIGNES: ReadonlySet<string> = new Set(["effectif", "attente_reglement"]);
+
+/** Un dossier compte dans les revenus estimés s'il n'est ni perdu ni résilié. */
+export const compteDansRevenus = (d: { statut: string; contrat_statut?: string | null }) =>
+  !GPF_STATUTS_CLOS.has(d.statut as GpfStatut) && d.contrat_statut !== "resilie";
+
 /** Affichage homogène partout : « Prénom NOM ». */
 export const formatNom = (p: { prenom: string; nom: string } | null | undefined) => (p ? `${p.prenom} ${p.nom.toUpperCase()}`.trim() : "—");
 
@@ -160,6 +181,10 @@ export type GpfDossier = {
   motif_refus: string | null;
   prime_mensuelle: number | null;
   prime_annuelle: number | null;
+  contrat_statut: GpfContratStatut | null;
+  date_signature: string | null;
+  date_echeance: string | null;
+  date_resiliation: string | null;
   created_at: string;
   updated_at: string;
 };

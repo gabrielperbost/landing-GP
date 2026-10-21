@@ -1,0 +1,68 @@
+/* Thème GPF : clair (ivoire) et sombre (bleu nuit). Le choix
+   système / clair / sombre est posé sur .gpf-root via data-theme. */
+.gpf-root {
+  --gpf-bg: #f7f6f2;
+  --gpf-surface: #ffffff;
+  --gpf-surface-alt: #fafbfc;
+  --gpf-fill: #f1f2f4;
+  --gpf-chip: #eff3f7;
+  --gpf-border: #e2e5e9;
+  --gpf-border-soft: #eef0f2;
+  --gpf-ink: #071c2c;
+  --gpf-muted: #64717d;
+  --gpf-subtle: #9aa3ab;
+  --gpf-gold: #cdaa5a;
+  --gpf-danger-tint: #fdf3f2;
+  --gpf-warning-tint: #fbf3e4;
+  background: var(--gpf-bg);
+  color: var(--gpf-ink);
+  color-scheme: light;
+}
+
+.gpf-root[data-theme="dark"] {
+  --gpf-bg: #08141e;
+  --gpf-surface: #0e1e2b;
+  --gpf-surface-alt: #122636;
+  --gpf-fill: #182f42;
+  --gpf-chip: #1b3348;
+  --gpf-border: #233b50;
+  --gpf-border-soft: #1a3044;
+  --gpf-ink: #edeae2;
+  --gpf-muted: #a3b2bf;
+  --gpf-subtle: #72869a;
+  --gpf-danger-tint: #3a1d1c;
+  --gpf-warning-tint: #3a2e17;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  .gpf-root[data-theme="system"] {
+    --gpf-bg: #08141e;
+    --gpf-surface: #0e1e2b;
+    --gpf-surface-alt: #122636;
+    --gpf-fill: #182f42;
+    --gpf-chip: #1b3348;
+    --gpf-border: #233b50;
+    --gpf-border-soft: #1a3044;
+    --gpf-ink: #edeae2;
+    --gpf-muted: #a3b2bf;
+    --gpf-subtle: #72869a;
+    --gpf-danger-tint: #3a1d1c;
+    --gpf-warning-tint: #3a2e17;
+    color-scheme: dark;
+  }
+}
+
+/* Champs sans couleur imposée (les pastilles de statut colorées gardent la leur). */
+.gpf-root input:not([type="checkbox"]):not([type="radio"]):not([style]),
+.gpf-root select:not([style]),
+.gpf-root textarea:not([style]) {
+  background-color: var(--gpf-surface);
+  color: var(--gpf-ink);
+  border-color: var(--gpf-border);
+}
+
+.gpf-root input::placeholder,
+.gpf-root textarea::placeholder {
+  color: var(--gpf-subtle);
+}

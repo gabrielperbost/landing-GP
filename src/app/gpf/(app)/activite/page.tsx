@@ -51,26 +51,26 @@ export default function GpfActivitePage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
+        <h1 className="text-2xl text-[var(--gpf-ink)]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
           Journal d&apos;activité
         </h1>
-        <p className="text-sm text-[#64717d] mt-1">Les 200 dernières actions sur les clients, dossiers et documents.</p>
+        <p className="text-sm text-[var(--gpf-muted)] mt-1">Les 200 dernières actions sur les clients, dossiers et documents.</p>
       </div>
 
       {entries.length === 0 ? (
-        <p className="text-sm text-[#9aa3ab]">Aucune activité enregistrée pour l&apos;instant.</p>
+        <p className="text-sm text-[var(--gpf-subtle)]">Aucune activité enregistrée pour l&apos;instant.</p>
       ) : (
-        <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
+        <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-hidden">
           {entries.map((e) => (
-            <div key={e.id} className="flex items-center gap-3 px-4 py-2.5 border-b border-[#f1f2f4] last:border-0">
+            <div key={e.id} className="flex items-center gap-3 px-4 py-2.5 border-b border-[var(--gpf-border-soft)] last:border-0">
               <span className="text-xs font-semibold text-white rounded-full px-2 py-0.5 shrink-0" style={{ background: ACTION_COLOR[e.action] }}>
                 {ACTION_LABEL[e.action]}
               </span>
-              <span className="text-sm text-[#071C2C] flex-1 truncate">
+              <span className="text-sm text-[var(--gpf-ink)] flex-1 truncate">
                 {ENTITY_LABEL[e.entity_type]}
                 {e.resume ? ` — ${e.resume}` : ""}
               </span>
-              <span className="text-xs text-[#9aa3ab] shrink-0">{frDateTime(e.created_at)}</span>
+              <span className="text-xs text-[var(--gpf-subtle)] shrink-0">{frDateTime(e.created_at)}</span>
             </div>
           ))}
         </div>

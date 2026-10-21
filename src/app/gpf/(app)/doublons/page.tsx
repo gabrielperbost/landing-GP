@@ -117,17 +117,17 @@ export default function GpfDoublonsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
+        <h1 className="text-2xl text-[var(--gpf-ink)]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
           Doublons possibles
         </h1>
-        <p className="text-sm text-[#64717d] mt-1">
+        <p className="text-sm text-[var(--gpf-muted)] mt-1">
           Rien n&apos;est fusionné automatiquement. Choisissez la fiche à garder : ses informations sont conservées, ses champs vides sont
           complétés par l&apos;autre, et la fiche en double part en corbeille. Chaque fusion peut être annulée ci-dessous.
         </p>
       </div>
 
       {!mergesDisponibles && !loading ? (
-        <p className="text-sm text-[#b3463f] bg-[#fdf3f2] border border-[#f3d4d1] rounded-lg px-4 py-3">
+        <p className="text-sm text-[#b3463f] bg-[var(--gpf-danger-tint)] border border-[#f3d4d1] rounded-lg px-4 py-3">
           La fusion n&apos;est pas encore disponible : la migration SQL 004 doit d&apos;abord être exécutée dans Supabase.
         </p>
       ) : null}
@@ -137,10 +137,10 @@ export default function GpfDoublonsPage() {
       ) : (
         <>
           <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold text-[#071C2C]">
-              Fiches client en double <span className="text-[#9aa3ab] font-normal">({visibleClients.length})</span>
+            <h2 className="text-sm font-semibold text-[var(--gpf-ink)]">
+              Fiches client en double <span className="text-[var(--gpf-subtle)] font-normal">({visibleClients.length})</span>
             </h2>
-            {visibleClients.length === 0 ? <p className="text-sm text-[#9aa3ab]">Aucune fiche en double détectée.</p> : null}
+            {visibleClients.length === 0 ? <p className="text-sm text-[var(--gpf-subtle)]">Aucune fiche en double détectée.</p> : null}
             {visibleClients.map((g) => (
               <ClientGroupCard
                 key={g.key}
@@ -153,14 +153,14 @@ export default function GpfDoublonsPage() {
           </section>
 
           <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold text-[#071C2C]">
-              Dossiers en double <span className="text-[#9aa3ab] font-normal">({visibleDossiers.length})</span>
+            <h2 className="text-sm font-semibold text-[var(--gpf-ink)]">
+              Dossiers en double <span className="text-[var(--gpf-subtle)] font-normal">({visibleDossiers.length})</span>
             </h2>
-            <p className="text-xs text-[#9aa3ab] -mt-2">
+            <p className="text-xs text-[var(--gpf-subtle)] -mt-2">
               Même client, même produit, même assureur (ou assureur vide) et même date d&apos;effet. Plusieurs dossiers légitimes (prêts
               différents, devis chez plusieurs assureurs) peuvent être ignorés.
             </p>
-            {visibleDossiers.length === 0 ? <p className="text-sm text-[#9aa3ab]">Aucun dossier en double détecté.</p> : null}
+            {visibleDossiers.length === 0 ? <p className="text-sm text-[var(--gpf-subtle)]">Aucun dossier en double détecté.</p> : null}
             {visibleDossiers.map((g) => (
               <DossierGroupCard
                 key={g.key}
@@ -174,15 +174,15 @@ export default function GpfDoublonsPage() {
 
           {merges.length > 0 ? (
             <section className="flex flex-col gap-2">
-              <h2 className="text-sm font-semibold text-[#071C2C]">Fusions récentes</h2>
-              <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
+              <h2 className="text-sm font-semibold text-[var(--gpf-ink)]">Fusions récentes</h2>
+              <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-hidden">
                 {merges.map((m) => (
-                  <div key={m.id} className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#f1f2f4] last:border-0">
-                    <span className="text-sm text-[#071C2C]">
+                  <div key={m.id} className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[var(--gpf-border-soft)] last:border-0">
+                    <span className="text-sm text-[var(--gpf-ink)]">
                       {m.entity_type === "client" ? "Fiche" : "Dossier"} « {m.label} » fusionné{m.entity_type === "client" ? "e" : ""} le{" "}
                       {frDate(m.created_at)}
                     </span>
-                    <button onClick={() => undo(m)} className="text-xs font-medium text-[#64717d] border border-[#e2e5e9] rounded-full px-3 py-1 hover:bg-[#fafbfc]">
+                    <button onClick={() => undo(m)} className="text-xs font-medium text-[var(--gpf-muted)] border border-[var(--gpf-border)] rounded-full px-3 py-1 hover:bg-[var(--gpf-surface-alt)]">
                       Annuler la fusion
                     </button>
                   </div>
@@ -212,8 +212,8 @@ function MergeBar({
   label: string;
 }) {
   return (
-    <div className="flex items-center justify-end gap-3 px-4 py-2.5 bg-[#fafbfc] border-t border-[#eef0f2]">
-      <button onClick={onIgnore} className="text-xs text-[#9aa3ab] hover:text-[#64717d]">
+    <div className="flex items-center justify-end gap-3 px-4 py-2.5 bg-[var(--gpf-surface-alt)] border-t border-[var(--gpf-border-soft)]">
+      <button onClick={onIgnore} className="text-xs text-[var(--gpf-subtle)] hover:text-[var(--gpf-muted)]">
         Ce ne sont pas des doublons
       </button>
       <button
@@ -223,7 +223,7 @@ function MergeBar({
           if (!confirm(`Fusionner ${others.length} ${label} dans celle que vous gardez ? Vous pourrez annuler.`)) return;
           onMerge(keepId, others);
         }}
-        className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-3 py-1.5 disabled:opacity-40"
+        className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-3 py-1.5 disabled:opacity-40"
       >
         Fusionner dans la sélection
       </button>
@@ -245,19 +245,19 @@ function ClientGroupCard({
   // Par défaut on propose de garder la fiche qui porte le plus de dossiers.
   const [keepId, setKeepId] = useState<string | null>([...group.members].sort((a, b) => b.nbDossiers - a.nbDossiers)[0]?.id ?? null);
   return (
-    <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
-      <div className="px-4 py-2 text-[11px] text-[#c98a1f] bg-[#fbf3e4]">{group.raisons.join(" · ")}</div>
-      <div className="grid gap-px bg-[#eef0f2]" style={{ gridTemplateColumns: `repeat(${group.members.length}, minmax(0, 1fr))` }}>
+    <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-hidden">
+      <div className="px-4 py-2 text-[11px] text-[#c98a1f] bg-[var(--gpf-warning-tint)]">{group.raisons.join(" · ")}</div>
+      <div className="grid gap-px bg-[var(--gpf-fill)]" style={{ gridTemplateColumns: `repeat(${group.members.length}, minmax(0, 1fr))` }}>
         {group.members.map((m) => (
-          <label key={m.id} className={`bg-white p-4 cursor-pointer ${keepId === m.id ? "ring-2 ring-inset ring-[#CDAA5A]" : ""}`}>
+          <label key={m.id} className={`bg-[var(--gpf-surface)] p-4 cursor-pointer ${keepId === m.id ? "ring-2 ring-inset ring-[#CDAA5A]" : ""}`}>
             <div className="flex items-center gap-2">
               <input type="radio" checked={keepId === m.id} onChange={() => setKeepId(m.id)} />
-              <span className="text-xs text-[#9aa3ab]">{keepId === m.id ? "Fiche gardée" : "Garder celle-ci"}</span>
+              <span className="text-xs text-[var(--gpf-subtle)]">{keepId === m.id ? "Fiche gardée" : "Garder celle-ci"}</span>
             </div>
-            <Link href={`/gpf/clients/${m.id}`} className="block text-sm font-semibold text-[#071C2C] mt-2 hover:underline">
+            <Link href={`/gpf/contacts/${m.id}`} className="block text-sm font-semibold text-[var(--gpf-ink)] mt-2 hover:underline">
               {formatNom(m)}
             </Link>
-            <dl className="text-xs text-[#64717d] mt-2 space-y-1">
+            <dl className="text-xs text-[var(--gpf-muted)] mt-2 space-y-1">
               <div>E-mail : {m.email ?? "—"}</div>
               <div>Téléphone : {m.telephone ?? "—"}</div>
               <div>Ville : {m.ville ?? "—"}</div>
@@ -292,10 +292,10 @@ function DossierGroupCard({
 }) {
   const [keepId, setKeepId] = useState<string | null>(group.members[0]?.id ?? null);
   return (
-    <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
-      <div className="px-4 py-2 text-xs text-[#64717d] border-b border-[#eef0f2]">
+    <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-hidden">
+      <div className="px-4 py-2 text-xs text-[var(--gpf-muted)] border-b border-[var(--gpf-border-soft)]">
         {group.client ? (
-          <Link href={`/gpf/clients/${group.client.id}`} className="font-semibold text-[#071C2C] hover:underline">
+          <Link href={`/gpf/contacts/${group.client.id}`} className="font-semibold text-[var(--gpf-ink)] hover:underline">
             {formatNom(group.client)}
           </Link>
         ) : (
@@ -303,17 +303,17 @@ function DossierGroupCard({
         )}{" "}
         · {GPF_PRODUIT_LABEL[group.members[0].produit]}
       </div>
-      <div className="grid gap-px bg-[#eef0f2]" style={{ gridTemplateColumns: `repeat(${group.members.length}, minmax(0, 1fr))` }}>
+      <div className="grid gap-px bg-[var(--gpf-fill)]" style={{ gridTemplateColumns: `repeat(${group.members.length}, minmax(0, 1fr))` }}>
         {group.members.map((m) => (
-          <label key={m.id} className={`bg-white p-4 cursor-pointer ${keepId === m.id ? "ring-2 ring-inset ring-[#CDAA5A]" : ""}`}>
+          <label key={m.id} className={`bg-[var(--gpf-surface)] p-4 cursor-pointer ${keepId === m.id ? "ring-2 ring-inset ring-[#CDAA5A]" : ""}`}>
             <div className="flex items-center gap-2">
               <input type="radio" checked={keepId === m.id} onChange={() => setKeepId(m.id)} />
-              <span className="text-xs text-[#9aa3ab]">{keepId === m.id ? "Dossier gardé" : "Garder celui-ci"}</span>
+              <span className="text-xs text-[var(--gpf-subtle)]">{keepId === m.id ? "Dossier gardé" : "Garder celui-ci"}</span>
             </div>
             <span className="inline-block text-xs font-semibold text-white rounded-full px-2 py-0.5 mt-2" style={{ background: GPF_STATUT_COLOR[m.statut] }}>
               {GPF_STATUT_LABEL[m.statut]}
             </span>
-            <dl className="text-xs text-[#64717d] mt-2 space-y-1">
+            <dl className="text-xs text-[var(--gpf-muted)] mt-2 space-y-1">
               <div>Assureur : {m.assureur_nom ?? "—"}</div>
               <div>Date d&apos;effet : {frDate(m.date_effet)}</div>
               <div>Prime : {m.prime_mensuelle != null ? `${euro(m.prime_mensuelle)}/mois` : "—"}</div>

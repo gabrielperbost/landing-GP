@@ -47,13 +47,13 @@ export default function GpfCorbeillePage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
+        <h1 className="text-2xl text-[var(--gpf-ink)]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
           Corbeille
         </h1>
-        <p className="text-sm text-[#64717d] mt-1">Les éléments supprimés restent ici 30 jours avant suppression définitive.</p>
+        <p className="text-sm text-[var(--gpf-muted)] mt-1">Les éléments supprimés restent ici 30 jours avant suppression définitive.</p>
       </div>
 
-      {empty ? <p className="text-sm text-[#9aa3ab]">La corbeille est vide.</p> : null}
+      {empty ? <p className="text-sm text-[var(--gpf-subtle)]">La corbeille est vide.</p> : null}
 
       {clients.length > 0 ? (
         <Section title="Clients">
@@ -94,9 +94,9 @@ export default function GpfCorbeillePage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-[#e2e5e9]">
-        <h2 className="text-sm font-semibold text-[#071C2C]">{title}</h2>
+    <div className="bg-[var(--gpf-surface)] border border-[var(--gpf-border)] rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-[var(--gpf-border)]">
+        <h2 className="text-sm font-semibold text-[var(--gpf-ink)]">{title}</h2>
       </div>
       {children}
     </div>
@@ -105,10 +105,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Row({ label, joursRestants, onRestore }: { label: string; joursRestants: number; onRestore: () => void }) {
   return (
-    <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[#f1f2f4] last:border-0">
+    <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[var(--gpf-border-soft)] last:border-0">
       <div>
-        <div className="text-sm text-[#071C2C]">{label}</div>
-        <div className="text-xs text-[#9aa3ab] mt-0.5">
+        <div className="text-sm text-[var(--gpf-ink)]">{label}</div>
+        <div className="text-xs text-[var(--gpf-subtle)] mt-0.5">
           {joursRestants > 0 ? `${joursRestants} jour${joursRestants > 1 ? "s" : ""} avant suppression définitive` : "Purge imminente"}
         </div>
       </div>
