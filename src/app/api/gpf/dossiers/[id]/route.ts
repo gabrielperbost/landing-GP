@@ -39,3 +39,11 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
   return NextResponse.json({ ok: true, dossier: data });
 }
+
+export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
+  if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  const { id } = params;
+  const { error } = await supabaseAdmin.from("gpf_dossiers").delete().eq("id", id);
+  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true });
+}

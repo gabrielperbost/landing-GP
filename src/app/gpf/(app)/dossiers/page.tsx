@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   GPF_PRODUIT_LABEL,
+  GPF_PRODUITS,
   GPF_STATUTS,
   GPF_STATUT_COLOR,
   GPF_STATUT_LABEL,
@@ -27,15 +28,18 @@ export default function GpfDossiersPage() {
   const [dossiers, setDossiers] = useState<GpfDossierWithClient[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
-  const [collapsed, setCollapsed] = useState<Set<GpfStatut>>(new Set());
+  const [statutFilter, setStatutFilter] = useState<GpfStatut | "">("");
+  const [produitFilter, setProduitFilter] = useState("");
+
+  const load = async () => {
+    const res = await fetch("/api/gpf/dossiers");
+    const data = await res.json();
+    if (data.ok) setDossiers(data.dossiers);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/gpf/dossiers");
-      const data = await res.json();
-      if (data.ok) setDossiers(data.dossiers);
-      setLoading(false);
-    })();
+    load();
   }, []);
 
   const changeStatut = async (dossierId: string, statut: string) => {
@@ -47,143 +51,137 @@ export default function GpfDossiersPage() {
     });
   };
 
-  const toggleGroup = (s: GpfStatut) => {
-    setCollapsed((prev) => {
-      const next = new Set(prev);
-      if (next.has(s)) next.delete(s);
-      else next.add(s);
-      return next;
-    });
+  const deleteDossier = async (d: GpfDossierWithClient) => {
+    const nom = d.client ? `${d.client.prenom} ${d.client.nom}` : "ce dossier";
+    if (!confirm(`Supprimer le dossier ${GPF_PRODUIT_LABEL[d.produit]} de ${nom} ? Cette action est définitive.`)) return;
+    setDossiers((prev) => prev.filter((x) => x.id !== d.id));
+    await fetch(`/api/gpf/dossiers/${d.id}`, { method: "DELETE" });
   };
+
+  const countsByStatut = useMemo(() => {
+    const m = new Map<GpfStatut, number>();
+    for (const d of dossiers) m.set(d.statut, (m.get(d.statut) ?? 0) + 1);
+    return m;
+  }, [dossiers]);
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    if (!needle) return dossiers;
     return dossiers.filter((d) => {
+      if (statutFilter && d.statut !== statutFilter) return false;
+      if (produitFilter && d.produit !== produitFilter) return false;
+      if (!needle) return true;
       const nom = `${d.client?.prenom ?? ""} ${d.client?.nom ?? ""}`.toLowerCase();
       return nom.includes(needle) || (d.assureur_nom ?? "").toLowerCase().includes(needle) || (d.source ?? "").toLowerCase().includes(needle);
     });
-  }, [dossiers, q]);
+  }, [dossiers, q, statutFilter, produitFilter]);
 
-  const groups = useMemo(() => {
-    const byStatut = new Map<GpfStatut, GpfDossierWithClient[]>();
-    for (const s of GPF_STATUTS) byStatut.set(s, []);
-    for (const d of filtered) byStatut.get(d.statut)?.push(d);
-    return GPF_STATUTS.map((s) => ({ statut: s, items: byStatut.get(s) ?? [] })).filter((g) => g.items.length > 0);
-  }, [filtered]);
-
-  if (loading) return <p style={{ color: "#64717d" }}>Chargement...</p>;
+  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 10 }}>
-        <h1 style={{ fontSize: 20, margin: 0 }}>Suivi des dossiers</h1>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <h1 className="text-xl font-semibold text-[#0d1f3c]">Dossiers</h1>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Rechercher (client, assureur, source)..."
-          style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 13, width: 280, boxSizing: "border-box" }}
+          className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm w-64"
         />
       </div>
 
-      <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 12px" }}>
-        {filtered.length} dossier{filtered.length > 1 ? "s" : ""} sur {dossiers.length}
-      </p>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {groups.map((g) => (
-          <div key={g.statut}>
-            <div
-              onClick={() => toggleGroup(g.statut)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && toggleGroup(g.statut)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 4px",
-                cursor: "pointer",
-                borderLeft: `4px solid ${GPF_STATUT_COLOR[g.statut]}`,
-                paddingLeft: 10,
-                marginBottom: 6
-              }}
-            >
-              <span style={{ fontSize: 11, color: "#9aa3ab" }}>{collapsed.has(g.statut) ? "▸" : "▾"}</span>
-              <strong style={{ fontSize: 14, color: GPF_STATUT_COLOR[g.statut] }}>{GPF_STATUT_LABEL[g.statut]}</strong>
-              <span style={{ fontSize: 12, color: "#9aa3ab" }}>{g.items.length}</span>
-            </div>
-
-            {!collapsed.has(g.statut) ? (
-              <div style={{ background: "#fff", border: "1px solid #e2e5e9", borderRadius: 8, overflow: "hidden" }}>
-                <div style={rowStyle("header")}>
-                  <span>Client</span>
-                  <span>Produit</span>
-                  <span>Assureur</span>
-                  <span>Source</span>
-                  <span>Date d&apos;effet</span>
-                  <span>Montant</span>
-                  <span>Relances</span>
-                  <span>Statut</span>
-                </div>
-                {g.items.map((d) => (
-                  <Link key={d.id} href={d.client ? `/gpf/clients/${d.client.id}` : "#"} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                    <div style={rowStyle("data")}>
-                      <span style={{ fontWeight: 600, color: "#0d1f3c", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {d.client ? `${d.client.prenom} ${d.client.nom}` : "—"}
-                      </span>
-                      <span>{GPF_PRODUIT_LABEL[d.produit]}</span>
-                      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.assureur_nom ?? "—"}</span>
-                      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.source ?? "—"}</span>
-                      <span>{frDate(d.date_effet)}</span>
-                      <span>{montantPrincipal(d)}</span>
-                      <span>{d.relances_envoyees > 0 ? d.relances_envoyees : "—"}</span>
-                      <span onClick={(e) => e.preventDefault()}>
-                        <select
-                          value={d.statut}
-                          onChange={(e) => changeStatut(d.id, e.target.value)}
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: "#fff",
-                            background: GPF_STATUT_COLOR[d.statut],
-                            border: 0,
-                            borderRadius: 6,
-                            padding: "4px 8px",
-                            cursor: "pointer"
-                          }}
-                        >
-                          {GPF_STATUTS.map((s) => (
-                            <option key={s} value={s} style={{ color: "#000", background: "#fff" }}>
-                              {GPF_STATUT_LABEL[s]}
-                            </option>
-                          ))}
-                        </select>
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
+      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+        <Chip active={statutFilter === ""} label={`Tous (${dossiers.length})`} onClick={() => setStatutFilter("")} />
+        {GPF_STATUTS.filter((s) => (countsByStatut.get(s) ?? 0) > 0).map((s) => (
+          <Chip
+            key={s}
+            active={statutFilter === s}
+            label={`${GPF_STATUT_LABEL[s]} (${countsByStatut.get(s)})`}
+            color={GPF_STATUT_COLOR[s]}
+            onClick={() => setStatutFilter((prev) => (prev === s ? "" : s))}
+          />
         ))}
+      </div>
+
+      <div className="flex items-center gap-3">
+        <select
+          value={produitFilter}
+          onChange={(e) => setProduitFilter(e.target.value)}
+          className="rounded-lg border border-[#e2e5e9] px-3 py-1.5 text-xs bg-white"
+        >
+          <option value="">Tous les produits</option>
+          {GPF_PRODUITS.map((p) => (
+            <option key={p} value={p}>
+              {GPF_PRODUIT_LABEL[p]}
+            </option>
+          ))}
+        </select>
+        <span className="text-xs text-[#9aa3ab]">
+          {filtered.length} dossier{filtered.length > 1 ? "s" : ""}
+        </span>
+      </div>
+
+      <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
+        <div className="hidden md:grid grid-cols-[1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-3 px-4 py-2 text-[11px] uppercase tracking-wide text-[#9aa3ab] bg-[#fafbfc] border-b border-[#e2e5e9]">
+          <span>Client</span>
+          <span>Produit</span>
+          <span>Assureur</span>
+          <span>Montant</span>
+          <span>Date d&apos;effet</span>
+          <span>Statut</span>
+          <span />
+        </div>
+        {filtered.length === 0 ? (
+          <p className="text-sm text-[#9aa3ab] px-4 py-6 text-center">Aucun dossier pour ces filtres.</p>
+        ) : (
+          filtered.map((d) => (
+            <div
+              key={d.id}
+              className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-x-3 gap-y-1 px-4 py-3 border-b border-[#f1f2f4] last:border-0 items-center hover:bg-[#fafbfc]"
+            >
+              <Link href={d.client ? `/gpf/clients/${d.client.id}` : "#"} className="col-span-2 md:col-span-1 font-medium text-[#0d1f3c] text-sm truncate">
+                {d.client ? `${d.client.prenom} ${d.client.nom}` : "—"}
+              </Link>
+              <span className="text-sm text-[#64717d]">{GPF_PRODUIT_LABEL[d.produit]}</span>
+              <span className="text-sm text-[#64717d] truncate">{d.assureur_nom ?? "—"}</span>
+              <span className="text-sm text-[#64717d]">{montantPrincipal(d)}</span>
+              <span className="text-sm text-[#64717d]">{frDate(d.date_effet)}</span>
+              <select
+                value={d.statut}
+                onChange={(e) => changeStatut(d.id, e.target.value)}
+                className="text-xs font-semibold text-white rounded-full px-2 py-1 border-0 cursor-pointer w-fit"
+                style={{ background: GPF_STATUT_COLOR[d.statut] }}
+              >
+                {GPF_STATUTS.map((s) => (
+                  <option key={s} value={s} style={{ color: "#000", background: "#fff" }}>
+                    {GPF_STATUT_LABEL[s]}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => deleteDossier(d)}
+                title="Supprimer ce dossier"
+                className="text-[#c0392b] hover:bg-[#fdecea] rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 justify-self-end"
+              >
+                ✕
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 }
 
-function rowStyle(kind: "header" | "data"): React.CSSProperties {
-  return {
-    display: "grid",
-    gridTemplateColumns: "1.4fr 1fr 1fr 1fr 0.9fr 1.1fr 0.7fr 1.3fr",
-    gap: 10,
-    alignItems: "center",
-    padding: kind === "header" ? "6px 12px" : "7px 12px",
-    borderBottom: kind === "header" ? "1px solid #e2e5e9" : "1px solid #f1f2f4",
-    fontSize: kind === "header" ? 11 : 13,
-    textTransform: kind === "header" ? "uppercase" : "none",
-    letterSpacing: kind === "header" ? "0.02em" : "normal",
-    color: kind === "header" ? "#9aa3ab" : "#0d1f3c",
-    background: kind === "header" ? "#fafbfc" : "transparent"
-  };
+function Chip({ label, active, onClick, color }: { label: string; active: boolean; onClick: () => void; color?: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
+        active ? "text-white border-transparent" : "text-[#64717d] border-[#e2e5e9] bg-white hover:bg-[#fafbfc]"
+      }`}
+      style={active ? { background: color ?? "#0d1f3c" } : undefined}
+    >
+      {label}
+    </button>
+  );
 }

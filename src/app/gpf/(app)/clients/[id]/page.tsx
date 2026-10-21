@@ -101,6 +101,13 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
     onChanged();
   };
 
+  const deleteDossier = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm(`Supprimer ce dossier (${GPF_PRODUIT_LABEL[dossier.produit]}) ? Cette action est définitive.`)) return;
+    await fetch(`/api/gpf/dossiers/${dossier.id}`, { method: "DELETE" });
+    onChanged();
+  };
+
   // Tous les champs qui ont une valeur, prêts à afficher : rien n'est caché une
   // fois le dossier ouvert (vous avez demandé « toutes les infos sur les
   // produits »). Les champs vides sont simplement omis.
@@ -153,6 +160,13 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
             </option>
           ))}
         </select>
+        <button
+          onClick={deleteDossier}
+          title="Supprimer ce dossier"
+          style={{ background: "transparent", border: 0, color: "#c0392b", fontSize: 16, cursor: "pointer", padding: "4px 6px" }}
+        >
+          ✕
+        </button>
       </div>
       {dossier.source ? <p style={{ margin: "6px 0 0", fontSize: 12, color: "#64717d" }}>Source : {dossier.source}</p> : null}
 

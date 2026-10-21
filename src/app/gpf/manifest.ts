@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "GPF",
     short_name: "GPF",
     description: "CRM interne de GP Finances",
-    start_url: "/gpf/dossiers",
+    start_url: "/gpf",
     scope: "/gpf",
     display: "standalone",
     background_color: "#f7f8fa",
