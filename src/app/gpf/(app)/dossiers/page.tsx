@@ -8,6 +8,7 @@ import {
   GPF_STATUT_COLOR,
   GPF_STATUT_LABEL,
   type GpfDossierWithClient,
+  type GpfProduit,
   type GpfStatut
 } from "@/lib/gpf/types";
 
@@ -30,6 +31,7 @@ export default function GpfDossiersPage() {
   const [q, setQ] = useState("");
   const [statutFilter, setStatutFilter] = useState<GpfStatut | "">("");
   const [produitFilter, setProduitFilter] = useState("");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const load = async () => {
     const res = await fetch("/api/gpf/dossiers");
@@ -51,11 +53,37 @@ export default function GpfDossiersPage() {
     });
   };
 
+  const changeProduit = async (dossierId: string, produit: string) => {
+    setDossiers((prev) => prev.map((d) => (d.id === dossierId ? { ...d, produit: produit as GpfProduit } : d)));
+    await fetch(`/api/gpf/dossiers/${dossierId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ produit })
+    });
+  };
+
   const deleteDossier = async (d: GpfDossierWithClient) => {
     const nom = d.client ? `${d.client.prenom} ${d.client.nom}` : "ce dossier";
     if (!confirm(`Supprimer le dossier ${GPF_PRODUIT_LABEL[d.produit]} de ${nom} ? Cette action est définitive.`)) return;
     setDossiers((prev) => prev.filter((x) => x.id !== d.id));
     await fetch(`/api/gpf/dossiers/${d.id}`, { method: "DELETE" });
+  };
+
+  const deleteSelected = async () => {
+    if (!confirm(`Supprimer les ${selected.size} dossiers sélectionnés ? Cette action est définitive.`)) return;
+    const ids = [...selected];
+    setDossiers((prev) => prev.filter((d) => !selected.has(d.id)));
+    setSelected(new Set());
+    await Promise.all(ids.map((id) => fetch(`/api/gpf/dossiers/${id}`, { method: "DELETE" })));
+  };
+
+  const toggleOne = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   const countsByStatut = useMemo(() => {
@@ -74,6 +102,15 @@ export default function GpfDossiersPage() {
       return nom.includes(needle) || (d.assureur_nom ?? "").toLowerCase().includes(needle) || (d.source ?? "").toLowerCase().includes(needle);
     });
   }, [dossiers, q, statutFilter, produitFilter]);
+
+  const allFilteredSelected = filtered.length > 0 && filtered.every((d) => selected.has(d.id));
+
+  const toggleAll = () => {
+    setSelected((prev) => {
+      if (allFilteredSelected) return new Set();
+      return new Set(filtered.map((d) => d.id));
+    });
+  };
 
   if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
 
@@ -104,7 +141,7 @@ export default function GpfDossiersPage() {
         ))}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <select
           value={produitFilter}
           onChange={(e) => setProduitFilter(e.target.value)}
@@ -120,10 +157,19 @@ export default function GpfDossiersPage() {
         <span className="text-xs text-[#9aa3ab]">
           {filtered.length} dossier{filtered.length > 1 ? "s" : ""}
         </span>
+        {selected.size > 0 ? (
+          <button
+            onClick={deleteSelected}
+            className="ml-auto rounded-full bg-[#b3463f] text-white text-xs font-semibold px-3 py-1.5"
+          >
+            Supprimer la sélection ({selected.size})
+          </button>
+        ) : null}
       </div>
 
       <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
-        <div className="hidden md:grid grid-cols-[1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-3 px-4 py-2 text-[11px] uppercase tracking-wide text-[#9aa3ab] bg-[#fafbfc] border-b border-[#e2e5e9]">
+        <div className="hidden md:grid grid-cols-[auto_1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-3 px-4 py-2 text-[11px] uppercase tracking-wide text-[#9aa3ab] bg-[#fafbfc] border-b border-[#e2e5e9] items-center">
+          <input type="checkbox" checked={allFilteredSelected} onChange={toggleAll} className="w-3.5 h-3.5" />
           <span>Client</span>
           <span>Produit</span>
           <span>Assureur</span>
@@ -138,12 +184,23 @@ export default function GpfDossiersPage() {
           filtered.map((d) => (
             <div
               key={d.id}
-              className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-x-3 gap-y-1 px-4 py-3 border-b border-[#f1f2f4] last:border-0 items-center hover:bg-[#fafbfc]"
+              className="grid grid-cols-[auto_1fr_1fr] md:grid-cols-[auto_1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-x-3 gap-y-1 px-4 py-3 border-b border-[#f1f2f4] last:border-0 items-center hover:bg-[#fafbfc]"
             >
+              <input type="checkbox" checked={selected.has(d.id)} onChange={() => toggleOne(d.id)} className="w-3.5 h-3.5" />
               <Link href={d.client ? `/gpf/clients/${d.client.id}` : "#"} className="col-span-2 md:col-span-1 font-medium text-[#071C2C] text-sm truncate">
                 {d.client ? `${d.client.prenom} ${d.client.nom}` : "—"}
               </Link>
-              <span className="text-sm text-[#64717d]">{GPF_PRODUIT_LABEL[d.produit]}</span>
+              <select
+                value={d.produit}
+                onChange={(e) => changeProduit(d.id, e.target.value)}
+                className="text-sm text-[#64717d] border-0 bg-transparent rounded px-0 py-0.5 cursor-pointer hover:bg-[#f1f2f4] w-fit"
+              >
+                {GPF_PRODUITS.map((p) => (
+                  <option key={p} value={p}>
+                    {GPF_PRODUIT_LABEL[p]}
+                  </option>
+                ))}
+              </select>
               <span className="text-sm text-[#64717d] truncate">{d.assureur_nom ?? "—"}</span>
               <span className="text-sm text-[#64717d]">{montantPrincipal(d)}</span>
               <span className="text-sm text-[#64717d]">{frDate(d.date_effet)}</span>
@@ -162,7 +219,7 @@ export default function GpfDossiersPage() {
               <button
                 onClick={() => deleteDossier(d)}
                 title="Supprimer ce dossier"
-                className="text-[#c0392b] hover:bg-[#fdecea] rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 justify-self-end"
+                className="text-[#b3463f] hover:bg-[#fdecea] rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 justify-self-end"
               >
                 ✕
               </button>
@@ -179,9 +236,9 @@ function Chip({ label, active, onClick, color }: { label: string; active: boolea
     <button
       onClick={onClick}
       className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
-        active ? "text-white border-transparent" : "text-[#64717d] border-[#e2e5e9] bg-white hover:bg-[#fafbfc]"
+        active ? (color ? "text-white" : "text-[#071C2C]") + " border-transparent" : "text-[#64717d] border-[#e2e5e9] bg-white hover:bg-[#fafbfc]"
       }`}
-      style={active ? { background: color ?? "#071C2C" } : undefined}
+      style={active ? { background: color ?? "#CDAA5A" } : undefined}
     >
       {label}
     </button>

@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
 
   const q = request.nextUrl.searchParams.get("q")?.trim();
   const produitFilter = request.nextUrl.searchParams.get("produit")?.trim();
+  const segment = request.nextUrl.searchParams.get("segment")?.trim(); // "client" | "prospect"
 
   let query = supabaseAdmin.from("gpf_clients").select("*").order("nom", { ascending: true });
   if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,email.ilike.%${q}%`);
@@ -38,13 +39,19 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  let clients = (data ?? []).map((c) => ({
-    ...c,
-    produits: produitsByClient.get(c.id) ?? [],
-    statuts: statutsByClient.get(c.id) ?? []
-  }));
+  let clients = (data ?? []).map((c) => {
+    const statuts = statutsByClient.get(c.id) ?? [];
+    return {
+      ...c,
+      produits: produitsByClient.get(c.id) ?? [],
+      statuts,
+      est_client: statuts.includes("effectif")
+    };
+  });
 
   if (produitFilter) clients = clients.filter((c) => c.produits.includes(produitFilter));
+  if (segment === "client") clients = clients.filter((c) => c.est_client);
+  if (segment === "prospect") clients = clients.filter((c) => !c.est_client);
 
   return NextResponse.json({ ok: true, clients });
 }

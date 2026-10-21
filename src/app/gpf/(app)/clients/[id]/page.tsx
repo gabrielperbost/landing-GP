@@ -66,7 +66,9 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
     const effectifs = dossiers.filter((d) => d.statut === "effectif").length;
     const parProduit = new Map<string, number>();
     for (const d of dossiers) parProduit.set(d.produit, (parProduit.get(d.produit) ?? 0) + 1);
-    return { enCours, effectifs, parProduit };
+    const precompteTotal = dossiers.reduce((sum, d) => sum + (d.precompte_lineaire_1ere_annee ?? 0), 0);
+    const lineaireTotal = dossiers.reduce((sum, d) => sum + (d.lineaire_n1 ?? 0), 0);
+    return { enCours, effectifs, parProduit, precompteTotal, lineaireTotal, estClient: effectifs > 0 };
   }, [dossiers]);
 
   const selectedDossier = dossiers.find((d) => d.id === selectedDossierId) ?? null;
@@ -87,7 +89,12 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
               {client.civilite ? `${client.civilite} ` : ""}
               {client.prenom} {client.nom}
             </h1>
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-[#64717d] bg-[#eff3f7] rounded-full px-2 py-0.5">Client</span>
+            <span
+              className="text-[10px] font-semibold uppercase tracking-wide text-white rounded-full px-2 py-0.5"
+              style={{ background: stats.estClient ? "#2f9e6e" : "#c98a1f" }}
+            >
+              {stats.estClient ? "Client" : "Prospect"}
+            </span>
           </div>
           <p className="text-sm text-[#64717d] mt-1">
             {[client.email, client.telephone, [client.ville, client.code_postal].filter(Boolean).join(" ")].filter(Boolean).join(" · ") || "Aucune coordonnée"}
@@ -152,17 +159,36 @@ function AccueilTab({
   onSeeAll
 }: {
   dossiers: GpfDossier[];
-  stats: { enCours: number; effectifs: number; parProduit: Map<string, number> };
+  stats: { enCours: number; effectifs: number; parProduit: Map<string, number>; precompteTotal: number; lineaireTotal: number };
   onOpenDossier: (id: string) => void;
   onSeeAll: () => void;
 }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-3">
-        <KpiTile label="En cours" value={stats.enCours} accent="#579bfc" />
-        <KpiTile label="Effectifs" value={stats.effectifs} accent="#00c875" />
+        <KpiTile label="En cours" value={stats.enCours} accent="#c98a1f" />
+        <KpiTile label="Effectifs" value={stats.effectifs} accent="#2f9e6e" />
         <KpiTile label="Total" value={dossiers.length} />
       </div>
+
+      {stats.precompteTotal > 0 || stats.lineaireTotal > 0 ? (
+        <div className="bg-white border border-[#e2e5e9] border-t-2 rounded-xl p-4" style={{ borderTopColor: "#CDAA5A" }}>
+          <h2 className="text-sm font-semibold text-[#071C2C] mb-3">Revenus (estimation)</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">Précompte / 1ère année</div>
+              <div className="text-lg font-semibold tabular-nums text-[#071C2C]">{euro(stats.precompteTotal)}</div>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">Linéaire N+1</div>
+              <div className="text-lg font-semibold tabular-nums text-[#071C2C]">{euro(stats.lineaireTotal)}</div>
+            </div>
+          </div>
+          <p className="text-[11px] text-[#9aa3ab] mt-3">
+            Basé sur les dernières données importées — pas encore de suivi mensuel automatique des bordereaux.
+          </p>
+        </div>
+      ) : null}
 
       {stats.parProduit.size > 0 ? (
         <div className="bg-white border border-[#e2e5e9] rounded-xl p-4">

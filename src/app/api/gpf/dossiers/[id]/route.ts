@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
-import { GPF_STATUTS } from "@/lib/gpf/types";
+import { GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const EDITABLE_FIELDS = [
-  "statut", "source", "insurer_id", "reference_contrat", "montant_pret", "taux", "duree_mois", "date_effet",
+  "produit", "statut", "source", "insurer_id", "reference_contrat", "montant_pret", "taux", "duree_mois", "date_effet",
   "placement_initial", "placement_mensuel", "frais_gestion_pct", "lien_dossier", "date_depot",
   "date_entree_attente_docs", "date_derniere_relance", "relances_envoyees", "remuneration_apporteur_pct",
   "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree"
@@ -21,6 +21,9 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
   if ("statut" in body && !(GPF_STATUTS as readonly string[]).includes(body.statut)) {
     return NextResponse.json({ ok: false, error: "statut_invalide" }, { status: 400 });
+  }
+  if ("produit" in body && !(GPF_PRODUITS as readonly string[]).includes(body.produit)) {
+    return NextResponse.json({ ok: false, error: "produit_invalide" }, { status: 400 });
   }
 
   const { data: before } = await supabaseAdmin.from("gpf_dossiers").select("statut").eq("id", id).single();

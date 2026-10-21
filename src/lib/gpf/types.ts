@@ -1,4 +1,6 @@
-export type GpfClientListItem = GpfClient & { produits: GpfProduit[]; statuts: GpfStatut[] };
+// est_client : au moins un dossier au statut "effectif". Sinon, c'est un
+// prospect — un contact pas encore passé à l'acte, pas un client.
+export type GpfClientListItem = GpfClient & { produits: GpfProduit[]; statuts: GpfStatut[]; est_client: boolean };
 
 export type GpfClient = {
   id: string;
@@ -94,20 +96,27 @@ export const GPF_STATUT_LABEL: Record<GpfStatut, string> = {
   sans_suite: "Sans suite"
 };
 
-// Couleurs des pastilles de statut, dans l'esprit des couleurs de colonnes Monday.com.
+// Palette d'état sobre (identité GP Finances) : vert = fait/actif, ambre = en
+// cours ou à relancer, rouge = manquant/impayé. Volontairement 3 teintes
+// seulement, pas un arc-en-ciel par étape de pipeline — le libellé du statut
+// porte déjà l'information précise.
+const SOBER_VERT = "#2f9e6e";
+const SOBER_AMBRE = "#c98a1f";
+const SOBER_ROUGE = "#b3463f";
+
 export const GPF_STATUT_COLOR: Record<GpfStatut, string> = {
-  a_traiter: "#9aa3ab",
-  nrp: "#e2445c",
-  devis_a_realiser: "#fdab3d",
-  devis_envoye: "#579bfc",
-  en_cours_souscription: "#a25ddc",
-  attente_accord_banque: "#fdab3d",
-  attente_prise_effet: "#ffcb00",
-  attente_reglement: "#66ccff",
-  attente_documents: "#ffcb00",
-  effectif: "#00c875",
-  refuse: "#e2445c",
-  sans_suite: "#808080"
+  a_traiter: SOBER_AMBRE,
+  nrp: SOBER_AMBRE,
+  devis_a_realiser: SOBER_AMBRE,
+  devis_envoye: SOBER_AMBRE,
+  en_cours_souscription: SOBER_AMBRE,
+  attente_accord_banque: SOBER_AMBRE,
+  attente_prise_effet: SOBER_AMBRE,
+  attente_reglement: SOBER_AMBRE,
+  attente_documents: SOBER_AMBRE,
+  effectif: SOBER_VERT,
+  refuse: SOBER_ROUGE,
+  sans_suite: SOBER_ROUGE
 };
 
 export type GpfDossier = {

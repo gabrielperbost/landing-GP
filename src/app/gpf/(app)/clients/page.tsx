@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, type GpfClientListItem } from "@/lib/gpf/types";
 
+type Segment = "tous" | "client" | "prospect";
+
 export default function GpfClientsPage() {
-  const [clients, setClients] = useState<GpfClientListItem[]>([]);
+  const [all, setAll] = useState<GpfClientListItem[]>([]);
   const [q, setQ] = useState("");
   const [produit, setProduit] = useState("");
+  const [segment, setSegment] = useState<Segment>("tous");
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
@@ -17,7 +20,7 @@ export default function GpfClientsPage() {
     if (produitFilter) params.set("produit", produitFilter);
     const res = await fetch(`/api/gpf/clients${params.toString() ? `?${params}` : ""}`);
     const data = await res.json();
-    if (data.ok) setClients(data.clients);
+    if (data.ok) setAll(data.clients);
     setLoading(false);
   };
 
@@ -31,6 +34,10 @@ export default function GpfClientsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, produit]);
 
+  const clients = all.filter((c) => (segment === "client" ? c.est_client : segment === "prospect" ? !c.est_client : true));
+  const nbClients = all.filter((c) => c.est_client).length;
+  const nbProspects = all.length - nbClients;
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -41,6 +48,12 @@ export default function GpfClientsPage() {
       </div>
 
       {showForm ? <NewClientForm onCreated={() => { setShowForm(false); load(q); }} /> : null}
+
+      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+        <SegmentTab active={segment === "tous"} label={`Tous (${all.length})`} onClick={() => setSegment("tous")} />
+        <SegmentTab active={segment === "client"} label={`Clients (${nbClients})`} color="#2f9e6e" onClick={() => setSegment("client")} />
+        <SegmentTab active={segment === "prospect"} label={`Prospects (${nbProspects})`} color="#c98a1f" onClick={() => setSegment("prospect")} />
+      </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         <input
@@ -69,7 +82,7 @@ export default function GpfClientsPage() {
         <p style={{ color: "#64717d" }}>Aucun client{produit ? ` pour « ${GPF_PRODUIT_LABEL[produit as keyof typeof GPF_PRODUIT_LABEL]} »` : ""}.</p>
       ) : (
         <>
-          <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 10px" }}>{clients.length} client{clients.length > 1 ? "s" : ""}</p>
+          <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 10px" }}>{clients.length} résultat{clients.length > 1 ? "s" : ""}</p>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
             {clients.map((c) => (
               <li key={c.id}>
@@ -86,7 +99,23 @@ export default function GpfClientsPage() {
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                    <strong>{c.prenom} {c.nom}</strong>
+                    <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <strong>{c.prenom} {c.nom}</strong>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.03em",
+                          padding: "2px 7px",
+                          borderRadius: 100,
+                          color: "#fff",
+                          background: c.est_client ? "#2f9e6e" : "#c98a1f"
+                        }}
+                      >
+                        {c.est_client ? "Client" : "Prospect"}
+                      </span>
+                    </span>
                     <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                       {c.produits.length === 0 ? (
                         <span style={{ fontSize: 10, color: "#9aa3ab" }}>Aucun dossier</span>
@@ -117,6 +146,26 @@ export default function GpfClientsPage() {
         </>
       )}
     </div>
+  );
+}
+
+function SegmentTab({ label, active, onClick, color }: { label: string; active: boolean; onClick: () => void; color?: string }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: "7px 14px",
+        borderRadius: 100,
+        border: active ? "1px solid transparent" : "1px solid #e2e5e9",
+        background: active ? color ?? "#071C2C" : "#fff",
+        color: active ? "#fff" : "#64717d",
+        fontSize: 13,
+        fontWeight: 600,
+        cursor: "pointer"
+      }}
+    >
+      {label}
+    </button>
   );
 }
 
