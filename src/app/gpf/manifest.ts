@@ -11,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/gpf",
     scope: "/gpf",
     display: "standalone",
-    background_color: "#f7f8fa",
-    theme_color: "#0d1f3c",
+    background_color: "#F7F6F2",
+    theme_color: "#071C2C",
     icons: [
       { src: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
       { src: "/favicon-512x512.png", sizes: "512x512", type: "image/png" }

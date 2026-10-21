@@ -22,7 +22,7 @@ export default function GpfLoginPage() {
         setError("Mot de passe incorrect.");
         return;
       }
-      router.replace("/gpf/clients");
+      router.replace("/gpf");
       router.refresh();
     } catch {
       setError("Service momentanément indisponible.");
@@ -32,12 +32,13 @@ export default function GpfLoginPage() {
   };
 
   return (
-    <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0d1f3c" }}>
+    <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", background: "#071C2C" }}>
       <form
         onSubmit={submit}
         style={{ background: "#fff", borderRadius: 16, padding: "32px 28px", width: "min(320px, 90vw)", boxShadow: "0 20px 60px rgba(0,0,0,.3)" }}
       >
-        <h1 style={{ fontSize: 22, margin: "0 0 4px", color: "#0d1f3c" }}>GPF</h1>
+        <h1 style={{ fontSize: 24, margin: "0 0 4px", color: "#071C2C", fontFamily: "var(--font-gpf-serif)" }}>GP Finances</h1>
+        <div style={{ height: 1, width: 32, background: "#CDAA5A", margin: "0 0 14px" }} />
         <p style={{ margin: "0 0 20px", color: "#64717d", fontSize: 14 }}>Accès réservé.</p>
         <input
           type="password"
@@ -57,8 +58,8 @@ export default function GpfLoginPage() {
             padding: "12px",
             borderRadius: 8,
             border: 0,
-            background: "#0d1f3c",
-            color: "#fff",
+            background: "#CDAA5A",
+            color: "#071C2C",
             fontWeight: 600,
             fontSize: 15,
             cursor: loading ? "default" : "pointer",

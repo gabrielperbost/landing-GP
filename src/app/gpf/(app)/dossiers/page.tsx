@@ -80,7 +80,9 @@ export default function GpfDossiersPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <h1 className="text-xl font-semibold text-[#0d1f3c]">Dossiers</h1>
+        <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
+          Dossiers
+        </h1>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -138,7 +140,7 @@ export default function GpfDossiersPage() {
               key={d.id}
               className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1.1fr_0.9fr_1.2fr_auto] gap-x-3 gap-y-1 px-4 py-3 border-b border-[#f1f2f4] last:border-0 items-center hover:bg-[#fafbfc]"
             >
-              <Link href={d.client ? `/gpf/clients/${d.client.id}` : "#"} className="col-span-2 md:col-span-1 font-medium text-[#0d1f3c] text-sm truncate">
+              <Link href={d.client ? `/gpf/clients/${d.client.id}` : "#"} className="col-span-2 md:col-span-1 font-medium text-[#071C2C] text-sm truncate">
                 {d.client ? `${d.client.prenom} ${d.client.nom}` : "—"}
               </Link>
               <span className="text-sm text-[#64717d]">{GPF_PRODUIT_LABEL[d.produit]}</span>
@@ -179,7 +181,7 @@ function Chip({ label, active, onClick, color }: { label: string; active: boolea
       className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
         active ? "text-white border-transparent" : "text-[#64717d] border-[#e2e5e9] bg-white hover:bg-[#fafbfc]"
       }`}
-      style={active ? { background: color ?? "#0d1f3c" } : undefined}
+      style={active ? { background: color ?? "#071C2C" } : undefined}
     >
       {label}
     </button>

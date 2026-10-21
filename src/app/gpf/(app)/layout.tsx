@@ -6,7 +6,7 @@ export default async function GpfAppLayout({ children }: { children: React.React
   const authed = await hasValidGpfSession();
   if (!authed) redirect("/gpf/login");
   return (
-    <div className="min-h-dvh md:flex bg-[#f7f8fa]">
+    <div className="min-h-dvh md:flex bg-[#F7F6F2]">
       <GpfSidebar />
       <main className="flex-1 min-w-0 p-4 md:p-8 max-w-5xl mx-auto w-full">{children}</main>
     </div>

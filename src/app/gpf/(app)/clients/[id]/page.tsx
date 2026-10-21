@@ -76,14 +76,14 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <Link href="/gpf/clients" className="text-xs text-[#64717d] hover:text-[#0d1f3c] w-fit">
+      <Link href="/gpf/clients" className="text-xs text-[#64717d] hover:text-[#071C2C] w-fit">
         ← Clients
       </Link>
 
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-semibold text-[#0d1f3c]">
+            <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
               {client.civilite ? `${client.civilite} ` : ""}
               {client.prenom} {client.nom}
             </h1>
@@ -96,7 +96,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
         <div className="flex items-center gap-4">
           <div className="text-right">
             <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">Dossiers actifs</div>
-            <div className="text-xl font-semibold text-[#0d1f3c]">{stats.enCours + stats.effectifs}</div>
+            <div className="text-xl font-semibold tabular-nums text-[#071C2C]">{stats.enCours + stats.effectifs}</div>
           </div>
           <button
             onClick={deleteClient}
@@ -120,7 +120,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
             key={key}
             onClick={() => setTab(key)}
             className={`px-3 py-2 text-sm -mb-px border-b-2 transition-colors ${
-              tab === key ? "border-[#0d1f3c] text-[#0d1f3c] font-semibold" : "border-transparent text-[#64717d] hover:text-[#0d1f3c]"
+              tab === key ? "border-[#071C2C] text-[#071C2C] font-semibold" : "border-transparent text-[#64717d] hover:text-[#071C2C]"
             }`}
           >
             {label}
@@ -166,7 +166,7 @@ function AccueilTab({
 
       {stats.parProduit.size > 0 ? (
         <div className="bg-white border border-[#e2e5e9] rounded-xl p-4">
-          <h2 className="text-sm font-semibold text-[#0d1f3c] mb-3">Répartition par produit</h2>
+          <h2 className="text-sm font-semibold text-[#071C2C] mb-3">Répartition par produit</h2>
           <div className="flex flex-col gap-2">
             {[...stats.parProduit.entries()].map(([produit, count]) => (
               <div key={produit} className="flex items-center gap-3">
@@ -181,8 +181,8 @@ function AccueilTab({
 
       <div className="bg-white border border-[#e2e5e9] rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-[#e2e5e9]">
-          <h2 className="text-sm font-semibold text-[#0d1f3c]">Dossiers</h2>
-          <button onClick={onSeeAll} className="text-xs text-[#64717d] hover:text-[#0d1f3c]">
+          <h2 className="text-sm font-semibold text-[#071C2C]">Dossiers</h2>
+          <button onClick={onSeeAll} className="text-xs text-[#64717d] hover:text-[#071C2C]">
             Voir tout →
           </button>
         </div>
@@ -211,7 +211,7 @@ function DossiersTab({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-end">
-        <button onClick={() => setShowForm((v) => !v)} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2">
+        <button onClick={() => setShowForm((v) => !v)} className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-4 py-2">
           {showForm ? "Annuler" : "+ Nouveau dossier"}
         </button>
       </div>
@@ -245,7 +245,7 @@ function DossierRow({ dossier, onClick }: { dossier: GpfDossier; onClick: () => 
         {GPF_PRODUIT_LABEL[dossier.produit].charAt(0)}
       </span>
       <span className="flex-1 min-w-0">
-        <span className="block text-sm font-medium text-[#0d1f3c] truncate">{GPF_PRODUIT_LABEL[dossier.produit]}</span>
+        <span className="block text-sm font-medium text-[#071C2C] truncate">{GPF_PRODUIT_LABEL[dossier.produit]}</span>
         <span className="block text-xs text-[#9aa3ab] truncate">{dossier.assureur_nom ?? "Assureur non renseigné"}</span>
       </span>
       <span className="text-xs font-semibold text-white rounded-full px-2 py-0.5 shrink-0" style={{ background: GPF_STATUT_COLOR[dossier.statut] }}>
@@ -258,9 +258,9 @@ function DossierRow({ dossier, onClick }: { dossier: GpfDossier; onClick: () => 
 
 function KpiTile({ label, value, accent }: { label: string; value: number; accent?: string }) {
   return (
-    <div className="bg-white border border-[#e2e5e9] rounded-xl p-4">
+    <div className="bg-white border border-[#e2e5e9] border-t-2 rounded-xl p-4" style={{ borderTopColor: "#CDAA5A" }}>
       <div className="text-xs text-[#64717d] mb-1">{label}</div>
-      <div className="text-2xl font-semibold" style={{ color: accent ?? "#0d1f3c" }}>
+      <div className="text-2xl font-semibold tabular-nums" style={{ color: accent ?? "#071C2C" }}>
         {value}
       </div>
     </div>
@@ -322,7 +322,7 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
         <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-[#eef0f2]">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-semibold text-[#0d1f3c]">{GPF_PRODUIT_LABEL[dossier.produit]}</h3>
+              <h3 className="text-base font-semibold text-[#071C2C]">{GPF_PRODUIT_LABEL[dossier.produit]}</h3>
               <span className="text-xs font-semibold text-white rounded-full px-2 py-0.5" style={{ background: GPF_STATUT_COLOR[dossier.statut] }}>
                 {GPF_STATUT_LABEL[dossier.statut]}
               </span>
@@ -344,7 +344,7 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
             {kpis.map(([label, value]) => (
               <div key={label} className="bg-white p-3">
                 <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">{label}</div>
-                <div className="text-sm font-semibold text-[#0d1f3c] mt-0.5">{value}</div>
+                <div className="text-sm font-semibold text-[#071C2C] mt-0.5">{value}</div>
               </div>
             ))}
           </div>
@@ -375,9 +375,9 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
               {details.map(([label, value]) => (
                 <div key={label}>
                   <div className="text-[10px] uppercase tracking-wide text-[#9aa3ab]">{label}</div>
-                  <div className="text-sm text-[#0d1f3c] mt-0.5">
+                  <div className="text-sm text-[#071C2C] mt-0.5">
                     {label === "Lien du dossier" ? (
-                      <a href={value!} target="_blank" rel="noopener" className="text-[#0d1f3c] underline">
+                      <a href={value!} target="_blank" rel="noopener" className="text-[#071C2C] underline">
                         Ouvrir
                       </a>
                     ) : (
@@ -448,7 +448,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
             </option>
           ))}
         </select>
-        <label className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-3 py-1.5 cursor-pointer">
+        <label className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-3 py-1.5 cursor-pointer">
           {uploading ? "Envoi..." : "+ Ajouter un fichier"}
           <input
             type="file"
@@ -474,7 +474,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
               <span className="text-[10px] font-semibold uppercase tracking-wide text-[#64717d] bg-white border border-[#e2e5e9] rounded px-1.5 py-0.5 shrink-0">
                 {doc.type}
               </span>
-              <button onClick={() => openDocument(doc.id)} className="text-xs text-[#0d1f3c] underline truncate flex-1 text-left">
+              <button onClick={() => openDocument(doc.id)} className="text-xs text-[#071C2C] underline truncate flex-1 text-left">
                 {doc.nom_fichier ?? "Document"}
               </button>
               <button onClick={() => deleteDocument(doc.id)} className="text-[#c0392b] text-xs shrink-0">
@@ -520,7 +520,7 @@ function NewDossierForm({ clientId, onCreated }: { clientId: string; onCreated: 
         placeholder="Source (optionnel)"
         className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm"
       />
-      <button type="submit" disabled={saving} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2 w-fit">
+      <button type="submit" disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-4 py-2 w-fit">
         {saving ? "..." : "Ajouter le dossier"}
       </button>
     </form>
@@ -577,7 +577,7 @@ function CoordonneesTab({ client, onSaved }: { client: GpfClient; onSaved: () =>
               type={f.type ?? "text"}
               value={form[f.key] ?? ""}
               onChange={(e) => setForm((prev) => ({ ...prev, [f.key]: e.target.value }))}
-              className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#0d1f3c]"
+              className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#071C2C]"
             />
           </label>
         ))}
@@ -588,11 +588,11 @@ function CoordonneesTab({ client, onSaved }: { client: GpfClient; onSaved: () =>
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
-          className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#0d1f3c]"
+          className="rounded-lg border border-[#e2e5e9] px-3 py-2 text-sm text-[#071C2C]"
         />
       </label>
       <div className="flex items-center gap-3">
-        <button type="submit" disabled={saving} className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-4 py-2 w-fit">
+        <button type="submit" disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071C2C] text-xs font-semibold px-4 py-2 w-fit">
           {saving ? "..." : "Enregistrer"}
         </button>
         {saved ? <span className="text-xs text-[#00c875]">Enregistré ✓</span> : null}

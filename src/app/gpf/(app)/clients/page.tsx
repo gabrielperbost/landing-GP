@@ -34,7 +34,7 @@ export default function GpfClientsPage() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <h1 style={{ fontSize: 20, margin: 0 }}>Clients</h1>
+        <h1 style={{ fontSize: 24, margin: 0, color: "#071C2C", fontFamily: "var(--font-gpf-serif)" }}>Clients</h1>
         <button onClick={() => setShowForm((v) => !v)} style={buttonStyle}>
           {showForm ? "Annuler" : "+ Nouveau client"}
         </button>
@@ -82,7 +82,7 @@ export default function GpfClientsPage() {
                     borderRadius: 10,
                     border: "1px solid #e2e5e9",
                     textDecoration: "none",
-                    color: "#0d1f3c"
+                    color: "#071C2C"
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
@@ -94,7 +94,7 @@ export default function GpfClientsPage() {
                         c.produits.map((p) => (
                           <span
                             key={p}
-                            style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 100, background: "#eff3f7", color: "#0d1f3c" }}
+                            style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 100, background: "#eff3f7", color: "#071C2C" }}
                           >
                             {GPF_PRODUIT_LABEL[p]}
                           </span>
@@ -162,4 +162,4 @@ function NewClientForm({ onCreated }: { onCreated: () => void }) {
 }
 
 const inputStyle: React.CSSProperties = { padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 14, boxSizing: "border-box" };
-const buttonStyle: React.CSSProperties = { padding: "9px 16px", borderRadius: 100, border: 0, background: "#0d1f3c", color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer" };
+const buttonStyle: React.CSSProperties = { padding: "9px 16px", borderRadius: 100, border: 0, background: "#CDAA5A", color: "#071C2C", fontWeight: 600, fontSize: 13, cursor: "pointer" };
