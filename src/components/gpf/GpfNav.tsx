@@ -3,8 +3,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const LINKS = [
+  { href: "/gpf/dossiers", label: "Dossiers" },
   { href: "/gpf/clients", label: "Clients" }
-  // D'autres entrées (dossiers, commissions, dashboard) arriveront aux prochaines étapes.
+  // D'autres entrées (commissions, dashboard) arriveront aux prochaines étapes.
 ];
 
 export function GpfNav() {

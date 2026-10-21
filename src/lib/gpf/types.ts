@@ -18,6 +18,11 @@ export type GpfClient = {
   updated_at: string;
 };
 
+export type GpfDossierWithClient = GpfDossier & {
+  client: { id: string; prenom: string; nom: string } | null;
+  co_client: { id: string; prenom: string; nom: string } | null;
+};
+
 export const GPF_PRODUITS = [
   "assurance_emprunteur",
   "per",
@@ -66,6 +71,22 @@ export const GPF_STATUT_LABEL: Record<GpfStatut, string> = {
   effectif: "Effectif",
   refuse: "Refusé",
   sans_suite: "Sans suite"
+};
+
+// Couleurs des pastilles de statut, dans l'esprit des couleurs de colonnes Monday.com.
+export const GPF_STATUT_COLOR: Record<GpfStatut, string> = {
+  a_traiter: "#9aa3ab",
+  nrp: "#e2445c",
+  devis_a_realiser: "#fdab3d",
+  devis_envoye: "#579bfc",
+  en_cours_souscription: "#a25ddc",
+  attente_accord_banque: "#fdab3d",
+  attente_prise_effet: "#ffcb00",
+  attente_reglement: "#66ccff",
+  attente_documents: "#ffcb00",
+  effectif: "#00c875",
+  refuse: "#e2445c",
+  sans_suite: "#808080"
 };
 
 export type GpfDossier = {
