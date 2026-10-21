@@ -104,25 +104,27 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
   // Tous les champs qui ont une valeur, prêts à afficher : rien n'est caché une
   // fois le dossier ouvert (vous avez demandé « toutes les infos sur les
   // produits »). Les champs vides sont simplement omis.
-  const details: [string, string | null][] = [
-    ["Assureur", dossier.assureur_nom],
-    ["Référence contrat", dossier.reference_contrat],
-    ["Date d'effet", frDate(dossier.date_effet)],
-    ["Montant du prêt", euro(dossier.montant_pret)],
-    ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
-    ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
-    ["Frais de dossier", euro(dossier.frais_dossier)],
-    ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
-    ["Linéaire N+1", euro(dossier.lineaire_n1)],
-    ["Placement initial", euro(dossier.placement_initial)],
-    ["Placement mensuel", euro(dossier.placement_mensuel)],
-    ["Frais d'entrée", euro(dossier.frais_entree)],
-    ["Frais de gestion", dossier.frais_gestion_pct != null ? `${dossier.frais_gestion_pct} %` : null],
-    ["Rémunération apporteur", dossier.remuneration_apporteur_pct != null ? `${dossier.remuneration_apporteur_pct} %` : null],
-    ["Date de dépôt", frDate(dossier.date_depot)],
-    ["Relances envoyées", dossier.relances_envoyees > 0 ? String(dossier.relances_envoyees) : null],
-    ["Lien du dossier", dossier.lien_dossier]
-  ].filter(([, v]) => v);
+  const details = (
+    [
+      ["Assureur", dossier.assureur_nom],
+      ["Référence contrat", dossier.reference_contrat],
+      ["Date d'effet", frDate(dossier.date_effet)],
+      ["Montant du prêt", euro(dossier.montant_pret)],
+      ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
+      ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
+      ["Frais de dossier", euro(dossier.frais_dossier)],
+      ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
+      ["Linéaire N+1", euro(dossier.lineaire_n1)],
+      ["Placement initial", euro(dossier.placement_initial)],
+      ["Placement mensuel", euro(dossier.placement_mensuel)],
+      ["Frais d'entrée", euro(dossier.frais_entree)],
+      ["Frais de gestion", dossier.frais_gestion_pct != null ? `${dossier.frais_gestion_pct} %` : null],
+      ["Rémunération apporteur", dossier.remuneration_apporteur_pct != null ? `${dossier.remuneration_apporteur_pct} %` : null],
+      ["Date de dépôt", frDate(dossier.date_depot)],
+      ["Relances envoyées", dossier.relances_envoyees > 0 ? String(dossier.relances_envoyees) : null],
+      ["Lien du dossier", dossier.lien_dossier]
+    ] as [string, string | null][]
+  ).filter(([, v]) => v);
 
   return (
     <div style={{ background: "#fff", border: "1px solid #e2e5e9", borderRadius: 10, padding: 14 }}>
