@@ -83,8 +83,12 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
   );
 }
 
+const euro = (v: number | null) => (v == null ? null : new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(v));
+const frDate = (v: string | null) => (v ? new Date(v + "T00:00:00").toLocaleDateString("fr-FR") : null);
+
 function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: () => void }) {
   const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const changeStatut = async (statut: string) => {
     setSaving(true);
@@ -97,13 +101,47 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
     onChanged();
   };
 
+  // Tous les champs qui ont une valeur, prêts à afficher : rien n'est caché une
+  // fois le dossier ouvert (vous avez demandé « toutes les infos sur les
+  // produits »). Les champs vides sont simplement omis.
+  const details: [string, string | null][] = [
+    ["Assureur", dossier.assureur_nom],
+    ["Référence contrat", dossier.reference_contrat],
+    ["Date d'effet", frDate(dossier.date_effet)],
+    ["Montant du prêt", euro(dossier.montant_pret)],
+    ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
+    ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
+    ["Frais de dossier", euro(dossier.frais_dossier)],
+    ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
+    ["Linéaire N+1", euro(dossier.lineaire_n1)],
+    ["Placement initial", euro(dossier.placement_initial)],
+    ["Placement mensuel", euro(dossier.placement_mensuel)],
+    ["Frais d'entrée", euro(dossier.frais_entree)],
+    ["Frais de gestion", dossier.frais_gestion_pct != null ? `${dossier.frais_gestion_pct} %` : null],
+    ["Rémunération apporteur", dossier.remuneration_apporteur_pct != null ? `${dossier.remuneration_apporteur_pct} %` : null],
+    ["Date de dépôt", frDate(dossier.date_depot)],
+    ["Relances envoyées", dossier.relances_envoyees > 0 ? String(dossier.relances_envoyees) : null],
+    ["Lien du dossier", dossier.lien_dossier]
+  ].filter(([, v]) => v);
+
   return (
     <div style={{ background: "#fff", border: "1px solid #e2e5e9", borderRadius: 10, padding: 14 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-        <strong>{GPF_PRODUIT_LABEL[dossier.produit]}</strong>
+      <div
+        onClick={() => setExpanded((v) => !v)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && setExpanded((v) => !v)}
+        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", width: "100%", cursor: "pointer" }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 11, color: "#9aa3ab" }}>{expanded ? "▾" : "▸"}</span>
+          <strong>{GPF_PRODUIT_LABEL[dossier.produit]}</strong>
+          {dossier.assureur_nom ? <span style={{ fontSize: 12, color: "#64717d" }}>· {dossier.assureur_nom}</span> : null}
+        </span>
         <select
           value={dossier.statut}
           disabled={saving}
+          onClick={(e) => e.stopPropagation()}
           onChange={(e) => changeStatut(e.target.value)}
           style={{ ...inputStyle, width: "auto", fontSize: 13, padding: "6px 10px" }}
         >
@@ -115,6 +153,29 @@ function DossierCard({ dossier, onChanged }: { dossier: GpfDossier; onChanged: (
         </select>
       </div>
       {dossier.source ? <p style={{ margin: "6px 0 0", fontSize: 12, color: "#64717d" }}>Source : {dossier.source}</p> : null}
+
+      {expanded ? (
+        details.length === 0 ? (
+          <p style={{ margin: "10px 0 0", fontSize: 12, color: "#9aa3ab" }}>Aucune autre information sur ce dossier.</p>
+        ) : (
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #eef0f2", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
+            {details.map(([label, value]) => (
+              <div key={label}>
+                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.03em", color: "#9aa3ab" }}>{label}</div>
+                <div style={{ fontSize: 13, color: "#0d1f3c", marginTop: 1 }}>
+                  {label === "Lien du dossier" ? (
+                    <a href={value!} target="_blank" rel="noopener" style={{ color: "#0d1f3c" }}>
+                      Ouvrir
+                    </a>
+                  ) : (
+                    value
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      ) : null}
     </div>
   );
 }
