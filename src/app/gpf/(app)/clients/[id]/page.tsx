@@ -10,8 +10,11 @@ import {
   GPF_STATUT_LABEL,
   GPF_STATUTS,
   type GpfClient,
+  type GpfDocument,
   type GpfDossier
 } from "@/lib/gpf/types";
+
+const DOCUMENT_TYPES = ["CNI", "Justificatif de domicile", "RIB", "Tableau d'amortissement", "Offre de prêt", "Bulletin de salaire", "Autre"];
 
 const euro = (v: number | null) => (v == null ? null : new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(v));
 const frDate = (v: string | null) => (v ? new Date(v + "T00:00:00").toLocaleDateString("fr-FR") : null);
@@ -385,8 +388,102 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
               ))}
             </div>
           )}
+
+          <DocumentsSection dossierId={dossier.id} />
         </div>
       </div>
+    </div>
+  );
+}
+
+function DocumentsSection({ dossierId }: { dossierId: string }) {
+  const [documents, setDocuments] = useState<GpfDocument[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [type, setType] = useState(DOCUMENT_TYPES[0]);
+
+  const load = async () => {
+    const res = await fetch(`/api/gpf/dossiers/${dossierId}/documents`);
+    const data = await res.json();
+    if (data.ok) setDocuments(data.documents);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dossierId]);
+
+  const upload = async (file: File) => {
+    setUploading(true);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("type", type);
+    await fetch(`/api/gpf/dossiers/${dossierId}/documents`, { method: "POST", body: form });
+    setUploading(false);
+    load();
+  };
+
+  const openDocument = async (docId: string) => {
+    const res = await fetch(`/api/gpf/documents/${docId}`);
+    const data = await res.json();
+    if (data.ok) window.open(data.url, "_blank");
+  };
+
+  const deleteDocument = async (docId: string) => {
+    if (!confirm("Supprimer ce document ?")) return;
+    await fetch(`/api/gpf/documents/${docId}`, { method: "DELETE" });
+    load();
+  };
+
+  return (
+    <div className="mt-5 pt-4 border-t border-[#eef0f2]">
+      <h4 className="text-xs font-semibold uppercase tracking-wide text-[#9aa3ab] mb-2">Documents</h4>
+
+      <div className="flex items-center gap-2 mb-3">
+        <select value={type} onChange={(e) => setType(e.target.value)} className="rounded-lg border border-[#e2e5e9] px-2 py-1.5 text-xs">
+          {DOCUMENT_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+        <label className="rounded-full bg-[#0d1f3c] text-white text-xs font-semibold px-3 py-1.5 cursor-pointer">
+          {uploading ? "Envoi..." : "+ Ajouter un fichier"}
+          <input
+            type="file"
+            className="hidden"
+            disabled={uploading}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) upload(file);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      </div>
+
+      {loading ? (
+        <p className="text-xs text-[#9aa3ab]">Chargement...</p>
+      ) : documents.length === 0 ? (
+        <p className="text-xs text-[#9aa3ab]">Aucun document pour ce dossier.</p>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {documents.map((doc) => (
+            <div key={doc.id} className="flex items-center gap-2 bg-[#fafbfc] rounded-lg px-3 py-2">
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-[#64717d] bg-white border border-[#e2e5e9] rounded px-1.5 py-0.5 shrink-0">
+                {doc.type}
+              </span>
+              <button onClick={() => openDocument(doc.id)} className="text-xs text-[#0d1f3c] underline truncate flex-1 text-left">
+                {doc.nom_fichier ?? "Document"}
+              </button>
+              <button onClick={() => deleteDocument(doc.id)} className="text-[#c0392b] text-xs shrink-0">
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

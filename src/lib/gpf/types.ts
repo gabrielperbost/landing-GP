@@ -18,6 +18,18 @@ export type GpfClient = {
   updated_at: string;
 };
 
+export type GpfDocument = {
+  id: string;
+  dossier_id: string;
+  type: string;
+  recu: boolean;
+  nom_fichier: string | null;
+  storage_path: string | null;
+  taille_octets: number | null;
+  date_reception: string | null;
+  created_at: string;
+};
+
 export type GpfDossierWithClient = GpfDossier & {
   client: { id: string; prenom: string; nom: string } | null;
   co_client: { id: string; prenom: string; nom: string } | null;
