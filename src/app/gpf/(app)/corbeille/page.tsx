@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonPage } from "@/components/gpf/Skeleton";
 import { useEffect, useState } from "react";
 import { GPF_PRODUIT_LABEL, type GpfProduit } from "@/lib/gpf/types";
 
@@ -39,7 +40,7 @@ export default function GpfCorbeillePage() {
     load();
   };
 
-  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
+  if (loading) return <SkeletonPage />;
 
   const empty = clients.length === 0 && dossiers.length === 0 && documents.length === 0;
 

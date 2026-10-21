@@ -32,6 +32,17 @@ export type GpfDocument = {
   created_at: string;
 };
 
+/** Affichage homogène partout : « Prénom NOM ». */
+export const formatNom = (p: { prenom: string; nom: string } | null | undefined) => (p ? `${p.prenom} ${p.nom.toUpperCase()}`.trim() : "—");
+
+// Statuts "clos" : un dossier perdu ne doit jamais compter dans les revenus
+// estimés, ni apparaître dans la vue par défaut (il reste accessible via le
+// filtre "Clos").
+export const GPF_STATUTS_CLOS: ReadonlySet<GpfStatut> = new Set(["refuse", "sans_suite"]);
+
+export const GPF_MOTIFS_REFUS = ["Tarif", "Refus banque", "Concurrent", "Injoignable", "Refus médical de l'assureur", "Autre"] as const;
+export type GpfMotifRefus = (typeof GPF_MOTIFS_REFUS)[number];
+
 export type GpfDossierWithClient = GpfDossier & {
   client: { id: string; prenom: string; nom: string } | null;
   co_client: { id: string; prenom: string; nom: string } | null;
@@ -146,6 +157,9 @@ export type GpfDossier = {
   precompte_lineaire_1ere_annee: number | null;
   lineaire_n1: number | null;
   frais_entree: number | null;
+  motif_refus: string | null;
+  prime_mensuelle: number | null;
+  prime_annuelle: number | null;
   created_at: string;
   updated_at: string;
 };

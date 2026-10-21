@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
-import { GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
+import { GPF_MOTIFS_REFUS, GPF_PRODUITS, GPF_STATUTS } from "@/lib/gpf/types";
 import { logActivity } from "@/lib/gpf/activityLog";
 
 export const runtime = "nodejs";
@@ -11,7 +11,8 @@ const EDITABLE_FIELDS = [
   "produit", "statut", "source", "insurer_id", "reference_contrat", "montant_pret", "taux", "duree_mois", "date_effet",
   "placement_initial", "placement_mensuel", "frais_gestion_pct", "lien_dossier", "date_depot",
   "date_entree_attente_docs", "date_derniere_relance", "relances_envoyees", "remuneration_apporteur_pct",
-  "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree"
+  "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree",
+  "motif_refus", "prime_mensuelle", "prime_annuelle"
 ];
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
@@ -26,8 +27,17 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   if ("produit" in body && !(GPF_PRODUITS as readonly string[]).includes(body.produit)) {
     return NextResponse.json({ ok: false, error: "produit_invalide" }, { status: 400 });
   }
+  if ("motif_refus" in body && body.motif_refus != null && !(GPF_MOTIFS_REFUS as readonly string[]).includes(body.motif_refus)) {
+    return NextResponse.json({ ok: false, error: "motif_refus_invalide" }, { status: 400 });
+  }
 
   const { data: before } = await supabaseAdmin.from("gpf_dossiers").select("statut").eq("id", id).single();
+
+  // Motif obligatoire au moment où un dossier passe en Refusé (pas pour les
+  // anciens refus importés de Monday, qui doivent rester modifiables).
+  if (body.statut === "refuse" && before?.statut !== "refuse" && !body.motif_refus) {
+    return NextResponse.json({ ok: false, error: "motif_refus_requis" }, { status: 400 });
+  }
 
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
   for (const key of EDITABLE_FIELDS) if (key in body) patch[key] = body[key];

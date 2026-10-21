@@ -1,14 +1,18 @@
 "use client";
+import { SkeletonPage } from "@/components/gpf/Skeleton";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  GPF_MOTIFS_REFUS,
   GPF_PRODUIT_COLOR,
   GPF_PRODUIT_LABEL,
   GPF_PRODUITS,
+  GPF_STATUTS_CLOS,
   GPF_STATUT_COLOR,
   GPF_STATUT_LABEL,
   GPF_STATUTS,
+  formatNom,
   type GpfClient,
   type GpfDocument,
   type GpfDossier
@@ -66,14 +70,15 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
     const effectifs = dossiers.filter((d) => d.statut === "effectif").length;
     const parProduit = new Map<string, number>();
     for (const d of dossiers) parProduit.set(d.produit, (parProduit.get(d.produit) ?? 0) + 1);
-    const precompteTotal = dossiers.reduce((sum, d) => sum + (d.precompte_lineaire_1ere_annee ?? 0), 0);
-    const lineaireTotal = dossiers.reduce((sum, d) => sum + (d.lineaire_n1 ?? 0), 0);
+    const dossiersActifs = dossiers.filter((d) => !GPF_STATUTS_CLOS.has(d.statut));
+    const precompteTotal = dossiersActifs.reduce((sum, d) => sum + (d.precompte_lineaire_1ere_annee ?? 0), 0);
+    const lineaireTotal = dossiersActifs.reduce((sum, d) => sum + (d.lineaire_n1 ?? 0), 0);
     return { enCours, effectifs, parProduit, precompteTotal, lineaireTotal, estClient: effectifs > 0 };
   }, [dossiers]);
 
   const selectedDossier = dossiers.find((d) => d.id === selectedDossierId) ?? null;
 
-  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
+  if (loading) return <SkeletonPage />;
   if (!client) return <p className="text-sm text-[#64717d]">Client introuvable.</p>;
 
   return (
@@ -87,7 +92,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-2">
             <h1 className="text-2xl text-[#071C2C]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
               {client.civilite ? `${client.civilite} ` : ""}
-              {client.prenom} {client.nom}
+              {formatNom(client)}
             </h1>
             <span
               className="text-[10px] font-semibold uppercase tracking-wide text-white rounded-full px-2 py-0.5"
@@ -295,15 +300,24 @@ function KpiTile({ label, value, accent }: { label: string; value: number; accen
 
 function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; onClose: () => void; onChanged: () => void }) {
   const [saving, setSaving] = useState(false);
+  const [pendingRefus, setPendingRefus] = useState(false);
+  const [motifRefus, setMotifRefus] = useState("");
 
-  const changeStatut = async (statut: string) => {
+  const changeStatut = async (statut: string, motif?: string) => {
+    // Passer en Refusé demande d'abord un motif : on ouvre le choix au lieu
+    // d'enregistrer tout de suite.
+    if (statut === "refuse" && dossier.statut !== "refuse" && !motif) {
+      setPendingRefus(true);
+      return;
+    }
     setSaving(true);
     await fetch(`/api/gpf/dossiers/${dossier.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ statut })
+      body: JSON.stringify(motif ? { statut, motif_refus: motif } : { statut })
     });
     setSaving(false);
+    setPendingRefus(false);
     onChanged();
   };
 
@@ -314,11 +328,17 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
     onClose();
   };
 
-  const montantPrincipal =
-    dossier.produit === "per" || dossier.produit === "assurance_vie" ? euro(dossier.placement_initial) : euro(dossier.montant_pret);
+  const prime =
+    dossier.produit === "per" || dossier.produit === "assurance_vie"
+      ? euro(dossier.placement_initial)
+      : dossier.prime_mensuelle != null
+        ? `${euro(dossier.prime_mensuelle)}/mois`
+        : dossier.prime_annuelle != null
+          ? `${euro(dossier.prime_annuelle)}/an`
+          : null;
 
   const kpis: [string, string | null][] = [
-    ["Montant", montantPrincipal],
+    ["Prime", prime],
     ["Frais de dossier", euro(dossier.frais_dossier)],
     ["Précompte / Linéaire 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
     ["Linéaire N+1", euro(dossier.lineaire_n1)]
@@ -329,6 +349,8 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
       ["Assureur", dossier.assureur_nom],
       ["Référence contrat", dossier.reference_contrat],
       ["Date d'effet", frDate(dossier.date_effet)],
+      ["Montant emprunté", euro(dossier.montant_pret)],
+      ["Motif de refus", dossier.motif_refus],
       ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
       ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
       ["Placement mensuel", euro(dossier.placement_mensuel)],
@@ -393,6 +415,30 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
               ))}
             </select>
           </div>
+
+          {pendingRefus ? (
+            <div className="flex items-center gap-2 mb-4 p-3 rounded-lg bg-[#fdf3f2] border border-[#f3d4d1]">
+              <span className="text-xs text-[#b3463f] shrink-0">Motif du refus :</span>
+              <select value={motifRefus} onChange={(e) => setMotifRefus(e.target.value)} className="rounded-lg border border-[#e2e5e9] px-2 py-1.5 text-xs flex-1 bg-white">
+                <option value="">— Choisir —</option>
+                {GPF_MOTIFS_REFUS.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => changeStatut("refuse", motifRefus)}
+                disabled={!motifRefus || saving}
+                className="rounded-full bg-[#b3463f] text-white text-xs font-semibold px-3 py-1.5 disabled:opacity-50"
+              >
+                Valider
+              </button>
+              <button onClick={() => setPendingRefus(false)} className="text-xs text-[#64717d]">
+                Annuler
+              </button>
+            </div>
+          ) : null}
 
           {details.length === 0 ? (
             <p className="text-xs text-[#9aa3ab]">Aucune autre information sur ce dossier.</p>

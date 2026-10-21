@@ -2,17 +2,38 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const LINKS = [
-  { href: "/gpf", label: "Tableau de bord", exact: true },
-  { href: "/gpf/dossiers", label: "Dossiers", exact: false },
-  { href: "/gpf/clients", label: "Clients", exact: false },
-  { href: "/gpf/corbeille", label: "Corbeille", exact: false },
-  { href: "/gpf/activite", label: "Journal d'activité", exact: false }
+type NavLink = { href: string; label: string; exact?: boolean };
+
+const SECTIONS: { titre?: string; links: NavLink[] }[] = [
+  {
+    links: [
+      { href: "/gpf", label: "Tableau de bord", exact: true },
+      { href: "/gpf/dossiers", label: "Dossiers" },
+      { href: "/gpf/clients", label: "Clients" }
+    ]
+  },
+  {
+    titre: "Qualité des données",
+    links: [
+      { href: "/gpf/donnees-incompletes", label: "Données incomplètes" },
+      { href: "/gpf/doublons", label: "Doublons" },
+      { href: "/gpf/noms-a-corriger", label: "Noms à corriger" }
+    ]
+  },
+  {
+    titre: "Cabinet",
+    links: [
+      { href: "/gpf/corbeille", label: "Corbeille" },
+      { href: "/gpf/activite", label: "Journal d'activité" }
+    ]
+  }
 ];
 
-function isActive(pathname: string | null, href: string, exact: boolean) {
+const ALL_LINKS = SECTIONS.flatMap((s) => s.links);
+
+function isActive(pathname: string | null, link: NavLink) {
   if (!pathname) return false;
-  return exact ? pathname === href : pathname.startsWith(href);
+  return link.exact ? pathname === link.href : pathname.startsWith(link.href);
 }
 
 export function GpfSidebar() {
@@ -35,21 +56,26 @@ export function GpfSidebar() {
           </span>
           <div className="h-px w-8 bg-[#CDAA5A] mt-2" />
         </div>
-        <nav className="flex-1 flex flex-col gap-1 px-3">
-          {LINKS.map((link) => {
-            const active = isActive(pathname, link.href, link.exact);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded-lg px-3 py-2 text-sm transition-colors border-l-2 ${
-                  active ? "bg-white/5 text-[#CDAA5A] font-semibold border-[#CDAA5A]" : "text-[#9aa7b4] border-transparent hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 flex flex-col gap-4 px-3 overflow-y-auto">
+          {SECTIONS.map((section, i) => (
+            <div key={section.titre ?? i} className="flex flex-col gap-1">
+              {section.titre ? <div className="px-3 pb-1 text-[10px] uppercase tracking-wider text-white/35">{section.titre}</div> : null}
+              {section.links.map((link) => {
+                const active = isActive(pathname, link);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`rounded-lg px-3 py-2 text-sm transition-colors border-l-2 ${
+                      active ? "bg-white/5 text-[#CDAA5A] font-semibold border-[#CDAA5A]" : "text-[#9aa7b4] border-transparent hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         <div className="p-3">
           <button
@@ -61,7 +87,7 @@ export function GpfSidebar() {
         </div>
       </aside>
 
-      {/* Mobile : barre horizontale en haut */}
+      {/* Mobile : barre horizontale en haut, défilable */}
       <header className="md:hidden sticky top-0 z-10 bg-[#071C2C] text-white px-4 py-3">
         <div className="flex items-center justify-between">
           <span className="tracking-tight" style={{ fontFamily: "var(--font-gpf-serif)" }}>
@@ -71,14 +97,14 @@ export function GpfSidebar() {
             Déconnexion
           </button>
         </div>
-        <nav className="flex gap-4 mt-3">
-          {LINKS.map((link) => {
-            const active = isActive(pathname, link.href, link.exact);
+        <nav className="flex gap-4 mt-3 overflow-x-auto -mx-4 px-4 pb-1">
+          {ALL_LINKS.map((link) => {
+            const active = isActive(pathname, link);
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm ${active ? "text-[#CDAA5A] font-semibold" : "text-[#9aa7b4]"}`}
+                className={`text-sm whitespace-nowrap ${active ? "text-[#CDAA5A] font-semibold" : "text-[#9aa7b4]"}`}
               >
                 {link.label}
               </Link>

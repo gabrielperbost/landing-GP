@@ -1,7 +1,15 @@
 "use client";
+import { SkeletonPage } from "@/components/gpf/Skeleton";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { GPF_PRODUIT_LABEL, GPF_STATUT_COLOR, GPF_STATUT_LABEL, type GpfClientListItem, type GpfDossierWithClient } from "@/lib/gpf/types";
+import {
+  GPF_PRODUIT_LABEL,
+  GPF_STATUTS_CLOS,
+  GPF_STATUT_COLOR,
+  GPF_STATUT_LABEL,
+  formatNom,
+  type GpfDossierWithClient
+} from "@/lib/gpf/types";
 
 const EN_COURS: ReadonlySet<string> = new Set([
   "a_traiter",
@@ -20,16 +28,23 @@ const euro = (v: number) => new Intl.NumberFormat("fr-FR", { style: "currency", 
 
 export default function GpfDashboardPage() {
   const [dossiers, setDossiers] = useState<GpfDossierWithClient[]>([]);
-  const [clients, setClients] = useState<GpfClientListItem[]>([]);
+  const [clientCounts, setClientCounts] = useState({ tous: 0, client: 0, prospect: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const [dRes, cRes] = await Promise.all([fetch("/api/gpf/dossiers"), fetch("/api/gpf/clients")]);
+      // Le tableau de bord a besoin de tous les dossiers pour des totaux
+      // justes (clos inclus pour les compteurs, exclus seulement du calcul
+      // des revenus) — on dépasse donc volontairement la pagination par
+      // défaut de l'API (50 lignes), pensée pour la page Dossiers.
+      const [dRes, cRes] = await Promise.all([
+        fetch("/api/gpf/dossiers?pageSize=2000&clos=1"),
+        fetch("/api/gpf/clients?pageSize=1")
+      ]);
       const dData = await dRes.json();
       const cData = await cRes.json();
       if (dData.ok) setDossiers(dData.dossiers);
-      if (cData.ok) setClients(cData.clients);
+      if (cData.ok) setClientCounts(cData.counts);
       setLoading(false);
     })();
   }, []);
@@ -40,19 +55,30 @@ export default function GpfDashboardPage() {
     const parProduit = new Map<string, number>();
     for (const d of dossiers) parProduit.set(d.produit, (parProduit.get(d.produit) ?? 0) + 1);
     const recents = [...dossiers].sort((a, b) => (a.created_at < b.created_at ? 1 : -1)).slice(0, 8);
-    const precompteTotal = dossiers.reduce((sum, d) => sum + (d.precompte_lineaire_1ere_annee ?? 0), 0);
-    const lineaireTotal = dossiers.reduce((sum, d) => sum + (d.lineaire_n1 ?? 0), 0);
+    // Un dossier Refusé/Sans suite ne doit jamais compter dans les revenus,
+    // même s'il porte encore une valeur de précompte/linéaire héritée de Monday.
+    const dossiersActifs = dossiers.filter((d) => !GPF_STATUTS_CLOS.has(d.statut));
+    const precompteTotal = dossiersActifs.reduce((sum, d) => sum + (d.precompte_lineaire_1ere_annee ?? 0), 0);
+    const lineaireTotal = dossiersActifs.reduce((sum, d) => sum + (d.lineaire_n1 ?? 0), 0);
     const lineaireParProduit = new Map<string, number>();
-    for (const d of dossiers) {
+    for (const d of dossiersActifs) {
       const v = (d.precompte_lineaire_1ere_annee ?? 0) + (d.lineaire_n1 ?? 0);
       if (v > 0) lineaireParProduit.set(d.produit, (lineaireParProduit.get(d.produit) ?? 0) + v);
     }
-    const nbClients = clients.filter((c) => c.est_client).length;
-    const nbProspects = clients.length - nbClients;
-    return { enCours, effectifs, parProduit, recents, precompteTotal, lineaireTotal, lineaireParProduit, nbClients, nbProspects };
-  }, [dossiers, clients]);
+    return {
+      enCours,
+      effectifs,
+      parProduit,
+      recents,
+      precompteTotal,
+      lineaireTotal,
+      lineaireParProduit,
+      nbClients: clientCounts.client,
+      nbProspects: clientCounts.prospect
+    };
+  }, [dossiers, clientCounts]);
 
-  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
+  if (loading) return <SkeletonPage />;
 
   return (
     <div className="flex flex-col gap-6">
@@ -127,7 +153,7 @@ export default function GpfDashboardPage() {
             href={d.client ? `/gpf/clients/${d.client.id}` : "#"}
             className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#f1f2f4] last:border-0 hover:bg-[#fafbfc] text-sm"
           >
-            <span className="font-medium text-[#071C2C] truncate">{d.client ? `${d.client.prenom} ${d.client.nom}` : "—"}</span>
+            <span className="font-medium text-[#071C2C] truncate">{formatNom(d.client)}</span>
             <span className="text-[#64717d] text-xs hidden sm:inline">{GPF_PRODUIT_LABEL[d.produit]}</span>
             <span className="text-[#9aa3ab] text-xs hidden sm:inline">{frDate(d.created_at)}</span>
             <span

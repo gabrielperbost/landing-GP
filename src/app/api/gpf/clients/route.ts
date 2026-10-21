@@ -6,56 +6,57 @@ import { logActivity } from "@/lib/gpf/activityLog";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Liste paginée côté serveur (50 par défaut) avec les compteurs Tous / Clients
+// / Prospects calculés ici, pour que le navigateur ne reçoive jamais plus
+// d'une page et que les onglets affichent leurs vrais chiffres dès le départ.
 export async function GET(request: NextRequest) {
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 
-  const q = request.nextUrl.searchParams.get("q")?.trim();
-  const produitFilter = request.nextUrl.searchParams.get("produit")?.trim();
-  const segment = request.nextUrl.searchParams.get("segment")?.trim(); // "client" | "prospect"
+  const params = request.nextUrl.searchParams;
+  const q = params.get("q")?.trim();
+  const produitFilter = params.get("produit")?.trim();
+  const segment = params.get("segment")?.trim(); // "client" | "prospect"
+  const page = Math.max(1, Number(params.get("page") ?? "1") || 1);
+  const pageSize = Math.min(2000, Math.max(1, Number(params.get("pageSize") ?? "50") || 50));
 
   let query = supabaseAdmin.from("gpf_clients").select("*").is("deleted_at", null).order("nom", { ascending: true });
-  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,email.ilike.%${q}%`);
+  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,email.ilike.%${q}%,telephone.ilike.%${q}%`);
 
-  const { data, error } = await query;
+  const [{ data, error }, { data: dossiers }] = await Promise.all([
+    query,
+    supabaseAdmin.from("gpf_dossiers").select("client_id, co_client_id, produit, statut").is("deleted_at", null)
+  ]);
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
 
-  // Produits de chaque client, pour les afficher directement dans la liste (vue "par catégorie")
-  // sans devoir ouvrir chaque fiche. Un client peut apparaître comme emprunteur principal OU
-  // co-emprunteur sur un dossier.
-  const clientIds = (data ?? []).map((c) => c.id);
-  let produitsByClient = new Map<string, string[]>();
-  let statutsByClient = new Map<string, string[]>();
-  if (clientIds.length) {
-    const { data: dossiers } = await supabaseAdmin
-      .from("gpf_dossiers")
-      .select("client_id, co_client_id, produit, statut")
-      .or(`client_id.in.(${clientIds.join(",")}),co_client_id.in.(${clientIds.join(",")})`)
-      .is("deleted_at", null);
-    for (const d of dossiers ?? []) {
-      for (const cid of [d.client_id, d.co_client_id].filter(Boolean) as string[]) {
-        if (!produitsByClient.has(cid)) produitsByClient.set(cid, []);
-        if (!produitsByClient.get(cid)!.includes(d.produit)) produitsByClient.get(cid)!.push(d.produit);
-        if (!statutsByClient.has(cid)) statutsByClient.set(cid, []);
-        if (!statutsByClient.get(cid)!.includes(d.statut)) statutsByClient.get(cid)!.push(d.statut);
-      }
+  // Un client peut apparaître comme emprunteur principal OU co-emprunteur.
+  const produitsByClient = new Map<string, Set<string>>();
+  const statutsByClient = new Map<string, Set<string>>();
+  for (const d of dossiers ?? []) {
+    for (const cid of [d.client_id, d.co_client_id].filter(Boolean) as string[]) {
+      if (!produitsByClient.has(cid)) produitsByClient.set(cid, new Set());
+      produitsByClient.get(cid)!.add(d.produit);
+      if (!statutsByClient.has(cid)) statutsByClient.set(cid, new Set());
+      statutsByClient.get(cid)!.add(d.statut);
     }
   }
 
   let clients = (data ?? []).map((c) => {
-    const statuts = statutsByClient.get(c.id) ?? [];
-    return {
-      ...c,
-      produits: produitsByClient.get(c.id) ?? [],
-      statuts,
-      est_client: statuts.includes("effectif")
-    };
+    const statuts = [...(statutsByClient.get(c.id) ?? [])];
+    return { ...c, produits: [...(produitsByClient.get(c.id) ?? [])], statuts, est_client: statuts.includes("effectif") };
   });
 
   if (produitFilter) clients = clients.filter((c) => c.produits.includes(produitFilter));
+
+  const nbClients = clients.filter((c) => c.est_client).length;
+  const counts = { tous: clients.length, client: nbClients, prospect: clients.length - nbClients };
+
   if (segment === "client") clients = clients.filter((c) => c.est_client);
   if (segment === "prospect") clients = clients.filter((c) => !c.est_client);
 
-  return NextResponse.json({ ok: true, clients });
+  const total = clients.length;
+  const pageItems = clients.slice((page - 1) * pageSize, page * pageSize);
+
+  return NextResponse.json({ ok: true, clients: pageItems, total, page, pageSize, counts });
 }
 
 export async function POST(request: NextRequest) {

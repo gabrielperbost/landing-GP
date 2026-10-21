@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonPage } from "@/components/gpf/Skeleton";
 import { useEffect, useState } from "react";
 
 type LogEntry = {
@@ -45,7 +46,7 @@ export default function GpfActivitePage() {
       });
   }, []);
 
-  if (loading) return <p className="text-sm text-[#64717d]">Chargement...</p>;
+  if (loading) return <SkeletonPage />;
 
   return (
     <div className="flex flex-col gap-4">

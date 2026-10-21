@@ -1,42 +1,53 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, type GpfClientListItem } from "@/lib/gpf/types";
+import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_STATUT_LABEL, formatNom, type GpfClientListItem } from "@/lib/gpf/types";
+import { SkeletonLines } from "@/components/gpf/Skeleton";
 
 type Segment = "tous" | "client" | "prospect";
+const PAGE_SIZE = 50;
 
 export default function GpfClientsPage() {
-  const [all, setAll] = useState<GpfClientListItem[]>([]);
+  const [clients, setClients] = useState<GpfClientListItem[]>([]);
+  const [counts, setCounts] = useState<{ tous: number; client: number; prospect: number } | null>(null);
+  const [total, setTotal] = useState(0);
   const [q, setQ] = useState("");
   const [produit, setProduit] = useState("");
   const [segment, setSegment] = useState<Segment>("tous");
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
-  const load = async (query = "", produitFilter = "") => {
+  const load = async () => {
     setLoading(true);
-    const params = new URLSearchParams();
-    if (query) params.set("q", query);
-    if (produitFilter) params.set("produit", produitFilter);
-    const res = await fetch(`/api/gpf/clients${params.toString() ? `?${params}` : ""}`);
+    const params = new URLSearchParams({ page: String(page), pageSize: String(PAGE_SIZE) });
+    if (q) params.set("q", q);
+    if (produit) params.set("produit", produit);
+    if (segment !== "tous") params.set("segment", segment);
+    const res = await fetch(`/api/gpf/clients?${params}`);
     const data = await res.json();
-    if (data.ok) setAll(data.clients);
+    if (data.ok) {
+      setClients(data.clients);
+      setCounts(data.counts);
+      setTotal(data.total);
+    }
     setLoading(false);
   };
 
+  // Recherche tapée : on attend une courte pause avant d'interroger le serveur.
   useEffect(() => {
-    load();
-  }, []);
-
-  useEffect(() => {
-    const t = setTimeout(() => load(q, produit), 250);
+    const t = setTimeout(() => load(), q ? 250 : 0);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, produit]);
+  }, [q, produit, segment, page]);
 
-  const clients = all.filter((c) => (segment === "client" ? c.est_client : segment === "prospect" ? !c.est_client : true));
-  const nbClients = all.filter((c) => c.est_client).length;
-  const nbProspects = all.length - nbClients;
+  const changeFilter = (fn: () => void) => {
+    fn();
+    setPage(1);
+  };
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const tabLabel = (label: string, n: number | undefined) => (counts ? `${label} (${n})` : label);
 
   return (
     <div>
@@ -47,24 +58,24 @@ export default function GpfClientsPage() {
         </button>
       </div>
 
-      {showForm ? <NewClientForm onCreated={() => { setShowForm(false); load(q); }} /> : null}
+      {showForm ? <NewClientForm onCreated={() => { setShowForm(false); load(); }} /> : null}
 
       <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        <SegmentTab active={segment === "tous"} label={`Tous (${all.length})`} onClick={() => setSegment("tous")} />
-        <SegmentTab active={segment === "client"} label={`Clients (${nbClients})`} color="#2f9e6e" onClick={() => setSegment("client")} />
-        <SegmentTab active={segment === "prospect"} label={`Prospects (${nbProspects})`} color="#c98a1f" onClick={() => setSegment("prospect")} />
+        <SegmentTab active={segment === "tous"} label={tabLabel("Tous", counts?.tous)} onClick={() => changeFilter(() => setSegment("tous"))} />
+        <SegmentTab active={segment === "client"} label={tabLabel("Clients", counts?.client)} color="#2f9e6e" onClick={() => changeFilter(() => setSegment("client"))} />
+        <SegmentTab active={segment === "prospect"} label={tabLabel("Prospects", counts?.prospect)} color="#c98a1f" onClick={() => changeFilter(() => setSegment("prospect"))} />
       </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         <input
           value={q}
-          onChange={(e) => setQ(e.target.value)}
+          onChange={(e) => changeFilter(() => setQ(e.target.value))}
           placeholder="Rechercher un client (nom, prénom, e-mail)..."
           style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 15, boxSizing: "border-box" }}
         />
         <select
           value={produit}
-          onChange={(e) => setProduit(e.target.value)}
+          onChange={(e) => changeFilter(() => setProduit(e.target.value))}
           style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #e2e5e9", fontSize: 14, background: "#fff" }}
         >
           <option value="">Tous les produits</option>
@@ -77,12 +88,15 @@ export default function GpfClientsPage() {
       </div>
 
       {loading ? (
-        <p style={{ color: "#64717d" }}>Chargement...</p>
+        <SkeletonLines rows={8} />
       ) : clients.length === 0 ? (
         <p style={{ color: "#64717d" }}>Aucun client{produit ? ` pour « ${GPF_PRODUIT_LABEL[produit as keyof typeof GPF_PRODUIT_LABEL]} »` : ""}.</p>
       ) : (
         <>
-          <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 10px" }}>{clients.length} résultat{clients.length > 1 ? "s" : ""}</p>
+          <p style={{ fontSize: 12, color: "#64717d", margin: "0 0 10px" }}>
+            {total} résultat{total > 1 ? "s" : ""}
+            {totalPages > 1 ? ` · page ${page} / ${totalPages}` : ""}
+          </p>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
             {clients.map((c) => (
               <li key={c.id}>
@@ -100,7 +114,7 @@ export default function GpfClientsPage() {
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <strong>{c.prenom} {c.nom}</strong>
+                      <strong>{formatNom(c)}</strong>
                       <span
                         style={{
                           fontSize: 10,
@@ -143,6 +157,27 @@ export default function GpfClientsPage() {
               </li>
             ))}
           </ul>
+          {totalPages > 1 ? (
+            <div className="flex items-center justify-center gap-3 mt-4">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className="text-xs text-[#64717d] disabled:opacity-30 rounded-full border border-[#e2e5e9] px-3 py-1.5 bg-white"
+              >
+                ← Précédent
+              </button>
+              <span className="text-xs text-[#9aa3ab]">
+                Page {page} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="text-xs text-[#64717d] disabled:opacity-30 rounded-full border border-[#e2e5e9] px-3 py-1.5 bg-white"
+              >
+                Suivant →
+              </button>
+            </div>
+          ) : null}
         </>
       )}
     </div>
