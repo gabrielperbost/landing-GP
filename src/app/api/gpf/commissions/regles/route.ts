@@ -14,8 +14,8 @@ export async function GET() {
     supabaseAdmin.from("gpf_commission_rules").select("*").order("produit"),
     supabaseAdmin.from("gpf_insurers").select("id, nom").order("nom")
   ]);
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-  return NextResponse.json({ ok: true, regles: data ?? [], insurers: insurers ?? [] });
+  // Avant la migration 008, la table des règles n'existe pas : liste vide, compagnies quand même.
+  return NextResponse.json({ ok: true, regles: error ? [] : data ?? [], insurers: insurers ?? [], disponible: !error });
 }
 
 // Création ou mise à jour (une règle par compagnie et par produit).
