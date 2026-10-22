@@ -4,6 +4,7 @@ import {
   getPerWebhookSecret,
   ingestPerCampaignLead
 } from "@/lib/tallyPerCampaign";
+import { ingererLead } from "@/lib/gpf/leads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,6 +37,10 @@ export async function POST(request: NextRequest) {
   try {
     const lead = extractTallyPerLead(body);
     const result = await ingestPerCampaignLead({ lead, baseUrl: getBaseUrl(request) });
+    // Copie dans le CRM GPF (sans bloquer le parcours existant en cas d'erreur).
+    await ingererLead({ source: "Tally", sourceRef: lead.tallyResponseId || null, prenom: lead.prenom, nom: lead.nom ?? null, email: lead.email, telephone: lead.telephone ?? null, produit: "per" }).catch((e) =>
+      console.error("gpf-ingest-tally-per", e)
+    );
     if (!result.ok) return NextResponse.json(result, { status: 400 });
     return NextResponse.json(result);
   } catch (error) {

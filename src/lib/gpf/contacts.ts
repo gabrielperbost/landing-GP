@@ -38,7 +38,7 @@ export async function findDuplicate(email?: string | null, telephone?: string | 
   return (data ?? []).find((c) => (e && c.email?.trim().toLowerCase() === e) || (ph && normPhone(c.telephone) === ph)) ?? null;
 }
 
-type CreateOptions = { forcer?: boolean; lead?: boolean; origine: string };
+type CreateOptions = { forcer?: boolean; lead?: boolean; origine: string; silencieux?: boolean };
 
 /**
  * Crée un contact. Un nouveau lead génère une tâche « Appeler dans l'heure »
@@ -72,7 +72,7 @@ export async function createContact(body: Record<string, unknown>, opts: CreateO
       auto: true,
       origine: "nouveau_lead"
     });
-    await notify("nouveau_lead", `Nouveau lead : ${data.prenom} ${data.nom}`, [data.provenance, data.telephone].filter(Boolean).join(" · ") || undefined, `/gpf/contacts/${data.id}`);
+    if (!opts.silencieux) await notify("nouveau_lead", `Nouveau lead : ${data.prenom} ${data.nom}`, [data.provenance, data.telephone].filter(Boolean).join(" · ") || undefined, `/gpf/contacts/${data.id}`);
   }
   return { ok: true as const, client: data };
 }

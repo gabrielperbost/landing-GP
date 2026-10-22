@@ -37,8 +37,11 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   if ("prenom" in patch && !patch.prenom) return NextResponse.json({ ok: false, error: "prenom_requis" }, { status: 400 });
   if ("nom" in patch && !patch.nom) return NextResponse.json({ ok: false, error: "nom_requis" }, { status: 400 });
 
+  const { data: avant } = "score" in patch ? await supabaseAdmin.from("gpf_clients").select("score").eq("id", id).single() : { data: null };
   const { data, error } = await supabaseAdmin.from("gpf_clients").update(patch).eq("id", id).select("*").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  // Un score changé à la main n'est plus recalculé automatiquement (colonne de la migration 011).
+  if (avant && avant.score !== patch.score) await supabaseAdmin.from("gpf_clients").update({ score_manuel: true }).eq("id", id);
   await logActivity("update", "client", id, `${data.prenom} ${data.nom}`.trim());
   return NextResponse.json({ ok: true, client: data });
 }

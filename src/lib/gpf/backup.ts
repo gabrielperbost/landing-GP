@@ -28,7 +28,13 @@ export const GPF_BACKUP_TABLES = [
   "gpf_courriers",
   "gpf_document_access",
   "gpf_apporteur_paiements",
-  "gpf_assistant_conversations"
+  "gpf_assistant_conversations",
+  "gpf_lead_events",
+  "gpf_sequences",
+  "gpf_sequence_envois",
+  "gpf_segments",
+  "gpf_campagnes",
+  "gpf_campagne_envois"
 ];
 
 const MAGIC = Buffer.from("GPFB1");

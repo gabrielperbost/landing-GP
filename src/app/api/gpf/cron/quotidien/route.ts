@@ -4,9 +4,11 @@ import { GPF_PRODUIT_LABEL, GPF_STATUTS_SIGNES, type GpfProduit } from "@/lib/gp
 import { prochaineEcheance } from "@/lib/gpf/contrats";
 import { notify } from "@/lib/gpf/notify";
 import { recueilPerime } from "@/lib/gpf/conformite";
+import { envoyerLot, executerSequences, recalculerScores } from "@/lib/gpf/campagnes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 function isAuthorized(request: NextRequest) {
   const secret = process.env.CRON_SECRET;
@@ -77,5 +79,12 @@ export async function GET(request: NextRequest) {
     recueils++;
   }
 
-  return NextResponse.json({ ok: true, echeances, leads, recueils });
+  // Lot 9 : score des nouveaux leads, séquences e-mail actives, campagnes en cours.
+  const scores = await recalculerScores().catch(() => ({ maj: 0 }));
+  const sequences = await executerSequences().catch(() => ({ envoyes: 0 }));
+  let campagnes = 0;
+  const { data: enCours } = await supabaseAdmin.from("gpf_campagnes").select("id").eq("statut", "en_cours");
+  for (const c of enCours ?? []) campagnes += (await envoyerLot(c.id, 100).catch(() => ({ envoyes: 0 }))).envoyes;
+
+  return NextResponse.json({ ok: true, echeances, leads, recueils, scores: scores.maj, sequences: sequences.envoyes, campagnes });
 }
