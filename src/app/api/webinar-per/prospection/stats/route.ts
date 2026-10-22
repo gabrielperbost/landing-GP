@@ -62,6 +62,15 @@ export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const url = new URL(request.url);
   const today = parisDateKey();
+
+  // Contrôle : nombre d'événements par type pour une étiquette donnée (?tag=...).
+  const tagCheck = url.searchParams.get("tag");
+  if (tagCheck) {
+    const events = await readEvents(tagCheck, url.searchParams.get("from") || "2026-10-22", today);
+    const byType: Record<string, number> = {};
+    for (const e of events) byType[String(e.event)] = (byType[String(e.event)] ?? 0) + 1;
+    return NextResponse.json({ ok: true, tag: tagCheck, total: events.length, byType, exemple: events[0] ?? null });
+  }
   // Toutes les vagues, depuis le début de la campagne (un lot pilote peut partir avant la date prévue).
   const perWave = (
     await Promise.all(PER_PROSPECTION_SCHEDULE.map(async (w) => ({ wave: w, events: await readEvents(prospectionTag(w.id), "2026-10-22", today) })))
