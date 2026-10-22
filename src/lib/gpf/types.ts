@@ -191,7 +191,7 @@ export const GPF_MOTIFS_REFUS = ["Tarif", "Refus banque", "Concurrent", "Injoign
 export type GpfMotifRefus = (typeof GPF_MOTIFS_REFUS)[number];
 
 export type GpfDossierWithClient = GpfDossier & {
-  client: { id: string; prenom: string; nom: string } | null;
+  client: { id: string; prenom: string; nom: string; nrp_count?: number } | null;
   co_client: { id: string; prenom: string; nom: string } | null;
 };
 

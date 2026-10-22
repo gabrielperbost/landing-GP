@@ -69,8 +69,12 @@ export async function GET(request: NextRequest) {
   const clientIds = Array.from(new Set((dossiers ?? []).flatMap((d) => [d.client_id, d.co_client_id]).filter(Boolean) as string[]));
   let clientById = new Map<string, { id: string; prenom: string; nom: string }>();
   if (clientIds.length) {
-    const { data: clients } = await supabaseAdmin.from("gpf_clients").select("id, prenom, nom").in("id", clientIds);
-    clientById = new Map((clients ?? []).map((c) => [c.id, c]));
+    // nrp_count existe depuis la migration 007 (pastille NRP du Kanban).
+    const avecNrp = await supabaseAdmin.from("gpf_clients").select("id, prenom, nom, nrp_count").in("id", clientIds);
+    const clients: { id: string; prenom: string; nom: string }[] | null = avecNrp.error
+      ? (await supabaseAdmin.from("gpf_clients").select("id, prenom, nom").in("id", clientIds)).data
+      : avecNrp.data;
+    clientById = new Map((clients ?? []).map((c) => [c.id, c as { id: string; prenom: string; nom: string }]));
   }
 
   const items = (dossiers ?? []).map((d) => ({
