@@ -244,7 +244,7 @@ legalPage('mentions-legales.html','Mentions légales','Mentions légales du site
 <h2>Éditeur du site</h2>
 <p><strong>GP FINANCES</strong>, courtier en assurance et en opérations de banque.<br>Représentant : Gabriel Perbost.<br>RCS Nanterre 899 363 907.<br>Siège social : 2 rue Éliane Jeannin Garreau, 92130 Issy-les-Moulineaux.<br>Bureaux (sur rendez-vous) : 24 rue du Gouverneur Général Éboué, 92130 Issy-les-Moulineaux.<br>Téléphone : <a href="tel:+33651224213">06 51 22 42 13</a> · E-mail : <a href="mailto:gabriel.perbost@gp-finances.fr">gabriel.perbost@gp-finances.fr</a><br>Directeur de la publication : Gabriel Perbost.</p>
 <h2>Immatriculation et contrôle</h2>
-<p>Intermédiaire immatriculé à l’ORIAS sous le n° 23003789 (courtier en assurance et courtier en opérations de banque et services de paiement). Vous pouvez vérifier cette immatriculation sur <a href="https://www.orias.fr" target="_blank" rel="noopener">www.orias.fr</a>. Le cabinet est référencé à l’annuaire de la <a href="https://www.cncef.org/annuaire/perbost-gabriel/" target="_blank" rel="noopener">CNCEF</a>.</p>
+<p>Intermédiaire immatriculé à l’ORIAS sous le n° 23003789 (courtier en assurance et courtier en opérations de banque et services de paiement). Vous pouvez vérifier cette immatriculation sur <a href="https://www.orias.fr" target="_blank" rel="noopener">www.orias.fr</a>. Le cabinet est adhérent de l’ANACOFI-Courtage, association professionnelle de courtiers.</p>
 <p>Autorité de contrôle : Autorité de contrôle prudentiel et de résolution (ACPR), 4 place de Budapest, CS 92459, 75436 Paris Cedex 09.</p>
 <h2>Hébergement</h2>
 <p>Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis.</p>
