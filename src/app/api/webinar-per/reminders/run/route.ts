@@ -3,7 +3,7 @@ import { getWebinarPerParticipants, markWebinarPerReminderSent, type WebinarPerR
 import { buildWebinarPerEmail } from "@/lib/webinarPerEmails";
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms } from "@/lib/brevoSms";
-import { WEBINAR_PER, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
+import { WEBINAR_PER, WEBINAR_PER_CAMPAIGN_START, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,34 +13,46 @@ const normalizeEnv = (value: string | undefined) => {
   return trimmed || undefined;
 };
 
-type ScheduleTemplate = "reminder_11d" | "reminder_9d" | "reminder_7d" | "reminder_5d" | "reminder_3d" | "reminder_1d" | "reminder_morning";
+type ScheduleTemplate = "reminder_3d" | "reminder_2d" | "reminder_1d" | "reminder_morning" | "reminder_1h";
 
 type ScheduleItem = {
   dateKey: string; // date (heure de Paris) à laquelle envoyer, format AAAA-MM-JJ
+  fromHour: number; // fenêtre d'envoi en heure de Paris : [fromHour, toHour[
+  toHour: number;
   reminderKey: WebinarPerReminderKey;
   template: ScheduleTemplate;
   alsoSms: boolean;
 };
 
-// Webinaire le dimanche 11 octobre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement,
-// espacés d'environ 2 jours pour garder le contact pendant toute la durée de la campagne ads.
+// Webinaire le dimanche 1er novembre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement.
+// Tâche quotidienne à 8h10 (heure de Paris) + une tâche le 1er novembre à 14h pour le rappel H-1.
+// Le Google Sheet n'ayant pas de colonnes J-2 et H-1, on réutilise les colonnes « Rappel 5j » (J-2)
+// et « Rappel 7j » (H-1), libres pour ce webinaire.
 const SCHEDULE: ScheduleItem[] = [
-  { dateKey: "2026-09-30", reminderKey: "reminder_11d_sent_at", template: "reminder_11d", alsoSms: false },
-  { dateKey: "2026-10-02", reminderKey: "reminder_9d_sent_at", template: "reminder_9d", alsoSms: false },
-  { dateKey: "2026-10-04", reminderKey: "reminder_7d_sent_at", template: "reminder_7d", alsoSms: false },
-  { dateKey: "2026-10-06", reminderKey: "reminder_5d_sent_at", template: "reminder_5d", alsoSms: false },
-  { dateKey: "2026-10-08", reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
-  { dateKey: "2026-10-10", reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
-  { dateKey: "2026-10-11", reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true }
+  { dateKey: "2026-10-29", fromHour: 6, toHour: 23, reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
+  { dateKey: "2026-10-30", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
+  { dateKey: "2026-10-31", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
+  { dateKey: "2026-11-01", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
+  { dateKey: "2026-11-01", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false }
 ];
 
+// Les inscriptions et marquages antérieurs concernent le webinaire du 11 octobre : ignorés.
+const campaignStart = Date.parse(WEBINAR_PER_CAMPAIGN_START);
+const isCurrent = (value: string | undefined) => {
+  const time = Date.parse(String(value ?? ""));
+  return Number.isFinite(time) && time >= campaignStart;
+};
+
 const SMS_TEXT_BY_TEMPLATE: Partial<Record<ScheduleItem["template"], string>> = {
-  reminder_1d: `GP Finances : rappel, webinaire PER demain ${WEBINAR_PER.timeLabel}. Lien par e-mail. STOP au 06 51 22 42 13.`,
-  reminder_morning: `GP Finances : votre webinaire PER commence aujourd'hui à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Lien par e-mail. STOP au 06 51 22 42 13.`
+  reminder_1d: `GP Finances : rappel, webinaire PER demain à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`,
+  reminder_morning: `GP Finances : votre webinaire PER commence aujourd'hui à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`
 };
 
 const getLocalDateKey = (date = new Date()) =>
   new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+
+const getLocalHour = (date = new Date()) =>
+  Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Paris", hour: "2-digit", hourCycle: "h23" }).format(date));
 
 const getReminderSecret = () => normalizeEnv(process.env.WEBINAR_PER_REMINDER_SECRET) ?? normalizeEnv(process.env.CRON_SECRET);
 
@@ -64,8 +76,9 @@ async function handle(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 
   const today = getLocalDateKey();
-  const due = SCHEDULE.find((item) => item.dateKey === today);
-  if (!due) return NextResponse.json({ ok: true, ran: false, reason: "no_reminder_due_today", today });
+  const hour = getLocalHour();
+  const due = SCHEDULE.find((item) => item.dateKey === today && hour >= item.fromHour && hour < item.toHour);
+  if (!due) return NextResponse.json({ ok: true, ran: false, reason: "no_reminder_due_now", today, hour });
 
   const emailConfig = getBrevoTransactionalConfig();
   const smsConfig = due.alsoSms ? getBrevoSmsConfig() : null;
@@ -81,7 +94,8 @@ async function handle(request: NextRequest) {
 
   const targets = participants
     .filter((p) => p.status.trim().toLowerCase() === "registered")
-    .filter((p) => !p[due.reminderKey])
+    .filter((p) => isCurrent(p.created_at))
+    .filter((p) => !isCurrent(p[due.reminderKey] as string | undefined))
     .slice(0, batchSize);
 
   const unsubscribeBase = `${getWebinarPerBaseUrl()}${WEBINAR_PER.unsubscribePath}`;

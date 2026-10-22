@@ -3,13 +3,11 @@ import { getWebinarPerCalendarLinks } from "@/lib/webinarPerCalendar";
 
 export type WebinarPerEmailTemplate =
   | "confirmation"
-  | "reminder_11d"
-  | "reminder_9d"
-  | "reminder_7d"
-  | "reminder_5d"
   | "reminder_3d"
+  | "reminder_2d"
   | "reminder_1d"
   | "reminder_morning"
+  | "reminder_1h"
   | "replay";
 
 export type WebinarPerContact = { prenom: string; email: string };
@@ -165,106 +163,78 @@ export const buildWebinarPerEmail = (
             <p style="margin:14px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
         })
       };
-    case "reminder_11d":
-      return {
-        subject: "Merci pour votre inscription au webinaire PER",
-        text: `Merci pour votre inscription au webinaire PER du ${dateTime}. En attendant, la vidéo « 5 erreurs à éviter avec le PER » : ${WEBINAR_PER.videoUrl}`,
-        html: shell({
-          title: "Merci pour votre inscription",
-          contact,
-          unsubscribeUrl,
-          contentHtml: `
-            <p style="margin:0 0 12px;">Votre place est réservée pour le ${dateTime}. En attendant, si vous voulez une première mise en jambe, voici une courte vidéo où j'explique les 5 erreurs les plus fréquentes avec le PER :</p>
-            <div style="margin:10px 0 16px;">${button(WEBINAR_PER.videoUrl, "Regarder la vidéo (3 min)")}</div>
-            ${videoTestimonialsBlock(registrationUrl)}
-            ${reviewsBlock([2, 3])}`
-        })
-      };
-    case "reminder_9d":
-      return {
-        subject: "Une question à me poser avant le webinaire PER ?",
-        text: `Le webinaire PER a lieu le ${dateTime}. Une question à me poser en avance ? Répondez à cet e-mail.`,
-        html: shell({
-          title: "Une question pour le webinaire ?",
-          contact,
-          unsubscribeUrl,
-          contentHtml: `
-            <p style="margin:0 0 12px;">Le webinaire approche : ${dateTime}. Si vous avez déjà une question sur votre situation (âge, tranche d'imposition, projet de retraite…), répondez à cet e-mail : je pourrai y répondre pendant la session.</p>
-            ${meetingBlock}
-            ${reviewsBlock([4, 0])}`
-        })
-      };
-    case "reminder_7d":
-      return {
-        subject: "J-7 : votre webinaire PER approche",
-        text: `Plus qu'une semaine avant le webinaire PER du ${dateTime}.`,
-        html: shell({
-          title: "Plus qu'une semaine avant le webinaire",
-          contact,
-          unsubscribeUrl,
-          contentHtml: `
-            <p style="margin:0 0 12px;">Rendez-vous dans une semaine pour parler retraite et fiscalité. Une question à laquelle vous aimeriez que je réponde pendant le webinaire ? Répondez simplement à cet e-mail.</p>
-            ${meetingBlock}
-            ${videoTestimonialsBlock(registrationUrl)}
-            ${reviewsBlock([1, 2])}`
-        })
-      };
-    case "reminder_5d":
-      return {
-        subject: "J-5 : ce que vous allez apprendre au webinaire PER",
-        text: `Le webinaire PER a lieu dans 5 jours, ${dateTime}.`,
-        html: shell({
-          title: "Dans 5 jours",
-          contact,
-          unsubscribeUrl,
-          contentHtml: `
-            <p style="margin:0 0 12px;">Au programme le ${dateTime} : comprendre le PER simplement, calculer votre économie d'impôt selon votre tranche, et éviter les erreurs les plus fréquentes avant de verser. 15 minutes de questions en direct à la fin.</p>
-            ${meetingBlock}
-            ${reviewsBlock([3, 4])}`
-        })
-      };
     case "reminder_3d":
       return {
-        subject: "J-3 : webinaire PER dimanche prochain",
-        text: `Le webinaire PER a lieu dans 3 jours, ${dateTime}.`,
+        subject: "J-3 : votre webinaire PER dimanche à 15h",
+        text: `Le webinaire PER a lieu dans 3 jours, ${dateTime}. Une question à poser en avance ? Répondez à cet e-mail.`,
         html: shell({
-          title: "Dans 3 jours",
+          title: "Plus que 3 jours",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">Le webinaire PER approche. Gardez ce créneau : ${dateTime}.</p>
+            <p style="margin:0 0 12px;">Votre place est réservée pour le ${dateTime}. Ajoutez-le à votre agenda si ce n'est pas déjà fait.</p>
+            <p style="margin:0 0 12px;">Une question sur votre situation (âge, tranche d'imposition, projet de retraite) ? Répondez simplement à cet e-mail : j'y répondrai pendant la session.</p>
             ${meetingBlock}
-            ${reviewsBlock([0, 1])}
-            ${videoTestimonialsBlock(registrationUrl)}`
+            ${videoTestimonialsBlock(registrationUrl)}
+            ${reviewsBlock([0, 1])}`
+        })
+      };
+    case "reminder_2d":
+      return {
+        subject: "J-2 : ce que vous allez apprendre dimanche",
+        text: `Le webinaire PER a lieu après-demain, ${dateTime}. Gardez votre dernier avis d'impôt à portée de main.`,
+        html: shell({
+          title: "Dans 2 jours",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Au programme dimanche : comprendre le PER simplement, calculer votre économie d'impôt selon votre tranche, et éviter les erreurs les plus fréquentes avant de verser. 15 minutes de questions en direct à la fin.</p>
+            <p style="margin:0 0 12px;">Un conseil pour en profiter pleinement : gardez votre dernier avis d'impôt à portée de main. Je vous montrerai où lire votre plafond de déduction.</p>
+            ${meetingBlock}
+            ${reviewsBlock([2, 3])}`
         })
       };
     case "reminder_1d":
       return {
-        subject: "C'est demain : votre webinaire PER",
+        subject: "C'est demain : votre webinaire PER à 15h",
         text: `Le webinaire PER a lieu demain, ${dateTime}. Lien : ${WEBINAR_PER.meetingUrl}`,
         html: shell({
           title: "C'est demain !",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">Dernier rappel avant demain, ${WEBINAR_PER.timeLabel}. Gardez ce lien sous la main :</p>
+            <p style="margin:0 0 12px;">Rendez-vous demain, ${WEBINAR_PER.timeLabel}. Gardez ce lien sous la main :</p>
             ${meetingBlock}
-            ${reviewsBlock([2, 3])}`
+            ${reviewsBlock([4, 0])}`
         })
       };
     case "reminder_morning":
       return {
-        subject: "Aujourd'hui à " + WEBINAR_PER.timeLabel.split(" ")[0] + " : votre webinaire PER",
-        text: `Le webinaire PER a lieu aujourd'hui à ${WEBINAR_PER.timeLabel}. Lien : ${WEBINAR_PER.meetingUrl}`,
+        subject: "Aujourd'hui à 15h : votre webinaire PER",
+        text: `Le webinaire PER a lieu aujourd'hui de 15h à 16h. Lien : ${WEBINAR_PER.meetingUrl}`,
         html: shell({
           title: "C'est aujourd'hui",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">Rendez-vous cet après-midi à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Voici le lien de connexion :</p>
+            <p style="margin:0 0 12px;">Rendez-vous cet après-midi à 15h. Voici le lien de connexion, à garder sous la main :</p>
             ${meetingBlock}
-            ${reviewsBlock([4, 0])}
+            ${reviewsBlock([1, 2])}
             <p style="margin:14px 0 0;">À tout à l'heure !<br>Gabriel</p>`
+        })
+      };
+    case "reminder_1h":
+      return {
+        subject: "Dans 1 heure : le lien de votre webinaire PER",
+        text: `Le webinaire PER commence dans une heure, à 15h. Lien : ${WEBINAR_PER.meetingUrl}`,
+        html: shell({
+          title: "On commence dans 1 heure",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Le webinaire commence à 15h. Cliquez sur le bouton quelques minutes avant pour vous connecter, depuis votre ordinateur ou votre téléphone.</p>
+            <div style="margin:10px 0 16px;">${goldButton(WEBINAR_PER.meetingUrl, "Rejoindre le webinaire à 15h")}</div>
+            <p style="margin:0;">À tout de suite !<br>Gabriel</p>`
         })
       };
     case "replay":

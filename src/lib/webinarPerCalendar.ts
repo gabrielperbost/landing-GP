@@ -9,7 +9,7 @@ export const getWebinarPerCalendarLinks = (baseUrl = getWebinarPerBaseUrl()) => 
   const googleUrl = new URL("https://calendar.google.com/calendar/render");
   googleUrl.searchParams.set("action", "TEMPLATE");
   googleUrl.searchParams.set("text", event.title);
-  googleUrl.searchParams.set("dates", "20261011T150000/20261011T160000");
+  googleUrl.searchParams.set("dates", "20261101T150000/20261101T160000");
   googleUrl.searchParams.set("ctz", event.timezone);
   googleUrl.searchParams.set("details", event.description);
   googleUrl.searchParams.set("location", event.location);
@@ -41,7 +41,7 @@ export const buildWebinarPerIcs = () => {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:webinaire-per-grand-public-2026-10-11@gp-finances.fr`,
+    `UID:webinaire-per-grand-public-2026-11-01@gp-finances.fr`,
     `DTSTAMP:${stamp}`,
     `DTSTART:${event.startUtc}`,
     `DTEND:${event.endUtc}`,

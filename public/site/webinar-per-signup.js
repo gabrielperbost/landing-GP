@@ -34,7 +34,7 @@
     submitBtn.disabled = true;
     const params = new URLSearchParams(location.search);
     const source = 'webinaire-per|' + (params.get('utm_source') ? 'utm_source:' + params.get('utm_source') : 'direct') +
-      (params.get('utm_campaign') ? '|utm_campaign:' + params.get('utm_campaign') : '');
+      ['utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].map(function (k) { return params.get(k) ? '|' + k + ':' + params.get(k) : ''; }).join('');
     try {
       const response = await fetch(endpoint(), {
         method: 'POST',
