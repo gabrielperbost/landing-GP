@@ -62,9 +62,10 @@ export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const url = new URL(request.url);
   const today = parisDateKey();
-  const waves = PER_PROSPECTION_SCHEDULE.filter((w) => w.date <= today);
-
-  const perWave = await Promise.all(waves.map(async (w) => ({ wave: w, events: await readEvents(prospectionTag(w.id), w.date, today) })));
+  // Toutes les vagues, depuis le début de la campagne (un lot pilote peut partir avant la date prévue).
+  const perWave = (
+    await Promise.all(PER_PROSPECTION_SCHEDULE.map(async (w) => ({ wave: w, events: await readEvents(prospectionTag(w.id), "2026-10-22", today) })))
+  ).filter(({ events }) => events.length > 0);
 
   if (url.searchParams.get("format") === "csv") {
     const rows = ["email;vague;lien;date"];
