@@ -1,5 +1,150 @@
-import { EnConstruction } from "@/components/gpf/PageHeader";
+"use client";
+import { useEffect, useState } from "react";
+import { PageHeader, Carte } from "@/components/gpf/PageHeader";
+import { SkeletonLines } from "@/components/gpf/Skeleton";
+import { api, Vide } from "@/components/gpf/fiche/shared";
+import { Barres, eur, exporterCsv, moisLabel, Onglets, pctLabel, Tableau, tdCls, tdNum, Tuile } from "@/components/gpf/commissions/commun";
 
-export default function Page() {
-  return <EnConstruction titre="Reporting" description="Leads, contrats, commissions et encours par produit, compagnie, source et apporteur." lot={6} />;
+type Onglet = "leads" | "contrats" | "commissions" | "encours";
+type Axe = "produit" | "compagnie" | "source" | "apporteur";
+type Ligne = { valeur: string; leads: number; signes: number; perdus: number; contrats: number; primes: number; commEstimees: number; encaisse6: number; encaisse12: number; transformation: number | null };
+type Rapport = { axe: Axe; mois: number; resume: { nouveauxContacts: number; nouveauxLeads: number; clients: number }; lignes: Ligne[]; encaissementsMensuels: { mois: string; montant: number }[] };
+
+const AXE_LABEL: Record<Axe, string> = { produit: "Produit", compagnie: "Compagnie", source: "Source", apporteur: "Apporteur" };
+
+// Colonnes affichées selon l'onglet : [entête, valeur, numérique].
+const COLONNES: Record<Onglet, [string, (l: Ligne) => string | number, boolean][]> = {
+  leads: [
+    ["Affaires créées", (l) => l.leads, true],
+    ["Signées", (l) => l.signes, true],
+    ["Perdues", (l) => l.perdus, true],
+    ["Transformation", (l) => pctLabel(l.transformation), true]
+  ],
+  contrats: [
+    ["Signés sur la période", (l) => l.signes, true],
+    ["Contrats en portefeuille", (l) => l.contrats, true],
+    ["Commissions estimées", (l) => eur(l.commEstimees, 0), true]
+  ],
+  commissions: [
+    ["Estimées (signés période)", (l) => eur(l.commEstimees, 0), true],
+    ["Encaissées 6 mois", (l) => eur(l.encaisse6, 0), true],
+    ["Encaissées 12 mois", (l) => eur(l.encaisse12, 0), true]
+  ],
+  encours: [
+    ["Contrats actifs", (l) => l.contrats, true],
+    ["Primes annualisées", (l) => eur(l.primes, 0), true],
+    ["Prime moyenne", (l) => (l.contrats ? eur(l.primes / l.contrats, 0) : "—"), true]
+  ]
+};
+const BRUT: Record<Onglet, (l: Ligne) => (number | null)[]> = {
+  leads: (l) => [l.leads, l.signes, l.perdus, l.transformation],
+  contrats: (l) => [l.signes, l.contrats, l.commEstimees],
+  commissions: (l) => [l.commEstimees, l.encaisse6, l.encaisse12],
+  encours: (l) => [l.contrats, l.primes, l.contrats ? Math.round(l.primes / l.contrats) : null]
+};
+
+export default function ReportingPage() {
+  const [onglet, setOnglet] = useState<Onglet>("leads");
+  const [axe, setAxe] = useState<Axe>("produit");
+  const [mois, setMois] = useState(12);
+  const [rapport, setRapport] = useState<Rapport | null>(null);
+
+  useEffect(() => {
+    setRapport(null);
+    api(`/api/gpf/reporting?axe=${axe}&mois=${mois}`, "GET").then((r) => r.ok && setRapport(r.data));
+  }, [axe, mois]);
+
+  const cols = COLONNES[onglet];
+  const exporter = () => {
+    if (!rapport) return;
+    exporterCsv(
+      `reporting-${onglet}-${axe}-${mois}mois.csv`,
+      [AXE_LABEL[axe], ...cols.map((c) => c[0])],
+      rapport.lignes.map((l) => [l.valeur, ...BRUT[onglet](l)])
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-5">
+      <PageHeader
+        titre="Reporting"
+        sousTitre={`Sur les ${mois} derniers mois, par ${AXE_LABEL[axe].toLowerCase()}`}
+        actions={
+          <div className="flex gap-2 print:hidden">
+            <button onClick={exporter} className="rounded-full border border-[var(--gpf-border)] text-xs px-4 py-2 text-[var(--gpf-muted)] bg-[var(--gpf-surface)]">
+              Export CSV
+            </button>
+            <button onClick={() => window.print()} className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-4 py-2">
+              Export PDF
+            </button>
+          </div>
+        }
+      />
+      <Onglets
+        valeur={onglet}
+        onChange={setOnglet}
+        items={[
+          ["leads", "Leads & clients"],
+          ["contrats", "Contrats"],
+          ["commissions", "Commissions"],
+          ["encours", "Encours"]
+        ]}
+      />
+      <div className="flex gap-3 flex-wrap print:hidden">
+        <select className="rounded-lg border px-3 py-2 text-sm bg-[var(--gpf-surface)]" value={axe} onChange={(e) => setAxe(e.target.value as Axe)}>
+          {(Object.keys(AXE_LABEL) as Axe[]).map((a) => (
+            <option key={a} value={a}>
+              Par {AXE_LABEL[a].toLowerCase()}
+            </option>
+          ))}
+        </select>
+        <select className="rounded-lg border px-3 py-2 text-sm bg-[var(--gpf-surface)]" value={mois} onChange={(e) => setMois(Number(e.target.value))}>
+          {[3, 6, 12, 24].map((m) => (
+            <option key={m} value={m}>
+              {m} derniers mois
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {!rapport ? (
+        <SkeletonLines />
+      ) : (
+        <>
+          {onglet === "leads" ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <Tuile label="Nouveaux contacts" valeur={String(rapport.resume.nouveauxContacts)} />
+              <Tuile label="Dont leads" valeur={String(rapport.resume.nouveauxLeads)} />
+              <Tuile label="Clients au total" valeur={String(rapport.resume.clients)} accent="#2f9e6e" />
+            </div>
+          ) : null}
+          {onglet === "commissions" ? (
+            <Carte titre="Commissions encaissées sur 12 mois">
+              <div className="p-4">
+                <Barres donnees={rapport.encaissementsMensuels.map((m) => ({ label: moisLabel(m.mois), valeurs: [m.montant] }))} series={[{ nom: "Encaissé (bordereaux validés)", couleur: "#2f9e6e" }]} />
+              </div>
+            </Carte>
+          ) : null}
+          <Carte titre={`Par ${AXE_LABEL[axe].toLowerCase()}`}>
+            {rapport.lignes.length === 0 ? (
+              <Vide>Aucune donnée sur la période.</Vide>
+            ) : (
+              <Tableau entetes={[AXE_LABEL[axe], ...cols.map((c) => c[0])]} alignDroite={cols.map((_, i) => i + 1)}>
+                {rapport.lignes.map((l) => (
+                  <tr key={l.valeur}>
+                    <td className={tdCls}>{l.valeur}</td>
+                    {cols.map(([h, f, num]) => (
+                      <td key={h} className={num ? tdNum : tdCls}>
+                        {f(l)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </Tableau>
+            )}
+          </Carte>
+        </>
+      )}
+    </div>
+  );
 }
