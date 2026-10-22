@@ -33,7 +33,9 @@ export async function applyPendingMigrations() {
   const results: { name: string; ok: boolean; error?: string }[] = [];
   for (const { name } of status.pending) {
     const migration = GPF_MIGRATIONS.find((m) => m.name === name)!;
-    const { error } = await supabaseAdmin.rpc("gpf_exec_sql", { sql: migration.sql });
+    // Sur Supabase, uuid_generate_v4() vit dans le schéma « extensions » : on l'ajoute au chemin
+    // (le temps de l'appel seulement, la fonction gpf_exec_sql restaurant son search_path).
+    const { error } = await supabaseAdmin.rpc("gpf_exec_sql", { sql: `set search_path = public, extensions;\n${migration.sql}` });
     if (error) {
       results.push({ name, ok: false, error: error.message });
       break;
