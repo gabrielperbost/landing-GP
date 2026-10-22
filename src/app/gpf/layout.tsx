@@ -16,11 +16,15 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "GPF",
   manifest: "/gpf/manifest.webmanifest",
+  icons: { icon: [{ url: "/gpf/icon-192.png", sizes: "192x192" }], apple: [{ url: "/gpf/apple-touch-icon.png", sizes: "180x180" }] },
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "GPF" }
 };
 
+// viewportFit « cover » : en application plein écran sur iPhone, le contenu passe sous la barre
+// d'état ; l'en-tête et le menu ajoutent l'encoche (safe-area) à leur marge haute.
 export const viewport: Viewport = {
-  themeColor: "#071c2c"
+  themeColor: "#071c2c",
+  viewportFit: "cover"
 };
 
 // Layout racine de /gpf : pas de <html>/<body> ici (déjà définis par le layout

@@ -87,7 +87,7 @@ export function GpfShell({ children }: { children: React.ReactNode }) {
 
         <div className="flex-1 min-w-0 flex">
           <div className="flex-1 min-w-0">
-            <header className="sticky top-0 z-30 bg-[var(--gpf-bg)] border-b border-[var(--gpf-border-soft)]">
+            <header className="sticky top-0 z-30 bg-[var(--gpf-bg)] border-b border-[var(--gpf-border-soft)]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
               <div className="flex items-center gap-2 px-4 md:px-8 h-14">
                 <button onClick={() => setDrawer(true)} className="md:hidden text-[var(--gpf-ink)] w-9 h-9 -ml-2 flex items-center justify-center" aria-label="Ouvrir le menu">
                   ☰

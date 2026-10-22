@@ -59,7 +59,7 @@ export function isNavActive(pathname: string | null, link: NavLink) {
 export function GpfSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
-    <div className="flex flex-col h-full bg-[#071C2C] text-white">
+    <div className="flex flex-col h-full bg-[#071C2C] text-white" style={{ paddingTop: "env(safe-area-inset-top, 0px)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="px-5 py-6">
         <span className="text-lg tracking-tight" style={{ fontFamily: "var(--font-gpf-serif)" }}>
           GP Finances
