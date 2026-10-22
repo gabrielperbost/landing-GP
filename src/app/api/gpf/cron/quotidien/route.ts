@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_PRODUIT_LABEL, GPF_STATUTS_SIGNES, type GpfProduit } from "@/lib/gpf/types";
 import { prochaineEcheance } from "@/lib/gpf/contrats";
 import { notify } from "@/lib/gpf/notify";
+import { recueilPerime } from "@/lib/gpf/conformite";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +17,7 @@ function isAuthorized(request: NextRequest) {
 /**
  * Passage quotidien (Vercel Cron) : notifications « échéance proche » (mutuelle
  * et prévoyance résiliables dans les 60 jours) et « lead non rappelé depuis
- * plus de 24 h ». Une même alerte n'est jamais créée deux fois.
+ * plus de 24 h », recueil des besoins de plus de 12 mois. Une même alerte n'est jamais créée deux fois.
  */
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
@@ -63,5 +64,18 @@ export async function GET(request: NextRequest) {
     leads++;
   }
 
-  return NextResponse.json({ ok: true, echeances, leads });
+  // Recueil des besoins signé il y a plus de 12 mois chez un client en portefeuille : à refaire.
+  let recueils = 0;
+  const { data: collectes } = await supabaseAdmin.from("gpf_compliance").select("client_id, date_signature").eq("type", "collecte");
+  for (const x of collectes ?? []) {
+    if (!signes.has(x.client_id) || !recueilPerime(x.date_signature)) continue;
+    const lien = `/gpf/contacts/${x.client_id}?onglet=conformite`;
+    if (deja.has(`conformite|${lien}`)) continue;
+    const c = clientById.get(x.client_id);
+    if (!c) continue;
+    await notify("conformite", `Recueil des besoins à mettre à jour : ${c.prenom} ${String(c.nom).toUpperCase()}`, `Signé le ${new Date(x.date_signature + "T00:00:00").toLocaleDateString("fr-FR")}, il y a plus de 12 mois`, lien);
+    recueils++;
+  }
+
+  return NextResponse.json({ ok: true, echeances, leads, recueils });
 }

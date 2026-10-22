@@ -1,7 +1,7 @@
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabase";
 
-export type GpfNotificationType = "nouveau_lead" | "piece_recue" | "piece_manquante" | "bordereau" | "echeance" | "relance" | "info";
+export type GpfNotificationType = "nouveau_lead" | "piece_recue" | "piece_manquante" | "bordereau" | "echeance" | "relance" | "conformite" | "info";
 
 /** Ajoute une notification au centre de notifications (cloche). Ne fait jamais échouer l'action appelante. */
 export async function notify(type: GpfNotificationType, titre: string, message?: string, lien?: string) {

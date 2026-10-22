@@ -335,6 +335,7 @@ function DossierPanel({ dossier, onClose, onChanged }: { dossier: GpfDossierWith
     } else {
       const data = await res.json().catch(() => ({}));
       if (data.error === "motif_refus_requis") alert("Choisissez un motif de refus.");
+      if (data.error === "conformite_incomplete") alert(`Souscription bloquée : il manque ${data.manquant.join(" et ")} (onglet Conformité de la fiche).`);
     }
   };
 

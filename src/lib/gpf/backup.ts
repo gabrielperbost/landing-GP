@@ -26,7 +26,8 @@ export const GPF_BACKUP_TABLES = [
   "gpf_commission_rules",
   "gpf_apporteurs",
   "gpf_courriers",
-  "gpf_document_access"
+  "gpf_document_access",
+  "gpf_apporteur_paiements"
 ];
 
 const MAGIC = Buffer.from("GPFB1");

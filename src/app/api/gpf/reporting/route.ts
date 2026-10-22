@@ -81,14 +81,15 @@ export async function GET(request: NextRequest) {
     .sort((a, b) => b.contrats + b.leads - (a.contrats + a.leads));
 
   const clientsP = clients.filter((c) => String(c.created_at).slice(0, 7) >= debut);
+  const avecContrat = new Set(dossiers.filter(estContrat).map((d) => d.client_id));
   return NextResponse.json({
     ok: true,
     axe,
     mois: nbMois,
     resume: {
       nouveauxContacts: clientsP.length,
-      nouveauxLeads: clientsP.filter((c) => c.type_contact !== "client").length,
-      clients: clients.filter((c) => c.type_contact === "client" || dossiers.some((d) => d.client_id === c.id && estContrat(d))).length
+      nouveauxLeads: clientsP.filter((c) => !avecContrat.has(c.id)).length,
+      clients: avecContrat.size
     },
     lignes: lignesRapport,
     // Commissions encaissées mois par mois sur 12 mois.

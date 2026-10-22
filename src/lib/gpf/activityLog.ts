@@ -2,7 +2,7 @@ import "server-only";
 import { supabaseAdmin } from "@/lib/supabase";
 
 export type GpfActivityAction = "create" | "update" | "delete" | "restore";
-export type GpfActivityEntity = "client" | "dossier" | "document";
+export type GpfActivityEntity = "client" | "dossier" | "document" | "apporteur" | "courrier";
 
 export async function logActivity(action: GpfActivityAction, entityType: GpfActivityEntity, entityId: string, resume?: string) {
   const { error } = await supabaseAdmin.from("gpf_activity_log").insert({ action, entity_type: entityType, entity_id: entityId, resume: resume ?? null });

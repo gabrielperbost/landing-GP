@@ -18,6 +18,8 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
   const { data: signed, error: signError } = await supabaseAdmin.storage.from(BUCKET).createSignedUrl(doc.storage_path, 60);
   if (signError || !signed) return NextResponse.json({ ok: false, error: signError?.message ?? "signing_failed" }, { status: 500 });
 
+  // Journal des accès (coffre-fort) : chaque ouverture est tracée.
+  await supabaseAdmin.from("gpf_document_access").insert({ document_id: params.id, action: "consultation" });
   return NextResponse.json({ ok: true, url: signed.signedUrl, nom_fichier: doc.nom_fichier });
 }
 

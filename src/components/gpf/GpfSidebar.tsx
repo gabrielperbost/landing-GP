@@ -32,6 +32,7 @@ export const GPF_NAV: { titre: string; links: NavLink[] }[] = [
   {
     titre: "Cabinet",
     links: [
+      { href: "/gpf/conformite", label: "Conformité" },
       { href: "/gpf/courriers", label: "Courriers" },
       { href: "/gpf/coffre-fort", label: "Coffre-fort" },
       { href: "/gpf/apporteurs", label: "Apporteurs" },

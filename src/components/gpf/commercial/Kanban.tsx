@@ -49,7 +49,11 @@ export function Kanban() {
     if (d.statut === statut) return;
     setCartes((prev) => (prev ?? []).map((x) => (x.id === d.id ? { ...x, statut: statut as typeof x.statut, etape_depuis: new Date().toISOString() } : x)));
     const res = await fetch(`/api/gpf/dossiers/${d.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ statut }) });
-    if (!res.ok) load();
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (data.error === "conformite_incomplete") alert(`Souscription bloquée : il manque ${data.manquant.join(" et ")} (onglet Conformité de la fiche).`);
+      load();
+    }
   };
 
   const confirmerPerdu = async () => {

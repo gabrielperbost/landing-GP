@@ -26,10 +26,111 @@ export function Conformite({ clientId, items, onChanged }: { clientId: string; i
           <LigneConformite key={item.type} clientId={clientId} type={item.type} label={item.label} item={by.get(item.type)} onChanged={onChanged} />
         ))}
       </Bloc>
-      <p className="text-[11px] text-[var(--gpf-subtle)]">
-        La génération automatique des documents (DER, lettre de mission, recueil, rapport de conseil) et la signature électronique arrivent au lot 7.
-      </p>
+      <DocumentsCabinet clientId={clientId} items={items} onChanged={onChanged} />
     </div>
+  );
+}
+
+const A_GENERER: { type: "der" | "lettre_mission" | "recueil" | "rapport_adequation"; conformite: GpfComplianceType; label: string; texte?: "besoins" | "motivation" }[] = [
+  { type: "der", conformite: "der", label: "DER" },
+  { type: "lettre_mission", conformite: "lettre_mission", label: "Lettre de mission" },
+  { type: "recueil", conformite: "collecte", label: "Recueil des besoins", texte: "besoins" },
+  { type: "rapport_adequation", conformite: "rapport_adequation", label: "Rapport d'adéquation", texte: "motivation" }
+];
+
+/** Génération des documents réglementaires (PDF rangés dans le coffre-fort), signature, export ACPR. */
+function DocumentsCabinet({ clientId, items, onChanged }: { clientId: string; items: GpfCompliance[]; onChanged: () => void }) {
+  const by = new Map(items.map((i) => [i.type, i]));
+  const [occupe, setOccupe] = useState<string | null>(null);
+  const [texte, setTexte] = useState<{ type: (typeof A_GENERER)[number]["type"]; valeur: string } | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
+
+  const generer = async (type: (typeof A_GENERER)[number]["type"], extra: Record<string, string> = {}) => {
+    setOccupe(type);
+    const r = await api(`/api/gpf/clients/${clientId}/generer`, "POST", { type, ...extra });
+    setOccupe(null);
+    setTexte(null);
+    if (!r.ok) return alert("Génération impossible.");
+    onChanged();
+    ouvrir(r.data.document.id);
+  };
+  const ouvrir = async (documentId: string) => {
+    const r = await api(`/api/gpf/documents/${documentId}`, "GET");
+    if (r.ok) window.open(r.data.url, "_blank");
+  };
+
+  return (
+    <Bloc
+      titre="Documents du cabinet"
+      action={
+        <a href={`/api/gpf/clients/${clientId}/export-acpr`} className="text-xs text-[var(--gpf-muted)] hover:text-[var(--gpf-ink)]">
+          Export dossier ACPR (ZIP)
+        </a>
+      }
+    >
+      {A_GENERER.map((g) => {
+        const item = by.get(g.conformite);
+        return (
+          <div key={g.type} className="flex items-center gap-3 px-4 py-3 border-b border-[var(--gpf-border-soft)] last:border-0 flex-wrap">
+            <span className="text-sm text-[var(--gpf-ink)] flex-1 min-w-[160px]">{g.label}</span>
+            {item?.document_id ? (
+              <button onClick={() => ouvrir(item.document_id!)} className="text-xs text-[var(--gpf-muted)] hover:text-[var(--gpf-ink)]">
+                Ouvrir le dernier
+              </button>
+            ) : null}
+            {item?.document_id && item.statut !== "fait" ? (
+              <button
+                onClick={() =>
+                  setInfo(
+                    "La signature électronique n'est pas encore branchée (service payant). Imprimez le document ou envoyez-le par e-mail, faites-le signer, puis déposez la version signée dans Documents et cochez « Fait » avec la date de signature."
+                  )
+                }
+                className="text-xs text-[var(--gpf-muted)] hover:text-[var(--gpf-ink)]"
+              >
+                Envoyer pour signature
+              </button>
+            ) : null}
+            <button
+              disabled={occupe !== null}
+              onClick={() => (g.texte ? setTexte({ type: g.type, valeur: "" }) : generer(g.type))}
+              className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-[11px] font-semibold px-3 py-1 disabled:opacity-40"
+            >
+              {occupe === g.type ? "Génération…" : item?.document_id ? "Régénérer" : "Générer"}
+            </button>
+          </div>
+        );
+      })}
+      {texte ? (
+        <div className="px-4 py-3 flex flex-col gap-2 bg-[var(--gpf-surface-alt)]">
+          <Field label={texte.type === "recueil" ? "Besoins et exigences exprimés (facultatif, aucune donnée de santé)" : "Motivation du conseil (facultatif)"}>
+            <textarea className={inputCls} rows={4} value={texte.valeur} onChange={(e) => setTexte({ ...texte, valeur: e.target.value })} />
+          </Field>
+          <div className="flex gap-2 justify-end">
+            <button onClick={() => setTexte(null)} className="text-xs text-[var(--gpf-muted)] px-3">
+              Annuler
+            </button>
+            <button
+              disabled={occupe !== null}
+              onClick={() => generer(texte.type, texte.type === "recueil" ? { besoins: texte.valeur } : { motivation: texte.valeur })}
+              className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-[11px] font-semibold px-3 py-1 disabled:opacity-40"
+            >
+              Générer le PDF
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {info ? (
+        <div className="px-4 py-3 text-xs text-[var(--gpf-ink)] bg-[var(--gpf-warning-tint)] flex gap-3 items-start">
+          <span className="flex-1">{info}</span>
+          <button onClick={() => setInfo(null)} className="text-[var(--gpf-muted)]" aria-label="Fermer">
+            ✕
+          </button>
+        </div>
+      ) : null}
+      <p className="px-4 py-2.5 text-[11px] text-[var(--gpf-subtle)]">
+        Les documents sont générés avec les informations du cabinet (ORIAS 23003789) et rangés dans le coffre-fort. Le passage en « En cours de souscription » est bloqué tant que le DER signé et la pièce d&apos;identité manquent.
+      </p>
+    </Bloc>
   );
 }
 

@@ -114,7 +114,7 @@ export default function ReportingPage() {
           {onglet === "leads" ? (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               <Tuile label="Nouveaux contacts" valeur={String(rapport.resume.nouveauxContacts)} />
-              <Tuile label="Dont leads" valeur={String(rapport.resume.nouveauxLeads)} />
+              <Tuile label="Dont sans contrat (leads)" valeur={String(rapport.resume.nouveauxLeads)} />
               <Tuile label="Clients au total" valeur={String(rapport.resume.clients)} accent="#2f9e6e" />
             </div>
           ) : null}

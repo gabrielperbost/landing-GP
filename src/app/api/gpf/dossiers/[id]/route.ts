@@ -5,6 +5,7 @@ import { GPF_CONTRAT_STATUTS, GPF_MOTIFS_REFUS, GPF_PRODUITS, GPF_STATUTS, GPF_S
 import { logActivity } from "@/lib/gpf/activityLog";
 import { addDays, closeAutoRelances, createTask } from "@/lib/gpf/tasks";
 import { notify } from "@/lib/gpf/notify";
+import { manquantPourSouscription } from "@/lib/gpf/conformite";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,6 +47,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   // anciens refus importés de Monday, qui doivent rester modifiables).
   if (body.statut === "refuse" && before?.statut !== "refuse" && !body.motif_refus) {
     return NextResponse.json({ ok: false, error: "motif_refus_requis" }, { status: 400 });
+  }
+
+  // Conformité : pas de souscription sans DER signé ni pièce d'identité.
+  if (body.statut === "en_cours_souscription" && before && before.statut !== "en_cours_souscription") {
+    const manquant = await manquantPourSouscription(before.client_id);
+    if (manquant.length) return NextResponse.json({ ok: false, error: "conformite_incomplete", manquant }, { status: 409 });
   }
 
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };

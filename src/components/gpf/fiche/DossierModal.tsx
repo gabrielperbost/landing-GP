@@ -28,6 +28,7 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
     const r = await api(`/api/gpf/dossiers/${dossier.id}`, "PATCH", body);
     setSaving(false);
     if (r.ok) onChanged();
+    else if (r.data?.error === "conformite_incomplete") alert(`Souscription bloquée : il manque ${r.data.manquant.join(" et ")} (onglet Conformité).`);
     return r;
   };
 

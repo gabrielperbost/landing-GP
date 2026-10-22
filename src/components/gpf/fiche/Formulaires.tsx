@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   GPF_PRODUIT_LABEL,
   GPF_PROVENANCES,
@@ -31,12 +31,16 @@ function useSave(onSaved: () => void) {
 export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: () => void }) {
   const keys = [
     "civilite", "prenom", "nom", "email", "telephone", "adresse", "code_postal", "ville", "date_naissance", "profession",
-    "situation_familiale", "nb_enfants", "type_contact", "raison_sociale", "provenance", "preference_contact", "score",
+    "situation_familiale", "nb_enfants", "type_contact", "raison_sociale", "provenance", "apporteur_id", "preference_contact", "score",
     "prochaine_action", "prochaine_action_date", "notes"
   ] as const;
   const [f, setF] = useState<Record<string, string>>(() => Object.fromEntries(keys.map((k) => [k, str((client as Record<string, unknown>)[k])])));
   const { save, label, info, saving } = useSave(onSaved);
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+  const [apporteurs, setApporteurs] = useState<{ id: string; nom: string }[]>([]);
+  useEffect(() => {
+    api("/api/gpf/apporteurs", "GET").then((r) => r.ok && setApporteurs(r.data.apporteurs));
+  }, []);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,6 +136,16 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
               <option value="">—</option>
               {[...new Set([...GPF_PROVENANCES, f.provenance].filter(Boolean))].map((p) => (
                 <option key={p}>{p}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Apporteur">
+            <select value={f.apporteur_id} onChange={set("apporteur_id")} className={inputCls}>
+              <option value="">—</option>
+              {apporteurs.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.nom}
+                </option>
               ))}
             </select>
           </Field>
