@@ -23,11 +23,8 @@ export const CABINET = {
   rcPro:
     process.env.GPF_RC_PRO ||
     "QBE Europe SA/NV (par l'intermédiaire de +Simple), contrat n° RCIOB00000426 — intermédiaire d'assurance : 1 564 610 € par sinistre et 2 315 610 € par année d'assurance",
-  // Médiation via l'ANACOFI (association professionnelle) : La Médiation de l'Assurance pour les
-  // litiges d'assurance avec un particulier, le Médiateur de l'ANACOFI pour les autres. À confirmer auprès de l'ANACOFI.
-  mediateur:
-    process.env.GPF_MEDIATEUR ||
-    "pour un contrat d'assurance, La Médiation de l'Assurance, TSA 50110, 75441 Paris Cedex 09 (www.mediation-assurance.org) ; pour les autres litiges, le Médiateur de l'ANACOFI, 92 rue d'Amsterdam, 75009 Paris (mediation@anacofi.asso.fr)"
+  // Médiateur de la consommation indiqué par le cabinet (association ANACOFI).
+  mediateur: process.env.GPF_MEDIATEUR || "Médiateur de l'ANACOFI, 54 avenue du Général Leclerc, 92100 Boulogne-Billancourt"
 } as const;
 
 export const MENTIONS_LEGALES = `${CABINET.nom} — ${CABINET.qualite}, immatriculé à l'ORIAS sous le n° ${CABINET.orias} (www.orias.fr) — SIREN ${CABINET.siren} — ${CABINET.rcs}.`;
