@@ -39,8 +39,8 @@ export default function GpfDashboardPage() {
       // des revenus) — on dépasse donc volontairement la pagination par
       // défaut de l'API (50 lignes), pensée pour la page Dossiers.
       const [dRes, cRes] = await Promise.all([
-        fetch("/api/gpf/commercial?pageSize=2000&clos=1"),
-        fetch("/api/gpf/contacts?pageSize=1")
+        fetch("/api/gpf/dossiers?pageSize=2000&clos=1"),
+        fetch("/api/gpf/clients?pageSize=1")
       ]);
       const dData = await dRes.json();
       const cData = await cRes.json();

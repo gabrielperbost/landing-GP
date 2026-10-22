@@ -42,7 +42,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
   const [selectedDossierId, setSelectedDossierId] = useState<string | null>(null);
 
   const load = async () => {
-    const res = await fetch(`/api/gpf/contacts/${id}`);
+    const res = await fetch(`/api/gpf/clients/${id}`);
     const data = await res.json();
     if (data.ok) {
       setClient(data.client);
@@ -58,7 +58,7 @@ export default function GpfClientPage({ params }: { params: { id: string } }) {
 
   const deleteClient = async () => {
     if (!confirm(`Déplacer ${client?.prenom} ${client?.nom} vers la corbeille ? Restaurable pendant 30 jours.`)) return;
-    const res = await fetch(`/api/gpf/contacts/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/gpf/clients/${id}`, { method: "DELETE" });
     const data = await res.json();
     if (!res.ok || !data.ok) {
       alert(data.error === "dossiers_actifs" ? "Impossible : ce client a encore des dossiers actifs." : "Échec de la suppression.");
@@ -315,7 +315,7 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
       return;
     }
     setSaving(true);
-    await fetch(`/api/gpf/commercial/${dossier.id}`, {
+    await fetch(`/api/gpf/dossiers/${dossier.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(motif ? { statut, motif_refus: motif } : { statut })
@@ -327,7 +327,7 @@ function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDossier; on
 
   const deleteDossier = async () => {
     if (!confirm(`Supprimer ce dossier (${GPF_PRODUIT_LABEL[dossier.produit]}) ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
-    await fetch(`/api/gpf/commercial/${dossier.id}`, { method: "DELETE" });
+    await fetch(`/api/gpf/dossiers/${dossier.id}`, { method: "DELETE" });
     onChanged();
     onClose();
   };
@@ -479,7 +479,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
   const [type, setType] = useState(DOCUMENT_TYPES[0]);
 
   const load = async () => {
-    const res = await fetch(`/api/gpf/commercial/${dossierId}/documents`);
+    const res = await fetch(`/api/gpf/dossiers/${dossierId}/documents`);
     const data = await res.json();
     if (data.ok) setDocuments(data.documents);
     setLoading(false);
@@ -495,7 +495,7 @@ function DocumentsSection({ dossierId }: { dossierId: string }) {
     const form = new FormData();
     form.append("file", file);
     form.append("type", type);
-    await fetch(`/api/gpf/commercial/${dossierId}/documents`, { method: "POST", body: form });
+    await fetch(`/api/gpf/dossiers/${dossierId}/documents`, { method: "POST", body: form });
     setUploading(false);
     load();
   };
@@ -573,7 +573,7 @@ function NewDossierForm({ clientId, onCreated }: { clientId: string; onCreated: 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await fetch(`/api/gpf/contacts/${clientId}/dossiers`, {
+    await fetch(`/api/gpf/clients/${clientId}/dossiers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ produit, source: source || undefined })
@@ -634,7 +634,7 @@ function CoordonneesTab({ client, onSaved }: { client: GpfClient; onSaved: () =>
       const raw = form[f.key] as string;
       body[f.key] = raw === "" ? null : f.type === "number" ? Number(raw) : raw;
     }
-    await fetch(`/api/gpf/contacts/${client.id}`, {
+    await fetch(`/api/gpf/clients/${client.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)

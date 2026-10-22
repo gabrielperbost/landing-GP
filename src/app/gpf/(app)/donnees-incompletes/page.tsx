@@ -111,7 +111,7 @@ function EditableRow({ row, onSaved }: { row: Row; onSaved: () => void }) {
 
   const save = async () => {
     setSaving(true);
-    await fetch(`/api/gpf/commercial/${row.id}`, {
+    await fetch(`/api/gpf/dossiers/${row.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

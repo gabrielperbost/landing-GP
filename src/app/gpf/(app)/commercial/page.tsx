@@ -62,7 +62,7 @@ export default function GpfCommercialPage() {
     if (statutFilter) params.set("statut", statutFilter);
     if (produitFilter) params.set("produit", produitFilter);
     if (includeClos || statutFilter) params.set("clos", "1");
-    const res = await fetch(`/api/gpf/commercial?${params}`);
+    const res = await fetch(`/api/gpf/dossiers?${params}`);
     const data = await res.json();
     if (data.ok) {
       setDossiers(data.dossiers);
@@ -93,13 +93,13 @@ export default function GpfCommercialPage() {
     const nom = d.client ? `${d.client.prenom} ${d.client.nom}` : "ce dossier";
     if (!confirm(`Supprimer le dossier ${GPF_PRODUIT_LABEL[d.produit]} de ${nom} ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
     setMenuOpenId(null);
-    await fetch(`/api/gpf/commercial/${d.id}`, { method: "DELETE" });
+    await fetch(`/api/gpf/dossiers/${d.id}`, { method: "DELETE" });
     load();
   };
 
   const archiveDossier = async (d: GpfDossierWithClient) => {
     setMenuOpenId(null);
-    await fetch(`/api/gpf/commercial/${d.id}`, {
+    await fetch(`/api/gpf/dossiers/${d.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ statut: "sans_suite" })
@@ -111,7 +111,7 @@ export default function GpfCommercialPage() {
     if (!confirm(`Supprimer les ${selected.size} dossiers sélectionnés ? Déplacé vers la corbeille, restaurable 30 jours.`)) return;
     const ids = [...selected];
     setSelected(new Set());
-    await Promise.all(ids.map((id) => fetch(`/api/gpf/commercial/${id}`, { method: "DELETE" })));
+    await Promise.all(ids.map((id) => fetch(`/api/gpf/dossiers/${id}`, { method: "DELETE" })));
     load();
   };
 
@@ -326,7 +326,7 @@ function DossierPanel({ dossier, onClose, onChanged }: { dossier: GpfDossierWith
 
   const save = async (extra: Record<string, unknown> = {}) => {
     setSaving(true);
-    const res = await fetch(`/api/gpf/commercial/${dossier.id}`, {
+    const res = await fetch(`/api/gpf/dossiers/${dossier.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ statut, produit, motif_refus: motifRefus || undefined, ...extra })
@@ -343,7 +343,7 @@ function DossierPanel({ dossier, onClose, onChanged }: { dossier: GpfDossierWith
 
   const deleteDossier = async () => {
     if (!confirm("Supprimer ce dossier ? Déplacé vers la corbeille, restaurable 30 jours.")) return;
-    await fetch(`/api/gpf/commercial/${dossier.id}`, { method: "DELETE" });
+    await fetch(`/api/gpf/dossiers/${dossier.id}`, { method: "DELETE" });
     onChanged();
     onClose();
   };

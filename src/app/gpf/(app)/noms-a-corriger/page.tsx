@@ -65,7 +65,7 @@ function NameRow({ item, onDone }: { item: Item; onDone: (id: string) => void })
 
   const apply = async () => {
     setSaving(true);
-    const res = await fetch(`/api/gpf/contacts/${item.id}`, {
+    const res = await fetch(`/api/gpf/clients/${item.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prenom: prenom.trim(), nom: nom.trim().toUpperCase() })
