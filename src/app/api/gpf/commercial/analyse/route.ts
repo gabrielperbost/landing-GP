@@ -3,23 +3,10 @@ import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_STATUTS_SIGNES } from "@/lib/gpf/types";
 import { indexEtape, PIPELINE_COLONNES } from "@/lib/gpf/pipeline";
+import { normSource } from "@/lib/gpf/sources";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const normSource = (s: string | null | undefined) => {
-  const v = (s ?? "").toLowerCase();
-  if (!v) return "Non renseignée";
-  if (v.includes("meta") || v.includes("facebook") || v.includes("instagram")) return "Meta Ads";
-  if (v.includes("tally")) return "Tally";
-  if (v.includes("masterlead")) return "Masterleads";
-  if (v.includes("century")) return "Century 21";
-  if (v.includes("recommand") || v.includes("connaissance") || v.includes("parrain")) return "Recommandation";
-  if (v.includes("site") || v.includes("web")) return "Site";
-  if (v.includes("apporteur") || v.includes("partenaire")) return "Apporteur";
-  if (v.includes("physique")) return "Physique";
-  return s!.trim().slice(0, 40);
-};
 
 /**
  * Analyse du pipeline : taux de passage d'une étape à l'autre, délai moyen

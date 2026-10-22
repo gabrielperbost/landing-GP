@@ -149,12 +149,25 @@ function NotificationBell() {
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
 
+  const vues = useRef<Set<string> | null>(null);
   const load = useCallback(async () => {
     const res = await fetch("/api/gpf/notifications").catch(() => null);
     const data = await res?.json().catch(() => null);
     if (data?.ok) {
       setItems(data.items);
       setNonLues(data.nonLues);
+      // Notifications du navigateur (option des Paramètres) pour les nouveautés non lues.
+      const nouvelles = (data.items as Notification[]).filter((n) => !n.lu && vues.current && !vues.current.has(n.id));
+      vues.current = new Set((data.items as Notification[]).map((n) => n.id));
+      let actif = false;
+      try {
+        actif = localStorage.getItem("gpf-notif-navigateur") === "1";
+      } catch {
+        actif = false;
+      }
+      if (actif && typeof window !== "undefined" && "Notification" in window && window.Notification.permission === "granted") {
+        for (const n of nouvelles.slice(0, 3)) new window.Notification(n.titre, { body: n.message ?? undefined });
+      }
     }
   }, []);
 

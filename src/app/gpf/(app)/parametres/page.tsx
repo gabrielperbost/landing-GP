@@ -78,6 +78,8 @@ export default function ParametresPage() {
         {ligne("Données de santé", "Aucune catégorie prévue, aucun stockage")}
       </Carte>
 
+      <NotificationsNavigateur />
+
       <Carte titre="Sauvegardes">
         <div className="px-4 py-3 text-sm text-[var(--gpf-muted)]">
           Chaque lundi, un export chiffré de toutes les données du CRM est envoyé à l&apos;adresse du cabinet. Il ne s&apos;ouvre qu&apos;avec la clé
@@ -122,5 +124,64 @@ export default function ParametresPage() {
         )}
       </Carte>
     </div>
+  );
+}
+
+function NotificationsNavigateur() {
+  const [actif, setActif] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setActif(localStorage.getItem("gpf-notif-navigateur") === "1" && "Notification" in window && window.Notification.permission === "granted");
+    } catch {
+      setActif(false);
+    }
+  }, []);
+
+  const basculer = async () => {
+    if (!("Notification" in window)) {
+      setInfo("Ce navigateur ne gère pas les notifications.");
+      return;
+    }
+    if (actif) {
+      try {
+        localStorage.setItem("gpf-notif-navigateur", "0");
+      } catch {
+        // stockage indisponible
+      }
+      setActif(false);
+      return;
+    }
+    const permission = await window.Notification.requestPermission();
+    if (permission !== "granted") {
+      setInfo("Autorisation refusée par le navigateur.");
+      return;
+    }
+    try {
+      localStorage.setItem("gpf-notif-navigateur", "1");
+    } catch {
+      // stockage indisponible
+    }
+    setActif(true);
+    setInfo(null);
+  };
+
+  return (
+    <Carte titre="Notifications">
+      <div className="px-4 py-3 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-sm text-[var(--gpf-ink)]">Notifications du navigateur</div>
+          <div className="text-xs text-[var(--gpf-muted)]">Nouveau lead, pièce reçue ou manquante, bordereau rapproché, échéance proche : une alerte s&apos;affiche même si l&apos;onglet est en arrière-plan.</div>
+          {info ? <div className="text-xs text-[#b3463f] mt-1">{info}</div> : null}
+        </div>
+        <button
+          onClick={basculer}
+          className={`rounded-full px-4 py-2 text-xs font-semibold shrink-0 ${actif ? "bg-[#2f9e6e] text-white" : "border border-[var(--gpf-border)] text-[var(--gpf-ink)]"}`}
+        >
+          {actif ? "Activées" : "Activer"}
+        </button>
+      </div>
+    </Carte>
   );
 }

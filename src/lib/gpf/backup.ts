@@ -16,7 +16,17 @@ export const GPF_BACKUP_TABLES = [
   "gpf_activity_log",
   "gpf_merges",
   "gpf_schema_migrations",
-  "gpf_notifications"
+  "gpf_notifications",
+  "gpf_notes",
+  "gpf_tasks",
+  "gpf_appointments",
+  "gpf_calls",
+  "gpf_compliance",
+  "gpf_source_costs",
+  "gpf_commission_rules",
+  "gpf_apporteurs",
+  "gpf_courriers",
+  "gpf_document_access"
 ];
 
 const MAGIC = Buffer.from("GPFB1");
