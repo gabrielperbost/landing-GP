@@ -65,7 +65,7 @@ export function modeleDocument(type: TypeDocument, c: GpfClient, dossiers: GpfDo
             ["Contact", `${CABINET.telephone} · ${CABINET.email}`],
             ["Immatriculation", `ORIAS n° ${CABINET.orias} (www.orias.fr), en qualité de ${CABINET.statuts}`],
             ["Société", `SIREN ${CABINET.siren} — ${CABINET.rcs}`],
-            ["Association", `Membre de la ${CABINET.association}`],
+            ["Association", `Adhérent de l'${CABINET.association}`],
             ["Responsabilité civile", CABINET.rcPro]
           ]
         },
