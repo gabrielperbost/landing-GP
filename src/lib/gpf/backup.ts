@@ -34,7 +34,9 @@ export const GPF_BACKUP_TABLES = [
   "gpf_sequence_envois",
   "gpf_segments",
   "gpf_campagnes",
-  "gpf_campagne_envois"
+  "gpf_campagne_envois",
+  "gpf_portal_tokens",
+  "gpf_portal_requests"
 ];
 
 const MAGIC = Buffer.from("GPFB1");

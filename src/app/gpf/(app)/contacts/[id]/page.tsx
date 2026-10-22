@@ -22,6 +22,7 @@ import { AppelDialog, NoteForm, RdvForm, TacheForm } from "@/components/gpf/fich
 import { DossierModal } from "@/components/gpf/fiche/DossierModal";
 import { Budget, Coordonnees, Fiscalite, Projet } from "@/components/gpf/fiche/Formulaires";
 import { Conformite, Documents, Historique } from "@/components/gpf/fiche/Suivi";
+import { EspaceClient } from "@/components/gpf/fiche/EspaceClient";
 import { age, api, BoutonOr, euro, frDate, Panneau, type FicheData } from "@/components/gpf/fiche/shared";
 
 const ONGLETS: [string, string][] = [
@@ -265,7 +266,12 @@ function FicheContact({ id }: { id: string }) {
       {onglet === "fiscalite" ? <Fiscalite key={version} client={client} onSaved={load} /> : null}
       {onglet === "conformite" ? <Conformite key={version} clientId={id} items={data.conformite} onChanged={load} /> : null}
       {onglet === "projet" ? <Projet key={version} dossiers={data.dossiers} onSaved={load} /> : null}
-      {onglet === "documents" ? <Documents clientId={id} documents={data.documents} dossiers={data.dossiers} onChanged={load} /> : null}
+      {onglet === "documents" ? (
+        <div className="flex flex-col gap-4">
+          <Documents clientId={id} documents={data.documents} dossiers={data.dossiers} onChanged={load} />
+          <EspaceClient clientId={id} />
+        </div>
+      ) : null}
       {onglet === "historique" ? <Historique clientId={id} version={version} /> : null}
 
       {dossierModal ? <DossierModal dossier={dossierModal} onClose={() => setDossierOuvert(null)} onChanged={load} /> : null}
