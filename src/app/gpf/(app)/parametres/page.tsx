@@ -67,7 +67,8 @@ export default function ParametresPage() {
         {ligne("ORIAS", CABINET.orias)}
         {ligne("SIREN", CABINET.siren)}
         {ligne("RCS", CABINET.rcs)}
-        {ligne("Ville", CABINET.ville)}
+        {ligne("Siège social", `${CABINET.adresse}, ${CABINET.codePostal} ${CABINET.ville}`)}
+        {ligne("Bureaux", `${CABINET.bureaux}, ${CABINET.codePostal} ${CABINET.ville}`)}
         {ligne("E-mail", CABINET.email)}
       </Carte>
 

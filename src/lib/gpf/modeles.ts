@@ -31,7 +31,7 @@ const aujourdhui = () => new Date().toLocaleDateString("fr-FR");
 const nomComplet = (c: GpfClient) => `${c.civilite ? c.civilite + " " : ""}${c.prenom} ${c.nom.toUpperCase()}`.trim();
 const adresse = (c: GpfClient) => [c.adresse, [c.code_postal, c.ville].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "—";
 const produit = (p: string) => GPF_PRODUIT_LABEL[p as GpfProduit] ?? p;
-const cabinetLigne = `${CABINET.nom}, ${CABINET.adresse}, ${CABINET.codePostal} ${CABINET.ville}`;
+const cabinetLigne = `${CABINET.nom}, ${CABINET.bureaux}, ${CABINET.codePostal} ${CABINET.ville}`;
 
 function identiteClient(c: GpfClient): Bloc {
   return {
@@ -60,7 +60,8 @@ export function modeleDocument(type: TypeDocument, c: GpfClient, dossiers: GpfDo
           lignes: [
             ["Dénomination", CABINET.nom],
             ["Représentant", CABINET.dirigeant],
-            ["Siège", `${CABINET.adresse}, ${CABINET.codePostal} ${CABINET.ville}`],
+            ["Siège social", `${CABINET.adresse}, ${CABINET.codePostal} ${CABINET.ville}`],
+            ["Bureaux", `${CABINET.bureaux}, ${CABINET.codePostal} ${CABINET.ville} (sur rendez-vous)`],
             ["Contact", `${CABINET.telephone} · ${CABINET.email}`],
             ["Immatriculation", `ORIAS n° ${CABINET.orias} (www.orias.fr), en qualité de ${CABINET.statuts}`],
             ["Société", `SIREN ${CABINET.siren} — ${CABINET.rcs}`],

@@ -9,7 +9,9 @@ export const CABINET = {
   orias: "23003789",
   siren: "899 363 907",
   rcs: "RCS Nanterre 899 363 907",
-  adresse: "24 rue du Gouverneur Général Éboué",
+  // Siège social (adresse légale, attestation RC Pro) et bureaux (accueil et courrier).
+  adresse: "2 rue Éliane Jeannin Garreau",
+  bureaux: "24 rue du Gouverneur Général Éboué",
   codePostal: "92130",
   ville: "Issy-les-Moulineaux",
   telephone: "06 51 22 42 13",
