@@ -1,6 +1,6 @@
 'use strict';
 /* Rubrique « Conseils » : 12 articles (2 par type). `published:false` = brouillon, visible seulement dans l'aperçu de la maquette. */
-const list = [...require('./pret.cjs'), ...require('./epargne.cjs'), ...require('./protection.cjs')];
+const list = [...require('./pret.cjs'), ...require('./epargne.cjs'), ...require('./protection.cjs'), ...require('./nouveaux.cjs')];
 const slugs = new Set(list.map(a => a.slug));
 for (const a of list) {
   for (const r of a.related || []) if (!slugs.has(r)) throw new Error(`Article « ${a.slug} » : article lié inconnu « ${r} »`);

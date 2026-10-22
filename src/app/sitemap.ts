@@ -5,6 +5,19 @@ import siteRoutes from "../../public/site/routes.json";
 
 const BASE_URL = "https://gp-finances.fr";
 
+// Articles publiés après la date commune ci-dessous : leur vraie date de publication
+// (les articles plus anciens gardent la date commune, inchangée).
+const ARTICLES_DATES: Record<string, Date> = Object.fromEntries(
+  [
+    "quotite-assurance-de-pret-couple",
+    "per-ou-assurance-vie-lequel-choisir",
+    "assurance-vie-apres-70-ans",
+    "prevoyance-ou-mutuelle-difference",
+    "mutuelle-retraite-loi-evin",
+    "taux-endettement-calcul-regle-35"
+  ].map((slug) => [`/conseils/${slug}`, new Date("2026-10-22")])
+);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   // Date de dernière mise à jour réelle du contenu (à modifier quand le contenu change), et non « maintenant ».
   const now = new Date("2026-09-24");
@@ -13,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blog = Object.values(siteRoutes as Record<string, string>).filter((route) => route.startsWith("/conseils"));
 
   return [
-    ...blog.map((route) => ({ url: `${BASE_URL}${route}`, lastModified: now, changeFrequency: "monthly" as const, priority: route === "/conseils" ? 0.8 : 0.7 })),
+    ...blog.map((route) => ({ url: `${BASE_URL}${route}`, lastModified: ARTICLES_DATES[route] ?? now, changeFrequency: "monthly" as const, priority: route === "/conseils" ? 0.8 : 0.7 })),
     { url: BASE_URL, lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: `${BASE_URL}/assurance-emprunteur`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${BASE_URL}/per-retraite`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
