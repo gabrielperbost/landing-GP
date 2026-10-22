@@ -28,7 +28,7 @@ export async function appelClaude(opts: { system?: string; messages: Message[]; 
   });
   const data = await res.json().catch(() => null);
   if (!res.ok) throw new Error(data?.error?.message ?? `anthropic_${res.status}`);
-  return data as { content: ({ type: "text"; text: string } | { type: "tool_use"; id: string; name: string; input: Record<string, unknown> })[]; stop_reason: string };
+  return data as { content: ({ type: "text"; text: string } | { type: "tool_use"; id: string; name: string; input: Record<string, unknown> })[]; stop_reason: string; usage?: { input_tokens: number; output_tokens: number } };
 }
 
 /** Extrait le premier bloc JSON d'une réponse texte. */

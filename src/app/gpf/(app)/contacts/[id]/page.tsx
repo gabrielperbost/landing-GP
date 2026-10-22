@@ -85,6 +85,9 @@ function FicheContact({ id }: { id: string }) {
 
   useEffect(() => {
     load();
+    // L'assistant signale une modification validée : on recharge la fiche.
+    window.addEventListener("gpf:fiche-modifiee", load);
+    return () => window.removeEventListener("gpf:fiche-modifiee", load);
   }, [load]);
 
   const client = data?.client ?? null;

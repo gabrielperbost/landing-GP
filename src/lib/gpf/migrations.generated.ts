@@ -21,5 +21,10 @@ export const GENERATED_MIGRATIONS: GpfMigration[] = [
     name: "009",
     description: "Migration 009 : Lot 7 (paiements aux apporteurs, journal d'activité étendu)",
     sql: "-- GPF CRM — Migration 009 : Lot 7 (paiements aux apporteurs, journal d'activité étendu)\n-- Appliquée par le serveur via gpf_exec_sql.\n\n-- Rétrocessions effectivement reversées aux apporteurs, par mois.\ncreate table if not exists gpf_apporteur_paiements (\n  id uuid primary key default uuid_generate_v4(),\n  apporteur_id uuid not null references gpf_apporteurs(id),\n  mois date not null,\n  montant numeric(12,2) not null,\n  paye_le date not null default current_date,\n  reference text,\n  created_at timestamptz not null default now(),\n  unique (apporteur_id, mois)\n);\nalter table gpf_apporteur_paiements enable row level security;\n\n-- Le journal d'activité couvre aussi les apporteurs et les courriers.\nalter table gpf_activity_log drop constraint if exists gpf_activity_log_entity_type_check;\nalter table gpf_activity_log add constraint gpf_activity_log_entity_type_check\n  check (entity_type in ('client', 'dossier', 'document', 'apporteur', 'courrier'));\n"
+  },
+  {
+    name: "010",
+    description: "Migration 010 : Lot 8 (conversations de l'assistant IA)",
+    sql: "-- GPF CRM — Migration 010 : Lot 8 (conversations de l'assistant IA)\n-- Appliquée par le serveur via gpf_exec_sql.\n\n-- Une conversation par échange, rattachée à la fiche ouverte quand il y en a une.\n-- Ne contient jamais de données de santé ni de pièces d'identité.\ncreate table if not exists gpf_assistant_conversations (\n  id uuid primary key default uuid_generate_v4(),\n  client_id uuid references gpf_clients(id),\n  titre text,\n  messages jsonb not null default '[]'::jsonb,\n  tokens_entree int not null default 0,\n  tokens_sortie int not null default 0,\n  created_at timestamptz not null default now(),\n  updated_at timestamptz not null default now()\n);\ncreate index if not exists gpf_assistant_conversations_client_idx on gpf_assistant_conversations (client_id, updated_at desc);\nalter table gpf_assistant_conversations enable row level security;\n"
   }
 ];
