@@ -5,7 +5,7 @@ import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/
 import { getWebinarPerParticipants } from "@/lib/webinarPerSheet";
 import { WEBINAR_PER, WEBINAR_PER_CAMPAIGN_START, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
 import { buildPerProspectionEmail, PER_PROSPECTION_SCHEDULE, type PerProspectionTemplate } from "@/lib/webinarPerProspection";
-import { findProspectionListId, prospectionTag, readAlreadySent, readProspects } from "@/lib/webinarPerProspectionServer";
+import { findProspectionListId, prospectionTag, readAlreadySent, readEmailCredits, readProspects } from "@/lib/webinarPerProspectionServer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +18,7 @@ export const maxDuration = 300;
  * relues dans l'historique Brevo et écartées. */
 
 const MAX_RUN_MS = 250_000;
+const CAMPAIGN_FIRST_DAY = "2026-10-22";
 const CONCURRENCY = 6;
 
 const isAuthorized = (request: NextRequest) => {
@@ -41,11 +42,14 @@ async function handle(request: NextRequest) {
   const enabled = normalizeEnv(process.env.WEBINAR_PER_PROSPECTION_ENABLED)?.toLowerCase() === "oui";
   const today = parisDateKey();
 
-  // Aperçu manuel d'une vague (?template=...) : toujours à blanc.
+  // Vague choisie à la main (?template=...) : à blanc, sauf avec &send=1 (lot pilote, plafonné par &max=).
   const forced = url.searchParams.get("template") as PerProspectionTemplate | null;
   const wave = forced ? PER_PROSPECTION_SCHEDULE.find((w) => w.id === forced) : dueWave(today, parisHour());
   if (!wave) return NextResponse.json({ ok: true, ran: false, reason: "aucune_vague_maintenant", today, hour: parisHour() });
-  const dryRun = Boolean(forced) || !enabled || url.searchParams.get("dryRun") === "1";
+  const manualSend = Boolean(forced) && url.searchParams.get("send") === "1";
+  const dryRun = !enabled || url.searchParams.get("dryRun") === "1" || (Boolean(forced) && !manualSend);
+  const maxParam = Number(url.searchParams.get("max"));
+  const max = Number.isInteger(maxParam) && maxParam > 0 ? maxParam : Infinity;
 
   const listId = await findProspectionListId();
   if (!listId) return NextResponse.json({ ok: false, error: "liste_prospects_absente" }, { status: 503 });
@@ -55,7 +59,7 @@ async function handle(request: NextRequest) {
     readProspects(listId),
     getBrevoSuppression(),
     getWebinarPerParticipants(),
-    readAlreadySent(tag, today)
+    readAlreadySent(tag, CAMPAIGN_FIRST_DAY, today)
   ]);
 
   // Inscrits au webinaire du 1er novembre (et désinscrits de toute date) : jamais relancés.
@@ -78,7 +82,11 @@ async function handle(request: NextRequest) {
     else targets.push(email);
   }
   counts.aEnvoyer = targets.length;
-  if (dryRun) return NextResponse.json({ ok: true, ran: false, dryRun: true, enabled, vague: wave.id, envoi: wave.label, ...counts });
+  if (dryRun) {
+    const credits = await readEmailCredits().catch(() => null);
+    return NextResponse.json({ ok: true, ran: false, dryRun: true, enabled, vague: wave.id, envoi: wave.label, creditsEmail: credits, ...counts });
+  }
+  targets.splice(max);
 
   const config = getBrevoTransactionalConfig();
   if (!config) return NextResponse.json({ ok: false, error: "brevo_non_configure" }, { status: 503 });
@@ -101,7 +109,7 @@ async function handle(request: NextRequest) {
     }
   };
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-  counts.restants = targets.length - cursor;
+  counts.restants = counts.aEnvoyer - counts.envoyes - counts.erreurs;
   console.log("[webinar-per-prospection]", wave.id, JSON.stringify(counts));
   return NextResponse.json({ ok: true, ran: true, vague: wave.id, ...counts });
 }

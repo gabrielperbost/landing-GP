@@ -80,13 +80,13 @@ export const readProspects = async (listId: number): Promise<ProspectContact[]> 
   throw new Error("prospects_pagination_limit");
 };
 
-// Adresses déjà servies pour cette vague (événements « requests » du jour pour l'étiquette),
+// Adresses déjà servies pour cette vague (événements « requests » depuis le début de la campagne),
 // pour pouvoir relancer la tâche sans jamais envoyer deux fois le même message.
-export const readAlreadySent = async (tag: string, dateKey: string) => {
+export const readAlreadySent = async (tag: string, startDate: string, endDate: string) => {
   const sent = new Set<string>();
   for (let offset = 0; offset < 50000; offset += 2500) {
     const data = await brevo(
-      `/smtp/statistics/events?limit=2500&offset=${offset}&startDate=${dateKey}&endDate=${dateKey}&event=requests&tags=${encodeURIComponent(tag)}&sort=desc`
+      `/smtp/statistics/events?limit=2500&offset=${offset}&startDate=${startDate}&endDate=${endDate}&event=requests&tags=${encodeURIComponent(tag)}&sort=desc`
     );
     const events = (data.events as { email?: string }[] | undefined) ?? [];
     for (const event of events) if (event.email) sent.add(event.email.trim().toLowerCase());
@@ -98,4 +98,11 @@ export const readAlreadySent = async (tag: string, dateKey: string) => {
 // Désinscription d'un destinataire de la campagne : liste noire Brevo (contact créé si besoin).
 export const blacklistInBrevo = async (email: string) => {
   await brevo("/contacts", { method: "POST", body: JSON.stringify({ email, emailBlacklisted: true, updateEnabled: true }) });
+};
+
+// Solde de crédits e-mail du compte Brevo (offre « payAsYouGo » ou abonnement).
+export const readEmailCredits = async () => {
+  const account = await brevo("/account");
+  const plans = (account.plan as { type?: string; credits?: number; creditsType?: string }[] | undefined) ?? [];
+  return plans.map((p) => ({ type: p.type, credits: p.credits, creditsType: p.creditsType }));
 };
