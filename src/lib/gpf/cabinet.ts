@@ -17,9 +17,12 @@ export const CABINET = {
   site: "https://gp-finances.fr",
   association: "CNCEF",
   autorite: "Autorité de contrôle prudentiel et de résolution (ACPR), 4 place de Budapest, CS 92459, 75436 Paris Cedex 09",
-  // À compléter : non publiés sur le site.
-  mediateur: process.env.GPF_MEDIATEUR || "[à compléter : médiateur de la consommation]",
-  rcPro: process.env.GPF_RC_PRO || "[à compléter : assureur RC professionnelle et n° de police]"
+  // Attestation RC Pro 2026 (QBE via +Simple), valable jusqu'au 28/02/2027 : à mettre à jour au renouvellement.
+  rcPro:
+    process.env.GPF_RC_PRO ||
+    "QBE Europe SA/NV (par l'intermédiaire de +Simple), contrat n° RCIOB00000426 — intermédiaire d'assurance : 1 564 610 € par sinistre et 2 315 610 € par année d'assurance",
+  // À compléter : médiateur de la consommation pas encore désigné.
+  mediateur: process.env.GPF_MEDIATEUR || "[à compléter : médiateur de la consommation]"
 } as const;
 
 export const MENTIONS_LEGALES = `${CABINET.nom} — ${CABINET.qualite}, immatriculé à l'ORIAS sous le n° ${CABINET.orias} (www.orias.fr) — SIREN ${CABINET.siren} — ${CABINET.rcs}.`;
