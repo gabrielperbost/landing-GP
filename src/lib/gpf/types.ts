@@ -16,13 +16,139 @@ export type GpfClient = {
   profession: string | null;
   fumeur: boolean | null;
   notes: string | null;
+  type_contact?: GpfTypeContact;
+  raison_sociale?: string | null;
+  date_naissance?: string | null;
+  situation_familiale?: string | null;
+  nb_enfants?: number | null;
+  provenance?: string | null;
+  apporteur_id?: string | null;
+  preference_contact?: string | null;
+  score?: GpfScore | null;
+  dernier_contact_at?: string | null;
+  prochaine_action?: string | null;
+  prochaine_action_date?: string | null;
+  nrp_count?: number;
+  budget?: GpfBudget;
+  fiscalite?: GpfFiscalite;
   created_at: string;
   updated_at: string;
 };
 
+export type GpfTypeContact = "particulier" | "tns" | "entreprise";
+export const GPF_TYPE_CONTACT_LABEL: Record<GpfTypeContact, string> = { particulier: "Particulier", tns: "TNS", entreprise: "Entreprise" };
+
+export type GpfScore = "chaud" | "tiede" | "froid";
+export const GPF_SCORE_LABEL: Record<GpfScore, string> = { chaud: "Chaud", tiede: "Tiède", froid: "Froid" };
+export const GPF_SCORE_COLOR: Record<GpfScore, string> = { chaud: "#b3463f", tiede: "#c98a1f", froid: "#579bfc" };
+
+// Provenances des leads de GP Finances.
+export const GPF_PROVENANCES = ["Meta Ads", "Tally", "Masterleads", "Site", "Recommandation", "Apporteur", "Century 21", "Webinaire", "Autre"] as const;
+
+export type GpfBudget = {
+  revenus_annuels?: number | null;
+  charges_annuelles?: number | null;
+  credits_en_cours?: number | null;
+  mensualites_credits?: number | null;
+  patrimoine?: number | null;
+  notes?: string | null;
+};
+export type GpfFiscalite = {
+  tmi?: number | null;
+  impot_paye?: number | null;
+  revenu_fiscal_reference?: number | null;
+  nb_parts?: number | null;
+  plafond_epargne_retraite?: number | null;
+  annee?: number | null;
+};
+
+export type GpfNoteCategorie = "reunion" | "suivi" | "conformite" | "contrats" | "autre";
+export const GPF_NOTE_CATEGORIE_LABEL: Record<GpfNoteCategorie, string> = {
+  reunion: "Réunion",
+  suivi: "Suivi",
+  conformite: "Conformité",
+  contrats: "Contrats",
+  autre: "Autre"
+};
+export type GpfNote = { id: string; client_id: string; dossier_id: string | null; categorie: GpfNoteCategorie; contenu: string; auteur: string; created_at: string };
+
+export type GpfTaskCategorie = "appel" | "email" | "sms" | "document" | "relance" | "conformite" | "suivi" | "reunion";
+export const GPF_TASK_CATEGORIE_LABEL: Record<GpfTaskCategorie, string> = {
+  appel: "Appel",
+  email: "E-mail",
+  sms: "SMS",
+  document: "Document",
+  relance: "Relance",
+  conformite: "Conformité",
+  suivi: "Suivi",
+  reunion: "Réunion"
+};
+export type GpfTaskEtat = "a_faire" | "en_cours" | "en_attente" | "terminee";
+export const GPF_TASK_ETAT_LABEL: Record<GpfTaskEtat, string> = { a_faire: "À faire", en_cours: "En cours", en_attente: "En attente", terminee: "Terminée" };
+export type GpfTask = {
+  id: string;
+  client_id: string | null;
+  dossier_id: string | null;
+  titre: string;
+  categorie: GpfTaskCategorie;
+  echeance: string | null;
+  etat: GpfTaskEtat;
+  notes: string | null;
+  auto: boolean;
+  origine: string | null;
+  created_at: string;
+  done_at: string | null;
+  client?: { id: string; prenom: string; nom: string } | null;
+};
+
+export type GpfRdvStatut = "a_venir" | "provisoire" | "passe" | "annule";
+export const GPF_RDV_STATUT_LABEL: Record<GpfRdvStatut, string> = { a_venir: "À venir", provisoire: "Provisoire", passe: "Passé", annule: "Annulé" };
+export type GpfAppointment = {
+  id: string;
+  client_id: string | null;
+  titre: string;
+  debut: string;
+  duree_min: number;
+  lieu: string | null;
+  lien_visio: string | null;
+  statut: GpfRdvStatut;
+  source: "manuel" | "calendly" | "google";
+  notes: string | null;
+  client?: { id: string; prenom: string; nom: string } | null;
+};
+
+export type GpfCallResultat = "joint" | "nrp" | "messagerie" | "rappeler";
+export const GPF_CALL_RESULTAT_LABEL: Record<GpfCallResultat, string> = { joint: "Joint", nrp: "NRP", messagerie: "Messagerie", rappeler: "Rappeler le…" };
+export type GpfCall = { id: string; client_id: string; dossier_id: string | null; resultat: GpfCallResultat; rappel_at: string | null; note: string | null; created_at: string };
+
+export type GpfComplianceType = "collecte" | "lcb_ft" | "der" | "lettre_mission" | "piece_identite" | "profil" | "objectifs" | "rapport_adequation";
+export const GPF_COMPLIANCE_ITEMS: { type: GpfComplianceType; label: string }[] = [
+  { type: "collecte", label: "Collecte d'informations (recueil des besoins)" },
+  { type: "lcb_ft", label: "LCB-FT" },
+  { type: "der", label: "DER (document d'entrée en relation)" },
+  { type: "lettre_mission", label: "Lettre de mission" },
+  { type: "piece_identite", label: "Pièce d'identité" },
+  { type: "profil", label: "Profil (investisseur / assuré)" },
+  { type: "objectifs", label: "Objectifs" },
+  { type: "rapport_adequation", label: "Rapport de conseil / adéquation" }
+];
+export type GpfCompliance = {
+  id?: string;
+  client_id: string;
+  type: GpfComplianceType;
+  statut: "manquant" | "en_cours" | "fait";
+  pourcentage: number | null;
+  date_signature: string | null;
+  date_expiration: string | null;
+  document_id: string | null;
+  updated_at?: string;
+};
+
 export type GpfDocument = {
   id: string;
-  dossier_id: string;
+  dossier_id: string | null;
+  client_id?: string | null;
+  date_expiration?: string | null;
   type: string;
   recu: boolean;
   nom_fichier: string | null;
@@ -185,6 +311,14 @@ export type GpfDossier = {
   date_signature: string | null;
   date_echeance: string | null;
   date_resiliation: string | null;
+  banque?: string | null;
+  date_offre_pret?: string | null;
+  date_signature_notaire?: string | null;
+  cout_assurance_banque?: number | null;
+  cout_assurance_delegation?: number | null;
+  prochaine_action?: string | null;
+  prochaine_action_date?: string | null;
+  etape_depuis?: string | null;
   created_at: string;
   updated_at: string;
 };

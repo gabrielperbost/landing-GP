@@ -38,9 +38,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     .upload(storagePath, buffer, { contentType: file.type || "application/octet-stream" });
   if (uploadError) return NextResponse.json({ ok: false, error: uploadError.message }, { status: 500 });
 
-  const { data, error } = await supabaseAdmin
-    .from("gpf_documents")
-    .insert({
+  const { data: dossier } = await supabaseAdmin.from("gpf_dossiers").select("client_id").eq("id", dossierId).single();
+  const row = {
       dossier_id: dossierId,
       type,
       recu: true,
@@ -48,9 +47,10 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       storage_path: storagePath,
       taille_octets: file.size,
       date_reception: new Date().toISOString().slice(0, 10)
-    })
-    .select("*")
-    .single();
+  };
+  // client_id existe depuis la migration 007 : on le renseigne quand c'est possible.
+  let { data, error } = await supabaseAdmin.from("gpf_documents").insert({ ...row, client_id: dossier?.client_id ?? null }).select("*").single();
+  if (error && /client_id/.test(error.message)) ({ data, error } = await supabaseAdmin.from("gpf_documents").insert(row).select("*").single());
 
   if (error) {
     await supabaseAdmin.storage.from(BUCKET).remove([storagePath]);

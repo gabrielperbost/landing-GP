@@ -3,6 +3,8 @@ import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_CONTRAT_STATUTS, GPF_MOTIFS_REFUS, GPF_PRODUITS, GPF_STATUTS, GPF_STATUTS_SIGNES } from "@/lib/gpf/types";
 import { logActivity } from "@/lib/gpf/activityLog";
+import { addDays, closeAutoRelances, createTask } from "@/lib/gpf/tasks";
+import { notify } from "@/lib/gpf/notify";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,7 +15,9 @@ const EDITABLE_FIELDS = [
   "date_entree_attente_docs", "date_derniere_relance", "relances_envoyees", "remuneration_apporteur_pct",
   "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree",
   "motif_refus", "prime_mensuelle", "prime_annuelle",
-  "contrat_statut", "date_signature", "date_echeance", "date_resiliation"
+  "contrat_statut", "date_signature", "date_echeance", "date_resiliation",
+  "banque", "date_offre_pret", "date_signature_notaire", "cout_assurance_banque", "cout_assurance_delegation",
+  "prochaine_action", "prochaine_action_date"
 ];
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
@@ -54,6 +58,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (!before.date_signature) patch.date_signature = today;
   }
   if (body.contrat_statut === "resilie" && before && !before.date_resiliation && !body.date_resiliation) patch.date_resiliation = today;
+  // Date d'entrée dans l'étape du pipeline (nombre de jours affiché sur les cartes).
+  if (before && "etape_depuis" in before && "statut" in body && before.statut !== body.statut) patch.etape_depuis = new Date().toISOString();
 
   const { data, error } = await supabaseAdmin.from("gpf_dossiers").update(patch).eq("id", id).select("*").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
@@ -62,6 +68,24 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   // un retour en arrière volontaire, par ex. vers attente_documents).
   if ("statut" in body && before && before.statut !== body.statut) {
     await supabaseAdmin.from("gpf_status_history").insert({ dossier_id: id, ancien_statut: before.statut, nouveau_statut: body.statut });
+  }
+
+  // Pièces manquantes : relance « Demander la pièce » à J+2.
+  if (body.statut === "attente_documents" && before?.statut !== "attente_documents") {
+    const { data: c } = await supabaseAdmin.from("gpf_clients").select("prenom, nom").eq("id", data.client_id).single();
+    await createTask({
+      client_id: data.client_id,
+      dossier_id: id,
+      titre: `Demander les pièces manquantes à ${c ? `${c.prenom} ${c.nom}` : "ce client"}`,
+      categorie: "document",
+      echeance: addDays(new Date(), 2),
+      auto: true,
+      origine: "piece_manquante"
+    });
+    await notify("piece_manquante", `Pièces manquantes : ${c ? `${c.prenom} ${c.nom}` : "dossier"}`, "Relance programmée à J+2", `/gpf/contacts/${data.client_id}?onglet=documents`);
+  }
+  if (before?.statut === "attente_documents" && "statut" in body && body.statut !== "attente_documents") {
+    await closeAutoRelances(data.client_id, ["piece_manquante"]);
   }
 
   await logActivity("update", "dossier", id, data.produit);

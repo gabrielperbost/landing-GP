@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { logActivity } from "@/lib/gpf/activityLog";
+import { CLIENT_EDITABLE_FIELDS } from "@/lib/gpf/contacts";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,9 +32,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   const body = await request.json().catch(() => null);
   if (!body) return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
 
-  const allowed = ["civilite", "prenom", "nom", "email", "telephone", "adresse", "ville", "code_postal", "annee_naissance", "profession", "fumeur", "notes"];
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
-  for (const key of allowed) if (key in body) patch[key] = body[key];
+  for (const key of CLIENT_EDITABLE_FIELDS) if (key in body) patch[key] = typeof body[key] === "string" ? body[key].trim() || null : body[key];
+  if ("prenom" in patch && !patch.prenom) return NextResponse.json({ ok: false, error: "prenom_requis" }, { status: 400 });
+  if ("nom" in patch && !patch.nom) return NextResponse.json({ ok: false, error: "nom_requis" }, { status: 400 });
 
   const { data, error } = await supabaseAdmin.from("gpf_clients").update(patch).eq("id", id).select("*").single();
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
