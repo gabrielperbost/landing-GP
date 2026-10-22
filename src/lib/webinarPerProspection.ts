@@ -12,7 +12,7 @@
 export const PER_PROSPECTION = {
   dateLabel: "Dimanche 1er novembre 2026",
   dateShort: "dimanche 1er novembre",
-  timeLabel: "15h00 à 16h00 (heure de Paris)",
+  timeLabel: "15h00 à 16h00",
   hour: "15h",
   durationLabel: "45 minutes d'explications et d'exemples chiffrés + 15 minutes de questions",
   registrationUrl: "https://gp-finances.fr/webinaire-per",

@@ -114,7 +114,7 @@ for(const s of services){
   <h1>Comprendre et optimiser<br>votre <em>PER</em>, en 1 heure.</h1>
   <p class="webinar-lead">Un webinaire en direct, gratuit et sans engagement, pour comprendre le fonctionnement du PER, savoir combien vous pourriez économiser d’impôt et éviter les erreurs les plus fréquentes.</p>
   <div class="webinar-badges">
-   <div class="webinar-badge">${icon('clock')}<div><strong>Dimanche 1er novembre 2026</strong><span>15h00 à 16h00 (heure de Paris)</span></div></div>
+   <div class="webinar-badge">${icon('clock')}<div><strong>Dimanche 1er novembre 2026</strong><span>15h00 à 16h00</span></div></div>
    <div class="webinar-badge">${icon('person')}<div><strong>Grand public</strong><span>Aucun prérequis</span></div></div>
    <div class="webinar-badge">${icon('shield')}<div><strong>Gratuit et en direct</strong><span>Questions en fin de session</span></div></div>
   </div>

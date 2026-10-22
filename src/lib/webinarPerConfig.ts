@@ -11,7 +11,7 @@ export const WEBINAR_PER = {
   title: "Webinaire PER : payer moins d'impôts et préparer sa retraite",
   audience: "Grand public",
   dateLabel: "Dimanche 1er novembre 2026",
-  timeLabel: "15h00 à 16h00 (heure de Paris)",
+  timeLabel: "15h00 à 16h00",
   durationLabel: "45 minutes d'explications et d'exemples chiffrés + 15 minutes de questions",
   registrationPath: "/webinaire-per",
   unsubscribePath: "/api/webinar-per/unsubscribe",
