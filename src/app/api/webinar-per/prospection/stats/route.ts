@@ -86,7 +86,11 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const participants = await getWebinarPerParticipants().catch(() => []);
+  let sheetError: string | null = null;
+  const participants = await getWebinarPerParticipants().catch((error) => {
+    sheetError = error instanceof Error ? error.message : String(error);
+    return [];
+  });
   const start = Date.parse(WEBINAR_PER_CAMPAIGN_START);
   const current = participants.filter((p) => Date.parse(p.created_at) >= start && p.status.trim().toLowerCase() === "registered");
   const fromCampaign = current.filter((p) => sourceField(p.source, "utm_campaign") === PER_PROSPECTION.source);
@@ -117,6 +121,9 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     ok: true,
     aujourdhui: today,
+    lectureSheet: sheetError ?? "ok",
+    lignesSheet: participants.length,
+    derniereInscription: participants.map((p) => p.created_at).sort().pop() ?? null,
     inscritsTotal: current.length,
     inscritsVenusDesEmails: fromCampaign.length,
     vagues
