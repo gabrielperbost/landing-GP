@@ -25,11 +25,15 @@ export default function CommissionsPage() {
   const [idBordereau, setIdBordereau] = useState<string | null>(null);
   const [synthese, setSynthese] = useState<Synthese | null>(null);
   const [insurers, setInsurers] = useState<{ id: string; nom: string }[]>([]);
+  const [encours, setEncours] = useState<{ encoursTotal: number; lineaireTotal: number; contratsEpargne: number } | null>(null);
 
   const charger = async () => {
     const [s, r] = await Promise.all([api("/api/gpf/commissions/synthese", "GET"), api("/api/gpf/commissions/regles", "GET")]);
     if (s.ok) setSynthese(s.data);
     if (r.ok) setInsurers(r.data.insurers);
+    // Encours sous gestion (assurance-vie, PER) : calculé par le reporting.
+    const e = await api("/api/gpf/reporting?axe=produit&mois=12", "GET");
+    if (e.ok) setEncours(e.data.resume);
   };
   useEffect(() => {
     // Lien direct depuis une notification : /gpf/commissions?onglet=bordereaux&id=…
@@ -75,6 +79,12 @@ export default function CommissionsPage() {
             <Tuile label="Décommissions" valeur={eur(total("decommissions"), 0)} accent="#b3463f" />
             <Tuile label="Net cabinet" valeur={eur(total("net"), 0)} aide="Après rétrocessions et reprises" />
           </div>
+          {encours ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Tuile label="Encours sous gestion" valeur={eur(encours.encoursTotal, 0)} accent="#CDAA5A" aide={`${encours.contratsEpargne} contrat(s) d'assurance-vie et PER`} />
+              <Tuile label="Rémunération linéaire / an" valeur={eur(encours.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
+            </div>
+          ) : null}
           <Carte titre="Attendu vs encaissé par mois">
             <div className="p-4">
               <Barres

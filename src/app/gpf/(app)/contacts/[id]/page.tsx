@@ -14,7 +14,7 @@ import {
   type GpfClient,
   type GpfScore
 } from "@/lib/gpf/types";
-import { primeAnnuelle } from "@/lib/gpf/contrats";
+import { encoursGere, estEpargne, primeAnnuelle } from "@/lib/gpf/contrats";
 import { SkeletonPage } from "@/components/gpf/Skeleton";
 import { useGpfShell, usePageTitle } from "@/components/gpf/GpfShell";
 import { Accueil, ListeDossiers } from "@/components/gpf/fiche/Accueil";
@@ -98,13 +98,16 @@ function FicheContact({ id }: { id: string }) {
     if (!data) return null;
     const dossiers = data.dossiers;
     const contrats = dossiers.filter((d) => d.contrat_statut || GPF_STATUTS_SIGNES.has(d.statut));
-    const primeTotale = contrats.filter(compteDansRevenus).reduce((s, d) => s + (primeAnnuelle(d) ?? 0), 0);
+    const primeTotale = contrats.filter((d) => compteDansRevenus(d) && !estEpargne(d)).reduce((s, d) => s + (primeAnnuelle(d) ?? 0), 0);
+    const encoursTotal = contrats.filter((d) => compteDansRevenus(d) && estEpargne(d)).reduce((s, d) => s + (encoursGere(d) ?? 0), 0);
+    const aEpargne = contrats.some((d) => compteDansRevenus(d) && estEpargne(d));
+    const aPrimes = contrats.some((d) => compteDansRevenus(d) && !estEpargne(d));
     const estClient = contrats.some((d) => d.contrat_statut !== "resilie");
     const ci = data.conformite.find((c) => c.type === "piece_identite");
     const lcb = data.conformite.find((c) => c.type === "lcb_ft");
     const today = new Date().toISOString().slice(0, 10);
     const kycOk = ci?.statut === "fait" && (!ci.date_expiration || ci.date_expiration >= today) && lcb?.statut === "fait";
-    return { contrats, affaires: dossiers.filter((d) => !d.contrat_statut && !GPF_STATUTS_SIGNES.has(d.statut)), primeTotale, estClient, kycOk };
+    return { contrats, affaires: dossiers.filter((d) => !d.contrat_statut && !GPF_STATUTS_SIGNES.has(d.statut)), primeTotale, encoursTotal, aEpargne, aPrimes, estClient, kycOk };
   }, [data]);
 
   const changerOnglet = (o: string) => {
@@ -187,9 +190,19 @@ function FicheContact({ id }: { id: string }) {
             {client.provenance ? <span>Provenance : {client.provenance}</span> : null}
           </p>
         </div>
-        <div className="text-right">
-          <div className="text-[10px] uppercase tracking-wider text-[var(--gpf-subtle)]">Prime annualisée totale</div>
-          <div className="text-2xl font-semibold tabular-nums text-[var(--gpf-ink)]">{euro(resume.primeTotale) ?? "—"}</div>
+        <div className="flex gap-6 text-right">
+          {resume.aEpargne ? (
+            <div>
+              <div className="text-[10px] uppercase tracking-wider text-[var(--gpf-subtle)]">Encours sous gestion</div>
+              <div className="text-2xl font-semibold tabular-nums text-[var(--gpf-ink)]">{euro(resume.encoursTotal) ?? "—"}</div>
+            </div>
+          ) : null}
+          {resume.aPrimes || !resume.aEpargne ? (
+            <div>
+              <div className="text-[10px] uppercase tracking-wider text-[var(--gpf-subtle)]">Prime annualisée totale</div>
+              <div className="text-2xl font-semibold tabular-nums text-[var(--gpf-ink)]">{euro(resume.primeTotale) ?? "—"}</div>
+            </div>
+          ) : null}
         </div>
       </div>
 

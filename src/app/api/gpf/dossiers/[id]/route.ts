@@ -14,7 +14,7 @@ const EDITABLE_FIELDS = [
   "produit", "statut", "source", "insurer_id", "reference_contrat", "montant_pret", "taux", "duree_mois", "date_effet",
   "placement_initial", "placement_mensuel", "frais_gestion_pct", "lien_dossier", "date_depot",
   "date_entree_attente_docs", "date_derniere_relance", "relances_envoyees", "remuneration_apporteur_pct",
-  "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree",
+  "assureur_nom", "frais_dossier", "precompte_lineaire_1ere_annee", "lineaire_n1", "frais_entree", "frais_versement_pct", "encours", "encours_date",
   "motif_refus", "prime_mensuelle", "prime_annuelle",
   "contrat_statut", "date_signature", "date_echeance", "date_resiliation",
   "banque", "date_offre_pret", "date_signature_notaire", "cout_assurance_banque", "cout_assurance_delegation",

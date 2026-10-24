@@ -11,7 +11,7 @@ import {
   type GpfDocument,
   type GpfDossier
 } from "@/lib/gpf/types";
-import { primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
+import { encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
 import { api, euro, Field, frDate, inputCls } from "./shared";
 
 const DOCUMENT_TYPES = ["CNI", "Justificatif de domicile", "RIB", "Offre de prêt", "Tableau d'amortissement", "Bulletin de salaire", "Avis d'imposition", "Autre"];
@@ -51,10 +51,13 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
   const pa = primeAnnuelle(dossier);
   const kpis: [string, string | null][] = (
     [
-      ["Prime", pa != null ? `${euro(pa)}/an` : dossier.placement_initial != null ? euro(dossier.placement_initial) : null],
+      estEpargne(dossier)
+        ? ["Encours", euro(encoursGere(dossier))]
+        : ["Prime", pa != null ? `${euro(pa)}/an` : dossier.placement_initial != null ? euro(dossier.placement_initial) : null],
+      estEpargne(dossier) ? ["Linéaire / an", euro(lineaireAnnuel(dossier))] : ["", null],
       ["Frais de dossier", euro(dossier.frais_dossier)],
       ["Précompte / 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
-      ["Linéaire N+1", euro(dossier.lineaire_n1)]
+      ["Linéaire N+1", estEpargne(dossier) ? null : euro(dossier.lineaire_n1)]
     ] as [string, string | null][]
   ).filter(([, v]) => v);
 
@@ -68,8 +71,8 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
       ["Banque", dossier.banque],
       ["Taux", dossier.taux != null ? `${dossier.taux} %` : null],
       ["Durée", dossier.duree_mois != null ? `${dossier.duree_mois} mois` : null],
-      ["Placement mensuel", euro(dossier.placement_mensuel)],
-      ["Frais d'entrée", euro(dossier.frais_entree)],
+      ["Placement mensuel", estEpargne(dossier) ? null : euro(dossier.placement_mensuel)],
+      ["Frais d'entrée", estEpargne(dossier) ? null : euro(dossier.frais_entree)],
       ["Motif de refus", dossier.motif_refus],
       ["Source", dossier.source],
       ["Lien du dossier", dossier.lien_dossier]
@@ -183,6 +186,8 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
             </div>
           ) : null}
 
+          {estEpargne(dossier) ? <MontantsEpargne dossier={dossier} saving={saving} onSave={patch} /> : null}
+
           {details.length ? (
             <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
               {details.map(([label, value]) => (
@@ -204,6 +209,96 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
 
           <DocumentsDossier dossierId={dossier.id} />
         </div>
+      </div>
+    </div>
+  );
+}
+
+const nombre = (v: string) => (v.trim() === "" ? null : Number(v.replace(/\s/g, "").replace(",", ".")));
+const texte = (v: number | null | undefined) => (v == null ? "" : String(v));
+const arrondi2 = (n: number) => String(Math.round(n * 100) / 100);
+
+/** Assurance-vie / PER : montant placé, frais sur versement, frais de gestion (rémunération linéaire), encours. */
+function MontantsEpargne({ dossier, saving, onSave }: { dossier: GpfDossier; saving: boolean; onSave: (body: Record<string, unknown>) => Promise<unknown> }) {
+  const [f, setF] = useState({
+    placement_initial: texte(dossier.placement_initial),
+    placement_mensuel: texte(dossier.placement_mensuel),
+    frais_versement_pct: texte(dossier.frais_versement_pct),
+    frais_entree: texte(dossier.frais_entree),
+    frais_gestion_pct: texte(dossier.frais_gestion_pct),
+    lineaire_n1: texte(dossier.lineaire_n1),
+    encours: texte(dossier.encours),
+    encours_date: dossier.encours_date ?? ""
+  });
+  const [ok, setOk] = useState(false);
+  const base = (g: typeof f) => nombre(g.encours) ?? nombre(g.placement_initial);
+
+  // Saisie d'un taux : le montant correspondant se calcule tout seul (il reste modifiable).
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setOk(false);
+    setF((p) => {
+      const n = { ...p, [k]: v };
+      const placement = nombre(n.placement_initial);
+      const pctV = nombre(n.frais_versement_pct);
+      if ((k === "frais_versement_pct" || k === "placement_initial") && placement != null && pctV != null) n.frais_entree = arrondi2((placement * pctV) / 100);
+      const b = base(n);
+      const pctG = nombre(n.frais_gestion_pct);
+      if ((k === "frais_gestion_pct" || k === "placement_initial" || k === "encours") && b != null && pctG != null) n.lineaire_n1 = arrondi2((b * pctG) / 100);
+      return n;
+    });
+  };
+
+  const enregistrer = async () => {
+    const encoursChange = nombre(f.encours) !== (dossier.encours ?? null);
+    const r = (await onSave({
+      placement_initial: nombre(f.placement_initial),
+      placement_mensuel: nombre(f.placement_mensuel),
+      frais_versement_pct: nombre(f.frais_versement_pct),
+      frais_entree: nombre(f.frais_entree),
+      frais_gestion_pct: nombre(f.frais_gestion_pct),
+      lineaire_n1: nombre(f.lineaire_n1),
+      encours: nombre(f.encours),
+      encours_date: f.encours_date || (encoursChange && nombre(f.encours) != null ? new Date().toISOString().slice(0, 10) : null)
+    })) as { ok?: boolean };
+    setOk(Boolean(r?.ok));
+  };
+
+  return (
+    <div className="rounded-xl border border-[var(--gpf-border-soft)] p-3 flex flex-col gap-3">
+      <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[var(--gpf-muted)]">Montants du contrat</h4>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Montant placé (€)">
+          <input inputMode="decimal" value={f.placement_initial} onChange={set("placement_initial")} className={inputCls} />
+        </Field>
+        <Field label="Versements programmés (€/mois)">
+          <input inputMode="decimal" value={f.placement_mensuel} onChange={set("placement_mensuel")} className={inputCls} />
+        </Field>
+        <Field label="Frais sur versement (%)">
+          <input inputMode="decimal" value={f.frais_versement_pct} onChange={set("frais_versement_pct")} className={inputCls} />
+        </Field>
+        <Field label="Frais sur versement (€)">
+          <input inputMode="decimal" value={f.frais_entree} onChange={set("frais_entree")} className={inputCls} />
+        </Field>
+        <Field label="Frais de gestion — ma rémunération (% / an)">
+          <input inputMode="decimal" value={f.frais_gestion_pct} onChange={set("frais_gestion_pct")} className={inputCls} />
+        </Field>
+        <Field label="Rémunération linéaire (€ / an)">
+          <input inputMode="decimal" value={f.lineaire_n1} onChange={set("lineaire_n1")} className={inputCls} />
+        </Field>
+        <Field label="Encours actuel (€)">
+          <input inputMode="decimal" value={f.encours} onChange={set("encours")} placeholder="Vide = montant placé" className={inputCls} />
+        </Field>
+        <Field label="Encours au">
+          <input type="date" value={f.encours_date} onChange={set("encours_date")} className={inputCls} />
+        </Field>
+      </div>
+      <div className="flex items-center gap-3">
+        <button onClick={enregistrer} disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-4 py-2 disabled:opacity-50">
+          {saving ? "…" : "Enregistrer"}
+        </button>
+        {ok ? <span className="text-xs text-[#2f9e6e]">Enregistré ✓</span> : null}
+        <span className="text-[11px] text-[var(--gpf-subtle)]">En saisissant un %, le montant en € se calcule seul.</span>
       </div>
     </div>
   );

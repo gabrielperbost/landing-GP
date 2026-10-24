@@ -17,6 +17,24 @@ export function primeAnnuelle(d: ContratLike): number | null {
   return null;
 }
 
+/** Contrat d'épargne (assurance-vie, PER) : compte dans l'encours sous gestion. */
+export const estEpargne = (d: { produit: string }) => d.produit === "assurance_vie" || d.produit === "per";
+
+/** Encours géré : valeur actuelle saisie, sinon montant placé à la souscription. */
+export function encoursGere(d: { produit: string; encours?: unknown; placement_initial?: unknown }): number | null {
+  if (!estEpargne(d)) return null;
+  if (d.encours != null) return Number(d.encours);
+  if (d.placement_initial != null) return Number(d.placement_initial);
+  return null;
+}
+
+/** Rémunération linéaire annuelle : montant saisi, sinon encours × taux des frais de gestion. */
+export function lineaireAnnuel(d: { produit: string; encours?: unknown; placement_initial?: unknown; lineaire_n1?: unknown; frais_gestion_pct?: unknown }): number | null {
+  if (d.lineaire_n1 != null) return Number(d.lineaire_n1);
+  const base = encoursGere(d);
+  return base != null && d.frais_gestion_pct != null ? Math.round(base * Number(d.frais_gestion_pct)) / 100 : null;
+}
+
 /** Prochaine échéance : date saisie, sinon prochain anniversaire de la date d'effet. */
 export function prochaineEcheance(d: ContratLike, now = new Date()): string | null {
   if (d.date_echeance) return d.date_echeance;

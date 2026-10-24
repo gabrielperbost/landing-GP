@@ -328,6 +328,9 @@ export type GpfDossier = {
   precompte_lineaire_1ere_annee: number | null;
   lineaire_n1: number | null;
   frais_entree: number | null;
+  frais_versement_pct?: number | null;
+  encours?: number | null;
+  encours_date?: string | null;
   motif_refus: string | null;
   prime_mensuelle: number | null;
   prime_annuelle: number | null;

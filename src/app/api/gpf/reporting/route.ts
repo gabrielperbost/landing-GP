@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { arrondi, chargerPilotage, commissionEstimee, compagnieDe, derniersMois, estContrat, estPerdu, estSigne, moisDe, type DossierP } from "@/lib/gpf/pilotage";
-import { primeAnnuelle } from "@/lib/gpf/contrats";
+import { encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle } from "@/lib/gpf/contrats";
 import { normSource } from "@/lib/gpf/sources";
 import { GPF_PRODUIT_LABEL, type GpfProduit } from "@/lib/gpf/types";
 
@@ -39,9 +39,9 @@ export async function GET(request: NextRequest) {
     return c?.apporteur_id ? apporteurNom.get(c.apporteur_id) ?? "Apporteur supprimé" : "Sans apporteur";
   };
 
-  type Row = { valeur: string; leads: number; signes: number; perdus: number; contrats: number; primes: number; commEstimees: number; encaisse6: number; encaisse12: number };
+  type Row = { valeur: string; leads: number; signes: number; perdus: number; contrats: number; primes: number; commEstimees: number; encaisse6: number; encaisse12: number; encours: number; lineaire: number };
   const rows = new Map<string, Row>();
-  const row = (v: string) => rows.get(v) ?? rows.set(v, { valeur: v, leads: 0, signes: 0, perdus: 0, contrats: 0, primes: 0, commEstimees: 0, encaisse6: 0, encaisse12: 0 }).get(v)!;
+  const row = (v: string) => rows.get(v) ?? rows.set(v, { valeur: v, leads: 0, signes: 0, perdus: 0, contrats: 0, primes: 0, commEstimees: 0, encaisse6: 0, encaisse12: 0, encours: 0, lineaire: 0 }).get(v)!;
 
   for (const d of dossiers) {
     const r = row(valeur(d));
@@ -55,7 +55,11 @@ export async function GET(request: NextRequest) {
     if (estPerdu(d) && cree >= debut) r.perdus++;
     if (estContrat(d)) {
       r.contrats++;
-      r.primes += primeAnnuelle(d) ?? 0;
+      // Épargne : l'encours géré, pas une prime annuelle.
+      if (estEpargne(d)) {
+        r.encours += encoursGere(d) ?? 0;
+        r.lineaire += lineaireAnnuel(d) ?? 0;
+      } else r.primes += primeAnnuelle(d) ?? 0;
     }
   }
   for (const l of lignes) {
@@ -75,12 +79,17 @@ export async function GET(request: NextRequest) {
       primes: arrondi(r.primes),
       commEstimees: arrondi(r.commEstimees),
       encaisse6: arrondi(r.encaisse6),
-      encaisse12: arrondi(r.encaisse12)
+      encaisse12: arrondi(r.encaisse12),
+      encours: arrondi(r.encours),
+      lineaire: arrondi(r.lineaire)
     }))
     .filter((r) => r.leads || r.signes || r.contrats || r.encaisse12)
     .sort((a, b) => b.contrats + b.leads - (a.contrats + a.leads));
 
   const clientsP = clients.filter((c) => String(c.created_at).slice(0, 7) >= debut);
+  // Encours sous gestion : contrats d'épargne (assurance-vie, PER) en portefeuille, toutes dates confondues.
+  const epargne = dossiers.filter((d) => estContrat(d) && estEpargne(d));
+  const sansMontant = epargne.filter((d) => encoursGere(d) == null).length;
   const avecContrat = new Set(dossiers.filter(estContrat).map((d) => d.client_id));
   return NextResponse.json({
     ok: true,
@@ -89,7 +98,11 @@ export async function GET(request: NextRequest) {
     resume: {
       nouveauxContacts: clientsP.length,
       nouveauxLeads: clientsP.filter((c) => !avecContrat.has(c.id)).length,
-      clients: avecContrat.size
+      clients: avecContrat.size,
+      encoursTotal: arrondi(epargne.reduce((s, d) => s + (encoursGere(d) ?? 0), 0)),
+      lineaireTotal: arrondi(epargne.reduce((s, d) => s + (lineaireAnnuel(d) ?? 0), 0)),
+      contratsEpargne: epargne.length,
+      contratsEpargneSansMontant: sansMontant
     },
     lignes: lignesRapport,
     // Commissions encaissées mois par mois sur 12 mois.

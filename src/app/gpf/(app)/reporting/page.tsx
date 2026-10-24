@@ -7,8 +7,8 @@ import { Barres, eur, exporterCsv, moisLabel, Onglets, pctLabel, Tableau, tdCls,
 
 type Onglet = "leads" | "contrats" | "commissions" | "encours";
 type Axe = "produit" | "compagnie" | "source" | "apporteur";
-type Ligne = { valeur: string; leads: number; signes: number; perdus: number; contrats: number; primes: number; commEstimees: number; encaisse6: number; encaisse12: number; transformation: number | null };
-type Rapport = { axe: Axe; mois: number; resume: { nouveauxContacts: number; nouveauxLeads: number; clients: number }; lignes: Ligne[]; encaissementsMensuels: { mois: string; montant: number }[] };
+type Ligne = { valeur: string; leads: number; signes: number; perdus: number; contrats: number; primes: number; commEstimees: number; encaisse6: number; encaisse12: number; encours: number; lineaire: number; transformation: number | null };
+type Rapport = { axe: Axe; mois: number; resume: { nouveauxContacts: number; nouveauxLeads: number; clients: number; encoursTotal: number; lineaireTotal: number; contratsEpargne: number; contratsEpargneSansMontant: number }; lignes: Ligne[]; encaissementsMensuels: { mois: string; montant: number }[] };
 
 const AXE_LABEL: Record<Axe, string> = { produit: "Produit", compagnie: "Compagnie", source: "Source", apporteur: "Apporteur" };
 
@@ -32,15 +32,16 @@ const COLONNES: Record<Onglet, [string, (l: Ligne) => string | number, boolean][
   ],
   encours: [
     ["Contrats actifs", (l) => l.contrats, true],
-    ["Primes annualisées", (l) => eur(l.primes, 0), true],
-    ["Prime moyenne", (l) => (l.contrats ? eur(l.primes / l.contrats, 0) : "—"), true]
+    ["Encours sous gestion", (l) => eur(l.encours, 0), true],
+    ["Linéaire / an", (l) => eur(l.lineaire, 0), true],
+    ["Primes annualisées (prévoyance, santé, prêt)", (l) => eur(l.primes, 0), true]
   ]
 };
 const BRUT: Record<Onglet, (l: Ligne) => (number | null)[]> = {
   leads: (l) => [l.leads, l.signes, l.perdus, l.transformation],
   contrats: (l) => [l.signes, l.contrats, l.commEstimees],
   commissions: (l) => [l.commEstimees, l.encaisse6, l.encaisse12],
-  encours: (l) => [l.contrats, l.primes, l.contrats ? Math.round(l.primes / l.contrats) : null]
+  encours: (l) => [l.contrats, l.encours, l.lineaire, l.primes]
 };
 
 export default function ReportingPage() {
@@ -116,6 +117,17 @@ export default function ReportingPage() {
               <Tuile label="Nouveaux contacts" valeur={String(rapport.resume.nouveauxContacts)} />
               <Tuile label="Dont sans contrat (leads)" valeur={String(rapport.resume.nouveauxLeads)} />
               <Tuile label="Clients au total" valeur={String(rapport.resume.clients)} accent="#2f9e6e" />
+            </div>
+          ) : null}
+          {onglet === "encours" ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <Tuile label="Encours sous gestion" valeur={eur(rapport.resume.encoursTotal, 0)} accent="#CDAA5A" aide="Assurance-vie et PER en portefeuille" />
+              <Tuile label="Rémunération linéaire / an" valeur={eur(rapport.resume.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
+              <Tuile
+                label="Contrats d'épargne"
+                valeur={String(rapport.resume.contratsEpargne)}
+                aide={rapport.resume.contratsEpargneSansMontant ? `Dont ${rapport.resume.contratsEpargneSansMontant} sans montant saisi` : "Tous ont un montant"}
+              />
             </div>
           ) : null}
           {onglet === "commissions" ? (

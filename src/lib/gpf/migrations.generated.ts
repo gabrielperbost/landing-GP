@@ -41,5 +41,10 @@ export const GENERATED_MIGRATIONS: GpfMigration[] = [
     name: "013",
     description: "Migration 013 : fiche société (SARL, SAS…) et représentant légal",
     sql: "-- GPF CRM — Migration 013 : fiche société (SARL, SAS…) et représentant légal\n-- Appliquée par le serveur via gpf_exec_sql.\n\n-- Contact de type « entreprise » : identité de la société et compléments sur son représentant légal.\n-- Le représentant reste porté par les champs du contact (civilité, prénom, nom, date de naissance,\n-- e-mail, téléphone) ; ce bloc ajoute forme juridique, SIREN, NAF, capital, qualité du représentant, etc.\nalter table gpf_clients add column if not exists societe jsonb not null default '{}'::jsonb;\n"
+  },
+  {
+    name: "014",
+    description: "Migration 014 : montants des contrats d'épargne (assurance-vie, PER) et encours sous gestion",
+    sql: "-- GPF CRM — Migration 014 : montants des contrats d'épargne (assurance-vie, PER) et encours sous gestion\n-- Appliquée par le serveur via gpf_exec_sql.\n\n-- Montant placé, versements programmés, frais sur versement (€) et frais de gestion (%) existent déjà\n-- (placement_initial, placement_mensuel, frais_entree, frais_gestion_pct ; rémunération linéaire en € : lineaire_n1).\n-- Ajouts : taux des frais sur versement, et encours actuel du contrat (valeur à date) pour l'encours sous gestion.\nalter table gpf_dossiers add column if not exists frais_versement_pct numeric;\nalter table gpf_dossiers add column if not exists encours numeric;\nalter table gpf_dossiers add column if not exists encours_date date;\n"
   }
 ];
