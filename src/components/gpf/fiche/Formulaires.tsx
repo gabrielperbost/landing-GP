@@ -1,14 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
+  GPF_FORMES_JURIDIQUES,
   GPF_PRODUIT_LABEL,
   GPF_PROVENANCES,
+  GPF_QUALITES_REPRESENTANT,
   GPF_SCORE_LABEL,
   GPF_TYPE_CONTACT_LABEL,
   type GpfBudget,
   type GpfClient,
   type GpfDossier,
-  type GpfFiscalite
+  type GpfFiscalite,
+  type GpfSociete
 } from "@/lib/gpf/types";
 import { api, Bloc, BoutonOr, euro, Field, inputCls, Vide } from "./shared";
 
@@ -35,6 +38,22 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
     "prochaine_action", "prochaine_action_date", "notes"
   ] as const;
   const [f, setF] = useState<Record<string, string>>(() => Object.fromEntries(keys.map((k) => [k, str((client as Record<string, unknown>)[k])])));
+  const so = client.societe ?? {};
+  const [soc, setSoc] = useState<Record<keyof GpfSociete, string>>({
+    forme_juridique: str(so.forme_juridique),
+    siren: str(so.siren),
+    code_naf: str(so.code_naf),
+    activite: str(so.activite),
+    date_creation: str(so.date_creation),
+    capital: str(so.capital),
+    effectif: str(so.effectif),
+    representant_qualite: str(so.representant_qualite),
+    representant_lieu_naissance: str(so.representant_lieu_naissance),
+    representant_nationalite: str(so.representant_nationalite),
+    representant_adresse: str(so.representant_adresse)
+  });
+  const setS = (k: keyof GpfSociete) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setSoc((p) => ({ ...p, [k]: e.target.value }));
+  const entreprise = f.type_contact === "entreprise";
   const { save, label, info, saving } = useSave(onSaved);
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [apporteurs, setApporteurs] = useState<{ id: string; nom: string }[]>([]);
@@ -47,12 +66,56 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
     const body: Record<string, unknown> = {};
     for (const k of keys) body[k] = k === "nb_enfants" ? num(f[k]) : f[k].trim() || null;
     if (body.date_naissance) body.annee_naissance = Number(String(body.date_naissance).slice(0, 4));
+    // Envoyé seulement pour une société : la colonne « societe » vient de la migration 013.
+    if (entreprise || Object.keys(so).length > 0) {
+      const societe = Object.fromEntries(Object.entries(soc).map(([k, v]) => [k, v.trim() || null])) as GpfSociete;
+      societe.capital = num(soc.capital);
+      societe.effectif = num(soc.effectif);
+      societe.siren = soc.siren.replace(/\s/g, "") || null;
+      body.societe = societe;
+    }
     save(`/api/gpf/clients/${client.id}`, body);
   };
 
   return (
     <form onSubmit={submit} className="grid lg:grid-cols-2 gap-4">
-      <Bloc titre="Identité">
+      {entreprise ? (
+        <Bloc titre="Société">
+          <div className="p-4 grid grid-cols-2 gap-3">
+            <Field label="Raison sociale" className="col-span-2">
+              <input required value={f.raison_sociale} onChange={set("raison_sociale")} className={inputCls} />
+            </Field>
+            <Field label="Forme juridique">
+              <select value={soc.forme_juridique} onChange={setS("forme_juridique")} className={inputCls}>
+                <option value="">—</option>
+                {[...new Set([...GPF_FORMES_JURIDIQUES, soc.forme_juridique].filter(Boolean))].map((x) => (
+                  <option key={x}>{x}</option>
+                ))}
+              </select>
+            </Field>
+            <Field label="SIREN">
+              <input inputMode="numeric" value={soc.siren} onChange={setS("siren")} placeholder="9 chiffres" className={inputCls} />
+            </Field>
+            <Field label="Code NAF / APE">
+              <input value={soc.code_naf} onChange={setS("code_naf")} placeholder="Ex. 6622Z" className={inputCls} />
+            </Field>
+            <Field label="Date de création">
+              <input type="date" value={soc.date_creation} onChange={setS("date_creation")} className={inputCls} />
+            </Field>
+            <Field label="Activité" className="col-span-2">
+              <input value={soc.activite} onChange={setS("activite")} className={inputCls} />
+            </Field>
+            <Field label="Capital social (€)">
+              <input inputMode="decimal" value={soc.capital} onChange={setS("capital")} className={inputCls} />
+            </Field>
+            <Field label="Effectif">
+              <input inputMode="numeric" value={soc.effectif} onChange={setS("effectif")} className={inputCls} />
+            </Field>
+          </div>
+        </Bloc>
+      ) : null}
+
+      <Bloc titre={entreprise ? "Représentant légal" : "Identité"}>
         <div className="p-4 grid grid-cols-2 gap-3">
           <Field label="Civilité">
             <select value={f.civilite} onChange={set("civilite")} className={inputCls}>
@@ -76,14 +139,32 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
           <Field label="Nom">
             <input required value={f.nom} onChange={set("nom")} className={inputCls} />
           </Field>
-          {f.type_contact === "entreprise" ? (
-            <Field label="Raison sociale" className="col-span-2">
-              <input value={f.raison_sociale} onChange={set("raison_sociale")} className={inputCls} />
+          {entreprise ? (
+            <Field label="Qualité">
+              <select value={soc.representant_qualite} onChange={setS("representant_qualite")} className={inputCls}>
+                <option value="">—</option>
+                {[...new Set([...GPF_QUALITES_REPRESENTANT, soc.representant_qualite].filter(Boolean))].map((x) => (
+                  <option key={x}>{x}</option>
+                ))}
+              </select>
             </Field>
           ) : null}
           <Field label="Date de naissance">
             <input type="date" value={f.date_naissance} onChange={set("date_naissance")} className={inputCls} />
           </Field>
+          {entreprise ? (
+            <>
+              <Field label="Lieu de naissance">
+                <input value={soc.representant_lieu_naissance} onChange={setS("representant_lieu_naissance")} className={inputCls} />
+              </Field>
+              <Field label="Nationalité">
+                <input value={soc.representant_nationalite} onChange={setS("representant_nationalite")} className={inputCls} />
+              </Field>
+              <Field label="Adresse personnelle" className="col-span-2">
+                <input value={soc.representant_adresse} onChange={setS("representant_adresse")} className={inputCls} />
+              </Field>
+            </>
+          ) : null}
           <Field label="Profession">
             <input value={f.profession} onChange={set("profession")} className={inputCls} />
           </Field>
@@ -103,10 +184,10 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
 
       <Bloc titre="Coordonnées">
         <div className="p-4 grid grid-cols-2 gap-3">
-          <Field label="E-mail" className="col-span-2">
+          <Field label={entreprise ? "E-mail du représentant" : "E-mail"} className="col-span-2">
             <input type="email" value={f.email} onChange={set("email")} className={inputCls} />
           </Field>
-          <Field label="Téléphone">
+          <Field label={entreprise ? "Téléphone du représentant" : "Téléphone"}>
             <input type="tel" value={f.telephone} onChange={set("telephone")} className={inputCls} />
           </Field>
           <Field label="Préférence de contact">
@@ -117,7 +198,7 @@ export function Coordonnees({ client, onSaved }: { client: GpfClient; onSaved: (
               <option value="email">E-mail</option>
             </select>
           </Field>
-          <Field label="Adresse" className="col-span-2">
+          <Field label={entreprise ? "Adresse du siège" : "Adresse"} className="col-span-2">
             <input value={f.adresse} onChange={set("adresse")} className={inputCls} />
           </Field>
           <Field label="Code postal">

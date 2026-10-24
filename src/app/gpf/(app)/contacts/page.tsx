@@ -9,6 +9,7 @@ import {
   GPF_SCORE_COLOR,
   GPF_SCORE_LABEL,
   GPF_TYPE_CONTACT_LABEL,
+  formatNom,
   type GpfClientListItem,
   type GpfScore,
   type GpfTypeContact
@@ -319,7 +320,7 @@ function ContactsPage() {
                           </span>
                           <span className="min-w-0">
                             <Link href={`/gpf/contacts/${c.id}`} onClick={(e) => e.stopPropagation()} className="block font-medium text-[var(--gpf-ink)] truncate">
-                              {c.prenom} {c.nom.toUpperCase()}
+                              {formatNom(c)}
                             </Link>
                             <span className="block text-xs text-[var(--gpf-subtle)] truncate">{c.email ?? c.telephone ?? "—"}</span>
                           </span>

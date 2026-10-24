@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_PROVENANCES, GPF_SCORE_LABEL, GPF_TYPE_CONTACT_LABEL } from "@/lib/gpf/types";
+import { GPF_FORMES_JURIDIQUES, GPF_PRODUIT_LABEL, GPF_PRODUITS, GPF_PROVENANCES, GPF_QUALITES_REPRESENTANT, GPF_SCORE_LABEL, GPF_TYPE_CONTACT_LABEL } from "@/lib/gpf/types";
 
 /** Panneau latéral de création d'un lead ou d'un client, avec contrôle de doublon. */
 export function NewContactPanel({ mode, onClose, onCreated }: { mode: "lead" | "client"; onClose: () => void; onCreated: (id: string) => void }) {
@@ -13,6 +13,9 @@ export function NewContactPanel({ mode, onClose, onCreated }: { mode: "lead" | "
     telephone: "",
     type_contact: "particulier",
     raison_sociale: "",
+    forme_juridique: "",
+    siren: "",
+    representant_qualite: "",
     provenance: "",
     score: mode === "lead" ? "tiede" : "",
     produit: "",
@@ -27,11 +30,16 @@ export function NewContactPanel({ mode, onClose, onCreated }: { mode: "lead" | "
   const submit = async (forcer = false) => {
     setSaving(true);
     setErreur(null);
-    const { produit, ...contact } = form;
+    const { produit, forme_juridique, siren, representant_qualite, ...contact } = form;
+    const entreprise = form.type_contact === "entreprise";
+    // Société : forme juridique, SIREN et qualité du représentant vont dans « societe » (migration 013).
+    const societe = entreprise
+      ? { forme_juridique: forme_juridique || null, siren: siren.replace(/\s/g, "") || null, representant_qualite: representant_qualite || null }
+      : undefined;
     const res = await fetch("/api/gpf/clients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...contact, lead: mode === "lead", forcer })
+      body: JSON.stringify({ ...contact, ...(societe ? { societe } : {}), lead: mode === "lead", forcer })
     });
     const data = await res.json().catch(() => ({}));
     if (res.status === 409 && data.existant) {
@@ -115,7 +123,32 @@ export function NewContactPanel({ mode, onClose, onCreated }: { mode: "lead" | "
               </select>
             )}
           </div>
-          {form.type_contact === "entreprise" ? field("Raison sociale", <input value={form.raison_sociale} onChange={set("raison_sociale")} className={input} />) : null}
+          {form.type_contact === "entreprise" ? (
+            <>
+              {field("Raison sociale", <input required value={form.raison_sociale} onChange={set("raison_sociale")} className={input} />)}
+              <div className="grid grid-cols-2 gap-2">
+                {field(
+                  "Forme juridique",
+                  <select value={form.forme_juridique} onChange={set("forme_juridique")} className={input}>
+                    <option value="">—</option>
+                    {GPF_FORMES_JURIDIQUES.map((x) => (
+                      <option key={x}>{x}</option>
+                    ))}
+                  </select>
+                )}
+                {field("SIREN", <input inputMode="numeric" value={form.siren} onChange={set("siren")} placeholder="9 chiffres" className={input} />)}
+              </div>
+              {field(
+                "Qualité du représentant (prénom et nom ci-dessus)",
+                <select value={form.representant_qualite} onChange={set("representant_qualite")} className={input}>
+                  <option value="">—</option>
+                  {GPF_QUALITES_REPRESENTANT.map((x) => (
+                    <option key={x}>{x}</option>
+                  ))}
+                </select>
+              )}
+            </>
+          ) : null}
           <div className="grid grid-cols-2 gap-2">
             {field(
               "Produit d'intérêt",

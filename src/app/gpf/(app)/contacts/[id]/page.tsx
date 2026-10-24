@@ -146,7 +146,7 @@ function FicheContact({ id }: { id: string }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl text-[var(--gpf-ink)]" style={{ fontFamily: "var(--font-gpf-serif)" }}>
-              {client.civilite ? `${client.civilite} ` : ""}
+              {client.civilite && !entreprise ? `${client.civilite} ` : ""}
               {formatNom(client)}
             </h1>
             <span className="text-[10px] font-semibold uppercase tracking-wide text-white rounded-full px-2 py-0.5" style={{ background: resume.estClient ? "#2f9e6e" : "#c98a1f" }}>

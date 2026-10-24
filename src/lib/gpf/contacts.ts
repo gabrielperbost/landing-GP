@@ -17,7 +17,8 @@ export const EXTENDED_FIELDS = [
   "prochaine_action",
   "prochaine_action_date",
   "budget",
-  "fiscalite"
+  "fiscalite",
+  "societe"
 ];
 export const CLIENT_EDITABLE_FIELDS = [...BASE_FIELDS, ...EXTENDED_FIELDS];
 
@@ -57,6 +58,11 @@ export async function createContact(body: Record<string, unknown>, opts: CreateO
   row.nom = String(body.nom).trim();
 
   let { data, error } = await supabaseAdmin.from("gpf_clients").insert(row).select("*").single();
+  // Base pas encore passée en migration 013 : on garde tout sauf le bloc société.
+  if (error && /column/i.test(error.message) && "societe" in row) {
+    const { societe: _societe, ...sansSociete } = row;
+    ({ data, error } = await supabaseAdmin.from("gpf_clients").insert(sansSociete).select("*").single());
+  }
   if (error && /column/i.test(error.message)) {
     const base = Object.fromEntries(Object.entries(row).filter(([k]) => BASE_FIELDS.includes(k)));
     ({ data, error } = await supabaseAdmin.from("gpf_clients").insert(base).select("*").single());

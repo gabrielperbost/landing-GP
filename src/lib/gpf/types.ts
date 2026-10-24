@@ -31,12 +31,31 @@ export type GpfClient = {
   nrp_count?: number;
   budget?: GpfBudget;
   fiscalite?: GpfFiscalite;
+  societe?: GpfSociete;
   created_at: string;
   updated_at: string;
 };
 
 export type GpfTypeContact = "particulier" | "tns" | "entreprise";
 export const GPF_TYPE_CONTACT_LABEL: Record<GpfTypeContact, string> = { particulier: "Particulier", tns: "TNS", entreprise: "Entreprise" };
+
+// Contact « entreprise » : identité de la société. Le représentant légal est porté par les champs
+// du contact (civilité, prénom, nom, date de naissance, e-mail, téléphone), complétés ici.
+export type GpfSociete = {
+  forme_juridique?: string | null;
+  siren?: string | null;
+  code_naf?: string | null;
+  activite?: string | null;
+  date_creation?: string | null;
+  capital?: number | null;
+  effectif?: number | null;
+  representant_qualite?: string | null;
+  representant_lieu_naissance?: string | null;
+  representant_nationalite?: string | null;
+  representant_adresse?: string | null;
+};
+export const GPF_FORMES_JURIDIQUES = ["SARL", "EURL", "SAS", "SASU", "SA", "SCI", "SELARL", "SELAS", "SNC", "EI", "Association", "Autre"] as const;
+export const GPF_QUALITES_REPRESENTANT = ["Gérant", "Co-gérant", "Président", "Directeur général", "Associé", "Mandataire"] as const;
 
 export type GpfScore = "chaud" | "tiede" | "froid";
 export const GPF_SCORE_LABEL: Record<GpfScore, string> = { chaud: "Chaud", tiede: "Tiède", froid: "Froid" };
@@ -180,7 +199,12 @@ export const compteDansRevenus = (d: { statut: string; contrat_statut?: string |
   !GPF_STATUTS_CLOS.has(d.statut as GpfStatut) && d.contrat_statut !== "resilie";
 
 /** Affichage homogène partout : « Prénom NOM ». */
-export const formatNom = (p: { prenom: string; nom: string } | null | undefined) => (p ? `${p.prenom} ${p.nom.toUpperCase()}`.trim() : "—");
+export const formatNom = (p: { prenom: string; nom: string; type_contact?: string | null; raison_sociale?: string | null } | null | undefined) => {
+  if (!p) return "—";
+  const personne = `${p.prenom} ${p.nom.toUpperCase()}`.trim();
+  // Société : la raison sociale d'abord, le représentant entre parenthèses.
+  return p.type_contact === "entreprise" && p.raison_sociale?.trim() ? `${p.raison_sociale.trim()} (${personne})` : personne;
+};
 
 // Statuts "clos" : un dossier perdu ne doit jamais compter dans les revenus
 // estimés, ni apparaître dans la vue par défaut (il reste accessible via le

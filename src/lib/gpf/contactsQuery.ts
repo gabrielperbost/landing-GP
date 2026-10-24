@@ -37,7 +37,7 @@ const SIGNES = new Set(["effectif", "attente_reglement"]);
 export async function queryContacts(f: ContactFilters) {
   const q = f.q?.trim().replace(/[,()%]/g, " ");
   let query = supabaseAdmin.from("gpf_clients").select("*").is("deleted_at", null).order("nom", { ascending: true });
-  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,email.ilike.%${q}%,telephone.ilike.%${q}%`);
+  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%,raison_sociale.ilike.%${q}%,email.ilike.%${q}%,telephone.ilike.%${q}%`);
 
   const [{ data, error }, { data: dossiers }] = await Promise.all([
     query,
