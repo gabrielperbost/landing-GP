@@ -15,6 +15,8 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: "GPF",
+  // Outil interne : jamais indexé par les moteurs de recherche.
+  robots: { index: false, follow: false },
   manifest: "/gpf/manifest.webmanifest",
   icons: { icon: [{ url: "/gpf/icon-192.png", sizes: "192x192" }], apple: [{ url: "/gpf/apple-touch-icon.png", sizes: "180x180" }] },
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "GPF" }

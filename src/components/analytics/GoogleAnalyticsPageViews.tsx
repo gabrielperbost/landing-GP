@@ -21,6 +21,8 @@ export function GoogleAnalyticsPageViews({ measurementId }: GoogleAnalyticsPageV
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Espaces privés (CRM GPF, espace client) : aucune page vue envoyée.
+    if (/^\/(gpf|mon-espace)(\/|$)/.test(pathname)) return;
     const analyticsWindow = window as AnalyticsWindow;
 
     // Navigation côté client (App Router) entre deux pages déjà consenties : on ne recharge pas

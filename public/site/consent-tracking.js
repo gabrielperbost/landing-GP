@@ -4,6 +4,8 @@
  * Les événements portent des noms lisibles en français (voir docs/tracking-kpi-guide.md). */
 (function () {
   'use strict';
+  // Espaces privés (CRM GPF, espace client) : ni bandeau, ni mesure d'audience, ni pixel.
+  if (/^\/(gpf|mon-espace)(\/|$)/.test(location.pathname)) return;
   const KEY = 'gp_consent_v1', MONTHS6 = 1000 * 60 * 60 * 24 * 182;
   const read = () => { try { const v = JSON.parse(localStorage.getItem(KEY) || 'null'); return v && Date.now() - v.at < MONTHS6 ? v : null; } catch { return null; } };
   const write = choice => { try { localStorage.setItem(KEY, JSON.stringify({choice, at:Date.now()})); } catch {} };

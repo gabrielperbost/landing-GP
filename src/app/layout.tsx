@@ -53,6 +53,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {CONFIG.META_PIXEL_ID !== "YOUR_META_PIXEL_ID" && (
           <Script id="fb-pixel" strategy="beforeInteractive">
             {`
+              // Espaces privés (CRM GPF, espace client) : pas de pixel.
+              if (!/^\\/(gpf|mon-espace)(\\/|$)/.test(location.pathname))
               !function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
               n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -61,8 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${CONFIG.META_PIXEL_ID}');
-              fbq('track', 'PageView');
+              if (window.fbq) { fbq('init', '${CONFIG.META_PIXEL_ID}'); fbq('track', 'PageView'); }
             `}
           </Script>
         )}
