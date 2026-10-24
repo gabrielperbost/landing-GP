@@ -33,7 +33,7 @@ const COLONNES: Record<Onglet, [string, (l: Ligne) => string | number, boolean][
   encours: [
     ["Contrats actifs", (l) => l.contrats, true],
     ["Encours sous gestion", (l) => eur(l.encours, 0), true],
-    ["Linéaire / an", (l) => eur(l.lineaire, 0), true],
+    ["Frais de gestion / an", (l) => eur(l.lineaire, 0), true],
     ["Primes annualisées (prévoyance, santé, prêt)", (l) => eur(l.primes, 0), true]
   ]
 };
@@ -122,7 +122,7 @@ export default function ReportingPage() {
           {onglet === "encours" ? (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               <Tuile label="Encours sous gestion" valeur={eur(rapport.resume.encoursTotal, 0)} accent="#CDAA5A" aide="Assurance-vie et PER en portefeuille" />
-              <Tuile label="Rémunération linéaire / an" valeur={eur(rapport.resume.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
+              <Tuile label="Frais de gestion / an" valeur={eur(rapport.resume.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
               <Tuile
                 label="Contrats d'épargne"
                 valeur={String(rapport.resume.contratsEpargne)}

@@ -14,7 +14,7 @@ import {
   type GpfDossierWithClient
 } from "@/lib/gpf/types";
 import { SkeletonLines, SkeletonTiles } from "@/components/gpf/Skeleton";
-import { prochaineEcheance, primeAnnuelle, resiliationPossible } from "@/lib/gpf/contrats";
+import { estEpargne, prochaineEcheance, primeAnnuelle, resiliationPossible } from "@/lib/gpf/contrats";
 
 const PAGE_SIZE = 50;
 const EN_SIGNATURE = new Set(["en_cours_souscription", "attente_accord_banque", "attente_prise_effet"]);
@@ -255,8 +255,12 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
     prime_annuelle: contrat.prime_annuelle?.toString() ?? "",
     frais_dossier: contrat.frais_dossier?.toString() ?? "",
     precompte_lineaire_1ere_annee: contrat.precompte_lineaire_1ere_annee?.toString() ?? "",
-    lineaire_n1: contrat.lineaire_n1?.toString() ?? ""
+    lineaire_n1: contrat.lineaire_n1?.toString() ?? "",
+    placement_initial: contrat.placement_initial?.toString() ?? "",
+    frais_entree: contrat.frais_entree?.toString() ?? ""
   });
+  // Assurance-vie / PER : montant placé, frais sur versement et frais de gestion (en €), pas de prime.
+  const epargne = estEpargne(contrat);
   const [saving, setSaving] = useState(false);
   const num = (v: string) => (v.trim() === "" ? null : Number(v.replace(",", ".")));
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -272,11 +276,15 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
         assureur_nom: form.assureur_nom.trim() || null,
         date_effet: form.date_effet || null,
         date_echeance: form.date_echeance || null,
-        prime_mensuelle: num(form.prime_mensuelle),
-        prime_annuelle: num(form.prime_annuelle),
-        frais_dossier: num(form.frais_dossier),
-        precompte_lineaire_1ere_annee: num(form.precompte_lineaire_1ere_annee),
-        lineaire_n1: num(form.lineaire_n1)
+        ...(epargne
+          ? { placement_initial: num(form.placement_initial), frais_entree: num(form.frais_entree), lineaire_n1: num(form.lineaire_n1) }
+          : {
+              prime_mensuelle: num(form.prime_mensuelle),
+              prime_annuelle: num(form.prime_annuelle),
+              frais_dossier: num(form.frais_dossier),
+              precompte_lineaire_1ere_annee: num(form.precompte_lineaire_1ere_annee),
+              lineaire_n1: num(form.lineaire_n1)
+            })
       })
     });
     setSaving(false);
@@ -334,11 +342,21 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
           <div className="grid grid-cols-2 gap-3">
             {field("Date d'effet", <input type="date" value={form.date_effet} onChange={set("date_effet")} className={input} />)}
             {field("Échéance", <input type="date" value={form.date_echeance} onChange={set("date_echeance")} className={input} />)}
-            {field("Prime mensuelle (€)", <input inputMode="decimal" value={form.prime_mensuelle} onChange={set("prime_mensuelle")} className={input} />)}
-            {field("Prime annuelle (€)", <input inputMode="decimal" value={form.prime_annuelle} onChange={set("prime_annuelle")} className={input} />)}
-            {field("Frais de dossier (€)", <input inputMode="decimal" value={form.frais_dossier} onChange={set("frais_dossier")} className={input} />)}
-            {field("Précompte (€)", <input inputMode="decimal" value={form.precompte_lineaire_1ere_annee} onChange={set("precompte_lineaire_1ere_annee")} className={input} />)}
-            {field("Linéaire N+1 (€)", <input inputMode="decimal" value={form.lineaire_n1} onChange={set("lineaire_n1")} className={input} />)}
+            {epargne ? (
+              <>
+                {field("Montant placé (€)", <input inputMode="decimal" value={form.placement_initial} onChange={set("placement_initial")} className={input} />)}
+                {field("Frais sur versement (€)", <input inputMode="decimal" value={form.frais_entree} onChange={set("frais_entree")} className={input} />)}
+                {field("Frais de gestion (€ / an)", <input inputMode="decimal" value={form.lineaire_n1} onChange={set("lineaire_n1")} className={input} />)}
+              </>
+            ) : (
+              <>
+                {field("Prime mensuelle (€)", <input inputMode="decimal" value={form.prime_mensuelle} onChange={set("prime_mensuelle")} className={input} />)}
+                {field("Prime annuelle (€)", <input inputMode="decimal" value={form.prime_annuelle} onChange={set("prime_annuelle")} className={input} />)}
+                {field("Frais de dossier (€)", <input inputMode="decimal" value={form.frais_dossier} onChange={set("frais_dossier")} className={input} />)}
+                {field("Précompte (€)", <input inputMode="decimal" value={form.precompte_lineaire_1ere_annee} onChange={set("precompte_lineaire_1ere_annee")} className={input} />)}
+                {field("Linéaire N+1 (€)", <input inputMode="decimal" value={form.lineaire_n1} onChange={set("lineaire_n1")} className={input} />)}
+              </>
+            )}
           </div>
           <div className="flex justify-end pt-2">
             <button onClick={save} disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-4 py-2 disabled:opacity-50">

@@ -82,7 +82,7 @@ export default function CommissionsPage() {
           {encours ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <Tuile label="Encours sous gestion" valeur={eur(encours.encoursTotal, 0)} accent="#CDAA5A" aide={`${encours.contratsEpargne} contrat(s) d'assurance-vie et PER`} />
-              <Tuile label="Rémunération linéaire / an" valeur={eur(encours.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
+              <Tuile label="Frais de gestion / an" valeur={eur(encours.lineaireTotal, 0)} accent="#2f9e6e" aide="Frais de gestion qui vous reviennent" />
             </div>
           ) : null}
           <Carte titre="Attendu vs encaissé par mois">

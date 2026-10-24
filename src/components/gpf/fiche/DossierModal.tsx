@@ -54,7 +54,7 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
       estEpargne(dossier)
         ? ["Encours", euro(encoursGere(dossier))]
         : ["Prime", pa != null ? `${euro(pa)}/an` : dossier.placement_initial != null ? euro(dossier.placement_initial) : null],
-      estEpargne(dossier) ? ["Linéaire / an", euro(lineaireAnnuel(dossier))] : ["", null],
+      estEpargne(dossier) ? ["Frais de gestion / an", euro(lineaireAnnuel(dossier))] : ["", null],
       ["Frais de dossier", euro(dossier.frais_dossier)],
       ["Précompte / 1ère année", euro(dossier.precompte_lineaire_1ere_annee)],
       ["Linéaire N+1", estEpargne(dossier) ? null : euro(dossier.lineaire_n1)]
@@ -216,50 +216,25 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
 
 const nombre = (v: string) => (v.trim() === "" ? null : Number(v.replace(/\s/g, "").replace(",", ".")));
 const texte = (v: number | null | undefined) => (v == null ? "" : String(v));
-const arrondi2 = (n: number) => String(Math.round(n * 100) / 100);
 
-/** Assurance-vie / PER : montant placé, frais sur versement, frais de gestion (rémunération linéaire), encours. */
+/** Assurance-vie / PER : montant placé, frais sur versement et frais de gestion (rémunération), en €. */
 function MontantsEpargne({ dossier, saving, onSave }: { dossier: GpfDossier; saving: boolean; onSave: (body: Record<string, unknown>) => Promise<unknown> }) {
   const [f, setF] = useState({
     placement_initial: texte(dossier.placement_initial),
-    placement_mensuel: texte(dossier.placement_mensuel),
-    frais_versement_pct: texte(dossier.frais_versement_pct),
     frais_entree: texte(dossier.frais_entree),
-    frais_gestion_pct: texte(dossier.frais_gestion_pct),
-    lineaire_n1: texte(dossier.lineaire_n1),
-    encours: texte(dossier.encours),
-    encours_date: dossier.encours_date ?? ""
+    lineaire_n1: texte(dossier.lineaire_n1)
   });
   const [ok, setOk] = useState(false);
-  const base = (g: typeof f) => nombre(g.encours) ?? nombre(g.placement_initial);
-
-  // Saisie d'un taux : le montant correspondant se calcule tout seul (il reste modifiable).
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = e.target.value;
     setOk(false);
-    setF((p) => {
-      const n = { ...p, [k]: v };
-      const placement = nombre(n.placement_initial);
-      const pctV = nombre(n.frais_versement_pct);
-      if ((k === "frais_versement_pct" || k === "placement_initial") && placement != null && pctV != null) n.frais_entree = arrondi2((placement * pctV) / 100);
-      const b = base(n);
-      const pctG = nombre(n.frais_gestion_pct);
-      if ((k === "frais_gestion_pct" || k === "placement_initial" || k === "encours") && b != null && pctG != null) n.lineaire_n1 = arrondi2((b * pctG) / 100);
-      return n;
-    });
+    setF((p) => ({ ...p, [k]: e.target.value }));
   };
 
   const enregistrer = async () => {
-    const encoursChange = nombre(f.encours) !== (dossier.encours ?? null);
     const r = (await onSave({
       placement_initial: nombre(f.placement_initial),
-      placement_mensuel: nombre(f.placement_mensuel),
-      frais_versement_pct: nombre(f.frais_versement_pct),
       frais_entree: nombre(f.frais_entree),
-      frais_gestion_pct: nombre(f.frais_gestion_pct),
-      lineaire_n1: nombre(f.lineaire_n1),
-      encours: nombre(f.encours),
-      encours_date: f.encours_date || (encoursChange && nombre(f.encours) != null ? new Date().toISOString().slice(0, 10) : null)
+      lineaire_n1: nombre(f.lineaire_n1)
     })) as { ok?: boolean };
     setOk(Boolean(r?.ok));
   };
@@ -267,30 +242,15 @@ function MontantsEpargne({ dossier, saving, onSave }: { dossier: GpfDossier; sav
   return (
     <div className="rounded-xl border border-[var(--gpf-border-soft)] p-3 flex flex-col gap-3">
       <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[var(--gpf-muted)]">Montants du contrat</h4>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <Field label="Montant placé (€)">
           <input inputMode="decimal" value={f.placement_initial} onChange={set("placement_initial")} className={inputCls} />
-        </Field>
-        <Field label="Versements programmés (€/mois)">
-          <input inputMode="decimal" value={f.placement_mensuel} onChange={set("placement_mensuel")} className={inputCls} />
-        </Field>
-        <Field label="Frais sur versement (%)">
-          <input inputMode="decimal" value={f.frais_versement_pct} onChange={set("frais_versement_pct")} className={inputCls} />
         </Field>
         <Field label="Frais sur versement (€)">
           <input inputMode="decimal" value={f.frais_entree} onChange={set("frais_entree")} className={inputCls} />
         </Field>
-        <Field label="Frais de gestion — ma rémunération (% / an)">
-          <input inputMode="decimal" value={f.frais_gestion_pct} onChange={set("frais_gestion_pct")} className={inputCls} />
-        </Field>
-        <Field label="Rémunération linéaire (€ / an)">
+        <Field label="Frais de gestion (€ / an)">
           <input inputMode="decimal" value={f.lineaire_n1} onChange={set("lineaire_n1")} className={inputCls} />
-        </Field>
-        <Field label="Encours actuel (€)">
-          <input inputMode="decimal" value={f.encours} onChange={set("encours")} placeholder="Vide = montant placé" className={inputCls} />
-        </Field>
-        <Field label="Encours au">
-          <input type="date" value={f.encours_date} onChange={set("encours_date")} className={inputCls} />
         </Field>
       </div>
       <div className="flex items-center gap-3">
@@ -298,7 +258,6 @@ function MontantsEpargne({ dossier, saving, onSave }: { dossier: GpfDossier; sav
           {saving ? "…" : "Enregistrer"}
         </button>
         {ok ? <span className="text-xs text-[#2f9e6e]">Enregistré ✓</span> : null}
-        <span className="text-[11px] text-[var(--gpf-subtle)]">En saisissant un %, le montant en € se calcule seul.</span>
       </div>
     </div>
   );
