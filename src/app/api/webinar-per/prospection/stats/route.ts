@@ -3,7 +3,7 @@ import { normalizeEnv } from "@/lib/monday";
 import { getWebinarPerParticipants } from "@/lib/webinarPerSheet";
 import { WEBINAR_PER_CAMPAIGN_START } from "@/lib/webinarPerConfig";
 import { PER_PROSPECTION, PER_PROSPECTION_SCHEDULE } from "@/lib/webinarPerProspection";
-import { prospectionTag } from "@/lib/webinarPerProspectionServer";
+import { findProspectionListId, prospectionTag, readProspects } from "@/lib/webinarPerProspectionServer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -91,6 +91,12 @@ export async function GET(request: NextRequest) {
     sheetError = error instanceof Error ? error.message : String(error);
     return [];
   });
+  // Désinscrits de la campagne : prospects passés en liste noire Brevo depuis le premier envoi
+  // (lien de désinscription du site, lien Brevo ou signalement comme spam).
+  const listId = await findProspectionListId().catch(() => null);
+  const prospects = listId ? await readProspects(listId).catch(() => []) : [];
+  const debutEnvois = Date.parse("2026-10-22T00:00:00Z");
+  const desinscritsCampagne = prospects.filter((p) => p.emailBlacklisted && p.modifiedAt && Date.parse(p.modifiedAt) >= debutEnvois);
   const start = Date.parse(WEBINAR_PER_CAMPAIGN_START);
   const current = participants.filter((p) => Date.parse(p.created_at) >= start && p.status.trim().toLowerCase() === "registered");
   const fromCampaign = current.filter((p) => sourceField(p.source, "utm_campaign") === PER_PROSPECTION.source);
@@ -126,6 +132,8 @@ export async function GET(request: NextRequest) {
     derniereInscription: participants.map((p) => p.created_at).sort().pop() ?? null,
     inscritsTotal: current.length,
     inscritsVenusDesEmails: fromCampaign.length,
+    desinscritsCampagne: desinscritsCampagne.length,
+    bloquesAvantCampagne: prospects.filter((p) => p.emailBlacklisted).length - desinscritsCampagne.length,
     vagues
   });
 }

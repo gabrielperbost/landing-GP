@@ -64,16 +64,16 @@ export const importProspects = async (listId: number, emails: string[]) => {
   return result.processId;
 };
 
-export type ProspectContact = { email: string; emailBlacklisted: boolean };
+export type ProspectContact = { email: string; emailBlacklisted: boolean; modifiedAt?: string };
 
 export const readProspects = async (listId: number): Promise<ProspectContact[]> => {
   const out: ProspectContact[] = [];
   for (let offset = 0; offset < 20000; offset += 500) {
     const data = await brevo(`/contacts/lists/${listId}/contacts?limit=500&offset=${offset}&sort=asc`);
-    const rows = (data.contacts as { email?: string; emailBlacklisted?: boolean }[] | undefined) ?? [];
+    const rows = (data.contacts as { email?: string; emailBlacklisted?: boolean; modifiedAt?: string }[] | undefined) ?? [];
     for (const row of rows) {
       const email = String(row.email ?? "").trim().toLowerCase();
-      if (email) out.push({ email, emailBlacklisted: row.emailBlacklisted === true });
+      if (email) out.push({ email, emailBlacklisted: row.emailBlacklisted === true, modifiedAt: row.modifiedAt });
     }
     if (rows.length < 500) return out;
   }
