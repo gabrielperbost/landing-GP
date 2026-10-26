@@ -8,6 +8,8 @@ Deuxième session du webinaire PER, en parallèle de celle du 1er novembre (mêm
 - Inscriptions : **Google Sheet dédié « Webianire du 08/11/2026 »** (onglet « Feuille 1 »), avec son propre Apps Script. Le Sheet du 1er novembre et son script ne sont pas touchés.
 - Variables Vercel : `WEBINAR_PER_8NOV_GOOGLE_APPS_SCRIPT_URL` et `WEBINAR_PER_8NOV_GOOGLE_APPS_SCRIPT_SECRET`. Sans elles, le formulaire du 8 novembre refuse les inscriptions (« réessayez plus tard ») au lieu de les mélanger avec le 1er novembre.
 - Colonne « Source » : commence par `webinaire-per-8nov` (contre `webinaire-per` pour le 1er novembre).
+- Confirmation immédiate : e-mail (lien Zoom, agenda, guide PDF en pièce jointe) + SMS. Téléphone obligatoire.
+- E-mails d'entretien : 30 oct. (vidéo « 5 erreurs » + guide), 1er nov. (« une question à me poser ? »).
 - Rappels aux inscrits : J-3 (5 nov.), J-2 (6 nov.), la veille (7 nov., e-mail + SMS), le matin (8 nov., e-mail + SMS), 1 heure avant (8 nov. à 14h).
 - Replay : `/api/webinar-per/replay/run?secret=...&session=2026-11-08&replayUrl=...` (ajouter `&dryRun=1` pour compter sans envoyer).
 - Lien Zoom : `WEBINAR_PER_8NOV_MEETING_URL` (Vercel) ou valeur par défaut dans `src/lib/webinarPerConfig.ts`. Lien actuel : https://us06web.zoom.us/j/87575702326?pwd=3zNcYVD9JpMHdDchuM5Jq7A8Zf2E0b.1
