@@ -5,6 +5,7 @@ import { PageHeader, Carte } from "@/components/gpf/PageHeader";
 import { SkeletonTiles } from "@/components/gpf/Skeleton";
 import { api, BoutonOr, Panneau, Vide, frDateHeure } from "@/components/gpf/fiche/shared";
 import { pctLabel, Tableau, tdCls, tdNum, Tuile } from "@/components/gpf/commissions/commun";
+import { CampagnesLeads } from "@/components/gpf/leads/CampagnesLeads";
 import { GPF_SCORE_COLOR, GPF_SCORE_LABEL, type GpfScore } from "@/lib/gpf/types";
 
 type Donnees = {
@@ -118,6 +119,8 @@ export default function LeadsPage() {
               )}
             </Carte>
           </div>
+
+          <CampagnesLeads />
 
           <Connexions c={d.connexions} />
 

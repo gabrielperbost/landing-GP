@@ -43,9 +43,9 @@ export function separerNom(complet: string) {
  * Réception d'un lead : dédoublonnage (e-mail / téléphone), création du
  * contact et du dossier, tâche « Appeler dans l'heure », notification, score
  * chaud. Un lead déjà connu reçoit une note et une nouvelle tâche d'appel.
- * Idempotent par (source, sourceRef).
+ * Idempotent par (source, sourceRef). « sansTache » (reprise d'historique) : ni tâche ni notification.
  */
-export async function ingererLead(l: LeadEntrant, opts: { silencieux?: boolean } = {}): Promise<{ ok: boolean; client_id?: string; cree?: boolean; doublon?: boolean; error?: string }> {
+export async function ingererLead(l: LeadEntrant, opts: { silencieux?: boolean; sansTache?: boolean } = {}): Promise<{ ok: boolean; client_id?: string; cree?: boolean; doublon?: boolean; error?: string }> {
   if (l.sourceRef) {
     const { data: deja } = await supabaseAdmin.from("gpf_lead_events").select("client_id").eq("source", l.source).eq("source_ref", l.sourceRef).limit(1);
     if (deja?.length) return { ok: true, client_id: deja[0].client_id ?? undefined, cree: false, doublon: true };
@@ -65,12 +65,12 @@ export async function ingererLead(l: LeadEntrant, opts: { silencieux?: boolean }
   if (existant) {
     clientId = existant.id;
     await supabaseAdmin.from("gpf_notes").insert({ client_id: clientId, categorie: "suivi", contenu: `Nouvelle demande reçue via ${l.source}${produit ? ` (${produit.replace(/_/g, " ")})` : ""}.${message ? ` Message : ${message}` : ""}` });
-    await createTask({ client_id: clientId, titre: `Rappeler ${existant.prenom} ${existant.nom} (nouvelle demande ${l.source})`, categorie: "appel", echeance: addHours(new Date(), 1), auto: true, origine: "nouveau_lead" });
+    if (!opts.sansTache) await createTask({ client_id: clientId, titre: `Rappeler ${existant.prenom} ${existant.nom} (nouvelle demande ${l.source})`, categorie: "appel", echeance: addHours(new Date(), 1), auto: true, origine: "nouveau_lead" });
     if (!opts.silencieux) await notify("nouveau_lead", `Lead déjà connu : ${existant.prenom} ${existant.nom}`, `Nouvelle demande via ${l.source}`, `/gpf/contacts/${clientId}`);
   } else {
     const r = await createContact(
       { prenom, nom, email: l.email?.toLowerCase() ?? null, telephone: l.telephone ?? null, code_postal: l.code_postal ?? null, ville: l.ville ?? null, provenance: l.source, score: "chaud", notes: message },
-      { lead: true, forcer: true, origine: l.source, silencieux: opts.silencieux }
+      { lead: !opts.sansTache, forcer: true, origine: l.source, silencieux: opts.silencieux }
     );
     if (!r.ok) return { ok: false, error: r.error };
     clientId = r.client.id;

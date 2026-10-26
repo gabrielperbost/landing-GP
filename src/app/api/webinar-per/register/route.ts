@@ -4,7 +4,7 @@ import { buildWebinarPerEmail, WEBINAR_PER_GUIDE_URL } from "@/lib/webinarPerEma
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms, toE164FrenchPhone } from "@/lib/brevoSms";
 import { getWebinarPerSession, getWebinarPerUnsubscribeUrl } from "@/lib/webinarPerConfig";
-import { ingererLead } from "@/lib/gpf/leads";
+import { enregistrerInscriptionWebinaire, type CampagneLeadId } from "@/lib/gpf/campagnesLeads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -55,19 +55,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });
   }
 
-  // Lead dans le CRM GPF (page Leads) : contact, dossier PER « à traiter », tâche d'appel. Idempotent par
-  // session + e-mail. La source dit la session et le canal (« … · meta » est compté en Meta Ads par le CRM).
-  const utmSource = /\|utm_source:([^|]+)/.exec(source)?.[1] ?? "direct";
+  // Lead dans le CRM GPF (page Leads), rattaché à la campagne du webinaire : contact, dossier PER « à traiter »,
+  // tâche d'appel. Un échec ici ne bloque jamais l'inscription.
   try {
-    const lead = await ingererLead({
-      source: `Webinaire PER ${session.dateLabel.replace(/^Dimanche /, "")} · ${utmSource}`,
-      sourceRef: `webinaire-per:${session.id}:${email}`,
+    const lead = await enregistrerInscriptionWebinaire({
+      campagne: `webinaire-per-${session.id}` as CampagneLeadId,
       prenom,
       nom,
       email,
       telephone: phone,
-      produit: "per",
-      message: `Inscrit(e) au webinaire PER du ${session.dateLabel}, ${session.timeLabel}. Source : ${source}`
+      sourceBrute: source,
+      inscritAt: new Date().toISOString()
     });
     if (!lead.ok) console.error("[webinar-per] lead CRM non créé", lead.error);
   } catch (error) {
