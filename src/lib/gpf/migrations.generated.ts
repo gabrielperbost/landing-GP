@@ -51,5 +51,10 @@ export const GENERATED_MIGRATIONS: GpfMigration[] = [
     name: "015",
     description: "Migration 015 : suivi des leads par campagne (webinaires) : inscrit, prise de RDV, devenu client, CA généré",
     sql: "-- GPF CRM — Migration 015 : suivi des leads par campagne (webinaires) : inscrit, prise de RDV, devenu client, CA généré\n-- Appliquée par le serveur via gpf_exec_sql.\n\n-- Une ligne par contact et par campagne. « campagne » est un identifiant défini dans le code\n-- (src/lib/gpf/campagnesLeads.ts), par exemple « webinaire-per-2026-11-08 ».\ncreate table if not exists gpf_campagne_leads (\n  id uuid primary key default uuid_generate_v4(),\n  campagne text not null,\n  client_id uuid not null references gpf_clients(id) on delete cascade,\n  email text,\n  canal text,\n  inscrit_at timestamptz not null default now(),\n  etape text not null default 'inscrit' check (etape in ('inscrit', 'rdv', 'client')),\n  etape_at timestamptz,\n  ca numeric(12, 2),\n  created_at timestamptz not null default now(),\n  updated_at timestamptz not null default now()\n);\ncreate unique index if not exists gpf_campagne_leads_unique_idx on gpf_campagne_leads (campagne, client_id);\ncreate index if not exists gpf_campagne_leads_campagne_idx on gpf_campagne_leads (campagne);\nalter table gpf_campagne_leads enable row level security;\n"
+  },
+  {
+    name: "016",
+    description: "Migration 016 : coût de chaque campagne (webinaires), pour le multiple CA / coût",
+    sql: "-- GPF CRM — Migration 016 : coût de chaque campagne (webinaires), pour le multiple CA / coût\n-- Appliquée par le serveur via gpf_exec_sql.\n\ncreate table if not exists gpf_campagne_couts (\n  campagne text primary key,\n  cout numeric(12, 2),\n  updated_at timestamptz not null default now()\n);\nalter table gpf_campagne_couts enable row level security;\n"
   }
 ];

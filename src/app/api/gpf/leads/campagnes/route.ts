@@ -33,6 +33,9 @@ export async function GET(request: NextRequest) {
   // Table absente : migration 015 pas encore appliquée (Paramètres → Mettre à jour la base).
   if (error) return NextResponse.json({ ok: true, migrationRequise: true, campagnes: [], lignes: [] });
   const lignes = (data ?? []) as unknown as Ligne[];
+  // Coûts saisis (migration 016) : table absente = aucun coût, le reste fonctionne.
+  const { data: couts } = await supabaseAdmin.from("gpf_campagne_couts").select("campagne, cout");
+  const coutDe = new Map((couts ?? []).map((c) => [c.campagne as string, c.cout == null ? null : Number(c.cout)]));
 
   const campagnes = CAMPAGNES_LEADS.map((c) => {
     const l = lignes.filter((x) => x.campagne === c.id);
@@ -40,9 +43,13 @@ export async function GET(request: NextRequest) {
     const ca = clients.reduce((s, x) => s + (Number(x.ca) || 0), 0);
     const canaux = new Map<string, number>();
     for (const x of l) canaux.set(x.canal ?? "direct", (canaux.get(x.canal ?? "direct") ?? 0) + 1);
+    const cout = coutDe.get(c.id) ?? null;
     return {
       id: c.id,
       libelle: c.libelle,
+      cout,
+      multiple: cout ? ca / cout : null,
+      coutParInscrit: cout && l.length ? cout / l.length : null,
       inscrits: l.length,
       rdv: l.filter((x) => x.etape === "rdv" || x.etape === "client").length,
       clients: clients.length,
@@ -64,10 +71,18 @@ export async function GET(request: NextRequest) {
   });
 }
 
-/** Fait avancer un lead : étape (inscrit, prise de RDV, devenu client) et CA généré. */
+/** Fait avancer un lead : étape (inscrit, prise de RDV, devenu client) et CA généré. Avec « campagne » : coût de la campagne. */
 export async function PATCH(request: NextRequest) {
   if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => null);
+  if (body?.campagne !== undefined) {
+    if (!CAMPAGNES_LEADS.some((c) => c.id === body.campagne)) return NextResponse.json({ ok: false, error: "campagne_inconnue" }, { status: 400 });
+    const cout = body.cout === null || body.cout === "" ? null : Number(String(body.cout).replace(/\s/g, "").replace(",", "."));
+    if (cout !== null && (!Number.isFinite(cout) || cout < 0)) return NextResponse.json({ ok: false, error: "cout_invalide" }, { status: 400 });
+    const { error } = await supabaseAdmin.from("gpf_campagne_couts").upsert({ campagne: body.campagne, cout, updated_at: new Date().toISOString() });
+    if (error) return NextResponse.json({ ok: false, error: /does not exist|schema cache/i.test(error.message) ? "migration_requise" : error.message }, { status: 500 });
+    return NextResponse.json({ ok: true });
+  }
   const id = String(body?.id ?? "");
   if (!id) return NextResponse.json({ ok: false, error: "id_manquant" }, { status: 400 });
   const maj: Record<string, unknown> = { updated_at: new Date().toISOString() };

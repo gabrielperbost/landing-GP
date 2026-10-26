@@ -7,10 +7,12 @@ import { api, BoutonOr, LienAction, Panneau, Vide, frDate, inputCls } from "@/co
 import { eur, Tableau, tdCls, tdNum } from "@/components/gpf/commissions/commun";
 
 type Etape = "inscrit" | "rdv" | "client";
-type Campagne = { id: string; libelle: string; inscrits: number; rdv: number; clients: number; ca: number; caParInscrit: number | null; canaux: { canal: string; n: number }[] };
+type Campagne = { id: string; libelle: string; cout: number | null; multiple: number | null; coutParInscrit: number | null; inscrits: number; rdv: number; clients: number; ca: number; caParInscrit: number | null; canaux: { canal: string; n: number }[] };
 type LigneLead = { id: string; client_id: string; nom: string; telephone: string | null; email: string | null; canal: string | null; inscrit_at: string; etape: Etape; ca: number | null };
 
 const ETAPE_LABEL: Record<Etape, string> = { inscrit: "Inscrit", rdv: "Prise de rendez-vous", client: "Devenu client" };
+const multiple = (m: number | null) => (m == null ? "—" : `×${String(Math.round(m * 10) / 10).replace(".", ",")}`);
+const couleurMultiple = (m: number | null) => (m == null ? undefined : m >= 1 ? "#2f9e6e" : "#b3463f");
 const taux = (n: number, sur: number) => (sur ? `${String(Math.round((n / sur) * 1000) / 10).replace(".", ",")} %` : "—");
 
 export function CampagnesLeads() {
@@ -18,6 +20,17 @@ export function CampagnesLeads() {
   const [migrationRequise, setMigrationRequise] = useState(false);
   const [ouverte, setOuverte] = useState<Campagne | null>(null);
   const [reprise, setReprise] = useState(false);
+  const [erreurCout, setErreurCout] = useState<string | null>(null);
+
+  const enregistrerCout = async (c: Campagne, valeur: string) => {
+    const v = valeur.trim();
+    const cout = v === "" ? null : Number(v.replace(/\s/g, "").replace("€", "").replace(",", "."));
+    if (cout === c.cout) return;
+    setErreurCout(null);
+    const r = await api("/api/gpf/leads/campagnes", "PATCH", { campagne: c.id, cout });
+    if (!r.ok) setErreurCout(r.data?.error === "migration_requise" ? "Mise à jour de la base nécessaire : Paramètres → Base de données → « Appliquer les mises à jour »." : "Coût invalide.");
+    charger();
+  };
 
   const charger = () =>
     api("/api/gpf/leads/campagnes", "GET").then((r) => {
@@ -36,7 +49,9 @@ export function CampagnesLeads() {
       ) : !campagnes ? (
         <Vide>Chargement…</Vide>
       ) : (
-        <Tableau entetes={["Campagne", "Inscrits", "Prise de RDV", "Clients", "Transformation", "CA généré", "CA / inscrit"]} alignDroite={[1, 2, 3, 4, 5, 6]}>
+        <>
+        {erreurCout ? <p className="px-4 pt-3 text-sm text-[#b3463f]">{erreurCout}</p> : null}
+        <Tableau entetes={["Campagne", "Inscrits", "Prise de RDV", "Clients", "Transformation", "CA généré", "CA / inscrit", "Coût de la campagne", "CA / coût"]} alignDroite={[1, 2, 3, 4, 5, 6, 7, 8]}>
           {campagnes.map((c) => (
             <tr key={c.id} className="cursor-pointer hover:bg-[var(--gpf-fill)]" onClick={() => setOuverte(c)}>
               <td className={tdCls}>
@@ -51,9 +66,26 @@ export function CampagnesLeads() {
               <td className={tdNum}>{taux(c.clients, c.inscrits)}</td>
               <td className={tdNum}>{eur(c.ca, 0)}</td>
               <td className={tdNum}>{c.caParInscrit == null ? "—" : eur(c.caParInscrit, 0)}</td>
+              <td className={tdNum} onClick={(e) => e.stopPropagation()}>
+                <input
+                  key={`${c.id}-${c.cout ?? ""}`}
+                  className="w-24 rounded-lg border px-2 py-1 text-sm text-right bg-transparent"
+                  inputMode="decimal"
+                  placeholder="0 €"
+                  defaultValue={c.cout ?? ""}
+                  onBlur={(e) => enregistrerCout(c, e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
+                  aria-label={`Coût de la campagne ${c.libelle}`}
+                />
+                {c.coutParInscrit != null ? <span className="block text-[11px] text-[var(--gpf-subtle)]">{eur(c.coutParInscrit, 0)} / inscrit</span> : null}
+              </td>
+              <td className={tdNum} style={{ color: couleurMultiple(c.multiple), fontWeight: 600 }}>
+                {multiple(c.multiple)}
+              </td>
             </tr>
           ))}
         </Tableau>
+        </>
       )}
       {ouverte ? (
         <LeadsCampagne
