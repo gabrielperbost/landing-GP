@@ -679,6 +679,10 @@ for (const c of CITIES_ALL) {
 }
 console.log(`Pages locales : 2 pages hubs (Hauts-de-Seine, Paris) + ${CITIES_ALL.length} villes (${CITIES_92.length} dans le 92, ${CITIES_ALL.length - CITIES_92.length} ailleurs)`);
 
+// Pages locales PER et assurance-vie (pilote, 10 villes) : voir scripts/local-epargne.cjs.
+const epargneRoutes = await require('./local-epargne.cjs')({ ROOT, PAGES, ORIGIN, built, esc, nonBreakingName, VILLE_BY_SLUG });
+console.log(`Pages locales épargne : ${epargneRoutes.length} (PER et assurance-vie)`);
+
 // avis Google et chiffres : données de la maquette servies telles quelles
 fs.rmSync(TMP, { recursive: true, force: true });
 fs.writeFileSync(path.join(OUT, 'routes.json'), JSON.stringify(ROUTES, null, 2));

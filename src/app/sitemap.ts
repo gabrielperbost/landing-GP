@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CITIES_92 } from "@/content/localSeo92";
 import { VILLES } from "@/content/villes";
+import { VILLES_EPARGNE } from "@/content/villesEpargne";
 import siteRoutes from "../../public/site/routes.json";
 
 const BASE_URL = "https://gp-finances.fr";
@@ -67,6 +68,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-10-02"),
       changeFrequency: "weekly" as const,
       priority: 0.8
-    }))
+    })),
+    // Pages locales « courtier en PER » et « courtier en assurance-vie », pilote de 10 villes (2026-10-26).
+    ...VILLES_EPARGNE.flatMap((v) => [
+      { url: `${BASE_URL}/per-retraite/${v.slug}`, lastModified: new Date("2026-10-26"), changeFrequency: "monthly" as const, priority: 0.7 },
+      { url: `${BASE_URL}/assurance-vie/${v.slug}`, lastModified: new Date("2026-10-26"), changeFrequency: "monthly" as const, priority: 0.7 }
+    ])
   ];
 }

@@ -1,0 +1,115 @@
+{
+  "retrievedAt": "2026-10-26",
+  "sources": {
+    "revenus": "INSEE, Filosofi 2023 (DS_FILOSOFI_CC, API Melodi)",
+    "ages": "INSEE, recensement de la population 2023 (DS_RP_POPULATION_PRINC, API Melodi)"
+  },
+  "references": {
+    "france": {
+      "geo": "FRANCE-FM",
+      "niveauVieMedian": 25920,
+      "tauxPauvrete": 15.9,
+      "population2023": 66165815,
+      "part40a64": 32,
+      "part65etPlus": 21.3
+    },
+    "hauts-de-seine": {
+      "geo": "DEP-92",
+      "niveauVieMedian": 33790,
+      "tauxPauvrete": 13.5,
+      "population2023": 1654712,
+      "part40a64": 31.6,
+      "part65etPlus": 15.6
+    },
+    "paris": {
+      "geo": "DEP-75",
+      "niveauVieMedian": 33650,
+      "tauxPauvrete": 16.8,
+      "population2023": 2103778,
+      "part40a64": 29.8,
+      "part65etPlus": 17.7
+    }
+  },
+  "villes": {
+    "boulogne-billancourt": {
+      "geo": "COM-92012",
+      "niveauVieMedian": 40000,
+      "tauxPauvrete": 10.4,
+      "population2023": 119019,
+      "part40a64": 31.4,
+      "part65etPlus": 17.4
+    },
+    "neuilly-sur-seine": {
+      "geo": "COM-92051",
+      "niveauVieMedian": 56030,
+      "tauxPauvrete": 7.5,
+      "population2023": 59538,
+      "part40a64": 32.2,
+      "part65etPlus": 22.6
+    },
+    "issy-les-moulineaux": {
+      "geo": "COM-92040",
+      "niveauVieMedian": 37740,
+      "tauxPauvrete": 9.4,
+      "population2023": 67669,
+      "part40a64": 32.3,
+      "part65etPlus": 14.4
+    },
+    "levallois-perret": {
+      "geo": "COM-92044",
+      "niveauVieMedian": 39630,
+      "tauxPauvrete": 9.7,
+      "population2023": 68092,
+      "part40a64": 29.1,
+      "part65etPlus": 15.3
+    },
+    "courbevoie": {
+      "geo": "COM-92026",
+      "niveauVieMedian": 36140,
+      "tauxPauvrete": 12.1,
+      "population2023": 82902,
+      "part40a64": 31.4,
+      "part65etPlus": 15.2
+    },
+    "rueil-malmaison": {
+      "geo": "COM-92063",
+      "niveauVieMedian": 37730,
+      "tauxPauvrete": 9.3,
+      "population2023": 82874,
+      "part40a64": 32.9,
+      "part65etPlus": 17
+    },
+    "saint-cloud": {
+      "geo": "COM-92064",
+      "niveauVieMedian": 45740,
+      "tauxPauvrete": 7.7,
+      "population2023": 29855,
+      "part40a64": 32.6,
+      "part65etPlus": 18.9
+    },
+    "paris-15e": {
+      "geo": "ARM-75115",
+      "niveauVieMedian": 37160,
+      "tauxPauvrete": 13.8,
+      "population2023": 229713,
+      "part40a64": 28.7,
+      "part65etPlus": 18.4
+    },
+    "paris-16e": {
+      "geo": "ARM-75116",
+      "niveauVieMedian": 49030,
+      "tauxPauvrete": 11.2,
+      "population2023": 159386,
+      "part40a64": 31.8,
+      "part65etPlus": 22.4
+    },
+    "paris-17e": {
+      "geo": "ARM-75117",
+      "niveauVieMedian": 37840,
+      "tauxPauvrete": 15.6,
+      "population2023": 159212,
+      "part40a64": 29.2,
+      "part65etPlus": 15.8
+    }
+  }
+}

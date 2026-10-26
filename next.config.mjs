@@ -85,7 +85,10 @@ const nextConfig = {
         // "/assurance-emprunteur/hauts-de-seine" serait aussi capturé comme un slug de ville.
         { source: "/assurance-emprunteur/hauts-de-seine", destination: "/site/pages/villes/hauts-de-seine.html" },
         { source: "/assurance-emprunteur/paris", destination: "/site/pages/villes/paris.html" },
-        { source: "/assurance-emprunteur/:ville", destination: "/site/pages/villes/:ville.html" }
+        { source: "/assurance-emprunteur/:ville", destination: "/site/pages/villes/:ville.html" },
+        // Pages locales « courtier en PER » et « courtier en assurance-vie » (scripts/local-epargne.cjs).
+        { source: "/per-retraite/:ville", destination: "/site/pages/villes-per/:ville.html" },
+        { source: "/assurance-vie/:ville", destination: "/site/pages/villes-assurance-vie/:ville.html" }
       ]
     };
   }
