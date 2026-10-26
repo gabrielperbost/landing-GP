@@ -26,7 +26,7 @@ type ScheduleItem = {
 };
 
 // Webinaires les dimanches 1er et 8 novembre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement,
-// chaque session lisant son propre onglet du Google Sheet (« Feuille 1 », « Feuille 2 »).
+// chaque session lisant son propre Google Sheet.
 // Tâche quotidienne à 8h10 (heure de Paris) + une tâche chaque jour de webinaire à 14h pour le rappel H-1.
 // Le Google Sheet n'ayant pas de colonnes J-2 et H-1, on réutilise les colonnes « Rappel 5j » (J-2)
 // et « Rappel 7j » (H-1), libres pour ces webinaires.
@@ -44,8 +44,8 @@ const SCHEDULE: ScheduleItem[] = [
 ];
 
 const SESSION_8NOV_PREFIX = WEBINAR_PER_SESSIONS["2026-11-08"].sourcePrefix;
-// Garde-fou si l'Apps Script n'a pas encore été mis à jour (tout dans « Feuille 1 ») : la source dit à quelle session
-// appartient la ligne (« webinaire-per-8nov|… » pour le 8 novembre, « webinaire-per|… » pour le 1er novembre).
+// Garde-fou : la source dit à quelle session appartient la ligne (« webinaire-per-8nov|… » pour le 8 novembre,
+// « webinaire-per|… » pour le 1er novembre), une ligne d'une session ne reçoit jamais les rappels de l'autre.
 const belongsTo = (session: WebinarPerSessionId, source: string) =>
   String(source || "").startsWith(SESSION_8NOV_PREFIX) === (session === "2026-11-08");
 
@@ -100,7 +100,7 @@ async function handle(request: NextRequest) {
 
   let participants;
   try {
-    participants = await getWebinarPerParticipants(session.sheetName);
+    participants = await getWebinarPerParticipants(session.sheetEnv);
   } catch (error) {
     console.error("[webinar-per] échec lecture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "sheet_unavailable" }, { status: 503 });
@@ -155,7 +155,7 @@ async function handle(request: NextRequest) {
 
     if (emailOk) {
       try {
-        await markWebinarPerReminderSent(participant.email, due.reminderKey, undefined, session.sheetName);
+        await markWebinarPerReminderSent(participant.email, due.reminderKey, undefined, session.sheetEnv);
       } catch (error) {
         console.error("[webinar-per] échec marquage rappel envoyé", participant.email, error instanceof Error ? error.message : error);
       }

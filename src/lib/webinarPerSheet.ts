@@ -55,21 +55,21 @@ const normalizeEnv = (value: string | undefined): string | undefined => {
   return trimmed || undefined;
 };
 
-const getConfig = () => {
-  const url = normalizeEnv(process.env.WEBINAR_PER_GOOGLE_APPS_SCRIPT_URL);
-  const secret = normalizeEnv(process.env.WEBINAR_PER_GOOGLE_APPS_SCRIPT_SECRET);
+// Un Google Sheet (et son Apps Script) par session de webinaire. « sheetEnv » est le préfixe des
+// variables d'environnement : WEBINAR_PER_… (1er novembre), WEBINAR_PER_8NOV_… (8 novembre).
+const DEFAULT_SHEET_ENV = "WEBINAR_PER";
+
+const getConfig = (sheetEnv = DEFAULT_SHEET_ENV) => {
+  const url = normalizeEnv(process.env[`${sheetEnv}_GOOGLE_APPS_SCRIPT_URL`]);
+  const secret = normalizeEnv(process.env[`${sheetEnv}_GOOGLE_APPS_SCRIPT_SECRET`]);
   if (!url || !secret) return null;
   return { url, secret };
 };
 
-export const isWebinarPerSheetConfigured = () => Boolean(getConfig());
+export const isWebinarPerSheetConfigured = (sheetEnv?: string) => Boolean(getConfig(sheetEnv));
 
-// « sheet » : onglet du Google Sheet visé (une session de webinaire par onglet). Sans lui,
-// l'Apps Script travaille sur « Feuille 1 » (session du 1er novembre), y compris un ancien script.
-const DEFAULT_SHEET = "Feuille 1";
-
-const post = async (body: Record<string, unknown>) => {
-  const config = getConfig();
+const post = async (body: Record<string, unknown>, sheetEnv?: string) => {
+  const config = getConfig(sheetEnv);
   if (!config) throw new Error("WEBINAR_PER_SHEET_NOT_CONFIGURED");
   const response = await fetch(config.url, {
     method: "POST",
@@ -78,16 +78,14 @@ const post = async (body: Record<string, unknown>) => {
     cache: "no-store"
   });
   if (!response.ok) throw new Error(`WEBINAR_PER_SHEET_HTTP_${response.status}`);
-  const data = (await response.json()) as { success: boolean; error?: string; sheet?: string; participants?: WebinarPerParticipant[] };
+  const data = (await response.json()) as { success: boolean; error?: string; participants?: WebinarPerParticipant[] };
   if (!data.success) throw new Error(data.error || "WEBINAR_PER_SHEET_ERROR");
   return data;
 };
 
-/** Renvoie l'onglet où la ligne a réellement été écrite (un ancien Apps Script écrit toujours dans « Feuille 1 »). */
-export const appendWebinarPerRegistration = async (registration: WebinarPerRegistration, sheet?: string) => {
-  const data = await post({
+export const appendWebinarPerRegistration = async (registration: WebinarPerRegistration, sheetEnv?: string) => {
+  await post({
     action: "append",
-    sheet,
     registration: {
       prenom: registration.prenom,
       nom: registration.nom,
@@ -99,30 +97,25 @@ export const appendWebinarPerRegistration = async (registration: WebinarPerRegis
       source: registration.source || "webinaire-per",
       consent_at: new Date().toISOString()
     }
-  });
-  return { sheet: data.sheet ?? DEFAULT_SHEET };
+  }, sheetEnv);
 };
 
-export const markWebinarPerReminderSent = async (email: string, reminderKey: WebinarPerReminderKey, sentAt = new Date().toISOString(), sheet?: string) => {
-  await post({ action: "mark_reminder_sent", sheet, email: email.trim().toLowerCase(), reminderKey, sentAt });
+export const markWebinarPerReminderSent = async (email: string, reminderKey: WebinarPerReminderKey, sentAt = new Date().toISOString(), sheetEnv?: string) => {
+  await post({ action: "mark_reminder_sent", email: email.trim().toLowerCase(), reminderKey, sentAt }, sheetEnv);
 };
 
-export const unsubscribeWebinarPerContact = async (email: string, sheet?: string) => {
-  await post({ action: "unsubscribe", sheet, email: email.trim().toLowerCase() });
+export const unsubscribeWebinarPerContact = async (email: string, sheetEnv?: string) => {
+  await post({ action: "unsubscribe", email: email.trim().toLowerCase() }, sheetEnv);
 };
 
-export const getWebinarPerParticipants = async (sheet?: string): Promise<WebinarPerParticipant[]> => {
-  const config = getConfig();
+export const getWebinarPerParticipants = async (sheetEnv?: string): Promise<WebinarPerParticipant[]> => {
+  const config = getConfig(sheetEnv);
   if (!config) return [];
   const url = new URL(config.url);
   url.searchParams.set("secret", config.secret);
-  if (sheet && sheet !== DEFAULT_SHEET) url.searchParams.set("sheet", sheet);
   const response = await fetch(url.toString(), { cache: "no-store" });
   if (!response.ok) throw new Error(`WEBINAR_PER_SHEET_HTTP_${response.status}`);
-  const data = (await response.json()) as { success: boolean; sheet?: string; participants?: WebinarPerParticipant[] };
+  const data = (await response.json()) as { success: boolean; participants?: WebinarPerParticipant[] };
   if (!data.success) throw new Error("WEBINAR_PER_SHEET_ERROR");
-  // Un ancien Apps Script ignore « sheet » et renverrait l'onglet « Feuille 1 » : on refuse plutôt
-  // que d'envoyer les rappels d'une session aux inscrits d'une autre.
-  if (sheet && sheet !== DEFAULT_SHEET && data.sheet !== sheet) throw new Error("WEBINAR_PER_SHEET_SCRIPT_OUTDATED");
   return data.participants || [];
 };

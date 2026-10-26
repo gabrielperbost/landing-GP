@@ -24,9 +24,9 @@ export type WebinarPerSession = {
   meetingUrl: string;
   videoUrl: string;
   replayPolicy: string;
-  /** Onglet du Google Sheet où sont écrites les inscriptions de cette session. */
-  sheetName: string;
-  /** Préfixe de la colonne « Source » (permet aussi de distinguer les lignes si l'onglet est partagé). */
+  /** Google Sheet de la session : préfixe des variables d'environnement …_GOOGLE_APPS_SCRIPT_URL / …_SECRET. */
+  sheetEnv: string;
+  /** Préfixe de la colonne « Source » (repère la session d'une inscription). */
   sourcePrefix: string;
   /** Inscriptions et marquages de rappel antérieurs à cette date : ignorés (ils concernent une session passée). */
   campaignStart: string;
@@ -52,7 +52,7 @@ export const WEBINAR_PER_SESSIONS: Record<WebinarPerSessionId, WebinarPerSession
     meetingUrl: env(process.env.WEBINAR_PER_MEETING_URL) || "https://us06web.zoom.us/j/82484836786?pwd=xZVc62LUchxU5endIuHDMVNhtupfb1.1",
     videoUrl: "https://www.youtube.com/watch?v=CNFS4tn5538",
     replayPolicy: "Participation gratuite sur inscription. Un replay sera envoyé aux personnes inscrites.",
-    sheetName: "Feuille 1",
+    sheetEnv: "WEBINAR_PER",
     sourcePrefix: "webinaire-per",
     // Les inscriptions et rappels antérieurs concernent le webinaire du 11 octobre.
     campaignStart: "2026-10-15T00:00:00Z",
@@ -75,7 +75,7 @@ export const WEBINAR_PER_SESSIONS: Record<WebinarPerSessionId, WebinarPerSession
     meetingUrl: env(process.env.WEBINAR_PER_8NOV_MEETING_URL) || "https://us06web.zoom.us/j/87575702326?pwd=3zNcYVD9JpMHdDchuM5Jq7A8Zf2E0b.1",
     videoUrl: "https://www.youtube.com/watch?v=CNFS4tn5538",
     replayPolicy: "Participation gratuite sur inscription. Un replay sera envoyé aux personnes inscrites.",
-    sheetName: "Feuille 2",
+    sheetEnv: "WEBINAR_PER_8NOV",
     sourcePrefix: "webinaire-per-8nov",
     campaignStart: "2026-10-26T00:00:00Z",
     icsUid: "webinaire-per-grand-public-2026-11-08@gp-finances.fr",

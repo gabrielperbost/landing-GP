@@ -39,19 +39,16 @@ export async function POST(request: Request) {
   if (!phone) return NextResponse.json({ ok: false, error: "telephone_invalide" }, { status: 400, headers });
   const consentSms = consent && Boolean(phone);
 
-  if (!isWebinarPerSheetConfigured()) {
-    console.warn("[webinar-per] inscription refusée : Google Sheet non configuré (WEBINAR_PER_GOOGLE_APPS_SCRIPT_URL/SECRET manquants)");
+  if (!isWebinarPerSheetConfigured(session.sheetEnv)) {
+    console.warn(`[webinar-per] inscription refusée : Google Sheet non configuré (${session.sheetEnv}_GOOGLE_APPS_SCRIPT_URL/SECRET manquants)`);
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });
   }
 
   try {
-    const written = await appendWebinarPerRegistration(
+    await appendWebinarPerRegistration(
       { prenom, nom, email, telephone: phone || undefined, consentEmail: consent, consentSms, source },
-      session.sheetName
+      session.sheetEnv
     );
-    if (written.sheet !== session.sheetName) {
-      console.warn(`[webinar-per] Apps Script pas à jour : inscription ${session.id} écrite hors de l'onglet « ${session.sheetName} »`);
-    }
   } catch (error) {
     console.error("[webinar-per] échec écriture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });

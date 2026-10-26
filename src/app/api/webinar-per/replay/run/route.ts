@@ -9,8 +9,8 @@ export const dynamic = "force-dynamic";
 
 /* Envoi manuel, déclenché une fois par Gabriel (pas un cron) : remercie les inscrits
  * du webinaire du 11 octobre 2026 et leur donne le replay dès qu'il est en ligne.
- * Session visée : ?session=2026-11-08 pour le webinaire du 8 novembre (onglet « Feuille 2 »),
- * sans paramètre celle du 1er novembre (onglet « Feuille 1 »).
+ * Session visée : ?session=2026-11-08 pour le webinaire du 8 novembre (son propre Google Sheet),
+ * sans paramètre celle du 1er novembre.
  * Le lien du replay se passe en paramètre (?replayUrl=...) au moment de l'appel, le
  * temps qu'il soit mis en ligne sur YouTube — pas besoin de redéployer pour le fournir.
  * Protégé par le même secret que les rappels. Le marquage « replay_sent_at » sur la
@@ -51,7 +51,7 @@ async function handle(request: NextRequest) {
 
   let participants;
   try {
-    participants = await getWebinarPerParticipants(session.sheetName);
+    participants = await getWebinarPerParticipants(session.sheetEnv);
   } catch (error) {
     console.error("[webinar-per-replay] échec lecture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "sheet_unavailable" }, { status: 503 });
@@ -90,7 +90,7 @@ async function handle(request: NextRequest) {
     }
     if (emailOk) {
       try {
-        await markWebinarPerReminderSent(participant.email, "replay_sent_at", undefined, session.sheetName);
+        await markWebinarPerReminderSent(participant.email, "replay_sent_at", undefined, session.sheetEnv);
       } catch (error) {
         // Non bloquant : la colonne peut ne pas encore exister côté Apps Script.
         console.warn("[webinar-per-replay] marquage replay_sent_at ignoré", participant.email, error instanceof Error ? error.message : error);
