@@ -3,7 +3,7 @@ import { appendWebinarPerRegistration, isWebinarPerSheetConfigured } from "@/lib
 import { buildWebinarPerEmail, WEBINAR_PER_GUIDE_URL } from "@/lib/webinarPerEmails";
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms, toE164FrenchPhone } from "@/lib/brevoSms";
-import { WEBINAR_PER, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
+import { getWebinarPerSession, getWebinarPerUnsubscribeUrl } from "@/lib/webinarPerConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +26,10 @@ export async function POST(request: Request) {
   const telephoneRaw = clean(body.telephone).slice(0, 30);
   // Le téléphone est obligatoire : un seul consentement couvre l'e-mail et le SMS.
   const consent = body.consent === true;
-  const source = clean(body.source).slice(0, 200) || "webinaire-per";
+  const session = getWebinarPerSession(body.session);
+  // La source commence toujours par le préfixe de la session (repère la session dans le Sheet), suivi des UTM.
+  const rawSource = clean(body.source).slice(0, 200);
+  const source = session.sourcePrefix + (rawSource.includes("|") ? rawSource.slice(rawSource.indexOf("|")) : "");
 
   if (prenom.length < 2) return NextResponse.json({ ok: false, error: "prenom_invalide" }, { status: 400, headers });
   if (nom.length < 2) return NextResponse.json({ ok: false, error: "nom_invalide" }, { status: 400, headers });
@@ -42,26 +45,24 @@ export async function POST(request: Request) {
   }
 
   try {
-    await appendWebinarPerRegistration({
-      prenom,
-      nom,
-      email,
-      telephone: phone || undefined,
-      consentEmail: consent,
-      consentSms,
-      source
-    });
+    const written = await appendWebinarPerRegistration(
+      { prenom, nom, email, telephone: phone || undefined, consentEmail: consent, consentSms, source },
+      session.sheetName
+    );
+    if (written.sheet !== session.sheetName) {
+      console.warn(`[webinar-per] Apps Script pas à jour : inscription ${session.id} écrite hors de l'onglet « ${session.sheetName} »`);
+    }
   } catch (error) {
     console.error("[webinar-per] échec écriture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });
   }
 
   // L'échec d'un canal (e-mail ou SMS) ne doit jamais faire échouer l'inscription déjà enregistrée.
-  const unsubscribeUrl = `${getWebinarPerBaseUrl()}${WEBINAR_PER.unsubscribePath}?email=${encodeURIComponent(email)}`;
+  const unsubscribeUrl = getWebinarPerUnsubscribeUrl(email, session);
   const brevoEmailConfig = getBrevoTransactionalConfig();
   if (brevoEmailConfig) {
     try {
-      const email_ = buildWebinarPerEmail("confirmation", { prenom, email }, { unsubscribeUrl });
+      const email_ = buildWebinarPerEmail("confirmation", { prenom, email }, { unsubscribeUrl, session });
       await sendBrevoTransactionalEmail({
         config: brevoEmailConfig,
         to: { email, name: [prenom, nom].filter(Boolean).join(" ") },
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
         html: email_.html,
         text: email_.text,
         unsubscribeUrl,
-        tags: ["webinaire-per", "confirmation"],
+        tags: ["webinaire-per", "confirmation", `session-${session.id}`],
         attachment: [{ url: WEBINAR_PER_GUIDE_URL, name: "Guide-PER-GP-Finances.pdf" }]
       });
     } catch (error) {
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
         await sendBrevoSms({
           config: smsConfig,
           phone,
-          text: `GP Finances : inscription confirmée au webinaire PER du ${WEBINAR_PER.dateLabel} à ${WEBINAR_PER.timeLabel.split(" ")[0]}. Lien + guide PER par e-mail. STOP au 06 51 22 42 13.`,
+          text: `GP Finances : inscription confirmée au webinaire PER du ${session.dateLabel} à ${session.timeLabel.split(" ")[0]}. Lien + guide PER par e-mail. STOP au 06 51 22 42 13.`,
           tag: "webinaire-per-confirmation"
         });
       } catch (error) {

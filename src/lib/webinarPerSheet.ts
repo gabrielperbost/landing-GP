@@ -64,6 +64,10 @@ const getConfig = () => {
 
 export const isWebinarPerSheetConfigured = () => Boolean(getConfig());
 
+// « sheet » : onglet du Google Sheet visé (une session de webinaire par onglet). Sans lui,
+// l'Apps Script travaille sur « Feuille 1 » (session du 1er novembre), y compris un ancien script.
+const DEFAULT_SHEET = "Feuille 1";
+
 const post = async (body: Record<string, unknown>) => {
   const config = getConfig();
   if (!config) throw new Error("WEBINAR_PER_SHEET_NOT_CONFIGURED");
@@ -74,14 +78,16 @@ const post = async (body: Record<string, unknown>) => {
     cache: "no-store"
   });
   if (!response.ok) throw new Error(`WEBINAR_PER_SHEET_HTTP_${response.status}`);
-  const data = (await response.json()) as { success: boolean; error?: string; participants?: WebinarPerParticipant[] };
+  const data = (await response.json()) as { success: boolean; error?: string; sheet?: string; participants?: WebinarPerParticipant[] };
   if (!data.success) throw new Error(data.error || "WEBINAR_PER_SHEET_ERROR");
   return data;
 };
 
-export const appendWebinarPerRegistration = async (registration: WebinarPerRegistration) => {
-  await post({
+/** Renvoie l'onglet où la ligne a réellement été écrite (un ancien Apps Script écrit toujours dans « Feuille 1 »). */
+export const appendWebinarPerRegistration = async (registration: WebinarPerRegistration, sheet?: string) => {
+  const data = await post({
     action: "append",
+    sheet,
     registration: {
       prenom: registration.prenom,
       nom: registration.nom,
@@ -94,24 +100,29 @@ export const appendWebinarPerRegistration = async (registration: WebinarPerRegis
       consent_at: new Date().toISOString()
     }
   });
+  return { sheet: data.sheet ?? DEFAULT_SHEET };
 };
 
-export const markWebinarPerReminderSent = async (email: string, reminderKey: WebinarPerReminderKey, sentAt = new Date().toISOString()) => {
-  await post({ action: "mark_reminder_sent", email: email.trim().toLowerCase(), reminderKey, sentAt });
+export const markWebinarPerReminderSent = async (email: string, reminderKey: WebinarPerReminderKey, sentAt = new Date().toISOString(), sheet?: string) => {
+  await post({ action: "mark_reminder_sent", sheet, email: email.trim().toLowerCase(), reminderKey, sentAt });
 };
 
-export const unsubscribeWebinarPerContact = async (email: string) => {
-  await post({ action: "unsubscribe", email: email.trim().toLowerCase() });
+export const unsubscribeWebinarPerContact = async (email: string, sheet?: string) => {
+  await post({ action: "unsubscribe", sheet, email: email.trim().toLowerCase() });
 };
 
-export const getWebinarPerParticipants = async (): Promise<WebinarPerParticipant[]> => {
+export const getWebinarPerParticipants = async (sheet?: string): Promise<WebinarPerParticipant[]> => {
   const config = getConfig();
   if (!config) return [];
   const url = new URL(config.url);
   url.searchParams.set("secret", config.secret);
+  if (sheet && sheet !== DEFAULT_SHEET) url.searchParams.set("sheet", sheet);
   const response = await fetch(url.toString(), { cache: "no-store" });
   if (!response.ok) throw new Error(`WEBINAR_PER_SHEET_HTTP_${response.status}`);
-  const data = (await response.json()) as { success: boolean; participants?: WebinarPerParticipant[] };
+  const data = (await response.json()) as { success: boolean; sheet?: string; participants?: WebinarPerParticipant[] };
   if (!data.success) throw new Error("WEBINAR_PER_SHEET_ERROR");
+  // Un ancien Apps Script ignore « sheet » et renverrait l'onglet « Feuille 1 » : on refuse plutôt
+  // que d'envoyer les rappels d'une session aux inscrits d'une autre.
+  if (sheet && sheet !== DEFAULT_SHEET && data.sheet !== sheet) throw new Error("WEBINAR_PER_SHEET_SCRIPT_OUTDATED");
   return data.participants || [];
 };

@@ -104,8 +104,11 @@ for(const s of services){
  fs.writeFileSync(path.join(OUT,'nous-trouver.html'),shell('Nous trouver','Adresse, plan d’accès, téléphone et prise de rendez-vous de GP Finances à Issy-les-Moulineaux.',body,''));
 }
 
-// Page « Webinaire PER » : inscription grand public (dimanche 1er novembre 2026)
+// Pages « Webinaire PER » : inscription grand public, une page par session
+// (dimanche 1er novembre 2026 : /webinaire-per ; dimanche 8 novembre 2026 : /webinaire-per-8-novembre).
+// « session » est envoyé à l'inscription : il choisit l'onglet du Google Sheet, les e-mails et les rappels.
 {
+ const webinarPage=({file,session,dateLabel,shortDate})=>{
  const flankVideo=(side,img,name,file)=>`<button type="button" class="testimonial-card webinar-flank-video webinar-flank-${side}" data-video="https://gp-finances.fr/videos/${file}" data-video-title="Témoignage — ${name}" aria-label="Lire le témoignage : ${name}"><span class="testimonial-image"><img src="assets/${img}" alt="Aperçu du témoignage client" loading="lazy"><span class="video-shade"></span><span class="play-circle">${icon('play')}</span><span class="video-label">Témoignage client</span></span><span class="testimonial-info"><span><span class="small-caps">Plan Épargne Retraite</span><strong>${name}</strong></span>${icon('arrow')}</span></button>`;
 
  const heroInner=`<a href="index.html#per-hero" class="breadcrumb" style="visibility:hidden">.</a>
@@ -114,7 +117,7 @@ for(const s of services){
   <h1>Comprendre et optimiser<br>votre <em>PER</em>, en 1 heure.</h1>
   <p class="webinar-lead">Un webinaire en direct, gratuit et sans engagement, pour comprendre le fonctionnement du PER, savoir combien vous pourriez économiser d’impôt et éviter les erreurs les plus fréquentes.</p>
   <div class="webinar-badges">
-   <div class="webinar-badge">${icon('clock')}<div><strong>Dimanche 1er novembre 2026</strong><span>15h00 à 16h00</span></div></div>
+   <div class="webinar-badge">${icon('clock')}<div><strong>${dateLabel}</strong><span>15h00 à 16h00</span></div></div>
    <div class="webinar-badge">${icon('person')}<div><strong>Grand public</strong><span>Aucun prérequis</span></div></div>
    <div class="webinar-badge">${icon('shield')}<div><strong>Gratuit et en direct</strong><span>Questions en fin de session</span></div></div>
   </div>
@@ -125,7 +128,7 @@ for(const s of services){
   <div class="contact-card webinar-card">
    <h2>Je m’inscris</h2>
    <p class="webinar-card-note">Gratuit et sans engagement. En plus du lien de connexion, recevez immédiatement par e-mail le <strong>guide « Le PER expliqué simplement »</strong> (schémas et simulation détaillée sur 20 ans).</p>
-   <form id="webinar-per-form" novalidate>
+   <form id="webinar-per-form" data-session="${session}" novalidate>
     <div class="webinar-field-row">
      <div class="webinar-field"><label for="wp-prenom">Prénom</label><input id="wp-prenom" name="prenom" autocomplete="given-name" required maxlength="60"></div>
      <div class="webinar-field"><label for="wp-nom">Nom</label><input id="wp-nom" name="nom" autocomplete="family-name" required maxlength="60"></div>
@@ -164,14 +167,17 @@ for(const s of services){
  <h2 class="conseils-h2 center webinar-faq-title">Vos questions</h2>
  <div class="local-faq webinar-faq">
   <details><summary>Le webinaire est-il vraiment gratuit&nbsp;?<span>+</span></summary><p>Oui, entièrement gratuit et sans engagement. Aucune carte bancaire n’est demandée.</p></details>
-  <details><summary>Que se passe-t-il si je ne suis pas disponible le 1er novembre&nbsp;?<span>+</span></summary><p>Inscrivez-vous quand même : un replay est envoyé aux personnes inscrites après le webinaire.</p></details>
+  <details><summary>Que se passe-t-il si je ne suis pas disponible le ${shortDate}&nbsp;?<span>+</span></summary><p>Inscrivez-vous quand même : un replay est envoyé aux personnes inscrites après le webinaire.</p></details>
   <details><summary>Est-ce un conseil personnalisé&nbsp;?<span>+</span></summary><p>Non, c’est une présentation générale du PER. Pour une étude de votre situation, vous pourrez prendre rendez-vous à l’issue du webinaire.</p></details>
   <details><summary>Mes données sont-elles utilisées à d’autres fins&nbsp;?<span>+</span></summary><p>Non. Elles servent uniquement à l’organisation du webinaire (lien, rappels, replay). Vous pouvez vous désinscrire à tout moment depuis chaque e-mail. Voir la <a href="confidentialite.html">politique de confidentialité</a>.</p></details>
  </div>
  <p class="article-disclaimer center">GP FINANCES, courtier indépendant, ORIAS 23003789. Ce webinaire est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Aucune promesse de rendement n’est faite. L’avantage fiscal du PER dépend de votre situation personnelle.</p>`;
 
- const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261022a" defer></script>`;
- fs.writeFileSync(path.join(OUT,'webinaire-per.html'),shell('Webinaire PER gratuit : inscription','Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. Dimanche 1er novembre 2026, 15h00. Sans engagement.',body,''));
+ const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261026a" defer></script>`;
+ fs.writeFileSync(path.join(OUT,file),shell('Webinaire PER gratuit : inscription',`Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. ${dateLabel}, 15h00. Sans engagement.`,body,''));
+ };
+ webinarPage({file:'webinaire-per.html',session:'2026-11-01',dateLabel:'Dimanche 1er novembre 2026',shortDate:'1er novembre'});
+ webinarPage({file:'webinaire-per-8-novembre.html',session:'2026-11-08',dateLabel:'Dimanche 8 novembre 2026',shortDate:'8 novembre'});
 
  const unsubBody=`<section class="section webinar-page"><div class="container"><div class="webinar-hero"><p class="eyebrow center"><span></span>Webinaire PER</p><h1 data-wp-unsub-title>Désinscription</h1><p class="webinar-lead" data-wp-unsub-text>Un instant…</p><a href="index.html" class="button button-outline">Retour au site</a></div></div></section>
  <script>(function(){var p=new URLSearchParams(location.search),ok=p.get('ok')==='1';document.querySelector('[data-wp-unsub-title]').textContent=ok?'Vous êtes désinscrit(e)':'Désinscription impossible';document.querySelector('[data-wp-unsub-text]').textContent=ok?'Vous ne recevrez plus d’e-mails ni de SMS au sujet de ce webinaire.':'Le lien utilisé n’est pas valide. Contactez-nous au 06 51 22 42 13 si besoin.';})();</script>`;

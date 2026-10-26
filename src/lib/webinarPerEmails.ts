@@ -1,4 +1,4 @@
-import { WEBINAR_PER, getWebinarPerRegistrationUrl } from "@/lib/webinarPerConfig";
+import { WEBINAR_PER, getWebinarPerBaseUrl, getWebinarPerMeetingUrl, getWebinarPerRegistrationUrl, type WebinarPerSession } from "@/lib/webinarPerConfig";
 import { getWebinarPerCalendarLinks } from "@/lib/webinarPerCalendar";
 
 export type WebinarPerEmailTemplate =
@@ -18,7 +18,7 @@ const escapeHtml = (value: string) =>
 
 const firstName = (contact: WebinarPerContact) => escapeHtml(contact.prenom.trim() || "Bonjour");
 
-const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string; contact: WebinarPerContact; contentHtml: string; unsubscribeUrl: string }) => `
+const shell = ({ title, contact, contentHtml, unsubscribeUrl, dateLabel }: { title: string; contact: WebinarPerContact; contentHtml: string; unsubscribeUrl: string; dateLabel: string }) => `
 <div style="background:#f5f8ff;padding:26px 14px;">
   <div style="max-width:640px;margin:0 auto;">
     <div style="background:linear-gradient(180deg,#eef4ff 0%, #f5f8ff 100%);border-radius:18px;padding:14px;">
@@ -36,7 +36,7 @@ const shell = ({ title, contact, contentHtml, unsubscribeUrl }: { title: string;
           <div style="margin-top:20px;border-top:1px solid #edf2ff;padding-top:14px;">
             <div style="font-family:Arial,sans-serif;color:#64748b;font-size:11px;line-height:1.5;">
               GP Finances · Gabriel Perbost, courtier indépendant, ORIAS 23003789. Cet e-mail n'est ni un conseil personnalisé ni une offre de produit : le PER doit être étudié au regard de votre situation.
-              <br>Vous recevez cet e-mail parce que vous vous êtes inscrit(e) au webinaire du ${WEBINAR_PER.dateLabel}.
+              <br>Vous recevez cet e-mail parce que vous vous êtes inscrit(e) au webinaire du ${dateLabel}.
               <a href="${unsubscribeUrl}" style="color:#64748b;">Se désinscrire</a>.
             </div>
           </div>
@@ -128,18 +128,20 @@ const videoTestimonialsBlock = (registrationUrl: string) => `
 export const buildWebinarPerEmail = (
   template: WebinarPerEmailTemplate,
   contact: WebinarPerContact,
-  { unsubscribeUrl, replayUrl }: { unsubscribeUrl: string; replayUrl?: string }
+  { unsubscribeUrl, replayUrl, session = WEBINAR_PER }: { unsubscribeUrl: string; replayUrl?: string; session?: WebinarPerSession }
 ): WebinarPerEmail => {
-  const calendar = getWebinarPerCalendarLinks();
-  const registrationUrl = getWebinarPerRegistrationUrl();
-  const dateTime = `${WEBINAR_PER.dateLabel}, ${WEBINAR_PER.timeLabel}`;
+  const calendar = getWebinarPerCalendarLinks(getWebinarPerBaseUrl(), session);
+  const registrationUrl = getWebinarPerRegistrationUrl(getWebinarPerBaseUrl(), session);
+  const meetingUrl = getWebinarPerMeetingUrl(session);
+  const shellFor = (args: Omit<Parameters<typeof shell>[0], "dateLabel">) => shell({ ...args, dateLabel: session.dateLabel });
+  const dateTime = `${session.dateLabel}, ${session.timeLabel}`;
 
   const meetingBlock = `
     <div style="background:#f1f6ff;border:1px solid #dbeafe;border-radius:14px;padding:14px;margin:14px 0;">
       <div style="font-weight:900;color:#1A3C5C;margin-bottom:6px;">${dateTime}</div>
-      <div style="color:#0f172a;">${WEBINAR_PER.durationLabel}</div>
+      <div style="color:#0f172a;">${session.durationLabel}</div>
       <div style="margin-top:12px;">
-        ${button(WEBINAR_PER.meetingUrl, "Rejoindre le webinaire")}
+        ${button(meetingUrl, "Rejoindre le webinaire")}
         ${button(calendar.google, "Ajouter à Google Agenda")}
       </div>
     </div>`;
@@ -148,13 +150,13 @@ export const buildWebinarPerEmail = (
     case "confirmation":
       return {
         subject: "🎁 Votre guide PER offert est prêt (+ inscription confirmée)",
-        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Votre guide « Le PER expliqué simplement » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}). Lien du webinaire : ${WEBINAR_PER.meetingUrl}.`,
-        html: shell({
+        text: `Votre inscription au webinaire PER du ${dateTime} est confirmée. Votre guide « Le PER expliqué simplement » est joint à cet e-mail (aussi disponible ici : ${WEBINAR_PER_GUIDE_URL}). Lien du webinaire : ${meetingUrl}.`,
+        html: shellFor({
           title: "Votre inscription est confirmée",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 14px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(WEBINAR_PER.title)} »</b>. Et comme promis, votre cadeau vous attend juste en dessous 👇</p>
+            <p style="margin:0 0 14px;">C'est noté : vous êtes inscrit(e) au webinaire <b>« ${escapeHtml(session.title)} »</b>. Et comme promis, votre cadeau vous attend juste en dessous 👇</p>
             ${guideBlock()}
             ${meetingBlock}
             <p style="margin:14px 0 0;">Au programme du webinaire : comprendre le PER, calculer votre économie d'impôt potentielle et éviter les erreurs les plus fréquentes. Vous pourrez poser vos questions en direct.</p>
@@ -167,7 +169,7 @@ export const buildWebinarPerEmail = (
       return {
         subject: "J-3 : votre webinaire PER dimanche à 15h",
         text: `Le webinaire PER a lieu dans 3 jours, ${dateTime}. Une question à poser en avance ? Répondez à cet e-mail.`,
-        html: shell({
+        html: shellFor({
           title: "Plus que 3 jours",
           contact,
           unsubscribeUrl,
@@ -183,7 +185,7 @@ export const buildWebinarPerEmail = (
       return {
         subject: "J-2 : ce que vous allez apprendre dimanche",
         text: `Le webinaire PER a lieu après-demain, ${dateTime}. Gardez votre dernier avis d'impôt à portée de main.`,
-        html: shell({
+        html: shellFor({
           title: "Dans 2 jours",
           contact,
           unsubscribeUrl,
@@ -197,13 +199,13 @@ export const buildWebinarPerEmail = (
     case "reminder_1d":
       return {
         subject: "C'est demain : votre webinaire PER à 15h",
-        text: `Le webinaire PER a lieu demain, ${dateTime}. Lien : ${WEBINAR_PER.meetingUrl}`,
-        html: shell({
+        text: `Le webinaire PER a lieu demain, ${dateTime}. Lien : ${meetingUrl}`,
+        html: shellFor({
           title: "C'est demain !",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">Rendez-vous demain, ${WEBINAR_PER.timeLabel}. Gardez ce lien sous la main :</p>
+            <p style="margin:0 0 12px;">Rendez-vous demain, ${session.timeLabel}. Gardez ce lien sous la main :</p>
             ${meetingBlock}
             ${reviewsBlock([4, 0])}`
         })
@@ -211,8 +213,8 @@ export const buildWebinarPerEmail = (
     case "reminder_morning":
       return {
         subject: "Aujourd'hui à 15h : votre webinaire PER",
-        text: `Le webinaire PER a lieu aujourd'hui de 15h à 16h. Lien : ${WEBINAR_PER.meetingUrl}`,
-        html: shell({
+        text: `Le webinaire PER a lieu aujourd'hui de 15h à 16h. Lien : ${meetingUrl}`,
+        html: shellFor({
           title: "C'est aujourd'hui",
           contact,
           unsubscribeUrl,
@@ -226,14 +228,14 @@ export const buildWebinarPerEmail = (
     case "reminder_1h":
       return {
         subject: "Dans 1 heure : le lien de votre webinaire PER",
-        text: `Le webinaire PER commence dans une heure, à 15h. Lien : ${WEBINAR_PER.meetingUrl}`,
-        html: shell({
+        text: `Le webinaire PER commence dans une heure, à 15h. Lien : ${meetingUrl}`,
+        html: shellFor({
           title: "On commence dans 1 heure",
           contact,
           unsubscribeUrl,
           contentHtml: `
             <p style="margin:0 0 12px;">Le webinaire commence à 15h. Cliquez sur le bouton quelques minutes avant pour vous connecter, depuis votre ordinateur ou votre téléphone.</p>
-            <div style="margin:10px 0 16px;">${goldButton(WEBINAR_PER.meetingUrl, "Rejoindre le webinaire à 15h")}</div>
+            <div style="margin:10px 0 16px;">${goldButton(meetingUrl, "Rejoindre le webinaire à 15h")}</div>
             <p style="margin:0;">À tout de suite !<br>Gabriel</p>`
         })
       };
@@ -241,7 +243,7 @@ export const buildWebinarPerEmail = (
       return {
         subject: "Le replay du webinaire PER est disponible",
         text: `Merci pour votre inscription. Voici le replay : ${replayUrl || ""}`,
-        html: shell({
+        html: shellFor({
           title: "Merci, et voici le replay",
           contact,
           unsubscribeUrl,

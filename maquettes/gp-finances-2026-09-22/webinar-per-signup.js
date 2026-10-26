@@ -7,6 +7,8 @@
   if (!form) return;
   const errorBox = document.querySelector('[data-wp-error]');
   const submitBtn = document.querySelector('[data-wp-submit]');
+  // Session du webinaire (une page par date) : choisit l'onglet du Google Sheet, les e-mails et les rappels.
+  const session = form.dataset.session || '';
 
   function endpoint() {
     const local = location.protocol === 'file:' || (['localhost', '127.0.0.1'].includes(location.hostname) && location.port !== '3111');
@@ -39,7 +41,7 @@
       const response = await fetch(endpoint(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prenom, nom, email, telephone, consent, source })
+        body: JSON.stringify({ prenom, nom, email, telephone, consent, source, session })
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.ok) {
@@ -51,10 +53,10 @@
       }
       form.hidden = true;
       document.querySelector('[data-wp-success]').hidden = false;
-      window.gpTrack && window.gpTrack('webinaire_per_inscription', { sms: Boolean(telephone) });
+      window.gpTrack && window.gpTrack('webinaire_per_inscription', { sms: Boolean(telephone), session: session });
       // Lead envoyé uniquement ici, une fois l'inscription réellement confirmée par le serveur
       // (le formulaire n'est pas un Tally : ce point équivaut à « Tally.FormSubmitted »).
-      if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'webinaire_per' });
+      if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'webinaire_per', content_category: session });
     } catch {
       fail('Le service est momentanément indisponible. Réessayez dans un instant, ou appelez le 06 51 22 42 13.');
     } finally {

@@ -3,7 +3,7 @@ import { getWebinarPerParticipants, markWebinarPerReminderSent, type WebinarPerR
 import { buildWebinarPerEmail } from "@/lib/webinarPerEmails";
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms } from "@/lib/brevoSms";
-import { WEBINAR_PER, WEBINAR_PER_CAMPAIGN_START, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
+import { WEBINAR_PER_SESSIONS, getWebinarPerUnsubscribeUrl, type WebinarPerSessionId } from "@/lib/webinarPerConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,6 +16,7 @@ const normalizeEnv = (value: string | undefined) => {
 type ScheduleTemplate = "reminder_3d" | "reminder_2d" | "reminder_1d" | "reminder_morning" | "reminder_1h";
 
 type ScheduleItem = {
+  session: WebinarPerSessionId;
   dateKey: string; // date (heure de Paris) à laquelle envoyer, format AAAA-MM-JJ
   fromHour: number; // fenêtre d'envoi en heure de Paris : [fromHour, toHour[
   toHour: number;
@@ -24,24 +25,29 @@ type ScheduleItem = {
   alsoSms: boolean;
 };
 
-// Webinaire le dimanche 1er novembre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement.
-// Tâche quotidienne à 8h10 (heure de Paris) + une tâche le 1er novembre à 14h pour le rappel H-1.
+// Webinaires les dimanches 1er et 8 novembre 2026, 15h00 (Europe/Paris). Rappels aux inscrits uniquement,
+// chaque session lisant son propre onglet du Google Sheet (« Feuille 1 », « Feuille 2 »).
+// Tâche quotidienne à 8h10 (heure de Paris) + une tâche chaque jour de webinaire à 14h pour le rappel H-1.
 // Le Google Sheet n'ayant pas de colonnes J-2 et H-1, on réutilise les colonnes « Rappel 5j » (J-2)
-// et « Rappel 7j » (H-1), libres pour ce webinaire.
+// et « Rappel 7j » (H-1), libres pour ces webinaires.
 const SCHEDULE: ScheduleItem[] = [
-  { dateKey: "2026-10-29", fromHour: 6, toHour: 23, reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
-  { dateKey: "2026-10-30", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
-  { dateKey: "2026-10-31", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
-  { dateKey: "2026-11-01", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
-  { dateKey: "2026-11-01", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false }
+  { session: "2026-11-01", dateKey: "2026-10-29", fromHour: 6, toHour: 23, reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
+  { session: "2026-11-01", dateKey: "2026-10-30", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
+  { session: "2026-11-01", dateKey: "2026-10-31", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
+  { session: "2026-11-01", dateKey: "2026-11-01", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
+  { session: "2026-11-01", dateKey: "2026-11-01", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false },
+  { session: "2026-11-08", dateKey: "2026-11-05", fromHour: 6, toHour: 23, reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },
+  { session: "2026-11-08", dateKey: "2026-11-06", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
+  { session: "2026-11-08", dateKey: "2026-11-07", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
+  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
+  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false }
 ];
 
-// Les inscriptions et marquages antérieurs concernent le webinaire du 11 octobre : ignorés.
-const campaignStart = Date.parse(WEBINAR_PER_CAMPAIGN_START);
-const isCurrent = (value: string | undefined) => {
-  const time = Date.parse(String(value ?? ""));
-  return Number.isFinite(time) && time >= campaignStart;
-};
+const SESSION_8NOV_PREFIX = WEBINAR_PER_SESSIONS["2026-11-08"].sourcePrefix;
+// Garde-fou si l'Apps Script n'a pas encore été mis à jour (tout dans « Feuille 1 ») : la source dit à quelle session
+// appartient la ligne (« webinaire-per-8nov|… » pour le 8 novembre, « webinaire-per|… » pour le 1er novembre).
+const belongsTo = (session: WebinarPerSessionId, source: string) =>
+  String(source || "").startsWith(SESSION_8NOV_PREFIX) === (session === "2026-11-08");
 
 const SMS_TEXT_BY_TEMPLATE: Partial<Record<ScheduleItem["template"], string>> = {
   reminder_1d: `GP Finances : rappel, webinaire PER demain à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`,
@@ -79,6 +85,14 @@ async function handle(request: NextRequest) {
   const hour = getLocalHour();
   const due = SCHEDULE.find((item) => item.dateKey === today && hour >= item.fromHour && hour < item.toHour);
   if (!due) return NextResponse.json({ ok: true, ran: false, reason: "no_reminder_due_now", today, hour });
+  const session = WEBINAR_PER_SESSIONS[due.session];
+
+  // Inscriptions et marquages antérieurs au début de la campagne de la session : ignorés (session passée).
+  const campaignStart = Date.parse(session.campaignStart);
+  const isCurrent = (value: string | undefined) => {
+    const time = Date.parse(String(value ?? ""));
+    return Number.isFinite(time) && time >= campaignStart;
+  };
 
   const emailConfig = getBrevoTransactionalConfig();
   const smsConfig = due.alsoSms ? getBrevoSmsConfig() : null;
@@ -86,7 +100,7 @@ async function handle(request: NextRequest) {
 
   let participants;
   try {
-    participants = await getWebinarPerParticipants();
+    participants = await getWebinarPerParticipants(session.sheetName);
   } catch (error) {
     console.error("[webinar-per] échec lecture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "sheet_unavailable" }, { status: 503 });
@@ -94,21 +108,21 @@ async function handle(request: NextRequest) {
 
   const targets = participants
     .filter((p) => p.status.trim().toLowerCase() === "registered")
+    .filter((p) => belongsTo(session.id, p.source))
     .filter((p) => isCurrent(p.created_at))
     .filter((p) => !isCurrent(p[due.reminderKey] as string | undefined))
     .slice(0, batchSize);
 
-  const unsubscribeBase = `${getWebinarPerBaseUrl()}${WEBINAR_PER.unsubscribePath}`;
-  const results = { attempted: targets.length, emailsSent: 0, smsSent: 0, errors: 0 };
+  const results = { session: session.id, attempted: targets.length, emailsSent: 0, smsSent: 0, errors: 0 };
 
   for (const participant of targets) {
     const contact = { prenom: participant.prenom, email: participant.email };
-    const unsubscribeUrl = `${unsubscribeBase}?email=${encodeURIComponent(participant.email)}`;
+    const unsubscribeUrl = getWebinarPerUnsubscribeUrl(participant.email, session);
     let emailOk = true;
 
     if (emailConfig) {
       try {
-        const built = buildWebinarPerEmail(due.template, contact, { unsubscribeUrl });
+        const built = buildWebinarPerEmail(due.template, contact, { unsubscribeUrl, session });
         await sendBrevoTransactionalEmail({
           config: emailConfig,
           to: { email: participant.email, name: [participant.prenom, participant.nom].filter(Boolean).join(" ") },
@@ -116,7 +130,7 @@ async function handle(request: NextRequest) {
           html: built.html,
           text: built.text,
           unsubscribeUrl,
-          tags: ["webinaire-per", due.template]
+          tags: ["webinaire-per", due.template, `session-${session.id}`]
         });
         results.emailsSent += 1;
       } catch (error) {
@@ -141,7 +155,7 @@ async function handle(request: NextRequest) {
 
     if (emailOk) {
       try {
-        await markWebinarPerReminderSent(participant.email, due.reminderKey);
+        await markWebinarPerReminderSent(participant.email, due.reminderKey, undefined, session.sheetName);
       } catch (error) {
         console.error("[webinar-per] échec marquage rappel envoyé", participant.email, error instanceof Error ? error.message : error);
       }

@@ -8,6 +8,7 @@ const SITE_PAGES = [
   ["/mutuelle", "mutuelle"],
   ["/regroupement-credits", "regroupement-credits"],
   ["/webinaire-per", "webinaire-per"],
+  ["/webinaire-per-8-novembre", "webinaire-per-8-novembre"],
   ["/webinaire-per/desinscription", "webinaire-per-desinscription"],
   ["/nous-trouver", "nous-trouver"],
   ["/mentions-legales", "mentions-legales"],

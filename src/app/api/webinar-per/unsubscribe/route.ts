@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { unsubscribeWebinarPerContact } from "@/lib/webinarPerSheet";
+import { WEBINAR_PER_SESSIONS } from "@/lib/webinarPerConfig";
 import { blacklistInBrevo } from "@/lib/webinarPerProspectionServer";
 
 export const runtime = "nodejs";
@@ -12,9 +13,10 @@ async function handle(email: string | null) {
   if (!emailRegex.test(clean)) {
     return NextResponse.redirect(new URL("/webinaire-per/desinscription?ok=0", "https://gp-finances.fr"));
   }
-  // Inscrits : statut « unsubscribed » dans le Google Sheet. Tous (inscrits ou destinataires des
-  // invitations) : liste noire Brevo, qui écarte la personne de tous les envois suivants.
-  const results = await Promise.allSettled([unsubscribeWebinarPerContact(clean), blacklistInBrevo(clean)]);
+  // Inscrits : statut « unsubscribed » dans chaque onglet du Google Sheet (toutes sessions). Tous (inscrits
+  // ou destinataires des invitations) : liste noire Brevo, qui écarte la personne de tous les envois suivants.
+  const sheets = [...new Set(Object.values(WEBINAR_PER_SESSIONS).map((s) => s.sheetName))];
+  const results = await Promise.allSettled([...sheets.map((sheet) => unsubscribeWebinarPerContact(clean, sheet)), blacklistInBrevo(clean)]);
   results.forEach((r) => {
     if (r.status === "rejected") console.error("[webinar-per] échec désinscription", r.reason instanceof Error ? r.reason.message : r.reason);
   });

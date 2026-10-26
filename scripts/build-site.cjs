@@ -29,6 +29,7 @@ const ROUTES = {
   mutuelle: '/mutuelle',
   'regroupement-credits': '/regroupement-credits',
   'webinaire-per': '/webinaire-per',
+  'webinaire-per-8-novembre': '/webinaire-per-8-novembre',
   'webinaire-per-desinscription': '/webinaire-per/desinscription',
   'nous-trouver': '/nous-trouver',
   'mentions-legales': '/mentions-legales',
@@ -79,12 +80,13 @@ const SEO = {
   mutuelle: ['Mutuelle santé : trouver la couverture adaptée | GP Finances', 'Trouvez l’équilibre entre vos besoins de santé, vos garanties et votre budget, avec un courtier indépendant. Étude personnalisée, sans engagement.'],
   'regroupement-credits': ['Regroupement de crédits : rééquilibrer votre budget | GP Finances', 'Regroupement de crédit : faites étudier vos crédits et vos charges pour comprendre les possibilités de regroupement et leurs conséquences sur votre budget. Sans engagement.'],
   'webinaire-per': ['Webinaire PER gratuit : comprendre et optimiser votre retraite | GP Finances', 'Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. Dimanche 1er novembre 2026, 15h00. Sans engagement.'],
+  'webinaire-per-8-novembre': ['Webinaire PER gratuit du 8 novembre : comprendre et optimiser votre retraite | GP Finances', 'Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. Dimanche 8 novembre 2026, 15h00. Sans engagement.'],
   'webinaire-per-desinscription': ['Désinscription webinaire | GP Finances', 'Désinscription du webinaire PER GP Finances.'],
   'nous-trouver': ['Où nous trouver : cabinet de courtage à Issy-les-Moulineaux | GP Finances', 'Adresse, plan d’accès, téléphone et prise de rendez-vous de GP Finances, courtier en assurance de prêt, PER et mutuelle à Issy-les-Moulineaux (92), ou en visio.'],
   'mentions-legales': ['Mentions légales | GP Finances', 'Mentions légales du site gp-finances.fr : éditeur, immatriculations ORIAS, hébergement, propriété intellectuelle.'],
   confidentialite: ['Politique de confidentialité | GP Finances', 'Comment GP Finances traite vos données personnelles : finalités, base légale, destinataires, durées de conservation, cookies et droits.']
 };
-const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'webinaire-per': 'Webinaire PER', 'nous-trouver': 'Nous trouver', 'regroupement-credits': 'Regroupement de crédits' };
+const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'webinaire-per': 'Webinaire PER', 'webinaire-per-8-novembre': 'Webinaire PER du 8 novembre', 'nous-trouver': 'Nous trouver', 'regroupement-credits': 'Regroupement de crédits' };
 const SAME_AS = [
   'https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z',
   'https://www.cncef.org/annuaire/perbost-gabriel/', 'https://www.linkedin.com/in/gabriel-perbost/', 'https://www.instagram.com/gabriel_perbost/'

@@ -1,15 +1,15 @@
-import { WEBINAR_PER_EVENT, getWebinarPerBaseUrl } from "@/lib/webinarPerConfig";
+import { WEBINAR_PER, getWebinarPerBaseUrl, getWebinarPerEvent, type WebinarPerSession } from "@/lib/webinarPerConfig";
 
 const buildUrl = (base: string, path: string) => `${base.replace(/\/+$/, "")}${path}`;
 
 /** Liens « Ajouter à mon agenda » (Google, Outlook) et fichier .ics pour Apple/autres. */
-export const getWebinarPerCalendarLinks = (baseUrl = getWebinarPerBaseUrl()) => {
-  const event = WEBINAR_PER_EVENT;
+export const getWebinarPerCalendarLinks = (baseUrl = getWebinarPerBaseUrl(), session: WebinarPerSession = WEBINAR_PER) => {
+  const event = getWebinarPerEvent(session);
 
   const googleUrl = new URL("https://calendar.google.com/calendar/render");
   googleUrl.searchParams.set("action", "TEMPLATE");
   googleUrl.searchParams.set("text", event.title);
-  googleUrl.searchParams.set("dates", "20261101T150000/20261101T160000");
+  googleUrl.searchParams.set("dates", `${event.startLocal.replace(/[-:]/g, "")}/${event.endLocal.replace(/[-:]/g, "")}`);
   googleUrl.searchParams.set("ctz", event.timezone);
   googleUrl.searchParams.set("details", event.description);
   googleUrl.searchParams.set("location", event.location);
@@ -24,15 +24,15 @@ export const getWebinarPerCalendarLinks = (baseUrl = getWebinarPerBaseUrl()) => 
   return {
     google: googleUrl.toString(),
     outlook: outlookUrl.toString(),
-    ics: buildUrl(baseUrl, "/api/webinar-per/calendar")
+    ics: buildUrl(baseUrl, `/api/webinar-per/calendar?session=${session.id}`)
   };
 };
 
 const escapeIcsText = (value: string) =>
   value.replaceAll("\\", "\\\\").replaceAll(";", "\\;").replaceAll(",", "\\,").replaceAll("\n", "\\n");
 
-export const buildWebinarPerIcs = () => {
-  const event = WEBINAR_PER_EVENT;
+export const buildWebinarPerIcs = (session: WebinarPerSession = WEBINAR_PER) => {
+  const event = getWebinarPerEvent(session);
   const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   return [
     "BEGIN:VCALENDAR",
@@ -41,7 +41,7 @@ export const buildWebinarPerIcs = () => {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:webinaire-per-grand-public-2026-11-01@gp-finances.fr`,
+    `UID:${session.icsUid}`,
     `DTSTAMP:${stamp}`,
     `DTSTART:${event.startUtc}`,
     `DTEND:${event.endUtc}`,
