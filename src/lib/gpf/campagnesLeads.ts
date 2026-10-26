@@ -6,9 +6,9 @@ import { getWebinarPerParticipants } from "@/lib/webinarPerSheet";
 import { WEBINAR_PER_SESSIONS } from "@/lib/webinarPerConfig";
 
 /**
- * Suivi des leads par campagne (webinaires) : chaque inscrit devient un lead du CRM, rattaché à sa
- * campagne (table gpf_campagne_leads, migration 015), puis passe à la main en « prise de RDV » ou
- * « devenu client » avec le CA généré, pour les statistiques de la page Leads.
+ * Suivi des leads par campagne (webinaires), pour les statistiques : chaque inscrit devient un contact
+ * du CRM rattaché à sa campagne (table gpf_campagne_leads, migration 015), sans tâche, notification ni
+ * dossier, puis passe à la main en « prise de RDV » ou « devenu client » avec le CA généré.
  */
 export const CAMPAGNES_LEADS = [
   { id: "webinaire-per-avocats-2026-09-17", libelle: "Webinaire PER avocats · 17 sept. 2026", source: "Webinaire PER avocats 17 septembre 2026" },
@@ -43,10 +43,10 @@ const dateIso = (v: string | null | undefined) => {
 };
 
 /**
- * Crée (ou retrouve) le lead d'un inscrit et le rattache à sa campagne. « reprise » : import d'historique,
- * sans tâche d'appel ni notification. Idempotent : un inscrit déjà rattaché n'est ni recréé ni dupliqué.
+ * Crée (ou retrouve) le contact d'un inscrit et le rattache à sa campagne, sans tâche d'appel, notification
+ * ni dossier (statistiques uniquement). Idempotent : un inscrit déjà rattaché n'est ni recréé ni dupliqué.
  */
-export async function enregistrerInscriptionWebinaire(i: InscriptionWebinaire, opts: { reprise?: boolean } = {}) {
+export async function enregistrerInscriptionWebinaire(i: InscriptionWebinaire) {
   const campagne = CAMPAGNES_LEADS.find((c) => c.id === i.campagne)!;
   const email = i.email.trim().toLowerCase();
   const canal = canalDe(i.sourceBrute);
@@ -58,10 +58,9 @@ export async function enregistrerInscriptionWebinaire(i: InscriptionWebinaire, o
       nom: i.nom,
       email,
       telephone: i.telephone || null,
-      produit: "per",
       message: [`Inscrit(e) au ${campagne.libelle}.`, i.details, i.sourceBrute ? `Source : ${i.sourceBrute}` : null].filter(Boolean).join(" ")
     },
-    opts.reprise ? { silencieux: true, sansTache: true } : {}
+    { silencieux: true, sansTache: true }
   );
   if (!lead.ok || !lead.client_id) return { ok: false as const, error: lead.error ?? "lead_non_cree" };
   const { error } = await supabaseAdmin

@@ -26,13 +26,14 @@ export async function GET() {
     supabaseAdmin.from("gpf_clients").select("id, prenom, nom, provenance, source, telephone, created_at, dernier_contact_at, score").is("deleted_at", null).gte("created_at", new Date(Date.now() - 90 * 86400000).toISOString()),
     supabaseAdmin.from("gpf_calls").select("client_id, created_at").gte("created_at", new Date(Date.now() - 90 * 86400000).toISOString()).order("created_at"),
     supabaseAdmin.from("gpf_dossiers").select("client_id, statut, contrat_statut").is("deleted_at", null),
-    supabaseAdmin.from("gpf_lead_events").select("*").order("created_at", { ascending: false }).limit(50)
+    supabaseAdmin.from("gpf_lead_events").select("*").not("source", "ilike", "webinaire %").order("created_at", { ascending: false }).limit(50)
   ]);
   const premierAppel = new Map<string, string>();
   for (const a of appels ?? []) if (!premierAppel.has(a.client_id)) premierAppel.set(a.client_id, a.created_at);
   const signes = new Set((dossiers ?? []).filter((d) => d.contrat_statut || GPF_STATUTS_SIGNES.has(d.statut)).map((d) => d.client_id));
 
-  const leads = (clients ?? []).map((c) => {
+  // Inscrits aux webinaires : suivis dans la carte « Campagnes », hors délais de rappel et liste « À appeler ».
+  const leads = (clients ?? []).filter((c) => !/^webinaire /i.test(c.provenance ?? "")).map((c) => {
     const premier = [premierAppel.get(c.id), c.dernier_contact_at].filter(Boolean).sort()[0] ?? null;
     const delaiMin = premier ? Math.max(0, Math.round((new Date(premier).getTime() - new Date(c.created_at).getTime()) / 60000)) : null;
     return { ...c, nomComplet: formatNom(c), source: normSource(c.provenance ?? c.source), premierContact: premier, delaiMin, signe: signes.has(c.id) };

@@ -193,8 +193,8 @@ function Reprise({ onClose }: { onClose: () => void }) {
     <Panneau titre="Reprendre les inscrits des webinaires" onClose={onClose}>
       <div className="flex flex-col gap-3 text-sm text-[var(--gpf-ink)]">
         <p className="text-xs text-[var(--gpf-muted)]">
-          Les inscrits des Google Sheets deviennent des leads, rattachés à leur campagne, avec un dossier PER « à traiter ». Ni tâche d&apos;appel ni notification. Un contact déjà dans le CRM
-          (même e-mail ou téléphone) n&apos;est pas dupliqué : il reçoit une note.
+          Les inscrits des Google Sheets deviennent des contacts rattachés à leur campagne, pour les statistiques : ni tâche d&apos;appel, ni notification, ni dossier. Un contact déjà dans le
+          CRM (même e-mail ou téléphone) n&apos;est pas dupliqué : il reçoit une note.
         </p>
         {erreur ? <p className="text-[#b3463f]">{erreur}</p> : null}
         {!analyse && !erreur ? <Vide>Lecture des Google Sheets…</Vide> : null}

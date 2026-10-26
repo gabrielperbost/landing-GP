@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
   let importes = 0;
   const echecs: { email: string; error: string }[] = [];
   for (const i of aFaire.slice(0, LOT)) {
-    const r = await enregistrerInscriptionWebinaire(i, { reprise: true });
+    const r = await enregistrerInscriptionWebinaire(i);
     if (r.ok) importes++;
     else echecs.push({ email: i.email, error: r.error });
   }

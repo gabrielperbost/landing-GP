@@ -55,8 +55,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });
   }
 
-  // Lead dans le CRM GPF (page Leads), rattaché à la campagne du webinaire : contact, dossier PER « à traiter »,
-  // tâche d'appel. Un échec ici ne bloque jamais l'inscription.
+  // Contact dans le CRM GPF rattaché à la campagne du webinaire (statistiques de la page Leads), sans tâche,
+  // notification ni dossier. Un échec ici ne bloque jamais l'inscription.
   try {
     const lead = await enregistrerInscriptionWebinaire({
       campagne: `webinaire-per-${session.id}` as CampagneLeadId,
