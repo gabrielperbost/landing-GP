@@ -41,9 +41,14 @@ export async function POST(request: NextRequest) {
   let importes = 0;
   const echecs: { email: string; error: string }[] = [];
   for (const i of aFaire.slice(0, LOT)) {
-    const r = await enregistrerInscriptionWebinaire(i);
-    if (r.ok) importes++;
-    else echecs.push({ email: i.email, error: r.error });
+    try {
+      const r = await enregistrerInscriptionWebinaire(i);
+      if (r.ok) importes++;
+      else echecs.push({ email: String(i.email), error: r.error });
+    } catch (error) {
+      // Une fiche en erreur ne bloque pas le lot : elle est comptée en échec.
+      echecs.push({ email: String(i.email), error: error instanceof Error ? error.message : String(error) });
+    }
   }
   return NextResponse.json({ ok: true, importes, echecs, restants: Math.max(0, aFaire.length - LOT) });
 }

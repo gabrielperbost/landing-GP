@@ -46,7 +46,20 @@ const dateIso = (v: string | null | undefined) => {
  * Crée (ou retrouve) le contact d'un inscrit et le rattache à sa campagne, sans tâche d'appel, notification
  * ni dossier (statistiques uniquement). Idempotent : un inscrit déjà rattaché n'est ni recréé ni dupliqué.
  */
-export async function enregistrerInscriptionWebinaire(i: InscriptionWebinaire) {
+export async function enregistrerInscriptionWebinaire(brut: InscriptionWebinaire) {
+  // Google Sheets renvoie parfois des nombres (téléphone sans 0 initial, etc.) : tout est remis en texte.
+  const texte = (v: unknown) => (v == null ? "" : String(v)).trim();
+  const tel = texte(brut.telephone);
+  const i = {
+    ...brut,
+    prenom: texte(brut.prenom),
+    nom: texte(brut.nom),
+    email: texte(brut.email),
+    telephone: /^[1-9]\d{8}$/.test(tel) ? `0${tel}` : tel,
+    sourceBrute: texte(brut.sourceBrute),
+    inscritAt: texte(brut.inscritAt),
+    details: brut.details ? texte(brut.details) : null
+  };
   const campagne = CAMPAGNES_LEADS.find((c) => c.id === i.campagne)!;
   const email = i.email.trim().toLowerCase();
   const canal = canalDe(i.sourceBrute);
@@ -82,7 +95,7 @@ export async function lireInscritsWebinaires() {
     // prospectés (« unsubscribed ») : seules les lignes « registered » sont de vrais inscrits.
     for (const p of avocats) {
       if (String(p.status ?? "").trim().toLowerCase() !== "registered") continue;
-      if (!p.email?.includes("@")) continue;
+      if (!String(p.email ?? "").includes("@")) continue;
       inscrits.push({
         campagne: "webinaire-per-avocats-2026-09-17",
         prenom: p.prenom,
@@ -145,7 +158,7 @@ export async function inscritsARattacher(inscrits: InscriptionWebinaire[]) {
   const deja = new Set((data ?? []).map((r) => `${r.campagne}|${String(r.email ?? "").toLowerCase()}`));
   const vus = new Set<string>();
   return inscrits.filter((i) => {
-    const cle = `${i.campagne}|${i.email.trim().toLowerCase()}`;
+    const cle = `${i.campagne}|${String(i.email ?? "").trim().toLowerCase()}`;
     if (deja.has(cle) || vus.has(cle)) return false;
     vus.add(cle);
     return true;
