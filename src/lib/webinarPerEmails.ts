@@ -3,6 +3,8 @@ import { getWebinarPerCalendarLinks } from "@/lib/webinarPerCalendar";
 
 export type WebinarPerEmailTemplate =
   | "confirmation"
+  | "nurture_video"
+  | "nurture_question"
   | "reminder_3d"
   | "reminder_2d"
   | "reminder_1d"
@@ -163,6 +165,37 @@ export const buildWebinarPerEmail = (
             ${videoTestimonialsBlock(registrationUrl)}
             ${reviewsBlock([0, 1])}
             <p style="margin:14px 0 0;">À dimanche !<br>Gabriel Perbost</p>`
+        })
+      };
+    case "nurture_video":
+      return {
+        subject: "Merci pour votre inscription au webinaire PER",
+        text: `Merci pour votre inscription au webinaire PER du ${dateTime}. En attendant, la vidéo « 5 erreurs à éviter avec le PER » : ${session.videoUrl}`,
+        html: shellFor({
+          title: "Merci pour votre inscription",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Votre place est réservée pour le ${dateTime}. En attendant, si vous voulez une première mise en jambe, voici une courte vidéo où j'explique les 5 erreurs les plus fréquentes avec le PER :</p>
+            <div style="margin:10px 0 16px;">${button(session.videoUrl, "Regarder la vidéo (3 min)")}</div>
+            <p style="margin:0 0 12px;">Et si vous ne l'avez pas encore ouvert, votre guide « Le PER expliqué simplement » est toujours disponible ici :</p>
+            <div style="margin:0 0 16px;">${button(WEBINAR_PER_GUIDE_URL, "📄 Ouvrir mon guide PER (PDF)")}</div>
+            ${videoTestimonialsBlock(registrationUrl)}
+            ${reviewsBlock([2, 3])}`
+        })
+      };
+    case "nurture_question":
+      return {
+        subject: "Une question à me poser avant le webinaire PER ?",
+        text: `Le webinaire PER a lieu le ${dateTime}. Une question à me poser en avance ? Répondez à cet e-mail.`,
+        html: shellFor({
+          title: "Une question pour le webinaire ?",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">Le webinaire approche : ${dateTime}. Si vous avez déjà une question sur votre situation (âge, tranche d'imposition, projet de retraite…), répondez à cet e-mail : je pourrai y répondre pendant la session.</p>
+            ${meetingBlock}
+            ${reviewsBlock([4, 0])}`
         })
       };
     case "reminder_3d":
