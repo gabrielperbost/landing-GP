@@ -78,7 +78,10 @@ export async function lireInscritsWebinaires() {
 
   try {
     const avocats = (await getWebinarParticipantsFromSheet()) ?? [];
+    // Ce Sheet contient aussi le journal de la prospection (« tracking ») et les désinscriptions des avocats
+    // prospectés (« unsubscribed ») : seules les lignes « registered » sont de vrais inscrits.
     for (const p of avocats) {
+      if (String(p.status ?? "").trim().toLowerCase() !== "registered") continue;
       if (!p.email?.includes("@")) continue;
       inscrits.push({
         campagne: "webinaire-per-avocats-2026-09-17",
