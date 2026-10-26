@@ -4,6 +4,7 @@ import { buildWebinarPerEmail, WEBINAR_PER_GUIDE_URL } from "@/lib/webinarPerEma
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
 import { getBrevoSmsConfig, sendBrevoSms, toE164FrenchPhone } from "@/lib/brevoSms";
 import { getWebinarPerSession, getWebinarPerUnsubscribeUrl } from "@/lib/webinarPerConfig";
+import { ingererLead } from "@/lib/gpf/leads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,6 +53,25 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[webinar-per] échec écriture Google Sheet", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503, headers });
+  }
+
+  // Lead dans le CRM GPF (page Leads) : contact, dossier PER « à traiter », tâche d'appel. Idempotent par
+  // session + e-mail. La source dit la session et le canal (« … · meta » est compté en Meta Ads par le CRM).
+  const utmSource = /\|utm_source:([^|]+)/.exec(source)?.[1] ?? "direct";
+  try {
+    const lead = await ingererLead({
+      source: `Webinaire PER ${session.dateLabel.replace(/^Dimanche /, "")} · ${utmSource}`,
+      sourceRef: `webinaire-per:${session.id}:${email}`,
+      prenom,
+      nom,
+      email,
+      telephone: phone,
+      produit: "per",
+      message: `Inscrit(e) au webinaire PER du ${session.dateLabel}, ${session.timeLabel}. Source : ${source}`
+    });
+    if (!lead.ok) console.error("[webinar-per] lead CRM non créé", lead.error);
+  } catch (error) {
+    console.error("[webinar-per] échec création lead CRM", error instanceof Error ? error.message : error);
   }
 
   // L'échec d'un canal (e-mail ou SMS) ne doit jamais faire échouer l'inscription déjà enregistrée.
