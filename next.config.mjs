@@ -31,6 +31,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Monday résilié : les anciens parcours de dépôt de documents (liés aux fiches Monday) renvoient
+      // vers l'espace client GPF (connexion par lien reçu par e-mail). Temporaire (307) : réversible.
+      { source: "/espace-client", destination: "/mon-espace", permanent: false },
+      { source: "/espace-client/:path*", destination: "/mon-espace", permanent: false },
+      { source: "/depot", destination: "/mon-espace", permanent: false },
+      { source: "/per/dossier", destination: "/mon-espace", permanent: false },
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.gp-finances.fr" }],

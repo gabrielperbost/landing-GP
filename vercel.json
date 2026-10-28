@@ -5,10 +5,6 @@
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/depot-reminders/run",
-      "schedule": "15 6 * * *"
-    },
-    {
       "path": "/api/tally/per-sequence/run",
       "schedule": "30 6 * * *"
     },
