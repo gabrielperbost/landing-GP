@@ -177,7 +177,7 @@ for(const s of services){
  </div>
  <p class="article-disclaimer center">GP FINANCES, courtier indépendant, ORIAS 23003789. Ce webinaire est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Aucune promesse de rendement n’est faite. L’avantage fiscal du PER dépend de votre situation personnelle.</p>`;
 
- const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261028a" defer></script>`;
+ const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261028a" defer></script><script src="webinar-per-visit.js?v=20261028a" defer></script>`;
  fs.writeFileSync(path.join(OUT,file),shell('Webinaire PER gratuit : inscription',`Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. ${dateLabel}, 15h00. Sans engagement.`,body,''));
  };
  webinarPage({file:'webinaire-per.html',session:'2026-11-01',dateLabel:'Dimanche 1er novembre 2026',shortDate:'1er novembre'});
