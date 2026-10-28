@@ -19,10 +19,15 @@ const DECLENCHEUR: Record<Sequence["declencheur"], string> = { nouveau_lead: "No
 
 export default function CampagnesPage() {
   const [onglet, setOnglet] = useState<Onglet>("segments");
-  const [data, setData] = useState<{ disponible: boolean; campagnes: Campagne[]; sequences: Sequence[] } | null>(null);
+  const [data, setData] = useState<{ disponible: boolean; erreur?: boolean; campagnes: Campagne[]; sequences: Sequence[] } | null>(null);
   const [nouvelle, setNouvelle] = useState<Filtres | null>(null);
 
-  const charger = () => api("/api/gpf/campagnes", "GET").then((r) => setData(r.ok ? r.data : { disponible: false, campagnes: [], sequences: [] }));
+  const charger = () =>
+    api("/api/gpf/campagnes", "GET").then((r) => {
+      // Session expirée : retour à la connexion plutôt qu'un faux message « base pas à jour ».
+      if (r.status === 401) return window.location.assign("/gpf/login");
+      setData(r.ok ? r.data : { disponible: false, erreur: true, campagnes: [], sequences: [] });
+    });
   useEffect(() => {
     charger();
   }, []);
@@ -32,6 +37,10 @@ export default function CampagnesPage() {
       <PageHeader titre="Campagnes" sousTitre="Segments, e-mails groupés et séquences de relance automatiques (via votre messagerie, sans service payant)" />
       {!data ? (
         <SkeletonLines />
+      ) : data.erreur ? (
+        <Carte>
+          <Vide>Chargement impossible pour le moment. Rechargez la page dans un instant.</Vide>
+        </Carte>
       ) : !data.disponible ? (
         <Carte>
           <Vide>Les campagnes seront disponibles après l&apos;application des mises à jour de la base (Paramètres → Base de données).</Vide>
