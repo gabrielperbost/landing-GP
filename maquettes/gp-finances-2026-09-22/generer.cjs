@@ -111,19 +111,15 @@ for(const s of services){
  const webinarPage=({file,session,dateLabel,shortDate})=>{
  const flankVideo=(side,img,name,file)=>`<button type="button" class="testimonial-card webinar-flank-video webinar-flank-${side}" data-video="https://gp-finances.fr/videos/${file}" data-video-title="Témoignage — ${name}" aria-label="Lire le témoignage : ${name}"><span class="testimonial-image"><img src="assets/${img}" alt="Aperçu du témoignage client" loading="lazy"><span class="video-shade"></span><span class="play-circle">${icon('play')}</span><span class="video-label">Témoignage client</span></span><span class="testimonial-info"><span><span class="small-caps">Plan Épargne Retraite</span><strong>${name}</strong></span>${icon('arrow')}</span></button>`;
 
- const heroInner=`<a href="index.html#per-hero" class="breadcrumb" style="visibility:hidden">.</a>
- <div class="webinar-hero">
+ // Le formulaire arrive tout de suite sous le titre et la date (trafic Meta Ads, surtout sur téléphone) ;
+ // la présentation détaillée et les encadrés passent sous le formulaire.
+ const heroInner=`<div class="webinar-hero">
   <p class="eyebrow center"><span></span>Webinaire gratuit · Plan Épargne Retraite</p>
   <h1>Comprendre et optimiser<br>votre <em>PER</em>, en 1 heure.</h1>
-  <p class="webinar-lead">Un webinaire en direct, gratuit et sans engagement, pour comprendre le fonctionnement du PER, savoir combien vous pourriez économiser d’impôt et éviter les erreurs les plus fréquentes.</p>
-  <div class="webinar-badges">
-   <div class="webinar-badge">${icon('clock')}<div><strong>${dateLabel}</strong><span>15h00 à 16h00</span></div></div>
-   <div class="webinar-badge">${icon('person')}<div><strong>Grand public</strong><span>Aucun prérequis</span></div></div>
-   <div class="webinar-badge">${icon('shield')}<div><strong>Gratuit et en direct</strong><span>Questions en fin de session</span></div></div>
-  </div>
+  <p class="webinar-when">${icon('clock')}<span><strong>${dateLabel}</strong> · 15h00 à 16h00 · en direct et gratuit</span></p>
  </div>
 
- <div id="inscription" class="webinar-form-flanked">
+ <div id="inscription" class="webinar-form-flanked webinar-form-top">
   ${flankVideo('left','temoignage-anaelle.png','Anaëlle','PER/temoignage-2-anaelle.mp4')}
   <div class="contact-card webinar-card">
    <h2>Je m’inscris</h2>
@@ -142,6 +138,14 @@ for(const s of services){
    <div data-wp-success hidden><h3>Inscription confirmée</h3><p>Un e-mail de confirmation vient de vous être envoyé, avec le lien de connexion, le guide PER en pièce jointe et un bouton pour ajouter le webinaire à votre agenda.</p></div>
   </div>
   ${flankVideo('right','temoignage-dorothee.png','Dorothée','PER/temoignage-1-dorothee.mp4')}
+ </div>
+ <div class="webinar-hero webinar-hero-details">
+  <p class="webinar-lead">Un webinaire en direct, gratuit et sans engagement, pour comprendre le fonctionnement du PER, savoir combien vous pourriez économiser d’impôt et éviter les erreurs les plus fréquentes.</p>
+  <div class="webinar-badges">
+   <div class="webinar-badge">${icon('clock')}<div><strong>${dateLabel}</strong><span>15h00 à 16h00</span></div></div>
+   <div class="webinar-badge">${icon('person')}<div><strong>Grand public</strong><span>Aucun prérequis</span></div></div>
+   <div class="webinar-badge">${icon('shield')}<div><strong>Gratuit et en direct</strong><span>Questions en fin de session</span></div></div>
+  </div>
  </div>`;
 
  const videoInner=`<div class="webinar-video-feature">
@@ -173,7 +177,7 @@ for(const s of services){
  </div>
  <p class="article-disclaimer center">GP FINANCES, courtier indépendant, ORIAS 23003789. Ce webinaire est une présentation générale à visée pédagogique ; il ne constitue ni un conseil personnalisé ni une offre de produit. Aucune promesse de rendement n’est faite. L’avantage fiscal du PER dépend de votre situation personnelle.</p>`;
 
- const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261026a" defer></script>`;
+ const body=`${proof.ticker()}<section class="section webinar-page webinar-hero-section"><div class="container">${heroInner}</div></section><section class="section webinar-page webinar-video-section"><div class="container">${videoInner}</div></section><section class="section webinar-page webinar-end-section"><div class="container">${endInner}</div></section><script src="webinar-per-signup.js?v=20261028a" defer></script>`;
  fs.writeFileSync(path.join(OUT,file),shell('Webinaire PER gratuit : inscription',`Webinaire gratuit et en direct pour comprendre le PER et estimer votre économie d’impôt. ${dateLabel}, 15h00. Sans engagement.`,body,''));
  };
  webinarPage({file:'webinaire-per.html',session:'2026-11-01',dateLabel:'Dimanche 1er novembre 2026',shortDate:'1er novembre'});

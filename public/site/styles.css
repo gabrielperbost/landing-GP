@@ -262,3 +262,9 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 .webinar-page .article-disclaimer.center{max-width:760px;margin:34px auto 0}
 @media(max-width:960px){.webinar-form-flanked{grid-template-columns:1fr;max-width:400px}.webinar-flank-video{margin-top:0;max-width:280px;margin-inline:auto}.webinar-flank-left{order:1}.webinar-card{order:2}.webinar-flank-right{order:3}}
 @media(max-width:700px){.webinar-field-row{grid-template-columns:1fr}.webinar-badges{grid-template-columns:1fr;text-align:left}.webinar-video-feature,.webinar-form-flanked{margin-top:40px}}
+/* Webinaire : formulaire en haut de page, sous le titre et la date. */
+.webinar-when{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:16px;color:var(--navy);margin:0}.webinar-when .icon{color:#9b7b2e;width:20px;height:20px}.webinar-when strong{color:var(--navy)}
+.webinar-form-flanked.webinar-form-top{margin-top:26px}
+.webinar-hero-details{margin-top:44px}
+@media(max-width:960px){.webinar-card{order:1}.webinar-flank-left{order:2}.webinar-flank-right{order:3}}
+@media(max-width:700px){.webinar-hero-section{padding-top:10px}.webinar-hero h1{font-size:30px;margin:8px 0 10px}.webinar-hero .eyebrow{margin-bottom:10px}.webinar-when{font-size:14px}.webinar-form-flanked.webinar-form-top{margin-top:18px}.webinar-card{min-height:0}.webinar-hero-details{margin-top:32px}}
