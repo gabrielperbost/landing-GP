@@ -1,5 +1,5 @@
 {
-  "retrievedAt": "2026-10-26",
+  "retrievedAt": "2026-10-28",
   "sources": {
     "revenus": "INSEE, Filosofi 2023 (DS_FILOSOFI_CC, API Melodi)",
     "ages": "INSEE, recensement de la population 2023 (DS_RP_POPULATION_PRINC, API Melodi)"
@@ -110,6 +110,374 @@
       "population2023": 159212,
       "part40a64": 29.2,
       "part65etPlus": 15.8
+    },
+    "antony": {
+      "geo": "COM-92002",
+      "niveauVieMedian": 36480,
+      "tauxPauvrete": 9.6,
+      "population2023": 64263,
+      "part40a64": 31.5,
+      "part65etPlus": 17.2
+    },
+    "asnieres-sur-seine": {
+      "geo": "COM-92004",
+      "niveauVieMedian": 32300,
+      "tauxPauvrete": 16.3,
+      "population2023": 93941,
+      "part40a64": 29.5,
+      "part65etPlus": 11.7
+    },
+    "bagneux": {
+      "geo": "COM-92007",
+      "niveauVieMedian": 23620,
+      "tauxPauvrete": 22.3,
+      "population2023": 44572,
+      "part40a64": 30.2,
+      "part65etPlus": 12.8
+    },
+    "bois-colombes": {
+      "geo": "COM-92009",
+      "niveauVieMedian": 37240,
+      "tauxPauvrete": 10,
+      "population2023": 28909,
+      "part40a64": 33.7,
+      "part65etPlus": 14.1
+    },
+    "bourg-la-reine": {
+      "geo": "COM-92014",
+      "niveauVieMedian": 38150,
+      "tauxPauvrete": 10,
+      "population2023": 21019,
+      "part40a64": 30,
+      "part65etPlus": 18.4
+    },
+    "chatenay-malabry": {
+      "geo": "COM-92019",
+      "niveauVieMedian": 31250,
+      "tauxPauvrete": 13.1,
+      "population2023": 35825,
+      "part40a64": 32.3,
+      "part65etPlus": 15.6
+    },
+    "chatillon": {
+      "geo": "COM-92020",
+      "niveauVieMedian": 34590,
+      "tauxPauvrete": 10.4,
+      "population2023": 36705,
+      "part40a64": 32.7,
+      "part65etPlus": 15.6
+    },
+    "chaville": {
+      "geo": "COM-92022",
+      "niveauVieMedian": 36840,
+      "tauxPauvrete": 9,
+      "population2023": 20594,
+      "part40a64": 32.8,
+      "part65etPlus": 14.7
+    },
+    "clamart": {
+      "geo": "COM-92023",
+      "niveauVieMedian": 34400,
+      "tauxPauvrete": 11.1,
+      "population2023": 58576,
+      "part40a64": 32.9,
+      "part65etPlus": 16.5
+    },
+    "clichy": {
+      "geo": "COM-92024",
+      "niveauVieMedian": 26070,
+      "tauxPauvrete": 22.2,
+      "population2023": 64410,
+      "part40a64": 29.7,
+      "part65etPlus": 12
+    },
+    "colombes": {
+      "geo": "COM-92025",
+      "niveauVieMedian": 28370,
+      "tauxPauvrete": 18.6,
+      "population2023": 91053,
+      "part40a64": 31.4,
+      "part65etPlus": 12.8
+    },
+    "fontenay-aux-roses": {
+      "geo": "COM-92032",
+      "niveauVieMedian": 30640,
+      "tauxPauvrete": 14,
+      "population2023": 24070,
+      "part40a64": 31.9,
+      "part65etPlus": 17.4
+    },
+    "garches": {
+      "geo": "COM-92033",
+      "niveauVieMedian": 42010,
+      "tauxPauvrete": 7,
+      "population2023": 17743,
+      "part40a64": 34.9,
+      "part65etPlus": 21
+    },
+    "gennevilliers": {
+      "geo": "COM-92036",
+      "niveauVieMedian": 20160,
+      "tauxPauvrete": 31.1,
+      "population2023": 50979,
+      "part40a64": 29.9,
+      "part65etPlus": 13.1
+    },
+    "la-garenne-colombes": {
+      "geo": "COM-92035",
+      "niveauVieMedian": 37720,
+      "tauxPauvrete": 8.8,
+      "population2023": 30197,
+      "part40a64": 32.9,
+      "part65etPlus": 14
+    },
+    "le-plessis-robinson": {
+      "geo": "COM-92060",
+      "niveauVieMedian": 35370,
+      "tauxPauvrete": 6.8,
+      "population2023": 28848,
+      "part40a64": 34.1,
+      "part65etPlus": 16.5
+    },
+    "malakoff": {
+      "geo": "COM-92046",
+      "niveauVieMedian": 28400,
+      "tauxPauvrete": 16.8,
+      "population2023": 30557,
+      "part40a64": 33.4,
+      "part65etPlus": 15.8
+    },
+    "marnes-la-coquette": {
+      "geo": "COM-92047",
+      "niveauVieMedian": 46710,
+      "tauxPauvrete": null,
+      "population2023": 1752,
+      "part40a64": 37.3,
+      "part65etPlus": 17.8
+    },
+    "meudon": {
+      "geo": "COM-92048",
+      "niveauVieMedian": 34880,
+      "tauxPauvrete": 11.1,
+      "population2023": 46334,
+      "part40a64": 33.4,
+      "part65etPlus": 18
+    },
+    "montrouge": {
+      "geo": "COM-92049",
+      "niveauVieMedian": 34480,
+      "tauxPauvrete": 11.6,
+      "population2023": 46324,
+      "part40a64": 30.8,
+      "part65etPlus": 16
+    },
+    "nanterre": {
+      "geo": "COM-92050",
+      "niveauVieMedian": 24020,
+      "tauxPauvrete": 24.3,
+      "population2023": 97783,
+      "part40a64": 29.8,
+      "part65etPlus": 13.1
+    },
+    "paris-10e": {
+      "geo": "ARM-75110",
+      "niveauVieMedian": 32810,
+      "tauxPauvrete": 18.4,
+      "population2023": 83873,
+      "part40a64": 30.3,
+      "part65etPlus": 12.6
+    },
+    "paris-11e": {
+      "geo": "ARM-75111",
+      "niveauVieMedian": 34270,
+      "tauxPauvrete": 15.6,
+      "population2023": 138170,
+      "part40a64": 28.4,
+      "part65etPlus": 16.6
+    },
+    "paris-12e": {
+      "geo": "ARM-75112",
+      "niveauVieMedian": 33680,
+      "tauxPauvrete": 15.3,
+      "population2023": 138024,
+      "part40a64": 30.1,
+      "part65etPlus": 18.6
+    },
+    "paris-13e": {
+      "geo": "ARM-75113",
+      "niveauVieMedian": 28570,
+      "tauxPauvrete": 19.5,
+      "population2023": 181271,
+      "part40a64": 29.9,
+      "part65etPlus": 19.1
+    },
+    "paris-14e": {
+      "geo": "ARM-75114",
+      "niveauVieMedian": 33090,
+      "tauxPauvrete": 15.8,
+      "population2023": 136455,
+      "part40a64": 27.7,
+      "part65etPlus": 18.8
+    },
+    "paris-18e": {
+      "geo": "ARM-75118",
+      "niveauVieMedian": 27800,
+      "tauxPauvrete": 22.9,
+      "population2023": 183127,
+      "part40a64": 29.4,
+      "part65etPlus": 14.1
+    },
+    "paris-19e": {
+      "geo": "ARM-75119",
+      "niveauVieMedian": 25420,
+      "tauxPauvrete": 23.7,
+      "population2023": 178691,
+      "part40a64": 30.9,
+      "part65etPlus": 16.7
+    },
+    "paris-1er": {
+      "geo": "ARM-75101",
+      "niveauVieMedian": 39320,
+      "tauxPauvrete": 14,
+      "population2023": 15114,
+      "part40a64": 32.8,
+      "part65etPlus": 17.4
+    },
+    "paris-20e": {
+      "geo": "ARM-75120",
+      "niveauVieMedian": 26680,
+      "tauxPauvrete": 21.7,
+      "population2023": 185140,
+      "part40a64": 31.9,
+      "part65etPlus": 17.6
+    },
+    "paris-2e": {
+      "geo": "ARM-75102",
+      "niveauVieMedian": 38050,
+      "tauxPauvrete": 15,
+      "population2023": 19847,
+      "part40a64": 30,
+      "part65etPlus": 11.8
+    },
+    "paris-3e": {
+      "geo": "ARM-75103",
+      "niveauVieMedian": 38940,
+      "tauxPauvrete": 14.1,
+      "population2023": 32179,
+      "part40a64": 30,
+      "part65etPlus": 16.2
+    },
+    "paris-4e": {
+      "geo": "ARM-75104",
+      "niveauVieMedian": 37400,
+      "tauxPauvrete": 14.7,
+      "population2023": 27332,
+      "part40a64": 31.2,
+      "part65etPlus": 17.9
+    },
+    "paris-5e": {
+      "geo": "ARM-75105",
+      "niveauVieMedian": 40290,
+      "tauxPauvrete": 12.4,
+      "population2023": 55252,
+      "part40a64": 26.5,
+      "part65etPlus": 19.4
+    },
+    "paris-6e": {
+      "geo": "ARM-75106",
+      "niveauVieMedian": 48110,
+      "tauxPauvrete": 10.9,
+      "population2023": 40389,
+      "part40a64": 26.7,
+      "part65etPlus": 25.3
+    },
+    "paris-7e": {
+      "geo": "ARM-75107",
+      "niveauVieMedian": 52840,
+      "tauxPauvrete": 9.2,
+      "population2023": 48015,
+      "part40a64": 30.6,
+      "part65etPlus": 23.7
+    },
+    "paris-8e": {
+      "geo": "ARM-75108",
+      "niveauVieMedian": 51690,
+      "tauxPauvrete": 10.4,
+      "population2023": 35317,
+      "part40a64": 32,
+      "part65etPlus": 17
+    },
+    "paris-9e": {
+      "geo": "ARM-75109",
+      "niveauVieMedian": 43120,
+      "tauxPauvrete": 11.4,
+      "population2023": 57271,
+      "part40a64": 29.5,
+      "part65etPlus": 14.1
+    },
+    "puteaux": {
+      "geo": "COM-92062",
+      "niveauVieMedian": 35160,
+      "tauxPauvrete": 11.6,
+      "population2023": 44002,
+      "part40a64": 31.7,
+      "part65etPlus": 14.8
+    },
+    "sceaux": {
+      "geo": "COM-92071",
+      "niveauVieMedian": 40220,
+      "tauxPauvrete": 9,
+      "population2023": 20884,
+      "part40a64": 31.3,
+      "part65etPlus": 21.1
+    },
+    "sevres": {
+      "geo": "COM-92072",
+      "niveauVieMedian": 37950,
+      "tauxPauvrete": 9.7,
+      "population2023": 22303,
+      "part40a64": 35,
+      "part65etPlus": 18.6
+    },
+    "suresnes": {
+      "geo": "COM-92073",
+      "niveauVieMedian": 36950,
+      "tauxPauvrete": 11.4,
+      "population2023": 48956,
+      "part40a64": 32.5,
+      "part65etPlus": 13.5
+    },
+    "vanves": {
+      "geo": "COM-92075",
+      "niveauVieMedian": 34820,
+      "tauxPauvrete": 10,
+      "population2023": 28622,
+      "part40a64": 31.7,
+      "part65etPlus": 17.6
+    },
+    "vaucresson": {
+      "geo": "COM-92076",
+      "niveauVieMedian": 47390,
+      "tauxPauvrete": 7,
+      "population2023": 8432,
+      "part40a64": 36,
+      "part65etPlus": 21.1
+    },
+    "ville-d-avray": {
+      "geo": "COM-92077",
+      "niveauVieMedian": 43480,
+      "tauxPauvrete": 7,
+      "population2023": 11089,
+      "part40a64": 36.4,
+      "part65etPlus": 19.4
+    },
+    "villeneuve-la-garenne": {
+      "geo": "COM-92078",
+      "niveauVieMedian": 20310,
+      "tauxPauvrete": 28.4,
+      "population2023": 26021,
+      "part40a64": 30,
+      "part65etPlus": 13.7
     }
   }
 }

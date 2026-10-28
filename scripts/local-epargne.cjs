@@ -1,5 +1,5 @@
 'use strict';
-/* Pages locales « courtier en PER » et « courtier en assurance-vie » (pilote, 10 villes).
+/* Pages locales « courtier en PER » et « courtier en assurance-vie » (toutes les villes).
  * Appelé par scripts/build-site.cjs, une fois les pages /per-retraite et /assurance-vie construites.
  * Contenu propre à chaque ville : src/content/villesEpargne.ts (angle, textes, FAQ, meta) et
  * src/content/localDataEpargne.json (INSEE : niveau de vie médian, âges ; voir
@@ -84,6 +84,17 @@ const ROTATION = {
   faq2: [1, 3, 5, 2, 4, 0, 5, 2, 3, 4]
 };
 
+// Au-delà des 10 villes pilotes : variantes calculées, différentes d'une ville à l'autre sur la plupart
+// des blocs (contrôlé par scripts/check-landings-epargne.cjs).
+const rotationSuite = (bloc, idx) => {
+  const x = idx % 6, y = Math.floor(idx / 6);
+  const lin = (a, b) => ((a * x + b * y) % 6 + 6) % 6;
+  // La seconde question générale est toujours différente de la première.
+  if (bloc === 'faq2') return (lin(2, 1) + 1 + (y % 5)) % 6;
+  const k = { pourquoi: [1, 0], titre: [1, 1], methode: [1, 5], titreFaq: [5, 1], faq1: [2, 1] }[bloc];
+  return lin(k[0], k[1]);
+};
+
 const HEADINGS = {
   local: (n) => [`Votre épargne retraite à ${n}`, `Le PER, vu depuis ${n}`, `Préparer sa retraite à ${n}`, `Épargne retraite et impôt à ${n}`, `Votre situation à ${n}`, `Ce qui compte à ${n}`],
   localAv: (n) => [`Votre épargne à ${n}`, `L’assurance-vie, vue depuis ${n}`, `Placer son épargne à ${n}`, `Épargner et transmettre à ${n}`, `Votre situation à ${n}`, `Ce qui compte à ${n}`],
@@ -119,7 +130,7 @@ module.exports = async function buildEpargnePages({ ROOT, PAGES, ORIGIN, built, 
       const route = `${p.route}/${ve.slug}`;
       const url = ORIGIN + route;
       // Table explicite (pas un modulo) : deux villes ne partagent jamais toutes leurs variantes.
-      const variant = (bloc) => (ROTATION[bloc][idx] ?? idx) % 6;
+      const variant = (bloc) => (ROTATION[bloc][idx] ?? rotationSuite(bloc, idx)) % 6;
       const ref = ville.departement === '75' ? DATA.references.paris : DATA.references['hauts-de-seine'];
       const refNom = ville.departement === '75' ? 'Paris' : 'les Hauts-de-Seine';
 
@@ -174,7 +185,14 @@ module.exports = async function buildEpargnePages({ ROOT, PAGES, ORIGIN, built, 
       const advisor = `<section class="section advisor-section condensed" id="votre-courtier"><div class="container advisor-layout">${advisorPhoto}<div class="advisor-copy"><p class="eyebrow"><span></span>Votre courtier</p><h2>Gabriel Perbost</h2><p class="section-intro">Courtier en assurance, cabinet GP Finances à Issy-les-Moulineaux · ORIAS 23003789. ${esc(ville.accesBureau)}</p></div></div></section>`;
 
       // Maillage : les autres pages de la même ville, puis les autres villes pour ce produit.
-      const autres = VILLES_EPARGNE.filter((x) => x.slug !== ve.slug).map((x) => `<a href="${p.route}/${x.slug}">${esc(VILLE_BY_SLUG.get(x.slug).nom)}</a>`).join('');
+      // Maillage limité (10 liens) : les villes voisines d'abord, puis d'autres villes du même département,
+      // choisies en tournant d'une page à l'autre ; la page produit principale liste toutes les villes.
+      const dispo = new Set(VILLES_EPARGNE.map((x) => x.slug));
+      const voisines = (ville.villesVoisines || []).filter((s) => s !== ve.slug && dispo.has(s));
+      const memeDept = VILLES_EPARGNE.map((x) => x.slug).filter((s) => s !== ve.slug && !voisines.includes(s) && VILLE_BY_SLUG.get(s).departement === ville.departement);
+      const decale = memeDept.length ? idx % memeDept.length : 0;
+      const choix = [...voisines, ...memeDept.slice(decale), ...memeDept.slice(0, decale)].slice(0, 10);
+      const autres = choix.map((s) => `<a href="${p.route}/${s}">${esc(VILLE_BY_SLUG.get(s).nom)}</a>`).join('');
       const liens = `<section class="section local-seo-city" id="aussi"><div class="container local-body"><p class="city-links-label">Aussi à ${name} :</p><p class="city-links"><a href="${p.autre.route}/${ve.slug}">${p.autre.label(name)}</a><a href="/assurance-emprunteur/${ve.slug}">Assurance de prêt à ${name}</a></p><p class="city-links-label">${p.metier} dans d’autres villes :</p><p class="city-links">${autres}</p></div></section>`;
 
       const finalCta = extract(template, /<section class="final-section">[\s\S]*?<\/section>/);
@@ -198,6 +216,9 @@ module.exports = async function buildEpargnePages({ ROOT, PAGES, ORIGIN, built, 
         .replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"BreadcrumbList".*?<\/script>/s, `<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>`)
         .replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"FAQPage".*?<\/script>/s, `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`)
         .replace(/<main id="main">[\s\S]*?<\/main>/, `<main id="main">${main}</main>`);
+      // « à Le Plessis-Robinson » -> « au Plessis-Robinson » (titres et intertitres générés).
+      const le = /^Le(?:\s|&nbsp;|\u00a0)/.exec(name);
+      if (le) html = html.split(`à ${name}`).join(`au ${name.slice(le[0].length)}`);
       if (!html.includes(`<title>${esc(title)}</title>`) || !html.includes(url)) throw new Error(`page ${route} mal formée`);
       fs.writeFileSync(path.join(PAGES, p.dir, ve.slug + '.html'), html);
       routes.push(route);

@@ -1,5 +1,5 @@
 /**
- * Pages locales « courtier en PER » et « courtier en assurance-vie » (pilote : 10 villes).
+ * Pages locales « courtier en PER » et « courtier en assurance-vie » (toutes les villes : 10 pilotes ici, les autres dans villesEpargneLot*.ts).
  * Une ville = un bloc PER et un bloc assurance-vie, rédigés séparément pour que les deux pages
  * d'une même ville ne se ressemblent pas, ni entre elles, ni avec la page assurance de prêt.
  *
@@ -24,7 +24,16 @@ export type BlocEpargne = {
 
 export type VilleEpargne = { slug: string; per: BlocEpargne; av: BlocEpargne };
 
-export const VILLES_EPARGNE: VilleEpargne[] = [
+import { LOT1 } from "./villesEpargneLot1.ts";
+import { LOT2 } from "./villesEpargneLot2.ts";
+import { LOT3 } from "./villesEpargneLot3.ts";
+import { LOT4 } from "./villesEpargneLot4.ts";
+import { LOT5 } from "./villesEpargneLot5.ts";
+import { LOT6 } from "./villesEpargneLot6.ts";
+const LOTS: VilleEpargne[] = [...LOT1, ...LOT2, ...LOT3, ...LOT4, ...LOT5, ...LOT6];
+
+/** Les 10 villes pilotes (octobre 2026). Les autres villes sont dans les fichiers villesEpargneLot*.ts. */
+const PILOTES: VilleEpargne[] = [
   {
     slug: "boulogne-billancourt",
     per: {
@@ -556,3 +565,5 @@ export const VILLES_EPARGNE: VilleEpargne[] = [
     }
   }
 ];
+
+export const VILLES_EPARGNE: VilleEpargne[] = [...PILOTES, ...LOTS];

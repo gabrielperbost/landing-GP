@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Données publiques INSEE pour les pages locales PER et assurance-vie (pilote, 10 villes).
+/* Données publiques INSEE pour les pages locales PER et assurance-vie (toutes les villes).
  *   node scripts/fetch-local-data-epargne.cjs
  * Source : API Melodi de l'INSEE (accès libre, sans clé) :
  *  - DS_FILOSOFI_CC : niveau de vie médian et taux de pauvreté (revenus 2023) ;
@@ -25,7 +25,53 @@ const VILLES = {
   'saint-cloud': 'COM-92064',
   'paris-15e': 'ARM-75115',
   'paris-16e': 'ARM-75116',
-  'paris-17e': 'ARM-75117'
+  'paris-17e': 'ARM-75117',
+  'antony': 'COM-92002',
+  'asnieres-sur-seine': 'COM-92004',
+  'bagneux': 'COM-92007',
+  'bois-colombes': 'COM-92009',
+  'bourg-la-reine': 'COM-92014',
+  'chatenay-malabry': 'COM-92019',
+  'chatillon': 'COM-92020',
+  'chaville': 'COM-92022',
+  'clamart': 'COM-92023',
+  'clichy': 'COM-92024',
+  'colombes': 'COM-92025',
+  'fontenay-aux-roses': 'COM-92032',
+  'garches': 'COM-92033',
+  'gennevilliers': 'COM-92036',
+  'la-garenne-colombes': 'COM-92035',
+  'le-plessis-robinson': 'COM-92060',
+  'malakoff': 'COM-92046',
+  'marnes-la-coquette': 'COM-92047',
+  'meudon': 'COM-92048',
+  'montrouge': 'COM-92049',
+  'nanterre': 'COM-92050',
+  'paris-10e': 'ARM-75110',
+  'paris-11e': 'ARM-75111',
+  'paris-12e': 'ARM-75112',
+  'paris-13e': 'ARM-75113',
+  'paris-14e': 'ARM-75114',
+  'paris-18e': 'ARM-75118',
+  'paris-19e': 'ARM-75119',
+  'paris-1er': 'ARM-75101',
+  'paris-20e': 'ARM-75120',
+  'paris-2e': 'ARM-75102',
+  'paris-3e': 'ARM-75103',
+  'paris-4e': 'ARM-75104',
+  'paris-5e': 'ARM-75105',
+  'paris-6e': 'ARM-75106',
+  'paris-7e': 'ARM-75107',
+  'paris-8e': 'ARM-75108',
+  'paris-9e': 'ARM-75109',
+  'puteaux': 'COM-92062',
+  'sceaux': 'COM-92071',
+  'sevres': 'COM-92072',
+  'suresnes': 'COM-92073',
+  'vanves': 'COM-92075',
+  'vaucresson': 'COM-92076',
+  'ville-d-avray': 'COM-92077',
+  'villeneuve-la-garenne': 'COM-92078'
 };
 const REFERENCES = { france: 'FRANCE-FM', 'hauts-de-seine': 'DEP-92', paris: 'DEP-75' };
 
