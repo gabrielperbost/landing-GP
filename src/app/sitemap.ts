@@ -8,16 +8,17 @@ const BASE_URL = "https://gp-finances.fr";
 
 // Articles publiés après la date commune ci-dessous : leur vraie date de publication
 // (les articles plus anciens gardent la date commune, inchangée).
-const ARTICLES_DATES: Record<string, Date> = Object.fromEntries(
-  [
+const ARTICLES_DATES: Record<string, Date> = Object.fromEntries([
+  ...[
     "quotite-assurance-de-pret-couple",
     "per-ou-assurance-vie-lequel-choisir",
     "assurance-vie-apres-70-ans",
     "prevoyance-ou-mutuelle-difference",
     "mutuelle-retraite-loi-evin",
     "taux-endettement-calcul-regle-35"
-  ].map((slug) => [`/conseils/${slug}`, new Date("2026-10-22")])
-);
+  ].map((slug) => [`/conseils/${slug}`, new Date("2026-10-22")]),
+  ...["per-declarer-versements-impots-case-6ns", "assurance-vie-succession-fiscalite-avant-apres-70-ans"].map((slug) => [`/conseils/${slug}`, new Date("2026-10-29")])
+]);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Date de dernière mise à jour réelle du contenu (à modifier quand le contenu change), et non « maintenant ».
