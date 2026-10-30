@@ -13,3 +13,11 @@
    }
    Ajouter uniquement des partenaires qui ont donné leur accord pour apparaître (nom et logo). */
 module.exports = [];
+
+/* Section « Pour célébrer vos projets », en bas de la page, séparée des professionnels.
+   Mention factuelle (loi Évin) : ni photo de bouteille, ni prix, avec l'avertissement sanitaire. Accord du Détendeur obtenu le 30 octobre 2026. */
+module.exports.celebrer = {
+  nom: 'Le Détendeur',
+  site: 'https://ledetendeur.fr',
+  description: 'restaurant et caviste à Boulogne-Billancourt'
+};

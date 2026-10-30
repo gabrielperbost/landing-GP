@@ -113,7 +113,10 @@ for(const s of services){
   const inner=`<a href="index.html" class="breadcrumb">Accueil <span>/</span> Nos partenaires</a>
  <p class="eyebrow"><span></span>Nos partenaires</p><h1>Les professionnels avec qui nous travaillons</h1>
  <p class="contact-lead">Un projet immobilier, une succession ou une création d’entreprise mobilisent souvent plusieurs professionnels. Voici ceux avec qui GP FINANCES travaille au quotidien, en Île-de-France comme en région. Chacun reste indépendant : nous vous orientons vers eux quand votre situation le demande, et inversement.</p>
- <div class="partner-grid">${cartes}</div>`;
+ <div class="partner-grid">${cartes}</div>${PARTENAIRES.celebrer?`
+ <div class="partner-celebrate"><h2 class="contact-h2">Pour célébrer vos projets</h2>
+ <p class="contact-lead">Un achat immobilier, une retraite bien préparée, un projet qui aboutit : chez GP FINANCES, on aime marquer le coup. Pour cela, nous faisons confiance au <a href="${esc(PARTENAIRES.celebrer.site)}" target="_blank" rel="noopener">${esc(PARTENAIRES.celebrer.nom)}</a>, ${esc(PARTENAIRES.celebrer.description)}, où nous choisissons les bouteilles offertes à nos clients et organisons certaines de nos rencontres.</p>
+ <p class="partner-health">L’abus d’alcool est dangereux pour la santé, à consommer avec modération.</p></div>`:''}`;
   fs.writeFileSync(path.join(OUT,'partenaires.html'),shell('Nos partenaires','Les partenaires de GP Finances, courtier à Issy-les-Moulineaux : agences immobilières, notaires, experts-comptables et assureurs avec qui nous accompagnons nos clients.',`<section class="section contact-page"><div class="container">${inner}</div></section>`,''));
  }
 }
