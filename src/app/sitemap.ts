@@ -39,6 +39,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/webinaire-per`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE_URL}/webinaire-per-8-novembre`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE_URL}/nous-trouver`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
+    // Page partenaires : seulement si elle a été construite (au moins un partenaire).
+    ...(Object.values(siteRoutes as Record<string, string>).includes("/partenaires") ? [{ url: `${BASE_URL}/partenaires`, lastModified: new Date("2026-10-30"), changeFrequency: "monthly" as const, priority: 0.6 }] : []),
     { url: `${BASE_URL}/mentions-legales`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${BASE_URL}/politique-de-confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     {

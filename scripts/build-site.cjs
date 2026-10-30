@@ -104,6 +104,12 @@ const breadcrumbSchema = (name, route) => name && route !== '/' ? JSON.stringify
 // Rubrique « Conseils » : uniquement les articles publiés (published: true dans maquettes/.../articles/).
 const ARTICLES = require(path.join(SRC, 'articles', 'index.cjs')).filter(a => a.published);
 const CAT_NAME = { 'assurance-emprunteur': 'Assurance de prêt', per: 'PER', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'regroupement-credits': 'Regroupement de crédits' };
+// Page « Nos partenaires » : publiée seulement si maquettes/.../partenaires.cjs contient au moins un partenaire.
+if (require(path.join(SRC, 'partenaires.cjs')).length) {
+  ROUTES.partenaires = '/partenaires';
+  SEO.partenaires = ['Nos partenaires : agences, notaires, experts-comptables | GP Finances', 'Les partenaires de GP Finances, courtier à Issy-les-Moulineaux : agences immobilières, notaires, experts-comptables et assureurs avec qui nous accompagnons nos clients.'];
+  NAMES.partenaires = 'Nos partenaires';
+}
 const ARTICLE_BY_NAME = new Map();
 if (ARTICLES.length) {
   ROUTES.conseils = '/conseils';

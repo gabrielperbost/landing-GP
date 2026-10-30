@@ -11,6 +11,7 @@ const SITE_PAGES = [
   ["/webinaire-per-8-novembre", "webinaire-per-8-novembre"],
   ["/webinaire-per/desinscription", "webinaire-per-desinscription"],
   ["/nous-trouver", "nous-trouver"],
+  ["/partenaires", "partenaires"],
   ["/mentions-legales", "mentions-legales"],
   ["/politique-de-confidentialite", "confidentialite"]
 ];
