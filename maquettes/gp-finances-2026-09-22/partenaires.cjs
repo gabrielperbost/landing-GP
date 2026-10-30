@@ -8,7 +8,8 @@
      ville: 'Issy-les-Moulineaux',           // facultatif, utile pour le référencement local
      texte: 'Deux lignes : ce que fait le partenaire et ce que nous faisons ensemble.',
      site: 'https://www.exemple.fr',         // lien vers son site
-     logo: 'partenaires/agence-exemple.png'  // fichier déposé dans assets/partenaires/ (PNG, JPG, SVG ou WebP)
+     logo: 'partenaires/agence-exemple.png', // fichier déposé dans assets/partenaires/ (PNG, JPG, SVG ou WebP)
+     fondLogo: 'sombre'                      // facultatif : pour un logo blanc, affiché sur fond bleu nuit
    }
    Ajouter uniquement des partenaires qui ont donné leur accord pour apparaître (nom et logo). */
 module.exports = [];

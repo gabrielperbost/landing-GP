@@ -106,13 +106,13 @@ for(const s of services){
  if(PARTENAIRES.length){
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const cartes=PARTENAIRES.map(p=>`<article class="partner-card">
-   <a class="partner-logo" href="${esc(p.site)}" target="_blank" rel="noopener"><img src="assets/${esc(p.logo)}" alt="Logo ${esc(p.nom)}" loading="lazy"></a>
+   <a class="partner-logo${p.fondLogo==='sombre'?' partner-logo-dark':''}" href="${esc(p.site)}" target="_blank" rel="noopener"><img src="assets/${esc(p.logo)}" alt="Logo ${esc(p.nom)}" loading="lazy"></a>
    <div><p class="partner-type">${esc(p.type)}${p.ville?' · '+esc(p.ville):''}</p><h3>${esc(p.nom)}</h3><p>${esc(p.texte)}</p>
    <a class="partner-link" href="${esc(p.site)}" target="_blank" rel="noopener">Voir le site ${icon('arrow')}</a></div>
   </article>`).join('');
   const inner=`<a href="index.html" class="breadcrumb">Accueil <span>/</span> Nos partenaires</a>
  <p class="eyebrow"><span></span>Nos partenaires</p><h1>Les professionnels avec qui nous travaillons</h1>
- <p class="contact-lead">Un projet immobilier, une succession ou une création d’entreprise mobilisent souvent plusieurs professionnels. Voici ceux avec qui GP FINANCES travaille au quotidien, dans les Hauts-de-Seine, à Paris et au-delà. Chacun reste indépendant : nous vous orientons vers eux quand votre situation le demande, et inversement.</p>
+ <p class="contact-lead">Un projet immobilier, une succession ou une création d’entreprise mobilisent souvent plusieurs professionnels. Voici ceux avec qui GP FINANCES travaille au quotidien, en Île-de-France comme en région. Chacun reste indépendant : nous vous orientons vers eux quand votre situation le demande, et inversement.</p>
  <div class="partner-grid">${cartes}</div>
  <h2 class="contact-h2">Vous êtes un professionnel ?</h2>
  <p class="contact-lead">Agence immobilière, notaire, expert-comptable, courtier en crédit, conseiller en gestion de patrimoine : si vos clients ont besoin d’une <a href="assurance-emprunteur.html">assurance de prêt</a>, d’un <a href="per.html">PER</a>, d’une <a href="assurance-vie.html">assurance-vie</a>, d’une <a href="prevoyance.html">prévoyance</a> ou d’une <a href="mutuelle.html">mutuelle</a>, travaillons ensemble. Un interlocuteur unique, un suivi de chaque dossier et une convention de partenariat claire.</p>
