@@ -113,10 +113,7 @@ for(const s of services){
   const inner=`<a href="index.html" class="breadcrumb">Accueil <span>/</span> Nos partenaires</a>
  <p class="eyebrow"><span></span>Nos partenaires</p><h1>Les professionnels avec qui nous travaillons</h1>
  <p class="contact-lead">Un projet immobilier, une succession ou une création d’entreprise mobilisent souvent plusieurs professionnels. Voici ceux avec qui GP FINANCES travaille au quotidien, en Île-de-France comme en région. Chacun reste indépendant : nous vous orientons vers eux quand votre situation le demande, et inversement.</p>
- <div class="partner-grid">${cartes}</div>
- <h2 class="contact-h2">Vous êtes un professionnel ?</h2>
- <p class="contact-lead">Agence immobilière, notaire, expert-comptable, courtier en crédit, conseiller en gestion de patrimoine : si vos clients ont besoin d’une <a href="assurance-emprunteur.html">assurance de prêt</a>, d’un <a href="per.html">PER</a>, d’une <a href="assurance-vie.html">assurance-vie</a>, d’une <a href="prevoyance.html">prévoyance</a> ou d’une <a href="mutuelle.html">mutuelle</a>, travaillons ensemble. Un interlocuteur unique, un suivi de chaque dossier et une convention de partenariat claire.</p>
- <div class="contact-actions"><button class="button button-gold" data-book>Prendre rendez-vous ${icon('arrow')}</button><a class="button button-outline" href="tel:+33651224213">06 51 22 42 13</a></div>`;
+ <div class="partner-grid">${cartes}</div>`;
   fs.writeFileSync(path.join(OUT,'partenaires.html'),shell('Nos partenaires','Les partenaires de GP Finances, courtier à Issy-les-Moulineaux : agences immobilières, notaires, experts-comptables et assureurs avec qui nous accompagnons nos clients.',`<section class="section contact-page"><div class="container">${inner}</div></section>`,''));
  }
 }
