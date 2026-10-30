@@ -273,3 +273,4 @@ dialog{padding:0;color:var(--ink);border:1px solid var(--border);box-shadow:0 25
 @media(max-width:900px){.partner-grid{grid-template-columns:1fr}}@media(max-width:520px){.partner-card{flex-direction:column}.partner-logo{flex-basis:auto;width:100%}}
 .partner-logo.partner-logo-dark{background:var(--navy)}
 .partner-celebrate{margin-top:56px;padding-top:8px;border-top:1px solid var(--border)}.partner-health{font-size:13px;color:#7a8797;margin:10px 0 0;font-style:italic}
+.partner-celebrate{display:flex;gap:28px;align-items:center}.partner-celebrate-logo{flex:0 0 120px}.partner-celebrate-logo img{display:block;width:120px;height:120px;border-radius:16px;object-fit:cover}@media(max-width:600px){.partner-celebrate{flex-direction:column;align-items:flex-start;gap:0}.partner-celebrate-logo{margin-top:36px}}

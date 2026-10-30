@@ -25,5 +25,6 @@ module.exports.celebrer = {
   nom: 'Le Détendeur',
   apresAu: 'Détendeur', // « nous faisons confiance au Détendeur » (et non « au Le Détendeur »)
   site: 'https://ledetendeur.fr',
+  logo: 'partenaires/le-detendeur.jpg',
   description: 'restaurant et caviste à Boulogne-Billancourt'
 };
