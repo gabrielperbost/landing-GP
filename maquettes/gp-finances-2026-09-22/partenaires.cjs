@@ -18,6 +18,7 @@ module.exports = [];
    Mention factuelle (loi Évin) : ni photo de bouteille, ni prix, avec l'avertissement sanitaire. Accord du Détendeur obtenu le 30 octobre 2026. */
 module.exports.celebrer = {
   nom: 'Le Détendeur',
+  apresAu: 'Détendeur', // « nous faisons confiance au Détendeur » (et non « au Le Détendeur »)
   site: 'https://ledetendeur.fr',
   description: 'restaurant et caviste à Boulogne-Billancourt'
 };
