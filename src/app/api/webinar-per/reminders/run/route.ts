@@ -36,7 +36,7 @@ const SCHEDULE: ScheduleItem[] = [
   { session: "2026-11-01", dateKey: "2026-10-30", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
   { session: "2026-11-01", dateKey: "2026-10-31", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
   { session: "2026-11-01", dateKey: "2026-11-01", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
-  { session: "2026-11-01", dateKey: "2026-11-01", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false },
+  // Rappel H-1 du 1er novembre supprimé : webinaire annulé le jour même et reporté au 8 novembre.
   { session: "2026-11-08", dateKey: "2026-10-30", fromHour: 6, toHour: 23, reminderKey: "reminder_11d_sent_at", template: "nurture_video", alsoSms: false },
   { session: "2026-11-08", dateKey: "2026-11-01", fromHour: 6, toHour: 23, reminderKey: "reminder_9d_sent_at", template: "nurture_question", alsoSms: false },
   { session: "2026-11-08", dateKey: "2026-11-05", fromHour: 6, toHour: 23, reminderKey: "reminder_3d_sent_at", template: "reminder_3d", alsoSms: false },

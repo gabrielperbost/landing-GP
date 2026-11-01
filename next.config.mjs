@@ -32,6 +32,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Webinaire du 1er novembre annulé le jour même, reporté au 8 novembre (la désinscription reste accessible).
+      { source: "/webinaire-per", destination: "/webinaire-per-8-novembre", permanent: false },
       // Monday résilié : les anciens parcours de dépôt de documents (liés aux fiches Monday) renvoient
       // vers l'espace client GPF (connexion par lien reçu par e-mail). Temporaire (307) : réversible.
       { source: "/espace-client", destination: "/mon-espace", permanent: false },

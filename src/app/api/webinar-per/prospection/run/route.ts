@@ -46,6 +46,8 @@ async function handle(request: NextRequest) {
   const forced = url.searchParams.get("template") as PerProspectionTemplate | null;
   const wave = forced ? PER_PROSPECTION_SCHEDULE.find((w) => w.id === forced) : dueWave(today, parisHour());
   if (!wave) return NextResponse.json({ ok: true, ran: false, reason: "aucune_vague_maintenant", today, hour: parisHour() });
+  // Webinaire du 1er novembre annulé le jour même (reporté au 8 novembre) : plus aucune invitation à partir de ce jour.
+  if (wave.date >= "2026-11-01") return NextResponse.json({ ok: true, ran: false, reason: "webinaire_1er_novembre_annule", wave: wave.id });
   const manualSend = Boolean(forced) && url.searchParams.get("send") === "1";
   const dryRun = !enabled || url.searchParams.get("dryRun") === "1" || (Boolean(forced) && !manualSend);
   const maxParam = Number(url.searchParams.get("max"));
