@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { appendWebinarPerRegistration, getWebinarPerParticipants, markWebinarPerReminderSent } from "@/lib/webinarPerSheet";
@@ -22,9 +23,13 @@ const SMS_TEXT = "GP Finances : suite à une urgence, le webinaire PER de 15h au
 const MARQUEUR = "reminder_7d_sent_at" as const;
 const ANNULATION = Date.parse("2026-11-01T10:00:00Z"); // marquages antérieurs = ancien rappel H-1, pas un envoi du report
 
+// Jeton à usage unique (seule son empreinte SHA-256 est ici), pour lancer l'envoi sans session GPF dans le navigateur.
+const JETON_SHA256 = "e48597939f53a2f883e7b607ce75481f79e2127dbca65f7c0fe1869d27cea5c5";
+const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHash("sha256").update(String(jeton)).digest("hex") === JETON_SHA256;
+
 export async function GET(request: NextRequest) {
-  if (!(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const url = new URL(request.url);
+  if (!jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   const envoyer = url.searchParams.get("envoyer") === "oui";
   const avecSms = url.searchParams.get("sms") === "oui";
 
