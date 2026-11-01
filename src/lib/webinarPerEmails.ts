@@ -1,4 +1,4 @@
-import { WEBINAR_PER, getWebinarPerBaseUrl, getWebinarPerMeetingUrl, getWebinarPerRegistrationUrl, type WebinarPerSession } from "@/lib/webinarPerConfig";
+import { WEBINAR_PER, WEBINAR_PER_SESSIONS, getWebinarPerBaseUrl, getWebinarPerMeetingUrl, getWebinarPerRegistrationUrl, type WebinarPerSession } from "@/lib/webinarPerConfig";
 import { getWebinarPerCalendarLinks } from "@/lib/webinarPerCalendar";
 
 export type WebinarPerEmailTemplate =
@@ -10,6 +10,7 @@ export type WebinarPerEmailTemplate =
   | "reminder_1d"
   | "reminder_morning"
   | "reminder_1h"
+  | "report_8nov"
   | "replay";
 
 export type WebinarPerContact = { prenom: string; email: string };
@@ -272,6 +273,34 @@ export const buildWebinarPerEmail = (
             <p style="margin:0;">À tout de suite !<br>Gabriel</p>`
         })
       };
+    case "report_8nov": {
+      // Webinaire du 1er novembre annulé le jour même : report au 8 novembre, même heure, avec le lien de la nouvelle session.
+      const s8 = WEBINAR_PER_SESSIONS["2026-11-08"];
+      const cal8 = getWebinarPerCalendarLinks(getWebinarPerBaseUrl(), s8);
+      const meet8 = getWebinarPerMeetingUrl(s8);
+      return {
+        subject: "Webinaire PER reporté au dimanche 8 novembre à 15h",
+        text: `À la suite d'une urgence importante de dernière minute, je ne pourrai malheureusement pas animer le webinaire PER cet après-midi. Il est reporté au dimanche 8 novembre à 15h, avec le même programme. Lien de connexion : ${meet8}. Toutes mes excuses pour ce changement de dernière minute. Gabriel`,
+        html: shellFor({
+          title: "Webinaire reporté au dimanche 8 novembre",
+          contact,
+          unsubscribeUrl,
+          contentHtml: `
+            <p style="margin:0 0 12px;">À la suite d'une urgence importante de dernière minute, je ne pourrai malheureusement pas animer le webinaire PER <strong>cet après-midi à 15h</strong>.</p>
+            <p style="margin:0 0 12px;">Je ne voulais pas l'annuler : il est <strong>reporté au dimanche 8 novembre à 15h</strong>, avec exactement le même programme. Vous n'avez rien à faire, votre place est gardée. Voici le nouveau lien de connexion :</p>
+            <div style="background:#f1f6ff;border:1px solid #dbeafe;border-radius:14px;padding:14px;margin:14px 0;">
+              <div style="font-weight:900;color:#1A3C5C;margin-bottom:6px;">${s8.dateLabel}, ${s8.timeLabel}</div>
+              <div style="color:#0f172a;">${s8.durationLabel}</div>
+              <div style="margin-top:12px;">
+                ${button(meet8, "Rejoindre le webinaire")}
+                ${button(cal8.google, "Ajouter à Google Agenda")}
+              </div>
+            </div>
+            <p style="margin:0 0 12px;">Je vous prie de m'excuser pour ce changement de dernière minute, et je vous remercie de votre compréhension. Je vous enverrai un rappel avant le webinaire.</p>
+            <p style="margin:14px 0 0;">À dimanche prochain,<br>Gabriel</p>`
+        })
+      };
+    }
     case "replay":
       return {
         subject: "Le replay du webinaire PER est disponible",
