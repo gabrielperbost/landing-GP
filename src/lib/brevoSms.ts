@@ -24,8 +24,9 @@ export const getBrevoSmsConfig = (): BrevoSmsConfig | null => {
 };
 
 /** Met un numéro français au format international E.164 (+33...) attendu par Brevo. */
-export const toE164FrenchPhone = (raw: string): string | null => {
-  const digits = raw.replace(/[^\d+]/g, "");
+export const toE164FrenchPhone = (raw: string | number): string | null => {
+  // Google Sheets renvoie souvent le numéro comme un nombre (612345678, sans le 0) : on le traite comme du texte.
+  const digits = String(raw ?? "").replace(/[^\d+]/g, "");
   if (digits.startsWith("+")) return /^\+\d{8,15}$/.test(digits) ? digits : null;
   const national = digits.replace(/^0/, "");
   return /^[1-9]\d{8}$/.test(national) ? `+33${national}` : null;
@@ -38,7 +39,7 @@ export const sendBrevoSms = async ({
   tag
 }: {
   config: BrevoSmsConfig;
-  phone: string;
+  phone: string | number;
   text: string;
   tag?: string;
 }) => {

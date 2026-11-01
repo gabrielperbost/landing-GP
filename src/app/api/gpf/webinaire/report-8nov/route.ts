@@ -46,6 +46,26 @@ export async function GET(request: NextRequest) {
   const restants = cibles.filter((p) => !(Date.parse(String(p[MARQUEUR] ?? "")) >= ANNULATION));
 
   const bilan = { inscrits1erNovembre: cibles.length, dejaPrevenus: cibles.length - restants.length, aPrevenir: restants.length, avecTelephoneSms: restants.filter((p) => p.consent_sms && p.telephone).length, dejaInscrits8Novembre: restants.filter((p) => deja8.has(p.email.trim().toLowerCase())).length, emailsEnvoyes: 0, smsEnvoyes: 0, ajoutes8Novembre: 0, erreurs: 0 };
+  // Renvoi du SMS seul aux inscrits déjà prévenus par e-mail dont le numéro est un nombre dans le Sheet
+  // (premier envoi en échec sur ces numéros ; ceux enregistrés en texte ont déjà reçu le SMS).
+  if (url.searchParams.get("sms_seul") === "oui") {
+    const smsConfig = getBrevoSmsConfig();
+    if (!smsConfig) return NextResponse.json({ ok: false, error: "sms_non_configure" }, { status: 503 });
+    const aRelancer = cibles.filter((p) => Date.parse(String(p[MARQUEUR] ?? "")) >= ANNULATION && p.consent_sms && typeof p.telephone === "number");
+    const r = { smsARenvoyer: aRelancer.length, smsEnvoyes: 0, erreurs: 0, detailsErreurs: [] as string[] };
+    if (!envoyer) return NextResponse.json({ ok: true, aBlanc: true, ...r });
+    for (const p of aRelancer) {
+      try {
+        await sendBrevoSms({ config: smsConfig, phone: p.telephone, text: SMS_TEXT, tag: "webinaire-per-report_8nov" });
+        r.smsEnvoyes += 1;
+      } catch (error) {
+        r.erreurs += 1;
+        r.detailsErreurs.push(error instanceof Error ? error.message.slice(0, 120) : "erreur");
+      }
+    }
+    return NextResponse.json({ ok: true, ...r });
+  }
+
   if (!envoyer) return NextResponse.json({ ok: true, aBlanc: true, ...bilan });
 
   const emailConfig = getBrevoTransactionalConfig();
