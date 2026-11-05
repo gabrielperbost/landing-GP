@@ -14,7 +14,7 @@ import {
   type GpfDossierWithClient
 } from "@/lib/gpf/types";
 import { SkeletonLines, SkeletonTiles } from "@/components/gpf/Skeleton";
-import { estEpargne, prochaineEcheance, primeAnnuelle, resiliationPossible } from "@/lib/gpf/contrats";
+import { caPremiereAnnee, estEpargne, prochaineEcheance, primeAnnuelle, resiliationPossible } from "@/lib/gpf/contrats";
 
 const PAGE_SIZE = 50;
 const EN_SIGNATURE = new Set(["en_cours_souscription", "attente_accord_banque", "attente_prise_effet"]);
@@ -172,7 +172,7 @@ export default function GpfContratsPage() {
                 </tr>
               ) : (
                 pageRows.map((d) => {
-                  const commission = (d.precompte_lineaire_1ere_annee ?? 0) + (d.lineaire_n1 ?? 0);
+                  const commission = caPremiereAnnee(d);
                   const pa = primeAnnuelle(d);
                   return (
                     <tr

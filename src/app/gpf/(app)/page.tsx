@@ -85,7 +85,7 @@ function Histogramme({ data }: { data: Donnees["histogramme"] }) {
           <span className="w-2.5 h-2.5 rounded-sm bg-[#CDAA5A]" /> Production (primes annualisées)
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[var(--gpf-ink)] opacity-80" /> Commissions estimées
+          <span className="w-2.5 h-2.5 rounded-sm bg-[var(--gpf-ink)] opacity-80" /> Chiffre d’affaires
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-sm bg-[#2f9e6e]" /> Encaissées
@@ -156,12 +156,12 @@ export default function TableauDeBord() {
     <div className="flex flex-col gap-5">
       <PageHeader titre="Tableau de bord" sousTitre={`Performance & Pilotage — ${libellePeriode}`} actions={controles} />
 
-      <div className="grid md:grid-cols-2 gap-3">
-        <Carte label="Volume annualisé signé" valeur={euro(d.volume.actuel)} v={d.volume} euros />
+      <div className="grid md:grid-cols-3 gap-3">
+        <Carte label="Chiffre d'affaires signé" valeur={euro(d.cartes.commissionsEstimees.actuel)} v={d.cartes.commissionsEstimees} euros sous="1re année : frais de dossier + précompte + frais d'entrée et de gestion" />
         <Carte label="Contrats signés" valeur={String(d.contratsSignes.actuel)} v={d.contratsSignes} />
+        <Carte label="Volume annualisé signé" valeur={euro(d.volume.actuel)} v={d.volume} euros sous="primes annuelles des contrats signés" />
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <Carte label="Commissions estimées" valeur={euro(d.cartes.commissionsEstimees.actuel)} v={d.cartes.commissionsEstimees} euros sous="précompte + frais de dossier" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Carte label="Commissions encaissées" valeur={euro(d.cartes.commissionsEncaissees.actuel)} v={d.cartes.commissionsEncaissees} euros sous="bordereaux validés" />
         <Carte
           label="Annulations / décommissions"

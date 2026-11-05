@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_PRODUIT_LABEL, GPF_STATUTS_SIGNES, type GpfProduit } from "@/lib/gpf/types";
-import { primeAnnuelle, prochaineEcheance } from "@/lib/gpf/contrats";
+import { caPremiereAnnee, primeAnnuelle, prochaineEcheance } from "@/lib/gpf/contrats";
 import { normSource } from "@/lib/gpf/sources";
 
 export const runtime = "nodejs";
@@ -20,6 +20,11 @@ type Dossier = Record<string, unknown> & {
   assureur_nom: string | null;
   precompte_lineaire_1ere_annee: number | null;
   frais_dossier: number | null;
+  frais_entree?: number | null;
+  lineaire_n1?: number | null;
+  encours?: number | null;
+  placement_initial?: number | null;
+  frais_gestion_pct?: number | null;
   prochaine_action?: string | null;
 };
 
@@ -28,7 +33,7 @@ const debutMois = (y: number, m: number) => new Date(Date.UTC(y, m, 1));
 
 /** Date de signature : posée automatiquement depuis le CRM, à défaut date d'effet (historique Monday). */
 const dateSignature = (d: Dossier) => (GPF_STATUTS_SIGNES.has(d.statut) || d.contrat_statut ? d.date_signature ?? d.date_effet : null);
-const commissionEstimee = (d: Dossier) => Number(d.precompte_lineaire_1ere_annee ?? 0) + Number(d.frais_dossier ?? 0);
+const commissionEstimee = (d: Dossier) => caPremiereAnnee(d);
 const variation = (actuel: number, precedent: number) => ({
   actuel,
   precedent,

@@ -35,6 +35,16 @@ export function lineaireAnnuel(d: { produit: string; encours?: unknown; placemen
   return base != null && d.frais_gestion_pct != null ? Math.round(base * Number(d.frais_gestion_pct)) / 100 : null;
 }
 
+/**
+ * Chiffre d'affaires de la 1re année d'un contrat : frais de dossier + frais d'entrée (ou sur versement)
+ * + précompte / commission 1re année, plus pour l'épargne les frais de gestion de la 1re année.
+ * Le linéaire des années suivantes (N+1) n'est pas compté : il viendra les années suivantes.
+ */
+export function caPremiereAnnee(d: { produit: string; frais_dossier?: unknown; frais_entree?: unknown; precompte_lineaire_1ere_annee?: unknown; encours?: unknown; placement_initial?: unknown; lineaire_n1?: unknown; frais_gestion_pct?: unknown }): number {
+  const n = (v: unknown) => (v == null || v === "" ? 0 : Number(v) || 0);
+  return n(d.frais_dossier) + n(d.frais_entree) + n(d.precompte_lineaire_1ere_annee) + (estEpargne(d) ? lineaireAnnuel(d) ?? 0 : 0);
+}
+
 /** Prochaine échéance : date saisie, sinon prochain anniversaire de la date d'effet. */
 export function prochaineEcheance(d: ContratLike, now = new Date()): string | null {
   if (d.date_echeance) return d.date_echeance;

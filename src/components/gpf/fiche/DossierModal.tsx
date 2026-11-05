@@ -11,8 +11,9 @@ import {
   type GpfDocument,
   type GpfDossier
 } from "@/lib/gpf/types";
-import { encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
+import { caPremiereAnnee, encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
 import { api, euro, Field, frDate, inputCls } from "./shared";
+import { GPF_STATUTS_SIGNES } from "@/lib/gpf/types";
 
 const DOCUMENT_TYPES = ["CNI", "Justificatif de domicile", "RIB", "Offre de prêt", "Tableau d'amortissement", "Bulletin de salaire", "Avis d'imposition", "Autre"];
 
@@ -119,6 +120,8 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
         ) : null}
 
         <div className="px-5 py-4 flex flex-col gap-4">
+          <MontantsContrat dossier={dossier} saving={saving} onSave={patch} />
+
           {resil ? (
             <div className="text-xs rounded-lg px-3 py-2 bg-[var(--gpf-warning-tint)] text-[var(--gpf-ink)]">
               <strong>Résiliation possible : </strong>
@@ -186,8 +189,6 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
             </div>
           ) : null}
 
-          {estEpargne(dossier) ? <MontantsEpargne dossier={dossier} saving={saving} onSave={patch} /> : null}
-
           {details.length ? (
             <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
               {details.map(([label, value]) => (
@@ -217,47 +218,108 @@ export function DossierModal({ dossier, onClose, onChanged }: { dossier: GpfDoss
 const nombre = (v: string) => (v.trim() === "" ? null : Number(v.replace(/\s/g, "").replace(",", ".")));
 const texte = (v: number | null | undefined) => (v == null ? "" : String(v));
 
-/** Assurance-vie / PER : montant placé, frais sur versement et frais de gestion (rémunération), en €. */
-function MontantsEpargne({ dossier, saving, onSave }: { dossier: GpfDossier; saving: boolean; onSave: (body: Record<string, unknown>) => Promise<unknown> }) {
-  const [f, setF] = useState({
+/**
+ * Montants et commissions du contrat, pour tous les produits, en un seul endroit :
+ * compagnie, n° de contrat, date d'effet, prime ou montant placé, et la rémunération (frais de dossier,
+ * précompte, frais d'entrée, linéaire). Le chiffre d'affaires de la 1re année se calcule en direct,
+ * et un bouton permet d'enregistrer et de passer l'affaire en signée d'un seul clic.
+ */
+function MontantsContrat({ dossier, saving, onSave }: { dossier: GpfDossier; saving: boolean; onSave: (body: Record<string, unknown>) => Promise<unknown> }) {
+  const epargne = estEpargne(dossier);
+  const signe = Boolean(dossier.contrat_statut) || GPF_STATUTS_SIGNES.has(dossier.statut);
+  const initial = () => ({
+    assureur_nom: dossier.assureur_nom ?? "",
+    reference_contrat: dossier.reference_contrat ?? "",
+    date_effet: dossier.date_effet ?? "",
+    prime_mensuelle: texte(dossier.prime_mensuelle),
     placement_initial: texte(dossier.placement_initial),
+    placement_mensuel: texte(dossier.placement_mensuel),
+    frais_dossier: texte(dossier.frais_dossier),
+    precompte_lineaire_1ere_annee: texte(dossier.precompte_lineaire_1ere_annee),
     frais_entree: texte(dossier.frais_entree),
     lineaire_n1: texte(dossier.lineaire_n1)
   });
-  const [ok, setOk] = useState(false);
+  const [f, setF] = useState(initial);
+  const [ok, setOk] = useState("");
+  useEffect(() => {
+    setF(initial());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dossier.id]);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOk(false);
+    setOk("");
     setF((p) => ({ ...p, [k]: e.target.value }));
   };
 
-  const enregistrer = async () => {
-    const r = (await onSave({
-      placement_initial: nombre(f.placement_initial),
-      frais_entree: nombre(f.frais_entree),
-      lineaire_n1: nombre(f.lineaire_n1)
-    })) as { ok?: boolean };
-    setOk(Boolean(r?.ok));
+  const corps = () => ({
+    assureur_nom: f.assureur_nom.trim() || null,
+    reference_contrat: f.reference_contrat.trim() || null,
+    date_effet: f.date_effet || null,
+    frais_dossier: nombre(f.frais_dossier),
+    precompte_lineaire_1ere_annee: nombre(f.precompte_lineaire_1ere_annee),
+    frais_entree: nombre(f.frais_entree),
+    lineaire_n1: nombre(f.lineaire_n1),
+    ...(epargne ? { placement_initial: nombre(f.placement_initial), placement_mensuel: nombre(f.placement_mensuel) } : { prime_mensuelle: nombre(f.prime_mensuelle) })
+  });
+  const ca = caPremiereAnnee({ ...dossier, ...corps() });
+
+  const enregistrer = async (signer: boolean) => {
+    const r = (await onSave(signer ? { ...corps(), statut: "effectif" } : corps())) as { ok?: boolean };
+    setOk(r?.ok ? (signer ? "Enregistré, affaire signée ✓" : "Enregistré ✓") : "");
   };
 
+  const champ = (label: string, k: keyof typeof f, aide?: string) => (
+    <Field label={label}>
+      <input inputMode="decimal" value={f[k]} onChange={set(k)} placeholder={aide} className={inputCls} />
+    </Field>
+  );
+
   return (
-    <div className="rounded-xl border border-[var(--gpf-border-soft)] p-3 flex flex-col gap-3">
-      <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[var(--gpf-muted)]">Montants du contrat</h4>
+    <div className="rounded-xl border border-[#CDAA5A]/50 p-3 flex flex-col gap-3">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap">
+        <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[var(--gpf-muted)]">Montants et commissions</h4>
+        <div className="text-sm text-[var(--gpf-ink)]">
+          CA 1re année : <strong className="tabular-nums">{euro(ca) ?? "0 €"}</strong>
+        </div>
+      </div>
       <div className="grid grid-cols-3 gap-3">
-        <Field label="Montant placé (€)">
-          <input inputMode="decimal" value={f.placement_initial} onChange={set("placement_initial")} className={inputCls} />
+        <Field label="Compagnie">
+          <input value={f.assureur_nom} onChange={set("assureur_nom")} className={inputCls} />
         </Field>
-        <Field label="Frais sur versement (€)">
-          <input inputMode="decimal" value={f.frais_entree} onChange={set("frais_entree")} className={inputCls} />
+        <Field label="N° de contrat">
+          <input value={f.reference_contrat} onChange={set("reference_contrat")} className={inputCls} />
         </Field>
-        <Field label="Frais de gestion (€ / an)">
-          <input inputMode="decimal" value={f.lineaire_n1} onChange={set("lineaire_n1")} className={inputCls} />
+        <Field label="Date d'effet">
+          <input type="date" value={f.date_effet} onChange={set("date_effet")} className={inputCls} />
         </Field>
       </div>
-      <div className="flex items-center gap-3">
-        <button onClick={enregistrer} disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-4 py-2 disabled:opacity-50">
+      {epargne ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {champ("Montant placé (€)", "placement_initial")}
+          {champ("Versement mensuel (€)", "placement_mensuel")}
+          {champ("Frais de dossier (€)", "frais_dossier")}
+          {champ("Frais sur versement (€)", "frais_entree")}
+          {champ("Frais de gestion (€ / an)", "lineaire_n1")}
+          {champ("Précompte (€)", "precompte_lineaire_1ere_annee", "si applicable")}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {champ("Prime mensuelle (€)", "prime_mensuelle")}
+          {champ("Frais de dossier (€)", "frais_dossier")}
+          {champ("Précompte / commission 1re année (€)", "precompte_lineaire_1ere_annee")}
+          {champ("Linéaire à partir de N+1 (€ / an)", "lineaire_n1")}
+          {champ("Frais d'entrée (€)", "frais_entree", "si applicable")}
+        </div>
+      )}
+      <div className="flex items-center gap-2 flex-wrap">
+        <button onClick={() => enregistrer(false)} disabled={saving} className="rounded-full border border-[var(--gpf-border)] text-[var(--gpf-ink)] text-xs font-semibold px-4 py-2 disabled:opacity-50">
           {saving ? "…" : "Enregistrer"}
         </button>
-        {ok ? <span className="text-xs text-[#2f9e6e]">Enregistré ✓</span> : null}
+        {!signe ? (
+          <button onClick={() => enregistrer(true)} disabled={saving} className="rounded-full bg-[#CDAA5A] text-[#071c2c] text-xs font-semibold px-4 py-2 disabled:opacity-50">
+            Enregistrer et marquer comme signé
+          </button>
+        ) : null}
+        {ok ? <span className="text-xs text-[#2f9e6e]">{ok}</span> : null}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabase";
 import { GPF_STATUTS_CLOS, GPF_STATUTS_SIGNES, type GpfStatut } from "@/lib/gpf/types";
+import { caPremiereAnnee } from "@/lib/gpf/contrats";
 
 export type DossierP = Record<string, unknown> & {
   id: string;
@@ -37,7 +38,8 @@ export type LigneP = {
 export const estContrat = (d: DossierP) => (d.contrat_statut != null ? d.contrat_statut !== "resilie" : GPF_STATUTS_SIGNES.has(d.statut));
 export const estSigne = (d: DossierP) => d.contrat_statut != null || GPF_STATUTS_SIGNES.has(d.statut);
 export const estPerdu = (d: DossierP) => GPF_STATUTS_CLOS.has(d.statut as GpfStatut);
-export const commissionEstimee = (d: DossierP) => Number(d.precompte_lineaire_1ere_annee ?? 0) + Number(d.frais_dossier ?? 0);
+/** Commission attendue = chiffre d'affaires de la 1re année (même règle partout, voir caPremiereAnnee). */
+export const commissionEstimee = (d: DossierP) => caPremiereAnnee(d);
 export const moisDe = (l: Pick<LigneP, "periode_fin" | "periode_debut" | "created_at">) => (l.periode_fin ?? l.periode_debut ?? l.created_at).slice(0, 7);
 export const arrondi = (n: number) => Math.round(n * 100) / 100;
 
