@@ -249,6 +249,7 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
     contrat_statut: contrat.contrat_statut ?? "",
     reference_contrat: contrat.reference_contrat ?? "",
     assureur_nom: contrat.assureur_nom ?? "",
+    date_signature: contrat.date_signature ?? "",
     date_effet: contrat.date_effet ?? "",
     date_echeance: contrat.date_echeance ?? "",
     prime_mensuelle: contrat.prime_mensuelle?.toString() ?? "",
@@ -274,6 +275,7 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
         ...(contrat.contrat_statut ? { contrat_statut: form.contrat_statut || null } : {}),
         reference_contrat: form.reference_contrat.trim() || null,
         assureur_nom: form.assureur_nom.trim() || null,
+        ...(form.date_signature ? { date_signature: form.date_signature } : {}),
         date_effet: form.date_effet || null,
         date_echeance: form.date_echeance || null,
         ...(epargne
@@ -339,6 +341,13 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
             : null}
           {field("N° de contrat", <input value={form.reference_contrat} onChange={set("reference_contrat")} className={input} />)}
           {field("Compagnie", <input value={form.assureur_nom} onChange={set("assureur_nom")} className={input} />)}
+          {field(
+            "Date de signature",
+            <>
+              <input type="date" value={form.date_signature} onChange={set("date_signature")} className={input} />
+              <span className="text-[11px]">Le chiffre d’affaires de ce contrat compte dans le mois de cette date (tableau de bord).</span>
+            </>
+          )}
           <div className="grid grid-cols-2 gap-3">
             {field("Date d'effet", <input type="date" value={form.date_effet} onChange={set("date_effet")} className={input} />)}
             {field("Échéance", <input type="date" value={form.date_echeance} onChange={set("date_echeance")} className={input} />)}
