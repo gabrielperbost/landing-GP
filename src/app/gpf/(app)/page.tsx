@@ -157,7 +157,7 @@ export default function TableauDeBord() {
       <PageHeader titre="Tableau de bord" sousTitre={`Performance & Pilotage — ${libellePeriode}`} actions={controles} />
 
       <div className="grid md:grid-cols-3 gap-3">
-        <Carte label="Chiffre d'affaires signé" valeur={euro(d.cartes.commissionsEstimees.actuel)} v={d.cartes.commissionsEstimees} euros sous="1re année : frais de dossier + précompte + frais d'entrée et de gestion" />
+        <Carte label="Chiffre d'affaires signé" valeur={euro(d.cartes.commissionsEstimees.actuel)} v={d.cartes.commissionsEstimees} euros sous="frais de dossier + précompte + frais d'entrée + frais de gestion au prorata de l'année" />
         <Carte label="Contrats signés" valeur={String(d.contratsSignes.actuel)} v={d.contratsSignes} />
         <Carte label="Volume annualisé signé" valeur={euro(d.volume.actuel)} v={d.volume} euros sous="primes annuelles des contrats signés" />
       </div>

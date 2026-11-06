@@ -11,7 +11,7 @@ import {
   type GpfDocument,
   type GpfDossier
 } from "@/lib/gpf/types";
-import { caPremiereAnnee, encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
+import { caPremiereAnnee, caPrevisionnel12Mois, encoursGere, estEpargne, lineaireAnnuel, primeAnnuelle, prochaineEcheance, resiliationPossible } from "@/lib/gpf/contrats";
 import { api, euro, Field, frDate, inputCls } from "./shared";
 import { GPF_STATUTS_SIGNES } from "@/lib/gpf/types";
 
@@ -261,6 +261,7 @@ function MontantsContrat({ dossier, saving, onSave }: { dossier: GpfDossier; sav
     ...(epargne ? { placement_initial: nombre(f.placement_initial), placement_mensuel: nombre(f.placement_mensuel) } : { prime_mensuelle: nombre(f.prime_mensuelle) })
   });
   const ca = caPremiereAnnee({ ...dossier, ...corps() });
+  const ca12 = caPrevisionnel12Mois({ ...dossier, ...corps() });
 
   const enregistrer = async (signer: boolean) => {
     const r = (await onSave(signer ? { ...corps(), statut: "effectif" } : corps())) as { ok?: boolean };
@@ -278,7 +279,8 @@ function MontantsContrat({ dossier, saving, onSave }: { dossier: GpfDossier; sav
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
         <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[var(--gpf-muted)]">Montants et commissions</h4>
         <div className="text-sm text-[var(--gpf-ink)]">
-          CA 1re année : <strong className="tabular-nums">{euro(ca) ?? "0 €"}</strong>
+          CA {f.date_effet ? `${f.date_effet.slice(0, 4)} ` : "1re année "}: <strong className="tabular-nums">{euro(ca) ?? "0 €"}</strong>
+          {ca12 !== ca ? <span className="block text-[11px] text-[var(--gpf-muted)] text-right">frais de gestion au prorata · prévisionnel 12 mois : {euro(ca12)}</span> : null}
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3">

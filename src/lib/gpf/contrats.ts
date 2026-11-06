@@ -36,13 +36,35 @@ export function lineaireAnnuel(d: { produit: string; encours?: unknown; placemen
 }
 
 /**
- * Chiffre d'affaires de la 1re année d'un contrat : frais de dossier + frais d'entrée (ou sur versement)
- * + précompte / commission 1re année, plus pour l'épargne les frais de gestion de la 1re année.
- * Le linéaire des années suivantes (N+1) n'est pas compté : il viendra les années suivantes.
+ * Part de l'année civile restant à courir à partir de la date d'effet (incluse) : 1er novembre → 61/365.
+ * Sans date d'effet : année entière.
  */
-export function caPremiereAnnee(d: { produit: string; frais_dossier?: unknown; frais_entree?: unknown; precompte_lineaire_1ere_annee?: unknown; encours?: unknown; placement_initial?: unknown; lineaire_n1?: unknown; frais_gestion_pct?: unknown }): number {
-  const n = (v: unknown) => (v == null || v === "" ? 0 : Number(v) || 0);
-  return n(d.frais_dossier) + n(d.frais_entree) + n(d.precompte_lineaire_1ere_annee) + (estEpargne(d) ? lineaireAnnuel(d) ?? 0 : 0);
+export function prorataAnneeEffet(dateEffet?: string | null): number {
+  if (!dateEffet) return 1;
+  const effet = new Date(dateEffet + "T00:00:00Z");
+  if (Number.isNaN(effet.getTime())) return 1;
+  const an = effet.getUTCFullYear();
+  const jours = (Date.UTC(an + 1, 0, 1) - Date.UTC(an, 0, 1)) / 86400000;
+  const restants = (Date.UTC(an + 1, 0, 1) - effet.getTime()) / 86400000;
+  return Math.min(1, Math.max(0, restants / jours));
+}
+
+type CaLike = { produit: string; date_effet?: string | null; frais_dossier?: unknown; frais_entree?: unknown; precompte_lineaire_1ere_annee?: unknown; encours?: unknown; placement_initial?: unknown; lineaire_n1?: unknown; frais_gestion_pct?: unknown };
+const nombre = (v: unknown) => (v == null || v === "" ? 0 : Number(v) || 0);
+
+/**
+ * Chiffre d'affaires de l'année de signature : frais de dossier + frais d'entrée (ou sur versement)
+ * + précompte / commission 1re année, plus pour l'épargne les frais de gestion annuels au prorata
+ * de l'année civile restant à courir depuis la date d'effet (effet au 1er novembre → 2/12 environ).
+ */
+export function caPremiereAnnee(d: CaLike): number {
+  const gestion = estEpargne(d) ? (lineaireAnnuel(d) ?? 0) * prorataAnneeEffet(d.date_effet) : 0;
+  return Math.round((nombre(d.frais_dossier) + nombre(d.frais_entree) + nombre(d.precompte_lineaire_1ere_annee) + gestion) * 100) / 100;
+}
+
+/** Chiffre d'affaires prévisionnel sur 12 mois : comme caPremiereAnnee, avec les frais de gestion d'une année entière. */
+export function caPrevisionnel12Mois(d: CaLike): number {
+  return Math.round((nombre(d.frais_dossier) + nombre(d.frais_entree) + nombre(d.precompte_lineaire_1ere_annee) + (estEpargne(d) ? lineaireAnnuel(d) ?? 0 : 0)) * 100) / 100;
 }
 
 /** Prochaine échéance : date saisie, sinon prochain anniversaire de la date d'effet. */

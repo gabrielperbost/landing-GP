@@ -355,7 +355,13 @@ function ContratPanel({ contrat, onClose, onSaved }: { contrat: GpfDossierWithCl
               <>
                 {field("Montant placé (€)", <input inputMode="decimal" value={form.placement_initial} onChange={set("placement_initial")} className={input} />)}
                 {field("Frais sur versement (€)", <input inputMode="decimal" value={form.frais_entree} onChange={set("frais_entree")} className={input} />)}
-                {field("Frais de gestion (€ / an)", <input inputMode="decimal" value={form.lineaire_n1} onChange={set("lineaire_n1")} className={input} />)}
+                {field(
+                  "Frais de gestion (€ / an)",
+                  <>
+                    <input inputMode="decimal" value={form.lineaire_n1} onChange={set("lineaire_n1")} className={input} />
+                    <span className="text-[11px]">Comptés au prorata de l’année à partir de la date d’effet.</span>
+                  </>
+                )}
               </>
             ) : (
               <>
