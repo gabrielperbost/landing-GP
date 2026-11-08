@@ -45,6 +45,8 @@ export async function GET(request: NextRequest) {
       const tel = p.telephone ? toE164FrenchPhone(p.telephone) : null;
       if (tel && !vusH.has(tel)) (vusH.add(tel), ciblesH.push(tel));
     }
+    // Copie à Gabriel pour contrôler la réception.
+    if (!vusH.has("+33651224213")) (vusH.add("+33651224213"), ciblesH.push("+33651224213"));
     const rH = { aEnvoyer: ciblesH.length, smsEnvoyes: 0, erreurs: 0 };
     if (url.searchParams.get("envoyer") !== "oui") return NextResponse.json({ ok: true, aBlanc: true, ...rH });
     const moment = url.searchParams.get("moment");
