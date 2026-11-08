@@ -29,7 +29,9 @@ const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHas
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
-  if (!jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  const cronSecret = (process.env.CRON_SECRET ?? "").trim();
+  const parCron = Boolean(cronSecret) && request.headers.get("authorization") === `Bearer ${cronSecret}`;
+  if (!parCron && !jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   // SMS « dans 1 heure » aux inscrits SMS du 8 novembre (à blanc sans envoyer=oui). Un seul clic : pas de marqueur anti-doublon.
   if (url.searchParams.get("sms_1h") === "oui") {
     const s8h = WEBINAR_PER_SESSIONS["2026-11-08"];
@@ -45,10 +47,17 @@ export async function GET(request: NextRequest) {
     }
     const rH = { aEnvoyer: ciblesH.length, smsEnvoyes: 0, erreurs: 0 };
     if (url.searchParams.get("envoyer") !== "oui") return NextResponse.json({ ok: true, aBlanc: true, ...rH });
-    const texte = "GP Finances : votre webinaire PER commence dans 1h, à 15h. Le lien de connexion est dans votre e-mail. STOP au 06 51 22 42 13";
+    const moment = url.searchParams.get("moment");
+    const texte =
+      moment === "10min"
+        ? "GP Finances : votre webinaire PER commence dans 10 minutes (15h). Le lien de connexion est dans votre e-mail. STOP au 06 51 22 42 13"
+        : moment === "maintenant"
+          ? "GP Finances : le webinaire PER commence maintenant ! Rejoignez-nous avec le lien reçu par e-mail. STOP au 06 51 22 42 13"
+          : "GP Finances : votre webinaire PER commence dans 1h, à 15h. Le lien de connexion est dans votre e-mail. STOP au 06 51 22 42 13";
+    const tagMoment = moment === "10min" ? "reminder_10min" : moment === "maintenant" ? "reminder_live" : "reminder_1h";
     for (const tel of ciblesH) {
       try {
-        await sendBrevoSms({ config: smsCfg, phone: tel, text: texte, tag: "webinaire-per-reminder_1h" });
+        await sendBrevoSms({ config: smsCfg, phone: tel, text: texte, tag: `webinaire-per-${tagMoment}` });
         rH.smsEnvoyes += 1;
       } catch {
         rH.erreurs += 1;

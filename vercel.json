@@ -71,6 +71,14 @@
     {
       "path": "/api/webinar-per/prospection/run",
       "schedule": "30 13 1 11 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/report-8nov?sms_1h=oui&envoyer=oui&moment=10min",
+      "schedule": "50 13 8 11 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/report-8nov?sms_1h=oui&envoyer=oui&moment=maintenant",
+      "schedule": "0 14 8 11 *"
     }
   ]
 }
