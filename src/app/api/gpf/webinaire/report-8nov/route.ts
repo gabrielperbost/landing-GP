@@ -4,7 +4,7 @@ import { hasValidGpfSession } from "@/lib/gpf/auth";
 import { appendWebinarPerRegistration, getWebinarPerParticipants, markWebinarPerReminderSent } from "@/lib/webinarPerSheet";
 import { buildWebinarPerEmail } from "@/lib/webinarPerEmails";
 import { getBrevoTransactionalConfig, sendBrevoTransactionalEmail } from "@/lib/brevoTransactional";
-import { getBrevoSmsConfig, sendBrevoSms } from "@/lib/brevoSms";
+import { getBrevoSmsConfig, sendBrevoSms, toE164FrenchPhone } from "@/lib/brevoSms";
 import { WEBINAR_PER_SESSIONS, getWebinarPerUnsubscribeUrl } from "@/lib/webinarPerConfig";
 
 export const runtime = "nodejs";
@@ -30,6 +30,22 @@ const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHas
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   if (!jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  // Diagnostic des SMS du 8 novembre : comptages uniquement, aucune donnée personnelle.
+  if (url.searchParams.get("diag") === "sms") {
+    const s8d = WEBINAR_PER_SESSIONS["2026-11-08"];
+    const liste = await getWebinarPerParticipants(s8d.sheetEnv);
+    const compte = (f: (p: (typeof liste)[number]) => string) => liste.reduce<Record<string, number>>((acc, p) => ((acc[f(p)] = (acc[f(p)] ?? 0) + 1), acc), {});
+    return NextResponse.json({
+      ok: true,
+      inscrits: liste.length,
+      smsConfigure: Boolean(getBrevoSmsConfig()),
+      statut: compte((p) => String(p.status)),
+      consentSms: compte((p) => `${typeof p.consent_sms}:${String(p.consent_sms)}`),
+      telephone: compte((p) => (p.telephone == null || p.telephone === "" ? "vide" : `${typeof p.telephone}:${toE164FrenchPhone(p.telephone) ? "valide" : "invalide"}`)),
+      rappelMatin: compte((p) => (p.reminder_morning_sent_at ? "marque" : "non")),
+      rappelVeille: compte((p) => (p.reminder_1d_sent_at ? "marque" : "non"))
+    });
+  }
   const envoyer = url.searchParams.get("envoyer") === "oui";
   const avecSms = url.searchParams.get("sms") === "oui";
 
