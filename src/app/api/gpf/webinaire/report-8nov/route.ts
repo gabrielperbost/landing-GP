@@ -30,6 +30,22 @@ const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHas
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   if (!jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  // Liste CSV pour une campagne SMS Brevo : inscrits du 8 novembre ayant accepté les SMS, numéro au format international.
+  if (url.searchParams.get("export") === "sms") {
+    const s8e = WEBINAR_PER_SESSIONS["2026-11-08"];
+    const debut8 = Date.parse(s8e.campaignStart);
+    const vus = new Set<string>();
+    const lignes = ["SMS;PRENOM;NOM;EMAIL"];
+    for (const p of await getWebinarPerParticipants(s8e.sheetEnv)) {
+      if (String(p.status).trim().toLowerCase() !== "registered" || !p.consent_sms || !(Date.parse(p.created_at) >= debut8)) continue;
+      const tel = p.telephone ? toE164FrenchPhone(p.telephone) : null;
+      if (!tel || vus.has(tel)) continue;
+      vus.add(tel);
+      const c = (v: unknown) => String(v ?? "").replace(/[;\r\n]/g, " ").trim();
+      lignes.push([tel.replace(/^\+/, ""), c(p.prenom), c(p.nom), c(p.email)].join(";"));
+    }
+    return new NextResponse(lignes.join("\n") + "\n", { headers: { "content-type": "text/csv; charset=utf-8", "cache-control": "no-store" } });
+  }
   // Diagnostic des SMS du 8 novembre : comptages uniquement, aucune donnée personnelle.
   if (url.searchParams.get("diag") === "sms") {
     const s8d = WEBINAR_PER_SESSIONS["2026-11-08"];

@@ -43,7 +43,7 @@ const SCHEDULE: ScheduleItem[] = [
   { session: "2026-11-08", dateKey: "2026-11-06", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
   { session: "2026-11-08", dateKey: "2026-11-07", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
   { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
-  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: true }
+  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false }
 ];
 
 const SESSION_8NOV_PREFIX = WEBINAR_PER_SESSIONS["2026-11-08"].sourcePrefix;
