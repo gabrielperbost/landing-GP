@@ -43,7 +43,7 @@ const SCHEDULE: ScheduleItem[] = [
   { session: "2026-11-08", dateKey: "2026-11-06", fromHour: 6, toHour: 23, reminderKey: "reminder_5d_sent_at", template: "reminder_2d", alsoSms: false },
   { session: "2026-11-08", dateKey: "2026-11-07", fromHour: 6, toHour: 23, reminderKey: "reminder_1d_sent_at", template: "reminder_1d", alsoSms: true },
   { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 6, toHour: 12, reminderKey: "reminder_morning_sent_at", template: "reminder_morning", alsoSms: true },
-  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: false }
+  { session: "2026-11-08", dateKey: "2026-11-08", fromHour: 13, toHour: 15, reminderKey: "reminder_7d_sent_at", template: "reminder_1h", alsoSms: true }
 ];
 
 const SESSION_8NOV_PREFIX = WEBINAR_PER_SESSIONS["2026-11-08"].sourcePrefix;
@@ -54,7 +54,8 @@ const belongsTo = (session: WebinarPerSessionId, source: string) =>
 
 const SMS_TEXT_BY_TEMPLATE: Partial<Record<ScheduleItem["template"], string>> = {
   reminder_1d: `GP Finances : rappel, webinaire PER demain à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`,
-  reminder_morning: `GP Finances : votre webinaire PER commence aujourd'hui à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`
+  reminder_morning: `GP Finances : votre webinaire PER commence aujourd'hui à 15h. Lien par e-mail. STOP au 06 51 22 42 13.`,
+  reminder_1h: `GP Finances : le webinaire PER commence dans 1 heure, à 15h. Le lien de connexion est dans votre e-mail. STOP au 06 51 22 42 13.`
 };
 
 const getLocalDateKey = (date = new Date()) =>
