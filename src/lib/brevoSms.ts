@@ -28,6 +28,9 @@ export const toE164FrenchPhone = (raw: string | number): string | null => {
   // Google Sheets renvoie souvent le numéro comme un nombre (612345678, sans le 0) : on le traite comme du texte.
   const digits = String(raw ?? "").replace(/[^\d+]/g, "");
   if (digits.startsWith("+")) return /^\+\d{8,15}$/.test(digits) ? digits : null;
+  // 33612345678 (indicatif sans « + », tel que stocké par Google Sheets) ou 0033612345678.
+  const international = digits.replace(/^00/, "");
+  if (/^33[1-9]\d{8}$/.test(international)) return `+${international}`;
   const national = digits.replace(/^0/, "");
   return /^[1-9]\d{8}$/.test(national) ? `+33${national}` : null;
 };
