@@ -30,6 +30,32 @@ const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHas
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   if (!jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  // SMS « dans 1 heure » aux inscrits SMS du 8 novembre (à blanc sans envoyer=oui). Un seul clic : pas de marqueur anti-doublon.
+  if (url.searchParams.get("sms_1h") === "oui") {
+    const s8h = WEBINAR_PER_SESSIONS["2026-11-08"];
+    const debutH = Date.parse(s8h.campaignStart);
+    const smsCfg = getBrevoSmsConfig();
+    if (!smsCfg) return NextResponse.json({ ok: false, error: "sms_non_configure" }, { status: 503 });
+    const vusH = new Set<string>();
+    const ciblesH: string[] = [];
+    for (const p of await getWebinarPerParticipants(s8h.sheetEnv)) {
+      if (String(p.status).trim().toLowerCase() !== "registered" || !p.consent_sms || !(Date.parse(p.created_at) >= debutH)) continue;
+      const tel = p.telephone ? toE164FrenchPhone(p.telephone) : null;
+      if (tel && !vusH.has(tel)) (vusH.add(tel), ciblesH.push(tel));
+    }
+    const rH = { aEnvoyer: ciblesH.length, smsEnvoyes: 0, erreurs: 0 };
+    if (url.searchParams.get("envoyer") !== "oui") return NextResponse.json({ ok: true, aBlanc: true, ...rH });
+    const texte = "GP Finances : votre webinaire PER commence dans 1h, à 15h. Le lien de connexion est dans votre e-mail. STOP au 06 51 22 42 13";
+    for (const tel of ciblesH) {
+      try {
+        await sendBrevoSms({ config: smsCfg, phone: tel, text: texte, tag: "webinaire-per-reminder_1h" });
+        rH.smsEnvoyes += 1;
+      } catch {
+        rH.erreurs += 1;
+      }
+    }
+    return NextResponse.json({ ok: true, ...rH });
+  }
   // Liste CSV pour une campagne SMS Brevo : inscrits du 8 novembre ayant accepté les SMS, numéro au format international.
   if (url.searchParams.get("export") === "sms") {
     const s8e = WEBINAR_PER_SESSIONS["2026-11-08"];
