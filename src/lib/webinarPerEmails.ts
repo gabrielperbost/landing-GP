@@ -301,20 +301,24 @@ export const buildWebinarPerEmail = (
         })
       };
     }
-    case "replay":
+    case "replay": {
+      const calendly = "https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale";
       return {
-        subject: "Le replay du webinaire PER est disponible",
-        text: `Merci pour votre inscription. Voici le replay : ${replayUrl || ""}`,
+        subject: "Le replay de notre webinaire PER est disponible",
+        text: `Bonjour ${contact.prenom.trim()},\n\nMerci pour votre inscription à notre webinaire « PER : payer moins d'impôts et préparer sa retraite ». Que vous ayez pu y assister ou non, je souhaitais vous permettre de retrouver ce que nous avons présenté.\n\nAu cours de cette session, nous avons notamment abordé le fonctionnement du PER, la déduction fiscale des versements, les plafonds disponibles et la sortie à la retraite, en capital ou en rente.\n\nVoir le replay du webinaire : ${replayUrl || ""}\n\nEt si, après avoir regardé le replay, vous souhaitez savoir ce que le PER pourrait représenter concrètement dans votre situation, je vous propose d'en parler lors d'un rendez-vous gratuit et sans engagement : ${calendly}\n\nBien à vous,\nGabriel Perbost\nGP FINANCES · ORIAS 23003789`,
         html: shellFor({
-          title: "Merci, et voici le replay",
+          title: "Le replay de notre webinaire PER",
           contact,
           unsubscribeUrl,
           contentHtml: `
-            <p style="margin:0 0 12px;">Merci pour votre participation (ou votre inscription, si vous n'avez pas pu vous connecter). Voici le replay du webinaire :</p>
-            ${replayUrl ? `<div style="margin:14px 0;">${button(replayUrl, "Voir le replay")}</div>` : ""}
-            <p style="margin:14px 0 0;">Une question sur votre situation personnelle ? Je vous propose un échange gratuit et sans engagement.</p>
-            <div style="margin-top:10px;">${button("https://calendly.com/gabriel-perbost-gp-finances/votre-etude-d-optimisation-fiscale", "Prendre rendez-vous")}</div>`
+            <p style="margin:0 0 12px;">Merci pour votre inscription à notre webinaire « PER : payer moins d'impôts et préparer sa retraite ». Que vous ayez pu y assister ou non, je souhaitais vous permettre de retrouver ce que nous avons présenté.</p>
+            <p style="margin:0 0 12px;">Au cours de cette session, nous avons notamment abordé le fonctionnement du PER, la déduction fiscale des versements, les plafonds disponibles et la sortie à la retraite, en capital ou en rente.</p>
+            ${replayUrl ? `<div style="margin:14px 0 18px;">${button(replayUrl, "Voir le replay du webinaire")}</div>` : ""}
+            <p style="margin:0 0 12px;">Et si, après avoir regardé le replay, vous souhaitez savoir ce que le PER pourrait représenter concrètement dans votre situation, je vous propose d'en parler lors d'un rendez-vous gratuit et sans engagement : nous regarderons ensemble, de plus près, votre situation personnelle.</p>
+            <div style="margin:10px 0 0;">${button(calendly, "Prendre rendez-vous")}</div>
+            <p style="margin:18px 0 0;">Bien à vous,<br>Gabriel Perbost</p>`
         })
       };
+    }
   }
 };

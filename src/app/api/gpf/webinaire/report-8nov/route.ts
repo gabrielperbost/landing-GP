@@ -32,6 +32,42 @@ export async function GET(request: NextRequest) {
   const cronSecret = (process.env.CRON_SECRET ?? "").trim();
   const parCron = Boolean(cronSecret) && request.headers.get("authorization") === `Bearer ${cronSecret}`;
   if (!parCron && !jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  // E-mail du replay aux inscrits du 8 novembre (à blanc sans envoyer=oui), copie à Gabriel. Anti-doublon : colonne replay_sent_at.
+  if (url.searchParams.get("replay") === "oui") {
+    const s8r = WEBINAR_PER_SESSIONS["2026-11-08"];
+    const replayUrl = "https://youtu.be/fUH6g277TVI";
+    const debutR = Date.parse(s8r.campaignStart);
+    const vusR = new Set<string>();
+    const ciblesR: { prenom: string; nom: string; email: string }[] = [];
+    let dejaRecu = 0;
+    for (const p of await getWebinarPerParticipants(s8r.sheetEnv)) {
+      const email = String(p.email || "").trim().toLowerCase();
+      if (!email || String(p.status).trim().toLowerCase() !== "registered" || !(Date.parse(p.created_at) >= debutR) || vusR.has(email)) continue;
+      vusR.add(email);
+      if (p.replay_sent_at) { dejaRecu += 1; continue; }
+      ciblesR.push({ prenom: p.prenom, nom: p.nom, email });
+    }
+    const copie = "gabriel.perbost@gp-finances.fr";
+    const rR = { aEnvoyer: ciblesR.length, dejaRecu, copieA: copie, emailsEnvoyes: 0, erreurs: 0 };
+    const test = url.searchParams.get("test") === "oui"; // envoi à Gabriel seul, sans marquage
+    if (!test && url.searchParams.get("envoyer") !== "oui") return NextResponse.json({ ok: true, aBlanc: true, ...rR });
+    const cfg = getBrevoTransactionalConfig();
+    if (!cfg) return NextResponse.json({ ok: false, error: "brevo_non_configure" }, { status: 503 });
+    const destinataires = test ? [{ prenom: "Gabriel", nom: "", email: copie }] : [...ciblesR, ...(vusR.has(copie) ? [] : [{ prenom: "Gabriel", nom: "", email: copie }])];
+    if (test) rR.aEnvoyer = 1;
+    for (const c of destinataires) {
+      const unsubscribeUrl = getWebinarPerUnsubscribeUrl(c.email, s8r);
+      try {
+        const built = buildWebinarPerEmail("replay", { prenom: c.prenom, email: c.email }, { unsubscribeUrl, replayUrl, session: s8r });
+        await sendBrevoTransactionalEmail({ config: cfg, to: { email: c.email, name: [c.prenom, c.nom].filter(Boolean).join(" ") }, subject: built.subject, html: built.html, text: built.text, unsubscribeUrl, tags: ["webinaire-per", "replay", `session-${s8r.id}`] });
+        rR.emailsEnvoyes += 1;
+        if (!test && c.email !== copie) await markWebinarPerReminderSent(c.email, "replay_sent_at", undefined, s8r.sheetEnv).catch(() => undefined);
+      } catch {
+        rR.erreurs += 1;
+      }
+    }
+    return NextResponse.json({ ok: true, ...rR });
+  }
   // SMS « dans 1 heure » aux inscrits SMS du 8 novembre (à blanc sans envoyer=oui). Un seul clic : pas de marqueur anti-doublon.
   if (url.searchParams.get("sms_1h") === "oui") {
     const s8h = WEBINAR_PER_SESSIONS["2026-11-08"];
