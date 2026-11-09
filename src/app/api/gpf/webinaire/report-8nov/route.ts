@@ -32,6 +32,41 @@ export async function GET(request: NextRequest) {
   const cronSecret = (process.env.CRON_SECRET ?? "").trim();
   const parCron = Boolean(cronSecret) && request.headers.get("authorization") === `Bearer ${cronSecret}`;
   if (!parCron && !jetonValide(url.searchParams.get("jeton")) && !(await hasValidGpfSession())) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  // Suivi de l'e-mail du replay (événements Brevo du tag « replay » depuis le 9 novembre) : ouvertures, clics replay et rendez-vous.
+  if (url.searchParams.get("stats") === "replay") {
+    const cfg = getBrevoTransactionalConfig();
+    if (!cfg) return NextResponse.json({ ok: false, error: "brevo_non_configure" }, { status: 503 });
+    const s8s = WEBINAR_PER_SESSIONS["2026-11-08"];
+    const inscrits = new Map((await getWebinarPerParticipants(s8s.sheetEnv)).map((p) => [String(p.email).trim().toLowerCase(), [p.prenom, p.nom].filter(Boolean).join(" ")]));
+    const evenements: { email: string; event: string; link?: string; date: string }[] = [];
+    for (let offset = 0; offset < 10000; offset += 2500) {
+      const q = new URLSearchParams({ tags: "replay", startDate: "2026-11-09", endDate: new Date().toISOString().slice(0, 10), limit: "2500", offset: String(offset), sort: "desc" });
+      const r = await fetch(`https://api.brevo.com/v3/smtp/statistics/events?${q}`, { headers: { accept: "application/json", "api-key": cfg.apiKey }, cache: "no-store" });
+      if (!r.ok) return NextResponse.json({ ok: false, error: `brevo_${r.status}` }, { status: 502 });
+      const page = ((await r.json()) as { events?: typeof evenements }).events ?? [];
+      evenements.push(...page);
+      if (page.length < 2500) break;
+    }
+    const uniques = (f: (e: (typeof evenements)[number]) => boolean) => [...new Set(evenements.filter(f).map((e) => e.email.toLowerCase()))];
+    const nom = (e: string) => `${inscrits.get(e) || "?"} <${e}>`;
+    const delivres = uniques((e) => e.event === "delivered");
+    const ouverts = uniques((e) => e.event === "opened" || e.event === "uniqueOpened" || e.event === "proxyOpen");
+    const clicsReplay = uniques((e) => e.event === "clicks" && /youtu/.test(e.link ?? ""));
+    const clicsRdv = uniques((e) => e.event === "clicks" && /calendly/.test(e.link ?? ""));
+    const echecs = uniques((e) => ["hardBounces", "softBounces", "blocked", "invalid", "error"].includes(e.event));
+    return NextResponse.json({
+      ok: true,
+      note: "Les ouvertures sont surestimées (Apple Mail ouvre automatiquement les e-mails) ; les clics sont fiables.",
+      delivres: delivres.length,
+      ouverts: ouverts.length,
+      clicsReplay: clicsReplay.length,
+      clicsRendezVous: clicsRdv.length,
+      echecs: echecs.length,
+      ontCliqueRendezVous: clicsRdv.map(nom),
+      ontRegardeReplay: clicsReplay.map(nom),
+      echecsDetail: echecs.map(nom)
+    });
+  }
   // E-mail du replay aux inscrits du 8 novembre (à blanc sans envoyer=oui), copie à Gabriel. Anti-doublon : colonne replay_sent_at.
   if (url.searchParams.get("replay") === "oui") {
     const s8r = WEBINAR_PER_SESSIONS["2026-11-08"];
