@@ -89,7 +89,7 @@ const SEO = {
 const NAMES = { index: 'Accueil', 'assurance-emprunteur': 'Assurance emprunteur', per: 'Plan Épargne Retraite', 'assurance-vie': 'Assurance-vie', prevoyance: 'Prévoyance', mutuelle: 'Mutuelle', 'webinaire-per': 'Webinaire PER', 'webinaire-per-8-novembre': 'Webinaire PER du 8 novembre', 'nous-trouver': 'Nous trouver', 'regroupement-credits': 'Regroupement de crédits' };
 const SAME_AS = [
   'https://www.google.com/maps/place/Gabriel+PERBOST+-+GP+FINANCES+-+Courtage+en+pr%C3%AAts+%26+assurances/@48.8266378,2.2708441,17z',
-  'https://www.cncef.org/annuaire/perbost-gabriel/', 'https://www.linkedin.com/in/gabriel-perbost/', 'https://www.instagram.com/gabriel_perbost/'
+  'https://www.linkedin.com/in/gabriel-perbost/', 'https://www.instagram.com/gabriel_perbost/'
 ];
 const stripTags = v => v.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
 const faqSchema = html => {
@@ -129,13 +129,23 @@ const articleSchemas = (a, route) => [
     { '@type': 'ListItem', position: 1, name: 'Accueil', item: ORIGIN + '/' }, { '@type': 'ListItem', position: 2, name: 'Conseils', item: ORIGIN + '/conseils' },
     { '@type': 'ListItem', position: 3, name: a.title, item: ORIGIN + route }] })
 ];
+// Données structurées du cabinet (invisibles à l'écran) : agence d'assurance locale, zone desservie, services, ORIAS.
 const ld = (title, description, route) => JSON.stringify({
-  '@context': 'https://schema.org', '@type': 'FinancialService', name: 'GP FINANCES',
+  '@context': 'https://schema.org', '@type': ['InsuranceAgency', 'FinancialService'], '@id': ORIGIN + '/#cabinet', name: 'GP FINANCES',
+  alternateName: ['GP Finances', 'Gabriel Perbost - GP FINANCES'],
+  slogan: 'Courtier indépendant spécialisé en assurance de prêt immobilier (assurance emprunteur)',
   url: ORIGIN + route, description, telephone: '+33651224213', email: 'gabriel.perbost@gp-finances.fr',
-  address: { '@type': 'PostalAddress', streetAddress: '24 rue du Gouverneur Général Éboué', postalCode: '92130', addressLocality: 'Issy-les-Moulineaux', addressCountry: 'FR' },
-  areaServed: 'FR', founder: { '@type': 'Person', name: 'Gabriel Perbost' },
-  identifier: 'ORIAS 23003789', sameAs: SAME_AS, hasMap: SAME_AS[0], geo: { '@type': 'GeoCoordinates', latitude: 48.8266378, longitude: 2.2708441 },
-  image: ORIGIN + '/site/assets/gabriel-perbost.jpeg', knowsAbout: ['assurance emprunteur', 'plan épargne retraite', 'assurance-vie', 'prévoyance', 'mutuelle', 'regroupement de crédits']
+  address: { '@type': 'PostalAddress', streetAddress: '24 rue du Gouverneur Général Éboué', postalCode: '92130', addressLocality: 'Issy-les-Moulineaux', addressRegion: 'Hauts-de-Seine', addressCountry: 'FR' },
+  areaServed: [{ '@type': 'City', name: 'Issy-les-Moulineaux' }, { '@type': 'City', name: 'Boulogne-Billancourt' }, { '@type': 'City', name: 'Paris' }, { '@type': 'AdministrativeArea', name: 'Hauts-de-Seine' }, { '@type': 'AdministrativeArea', name: 'Île-de-France' }, { '@type': 'Country', name: 'France' }],
+  founder: { '@type': 'Person', '@id': ORIGIN + '/#gabriel-perbost', name: 'Gabriel Perbost', jobTitle: 'Courtier indépendant en assurance de prêt et en placements', sameAs: ['https://www.linkedin.com/in/gabriel-perbost/'] },
+  identifier: [{ '@type': 'PropertyValue', propertyID: 'ORIAS', value: '23003789' }, { '@type': 'PropertyValue', propertyID: 'RCS Nanterre', value: '899 363 907' }],
+  memberOf: { '@type': 'Organization', name: 'ANACOFI-Courtage' },
+  sameAs: SAME_AS, hasMap: SAME_AS[0], geo: { '@type': 'GeoCoordinates', latitude: 48.8266378, longitude: 2.2708441 },
+  image: ORIGIN + '/site/assets/gabriel-perbost.jpeg',
+  knowsAbout: ['assurance emprunteur', 'assurance de prêt immobilier', 'changement d’assurance de prêt (loi Lemoine)', 'délégation d’assurance emprunteur', 'équivalence des garanties', 'plan épargne retraite', 'assurance-vie', 'prévoyance', 'mutuelle', 'regroupement de crédits'],
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Services de courtage', itemListElement: [
+    'Assurance de prêt immobilier (assurance emprunteur)', 'Plan épargne retraite (PER)', 'Assurance-vie', 'Prévoyance', 'Mutuelle santé', 'Regroupement de crédits'
+  ].map((n) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: n, provider: { '@id': ORIGIN + '/#cabinet' } } })) }
 });
 
 const built = {};

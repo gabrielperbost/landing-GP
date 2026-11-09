@@ -48,7 +48,7 @@ module.exports = function createSocialProof(root, figures) {
   }
 
   function trustBar() {
-    return `<section class="confidence-band" aria-label="GP Finances en quelques repères"><div class="container confidence-grid"><a href="assurance-emprunteur.html#cas-concret"><strong><span data-live-savings>${escape(figures.savings)}</span> €</strong><span>économisés en assurance emprunteur</span></a><a href="assurance-emprunteur.html#comprendre"><strong>${escape(figures.partners)} assureurs</strong><span>partenaires pour comparer les solutions</span></a><a href="https://www.cncef.org/annuaire/perbost-gabriel/" target="_blank" rel="noopener"><strong>Un courtier identifié ${arrow}</strong><span>ORIAS n° 23003789 · Vérifier le cabinet</span></a></div></section>`;
+    return `<section class="confidence-band" aria-label="GP Finances en quelques repères"><div class="container confidence-grid"><a href="assurance-emprunteur.html#cas-concret"><strong><span data-live-savings>${escape(figures.savings)}</span> €</strong><span>économisés en assurance emprunteur</span></a><a href="assurance-emprunteur.html#comprendre"><strong>${escape(figures.partners)} assureurs</strong><span>partenaires pour comparer les solutions</span></a><a href="https://www.orias.fr/" target="_blank" rel="noopener"><strong>Un courtier identifié ${arrow}</strong><span>ORIAS n° 23003789 · Vérifier le cabinet</span></a></div></section>`;
   }
 
   function reviewCard(review, index) {
