@@ -17,7 +17,8 @@ const ARTICLES_DATES: Record<string, Date> = Object.fromEntries([
     "mutuelle-retraite-loi-evin",
     "taux-endettement-calcul-regle-35"
   ].map((slug) => [`/conseils/${slug}`, new Date("2026-10-22")]),
-  ...["per-declarer-versements-impots-case-6ns", "assurance-vie-succession-fiscalite-avant-apres-70-ans"].map((slug) => [`/conseils/${slug}`, new Date("2026-10-29")])
+  ...["per-declarer-versements-impots-case-6ns", "assurance-vie-succession-fiscalite-avant-apres-70-ans"].map((slug) => [`/conseils/${slug}`, new Date("2026-10-29")]),
+  ...["loi-lemoine-bilan-2026-changer-assurance-pret", "plafond-per-2027-pass-48900", "fonds-euros-2026-hausse-taux-oat", "arret-de-travail-limite-un-mois-prevoyance", "surendettement-hausse-2026-signaux-alerte"].map((slug) => [`/conseils/${slug}`, new Date("2026-11-13")])
 ]);
 
 export default function sitemap(): MetadataRoute.Sitemap {
