@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       source_ref: ref
     });
     await supabaseAdmin.from("gpf_clients").update({ score: "chaud" }).eq("id", r.client_id).eq("score_manuel", false);
-    await notify("info", `Nouveau RDV Calendly : ${p.name ?? ""}`.trim(), debut.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }), `/gpf/contacts/${r.client_id}`);
+    await notify("info", `Nouveau RDV Calendly : ${p.name ?? ""}`.trim(), [debut.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }), p.tracking?.utm_campaign ? `via ${p.tracking.utm_campaign}` : ""].filter(Boolean).join(" · "), `/gpf/contacts/${r.client_id}`);
   }
   return NextResponse.json({ ok: true, client_id: r.client_id });
 }

@@ -1,5 +1,5 @@
 /**
- * Campagne de relance « prise de rendez-vous » (24 novembre → 17 décembre 2026), deux e-mails par semaine
+ * Campagne de relance « prise de rendez-vous » (19 novembre → 17 décembre 2026), deux e-mails par semaine
  * (mardi et jeudi, 12h), même mise en page que l'e-mail du replay.
  *  - « public »  : inscrits aux webinaires PER grand public des 11 octobre, 1er et 8 novembre.
  *  - « avocats » : inscrits au webinaire PER pour avocats du 17 septembre.
@@ -15,12 +15,12 @@ const REPLAY_AVOCATS = "https://youtu.be/CYKCbu50r84";
 
 /** Calendrier : date d'envoi (heure de Paris) → numéro de l'e-mail. */
 export const RELANCE_CALENDRIER: Record<string, number> = {
-  "2026-11-24": 1,
-  "2026-11-26": 2,
-  "2026-12-01": 3,
-  "2026-12-03": 4,
-  "2026-12-08": 5,
-  "2026-12-10": 6,
+  "2026-11-19": 1,
+  "2026-11-24": 2,
+  "2026-11-26": 3,
+  "2026-12-01": 4,
+  "2026-12-03": 5,
+  "2026-12-08": 6,
   "2026-12-15": 7,
   "2026-12-17": 8
 };
@@ -448,5 +448,8 @@ export const buildEmailRelance = (campagne: CampagneRelance, numero: number, con
       ? c.contenu.slice(0, i) + offre(campagne, numero) + c.contenu.slice(i)
       : c.contenu + offre(campagne, numero);
   const html = shell({ campagne, titre: c.titre, salutation, contenu: contenu + temoignages(campagne), unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
-  return { subject: c.subject, preheader: c.preheader, html, text: versionTexte(html) };
+  // Suivi : chaque lien Calendly porte la campagne et le numéro de l'e-mail (repris par Calendly dans la réservation).
+  const suivi = `${RELANCE_CALENDLY}?utm_source=email&amp;utm_medium=relance&amp;utm_campaign=relance-${campagne}-m${numero}`;
+  const htmlSuivi = html.replaceAll(`href="${RELANCE_CALENDLY}"`, `href="${suivi}"`);
+  return { subject: c.subject, preheader: c.preheader, html: htmlSuivi, text: versionTexte(htmlSuivi) };
 };
