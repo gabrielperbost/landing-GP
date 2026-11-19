@@ -79,6 +79,22 @@
     {
       "path": "/api/gpf/webinaire/report-8nov?sms_1h=oui&envoyer=oui&moment=maintenant",
       "schedule": "0 14 8 11 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/relance",
+      "schedule": "0 11 24,26 11 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/relance",
+      "schedule": "0 13 24,26 11 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/relance",
+      "schedule": "0 11 1,3,8,10,15,17 12 *"
+    },
+    {
+      "path": "/api/gpf/webinaire/relance",
+      "schedule": "0 13 1,3,8,10,15,17 12 *"
     }
   ]
 }
