@@ -53,6 +53,31 @@ const rdv = (label = "Prendre rendez-vous") =>
     <a href="${RELANCE_CALENDLY}" style="display:inline-block;background:#c9a84c;color:#0d1f3c;text-decoration:none;${F}font-weight:800;font-size:15.5px;padding:15px 28px;border-radius:10px;">📅 ${label}</a>
     <div style="${F}font-size:12px;color:#64748b;margin-top:8px;">Gratuit et sans engagement · en visio ou au cabinet (Issy-les-Moulineaux)</div>
   </div>`;
+// Témoignages vidéo réels de clientes PER (YouTube), déjà utilisés sur le site et dans la séquence PER.
+const TEMOIGNAGES = [
+  { nom: "Dorothée", url: "https://youtube.com/shorts/_X1GVr28qRY", img: "https://gp-finances.fr/email/per-testimonials/dorothee-wide.jpg" },
+  { nom: "Anaëlle", url: "https://youtube.com/shorts/gwC2ozYhkAw", img: "https://gp-finances.fr/email/per-testimonials/annaelle-wide.jpg" }
+];
+const temoignages = (campagne: CampagneRelance) =>
+  `<div style="margin:18px 0 6px;padding:16px;background:#f5f8ff;border:1px solid #e1e9fb;border-radius:14px;">
+    <div style="${F}font-weight:900;color:#0d1f3c;font-size:15px;margin:0 0 4px;">🎥 Ils ont fait le point sur leur PER avec nous</div>
+    <div style="${F}font-size:13.5px;color:#334155;line-height:1.55;margin:0 0 12px;">${
+      campagne === "avocats"
+        ? "Avant de réserver, découvrez le témoignage de deux de nos clientes : elles racontent en vidéo comment s'est passé leur accompagnement sur le PER."
+        : "Avant de réserver, découvrez le témoignage de Dorothée et Anaëlle : elles racontent en vidéo comment s'est passé leur accompagnement sur le PER."
+    }</div>
+    <table role="presentation" style="width:100%;border-collapse:collapse;"><tr>
+      ${TEMOIGNAGES.map(
+        (t, k) => `<td style="width:50%;vertical-align:top;padding:${k === 0 ? "0 6px 0 0" : "0 0 0 6px"};">
+        <a href="${t.url}" style="display:block;text-decoration:none;">
+          <img src="${t.img}" alt="Témoignage vidéo de ${t.nom}" width="270" style="width:100%;height:auto;border-radius:10px;display:block;border:1px solid #e1e9fb;">
+          <div style="${F}font-size:13px;color:#0d1f3c;font-weight:800;margin-top:6px;text-align:center;">▶ Voir le témoignage de ${t.nom}</div>
+        </a>
+      </td>`
+      ).join("")}
+    </tr></table>
+  </div>`;
+
 /** Offre de fin d'année, insérée juste avant le bouton de rendez-vous de chaque e-mail. */
 const offre = (campagne: CampagneRelance, numero: number) =>
   `<div style="margin:18px 0 4px;padding:16px 18px;background:#0d1f3c;border-radius:14px;">
@@ -422,6 +447,6 @@ export const buildEmailRelance = (campagne: CampagneRelance, numero: number, con
     : i >= 0
       ? c.contenu.slice(0, i) + offre(campagne, numero) + c.contenu.slice(i)
       : c.contenu + offre(campagne, numero);
-  const html = shell({ campagne, titre: c.titre, salutation, contenu, unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
+  const html = shell({ campagne, titre: c.titre, salutation, contenu: contenu + temoignages(campagne), unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
   return { subject: c.subject, preheader: c.preheader, html, text: versionTexte(html) };
 };
