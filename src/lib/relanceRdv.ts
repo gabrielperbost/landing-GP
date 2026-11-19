@@ -53,6 +53,16 @@ const rdv = (label = "Prendre rendez-vous") =>
     <a href="${RELANCE_CALENDLY}" style="display:inline-block;background:#c9a84c;color:#0d1f3c;text-decoration:none;${F}font-weight:800;font-size:15.5px;padding:15px 28px;border-radius:10px;">📅 ${label}</a>
     <div style="${F}font-size:12px;color:#64748b;margin-top:8px;">Gratuit et sans engagement · en visio ou au cabinet (Issy-les-Moulineaux)</div>
   </div>`;
+/** Offre de fin d'année, insérée juste avant le bouton de rendez-vous de chaque e-mail. */
+const offre = (campagne: CampagneRelance, numero: number) =>
+  `<div style="margin:18px 0 4px;padding:16px 18px;background:#0d1f3c;border-radius:14px;">
+    <div style="${F}font-weight:900;color:#c9a84c;font-size:15px;margin:0 0 8px;">🎁 ${numero >= 7 ? "Dernière ligne droite : offre valable jusqu'au 31 décembre" : "Offre de fin d'année, jusqu'au 31 décembre"}</div>
+    <div style="${F}font-size:14px;color:#e5ecf6;line-height:1.6;">
+      ✓ <strong style="color:#fff;">Votre étude PER personnalisée offerte</strong> : ${campagne === "avocats" ? "votre plafond d'indépendant calculé sur votre bénéfice, " : "votre plafond, "}l'impôt économisé selon le montant versé et une projection de votre épargne à la retraite, remise par écrit après le rendez-vous.<br>
+      ✓ <strong style="color:#fff;">Frais sur versement réduits</strong> pour toute ouverture de PER à cette occasion.
+    </div>
+  </div>`;
+
 const signature = () =>
   `<p style="margin:16px 0 0;">Bien à vous,</p>
    <p style="margin:6px 0 0;color:#0d1f3c;font-weight:700;">Gabriel Perbost</p>
@@ -130,8 +140,8 @@ type Contenu = { subject: string; preheader: string; titre: string; contenu: str
 
 const PUBLIC: Record<number, Contenu> = {
   1: {
-    subject: "Avez-vous pu regarder le replay du webinaire PER ?",
-    preheader: "Le replay est en ligne, et je vous propose d'aller plus loin sur votre situation.",
+    subject: "Votre étude PER personnalisée offerte jusqu'au 31 décembre",
+    preheader: "Le replay du webinaire, une étude offerte et des frais sur versement réduits pour l'occasion.",
     titre: "Et maintenant, votre situation à vous",
     contenu: [
       p("Vous vous étiez inscrit(e) à notre webinaire « PER : payer moins d'impôts et préparer sa retraite ». Si vous n'avez pas pu y assister, ou si vous souhaitez revoir un passage, le replay est toujours disponible :"),
@@ -267,8 +277,8 @@ const PUBLIC: Record<number, Contenu> = {
 
 const AVOCATS: Record<number, Contenu> = {
   1: {
-    subject: "PER : faisons le point sur votre situation avant le 31 décembre",
-    preheader: "Suite au webinaire du 17 septembre : une étude personnalisée avant la fin de l'année.",
+    subject: "Maître, votre étude PER personnalisée offerte avant le 31 décembre",
+    preheader: "Suite au webinaire du 17 septembre : étude offerte et frais sur versement réduits pour l'occasion.",
     titre: "Votre PER avant la fin de l'année",
     contenu: [
       p("Vous vous étiez inscrit(e) à notre webinaire « PER et optimisation fiscale – Spécial avocats » du 17 septembre. Le replay reste disponible si vous souhaitez revoir un point :"),
@@ -403,6 +413,9 @@ export const buildEmailRelance = (campagne: CampagneRelance, numero: number, con
   const c = (campagne === "avocats" ? AVOCATS : PUBLIC)[numero];
   if (!c) throw new Error(`relance_inconnue_${campagne}_${numero}`);
   const salutation = campagne === "avocats" ? "Bonjour Maître," : `Bonjour ${esc(contact.prenom.trim()) || ""},`.replace(" ,", ",");
-  const html = shell({ campagne, titre: c.titre, salutation, contenu: c.contenu, unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
+  const marqueurRdv = `<div style="margin:18px 0 6px;text-align:center;">`;
+  const i = c.contenu.indexOf(marqueurRdv);
+  const contenu = i >= 0 ? c.contenu.slice(0, i) + offre(campagne, numero) + c.contenu.slice(i) : c.contenu + offre(campagne, numero);
+  const html = shell({ campagne, titre: c.titre, salutation, contenu, unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
   return { subject: c.subject, preheader: c.preheader, html, text: versionTexte(html) };
 };
