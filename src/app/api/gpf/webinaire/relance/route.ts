@@ -68,8 +68,13 @@ const ciblesPublic = async (rdv: Set<string>) => {
     for (const p of await getWebinarPerParticipants(session.sheetEnv)) {
       const email = String(p.email || "").trim().toLowerCase();
       if (!email) continue;
-      if (String(p.status).trim().toLowerCase() !== "registered") desinscrits.add(email);
-      else parEmail.set(email, { p: { prenom: p.prenom, nom: p.nom, email, consent_email: p.consent_email }, session });
+      // Lignes du 11 octobre décalées d'une colonne (téléphone sur deux colonnes) : le statut est dans « Source »
+      // et l'accord e-mail dans « Consent SMS ».
+      const decale = /^(registered|unsubscribed)$/i.test(String(p.source ?? "").trim());
+      const statut = String(decale ? p.source : p.status).trim().toLowerCase();
+      const accordEmail = decale ? (p.consent_sms as boolean | string) : p.consent_email;
+      if (statut !== "registered") desinscrits.add(email);
+      else parEmail.set(email, { p: { prenom: p.prenom, nom: p.nom, email, consent_email: accordEmail }, session });
     }
   }
   const cibles: Cible[] = [];
