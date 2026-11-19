@@ -185,7 +185,9 @@ export async function GET(request: NextRequest) {
     const { cibles, exclus } = c === "public" ? await ciblesPublic(rdv) : await ciblesAvocats(rdv);
     const deja = cfg ? new Set((await evenementsBrevo(cfg.apiKey, tag(c, numero), "requests")).map((e) => e.email.toLowerCase())) : new Set<string>();
     const aFaire = cibles.filter((x) => !deja.has(x.email));
-    const bilan: Bilan = { campagne: c, mail: numero, cibles: aFaire.length, dejaEnvoye: cibles.length - aFaire.length, envoyes: 0, erreurs: 0, exclus };
+    const bilan: Bilan & { chercher?: string[] } = { campagne: c, mail: numero, cibles: aFaire.length, dejaEnvoye: cibles.length - aFaire.length, envoyes: 0, erreurs: 0, exclus };
+    const chercher = sansAccent(url.searchParams.get("chercher") ?? "");
+    if (chercher) bilan.chercher = cibles.filter((x) => sansAccent(`${x.prenom} ${x.nom} ${x.email}`).includes(chercher)).map((x) => `${x.prenom} ${x.nom} <${x.email}>`);
     if (envoyer && cfg) {
       for (const x of aFaire) {
         try {
