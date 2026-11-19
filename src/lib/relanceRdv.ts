@@ -1,5 +1,5 @@
 /**
- * Campagne de relance « prise de rendez-vous » (19 novembre → 17 décembre 2026), deux e-mails par semaine
+ * Campagne de relance « prise de rendez-vous » (19 novembre → 15 décembre 2026), deux e-mails par semaine
  * (mardi et jeudi, 12h), même mise en page que l'e-mail du replay.
  *  - « public »  : inscrits aux webinaires PER grand public des 11 octobre, 1er et 8 novembre.
  *  - « avocats » : inscrits au webinaire PER pour avocats du 17 septembre.
@@ -21,8 +21,8 @@ export const RELANCE_CALENDRIER: Record<string, number> = {
   "2026-12-01": 4,
   "2026-12-03": 5,
   "2026-12-08": 6,
-  "2026-12-15": 7,
-  "2026-12-17": 8
+  "2026-12-10": 7,
+  "2026-12-15": 8
 };
 
 const esc = (v: string) => v.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -273,9 +273,9 @@ const PUBLIC: Record<number, Contenu> = {
     ].join("")
   },
   7: {
-    subject: "Plus que deux semaines pour un versement PER déductible en 2026",
+    subject: "Plus que trois semaines pour un versement PER déductible en 2026",
     preheader: "Le versement doit être encaissé avant le 31 décembre : mieux vaut s'y prendre cette semaine.",
-    titre: "Plus que deux semaines",
+    titre: "Plus que trois semaines",
     contenu: [
       p("Pour réduire votre impôt sur les revenus 2026, le versement sur votre PER doit être <strong>effectué avant le 31 décembre</strong>."),
       encadreOr(
@@ -408,9 +408,9 @@ const AVOCATS: Record<number, Contenu> = {
     ].join("")
   },
   7: {
-    subject: "Plus que deux semaines pour un versement PER déductible en 2026",
+    subject: "Plus que trois semaines pour un versement PER déductible en 2026",
     preheader: "Le versement doit être effectué avant le 31 décembre : mieux vaut s'en occuper cette semaine.",
-    titre: "Plus que deux semaines",
+    titre: "Plus que trois semaines",
     contenu: [
       p("Pour réduire votre impôt au titre de 2026, le versement sur votre PER doit être <strong>effectué avant le 31 décembre</strong>."),
       encadreOr(

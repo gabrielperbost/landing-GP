@@ -90,11 +90,11 @@
     },
     {
       "path": "/api/gpf/webinaire/relance",
-      "schedule": "0 11 1,3,8,15,17 12 *"
+      "schedule": "0 11 1,3,8,10,15 12 *"
     },
     {
       "path": "/api/gpf/webinaire/relance",
-      "schedule": "0 13 1,3,8,15,17 12 *"
+      "schedule": "0 13 1,3,8,10,15 12 *"
     }
   ]
 }
