@@ -1,7 +1,7 @@
 /**
  * Campagne de relance « prise de rendez-vous » (24 novembre → 17 décembre 2026), deux e-mails par semaine
  * (mardi et jeudi, 12h), même mise en page que l'e-mail du replay.
- *  - « public »  : inscrits aux webinaires PER grand public des 1er et 8 novembre.
+ *  - « public »  : inscrits aux webinaires PER grand public des 11 octobre, 1er et 8 novembre.
  *  - « avocats » : inscrits au webinaire PER pour avocats du 17 septembre.
  * Objectif unique : le rendez-vous Calendly. Fil conducteur : versement PER avant le 31 décembre.
  */
@@ -96,7 +96,7 @@ const shell = (o: { campagne: CampagneRelance; titre: string; salutation: string
           <div style="margin-top:20px;border-top:1px solid #edf2ff;padding-top:14px;">
             <div style="${F}color:#64748b;font-size:11px;line-height:1.5;">
               GP Finances · Gabriel Perbost, courtier indépendant, ORIAS 23003789, adhérent ANACOFI-Courtage. Cet e-mail n'est ni un conseil personnalisé ni une offre de produit : l'avantage fiscal du PER dépend de votre situation personnelle et l'épargne est en principe disponible à la retraite.
-              <br>Vous recevez cet e-mail à la suite de votre inscription à notre webinaire ${o.campagne === "avocats" ? "« PER et optimisation fiscale – Spécial avocats » du 17 septembre 2026" : "PER de novembre 2026"}.
+              <br>Vous recevez cet e-mail à la suite de votre inscription à notre webinaire ${o.campagne === "avocats" ? "« PER et optimisation fiscale – Spécial avocats » du 17 septembre 2026" : "PER grand public (octobre ou novembre 2026)"}.
               <a href="${esc(o.unsubscribeUrl)}" style="color:#64748b;">Se désinscrire</a>
             </div>
           </div>

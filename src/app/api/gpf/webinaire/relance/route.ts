@@ -19,7 +19,7 @@ export const maxDuration = 300;
  *   ?jeton=…[&mail=n]          → comptage à blanc (destinataires, exclus).
  *   ?jeton=…&mail=n&envoyer=oui → envoi manuel (anti-doublon : un envoi déjà accepté par Brevo n'est jamais refait).
  *   ?jeton=…&stats=oui          → ouvertures et clics rendez-vous par e-mail.
- * Exclus : Catherine SPAGNOL, Thibault GUERIN, désinscrits, inscrits sans accord e-mail, contacts ayant pris rendez-vous sur Calendly. */
+ * Grand public : inscrits des 11 octobre, 1er et 8 novembre. Exclus : Catherine SPAGNOL, Thibault GUERIN, désinscrits, inscrits sans accord e-mail, contacts ayant pris rendez-vous sur Calendly. */
 
 const JETON_SHA256 = "e48597939f53a2f883e7b607ce75481f79e2127dbca65f7c0fe1869d27cea5c5";
 const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHash("sha256").update(String(jeton)).digest("hex") === JETON_SHA256;
@@ -30,7 +30,7 @@ const EXCLUS_NOMS: [RegExp, RegExp][] = [
   [/cath/, /spagn/],
   [/thi[e]?bau/, /guerin/]
 ];
-const EXCLUS_EMAILS = new Set(["thiebault.guerin@avocat.fr"]);
+const EXCLUS_EMAILS = new Set(["thiebault.guerin@avocat.fr", "catherine-spagnol@orange.fr"]);
 const EXCLUS_AVOCATS = new Set(["benjamin.valette@vulpi-avocats.com", "sophie-greiner@protonmail.com", "bremant@bremant-associes.com"]);
 
 type Cible = { prenom: string; nom: string; email: string; unsubscribeUrl: string };
@@ -62,12 +62,12 @@ const ciblesPublic = async (rdv: Set<string>) => {
   const exclus: string[] = [];
   const desinscrits = new Set<string>();
   const parEmail = new Map<string, { p: { prenom: string; nom: string; email: string; consent_email: boolean | string }; session: WebinarPerSession }>();
-  // Le Sheet du 8 novembre en dernier : il contient aussi les inscrits du 1er (reportés), son lien de désinscription prime.
+  // Sheet du 1er novembre (il contient aussi les inscrits du 11 octobre), puis celui du 8 novembre :
+  // en dernier, il contient aussi les inscrits du 1er (reportés), son lien de désinscription prime.
   for (const session of [WEBINAR_PER_SESSIONS["2026-11-01"], WEBINAR_PER_SESSIONS["2026-11-08"]]) {
-    const debut = Date.parse(session.campaignStart);
     for (const p of await getWebinarPerParticipants(session.sheetEnv)) {
       const email = String(p.email || "").trim().toLowerCase();
-      if (!email || !(Date.parse(p.created_at) >= debut)) continue;
+      if (!email) continue;
       if (String(p.status).trim().toLowerCase() !== "registered") desinscrits.add(email);
       else parEmail.set(email, { p: { prenom: p.prenom, nom: p.nom, email, consent_email: p.consent_email }, session });
     }
