@@ -25,10 +25,12 @@ const JETON_SHA256 = "e48597939f53a2f883e7b607ce75481f79e2127dbca65f7c0fe1869d27
 const jetonValide = (jeton: string | null) => Boolean(jeton) && crypto.createHash("sha256").update(String(jeton)).digest("hex") === JETON_SHA256;
 const GABRIEL = "gabriel.perbost@gp-finances.fr";
 const DEBUT = "2026-11-19";
-const EXCLUS_NOMS: [string, string][] = [
-  ["catherine", "spagnol"],
-  ["thibault", "guerin"]
+// Exclus à la demande de Gabriel : par nom (toutes orthographes) et par adresse connue.
+const EXCLUS_NOMS: [RegExp, RegExp][] = [
+  [/cath/, /spagn/],
+  [/thi[e]?bau/, /guerin/]
 ];
+const EXCLUS_EMAILS = new Set(["thiebault.guerin@avocat.fr"]);
 const EXCLUS_AVOCATS = new Set(["benjamin.valette@vulpi-avocats.com", "sophie-greiner@protonmail.com", "bremant@bremant-associes.com"]);
 
 type Cible = { prenom: string; nom: string; email: string; unsubscribeUrl: string };
@@ -37,7 +39,7 @@ type Bilan = { campagne: CampagneRelance; mail: number; cibles: number; dejaEnvo
 const sansAccent = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 const estExcluParNom = (prenom: string, nom: string) => {
   const complet = `${sansAccent(prenom)} ${sansAccent(nom)}`;
-  return EXCLUS_NOMS.some(([pr, n]) => complet.includes(pr) && complet.includes(n));
+  return EXCLUS_NOMS.some(([pr, n]) => pr.test(complet) && n.test(complet));
 };
 const dateParis = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(new Date());
 const tag = (c: CampagneRelance, n: number) => `relance-${c}-m${n}`;
@@ -75,7 +77,7 @@ const ciblesPublic = async (rdv: Set<string>) => {
     const nomComplet = [p.prenom, p.nom].filter(Boolean).join(" ");
     const accord = p.consent_email === true || String(p.consent_email).trim().toLowerCase() === "oui" || String(p.consent_email).trim().toLowerCase() === "true";
     if (email === GABRIEL) continue;
-    if (estExcluParNom(p.prenom, p.nom)) exclus.push(`${nomComplet} (exclu à ta demande)`);
+    if (estExcluParNom(p.prenom, p.nom) || EXCLUS_EMAILS.has(email) || /spagn/.test(email)) exclus.push(`${nomComplet} (exclu à ta demande)`);
     else if (desinscrits.has(email)) exclus.push(`${nomComplet} (désinscrit)`);
     else if (!accord) exclus.push(`${nomComplet} (sans accord e-mail)`);
     else if (rdv.has(email)) exclus.push(`${nomComplet} (a déjà pris rendez-vous)`);
@@ -104,7 +106,7 @@ const ciblesAvocats = async (rdv: Set<string>) => {
   for (const [email, p] of inscrits) {
     const nomComplet = [p.prenom, p.nom].filter(Boolean).join(" ");
     if (email === GABRIEL) continue;
-    if (estExcluParNom(p.prenom, p.nom)) exclus.push(`${nomComplet} (exclu à ta demande)`);
+    if (estExcluParNom(p.prenom, p.nom) || EXCLUS_EMAILS.has(email) || /spagn/.test(email)) exclus.push(`${nomComplet} (exclu à ta demande)`);
     else if (desinscrits.has(email)) exclus.push(`${nomComplet} (désinscrit)`);
     else if (rdv.has(email)) exclus.push(`${nomComplet} (a déjà pris rendez-vous)`);
     else cibles.push({ prenom: p.prenom, nom: p.nom, email, unsubscribeUrl: `${baseUrl()}/api/webinar-avocats/unsubscribe?email=${encodeURIComponent(email)}&token=${createWebinarUnsubscribeToken(email)}` });
