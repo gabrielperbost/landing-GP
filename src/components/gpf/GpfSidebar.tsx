@@ -19,6 +19,7 @@ export const GPF_NAV: { titre: string; links: NavLink[] }[] = [
       { href: "/gpf/commercial", label: "Commercial" },
       { href: "/gpf/leads", label: "Leads" },
       { href: "/gpf/campagnes", label: "Campagnes" },
+      { href: "/gpf/relance", label: "Relance webinaires" },
       { href: "/gpf/taches", label: "Tâches" },
       { href: "/gpf/agenda", label: "Agenda" }
     ]

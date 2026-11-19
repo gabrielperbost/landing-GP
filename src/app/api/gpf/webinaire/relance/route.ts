@@ -33,7 +33,7 @@ const EXCLUS_NOMS: [RegExp, RegExp][] = [
 const EXCLUS_EMAILS = new Set(["thiebault.guerin@avocat.fr", "catherine-spagnol@orange.fr"]);
 const EXCLUS_AVOCATS = new Set(["benjamin.valette@vulpi-avocats.com", "sophie-greiner@protonmail.com", "bremant@bremant-associes.com"]);
 
-type Cible = { prenom: string; nom: string; email: string; unsubscribeUrl: string };
+type Cible = { prenom: string; nom: string; email: string; telephone?: string; unsubscribeUrl: string };
 type Bilan = { campagne: CampagneRelance; mail: number; cibles: number; dejaEnvoye: number; envoyes: number; erreurs: number; exclus: string[] };
 
 const sansAccent = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
@@ -61,7 +61,7 @@ const emailsAvecRendezVous = async () => {
 const ciblesPublic = async (rdv: Set<string>) => {
   const exclus: string[] = [];
   const desinscrits = new Set<string>();
-  const parEmail = new Map<string, { p: { prenom: string; nom: string; email: string; consent_email: boolean | string }; session: WebinarPerSession }>();
+  const parEmail = new Map<string, { p: { prenom: string; nom: string; email: string; telephone: string; consent_email: boolean | string }; session: WebinarPerSession }>();
   // Sheet du 1er novembre (il contient aussi les inscrits du 11 octobre), puis celui du 8 novembre :
   // en dernier, il contient aussi les inscrits du 1er (reportés), son lien de désinscription prime.
   for (const session of [WEBINAR_PER_SESSIONS["2026-11-01"], WEBINAR_PER_SESSIONS["2026-11-08"]]) {
@@ -74,7 +74,7 @@ const ciblesPublic = async (rdv: Set<string>) => {
       const statut = String(decale ? p.source : p.status).trim().toLowerCase();
       const accordEmail = decale ? (p.consent_sms as boolean | string) : p.consent_email;
       if (statut !== "registered") desinscrits.add(email);
-      else parEmail.set(email, { p: { prenom: p.prenom, nom: p.nom, email, consent_email: accordEmail }, session });
+      else parEmail.set(email, { p: { prenom: p.prenom, nom: p.nom, email, telephone: String(p.telephone || ""), consent_email: accordEmail }, session });
     }
   }
   const cibles: Cible[] = [];
@@ -86,7 +86,7 @@ const ciblesPublic = async (rdv: Set<string>) => {
     else if (desinscrits.has(email)) exclus.push(`${nomComplet} (désinscrit)`);
     else if (!accord) exclus.push(`${nomComplet} (sans accord e-mail)`);
     else if (rdv.has(email)) exclus.push(`${nomComplet} (a déjà pris rendez-vous)`);
-    else cibles.push({ prenom: p.prenom, nom: p.nom, email, unsubscribeUrl: getWebinarPerUnsubscribeUrl(email, session) });
+    else cibles.push({ prenom: p.prenom, nom: p.nom, email, telephone: p.telephone, unsubscribeUrl: getWebinarPerUnsubscribeUrl(email, session) });
   }
   return { cibles, exclus };
 };
@@ -96,12 +96,12 @@ const ciblesAvocats = async (rdv: Set<string>) => {
   const participants = (await getWebinarParticipantsFromSheet()) ?? [];
   const desinscrits = new Set(EXCLUS_AVOCATS);
   participants.filter((p) => p.status.trim().toLowerCase() === "unsubscribed").forEach((p) => desinscrits.add(p.email.trim().toLowerCase()));
-  const inscrits = new Map<string, { prenom: string; nom: string }>();
+  const inscrits = new Map<string, { prenom: string; nom: string; telephone: string }>();
   participants
     .filter((p) => p.status.trim().toLowerCase() === "registered")
     .forEach((p) => {
       const email = p.email.trim().toLowerCase();
-      if (email) inscrits.set(email, { prenom: p.prenom, nom: p.nom });
+      if (email) inscrits.set(email, { prenom: p.prenom, nom: p.nom, telephone: p.telephone });
     });
   if (isSupabaseConfigured && inscrits.size) {
     const { data } = await supabaseAdmin.from("webinar_avocats_unsubscribes").select("email").in("email", [...inscrits.keys()]);
@@ -114,14 +114,14 @@ const ciblesAvocats = async (rdv: Set<string>) => {
     if (estExcluParNom(p.prenom, p.nom) || EXCLUS_EMAILS.has(email) || /spagn/.test(email)) exclus.push(`${nomComplet} (exclu à ta demande)`);
     else if (desinscrits.has(email)) exclus.push(`${nomComplet} (désinscrit)`);
     else if (rdv.has(email)) exclus.push(`${nomComplet} (a déjà pris rendez-vous)`);
-    else cibles.push({ prenom: p.prenom, nom: p.nom, email, unsubscribeUrl: `${baseUrl()}/api/webinar-avocats/unsubscribe?email=${encodeURIComponent(email)}&token=${createWebinarUnsubscribeToken(email)}` });
+    else cibles.push({ prenom: p.prenom, nom: p.nom, email, telephone: p.telephone, unsubscribeUrl: `${baseUrl()}/api/webinar-avocats/unsubscribe?email=${encodeURIComponent(email)}&token=${createWebinarUnsubscribeToken(email)}` });
   }
   return { cibles, exclus };
 };
 
 /** Événements Brevo d'un tag (pour l'anti-doublon et le suivi). */
 const evenementsBrevo = async (apiKey: string, t: string, event?: string) => {
-  const out: { email: string; event: string; link?: string }[] = [];
+  const out: { email: string; event: string; link?: string; date?: string }[] = [];
   for (let offset = 0; offset < 20000; offset += 2500) {
     const q = new URLSearchParams({ tags: t, startDate: DEBUT, endDate: dateParis(), limit: "2500", offset: String(offset), sort: "desc" });
     if (event) q.set("event", event);
@@ -132,6 +132,96 @@ const evenementsBrevo = async (apiKey: string, t: string, event?: string) => {
     if (page.length < 2500) break;
   }
   return out;
+};
+
+
+type TypeClic = "calendly" | "replay" | "temoignage" | "desinscription" | "autre";
+const typeClic = (link = ""): TypeClic =>
+  /calendly/.test(link) ? "calendly" : /unsubscribe|desinscri/.test(link) ? "desinscription" : /shorts/.test(link) ? "temoignage" : /youtu/.test(link) ? "replay" : "autre";
+
+/** Rendez-vous Calendly pris depuis le début de la relance : e-mail → date de réservation. */
+const rendezVousDepuis = async (depuis: string) => {
+  const map = new Map<string, string>();
+  if (!isSupabaseConfigured) return map;
+  const { data: rdv } = await supabaseAdmin.from("gpf_appointments").select("client_id, created_at, debut").eq("source", "calendly").gte("created_at", depuis).is("deleted_at", null);
+  const parClient = new Map<string, { created_at: string; debut: string }>();
+  (rdv ?? []).forEach((r) => r.client_id && parClient.set(String(r.client_id), { created_at: String(r.created_at), debut: String(r.debut) }));
+  const ids = [...parClient.keys()];
+  for (let i = 0; i < ids.length; i += 200) {
+    const { data } = await supabaseAdmin.from("gpf_clients").select("id, email").in("id", ids.slice(i, i + 200));
+    (data ?? []).forEach((c) => c.email && map.set(String(c.email).trim().toLowerCase(), parClient.get(String(c.id))!.created_at));
+  }
+  return map;
+};
+
+/** Suivi détaillé : une ligne par destinataire, avec ce qu'il a fait sur chaque e-mail, et les rendez-vous pris. */
+const suiviDetaille = async (apiKey: string, campagnes: CampagneRelance[]) => {
+  const rdv = await rendezVousDepuis(DEBUT);
+  const resultat = [];
+  for (const c of campagnes) {
+    const { cibles } = c === "public" ? await ciblesPublic(new Set()) : await ciblesAvocats(new Set());
+    const fiche = new Map(cibles.map((x) => [x.email, x]));
+    type Contact = { email: string; nom: string; telephone: string; recus: number[]; ouverts: number[]; clics: { mail: number; type: TypeClic; date: string }[]; echec: string | null; desinscrit: boolean; derniereActivite: string | null; rendezVous: string | null; apresMail: number | null };
+    const contacts = new Map<string, Contact>();
+    const parMail: { mail: number; envoyes: number; delivres: number; ouverts: number; clicsCalendly: number; clicsReplay: number; clicsTemoignages: number; desinscriptions: number; echecs: number }[] = [];
+    for (let n = 1; n <= 8; n += 1) {
+      const ev = (await evenementsBrevo(apiKey, tag(c, n))).filter((e) => e.email.toLowerCase() !== GABRIEL);
+      if (!ev.length) continue;
+      const qui = (f: (e: (typeof ev)[number]) => boolean) => new Set(ev.filter(f).map((e) => e.email.toLowerCase())).size;
+      parMail.push({
+        mail: n,
+        envoyes: qui((e) => e.event === "requests"),
+        delivres: qui((e) => e.event === "delivered"),
+        ouverts: qui((e) => ["opened", "uniqueOpened", "proxyOpen"].includes(e.event)),
+        clicsCalendly: qui((e) => e.event === "clicks" && typeClic(e.link) === "calendly"),
+        clicsReplay: qui((e) => e.event === "clicks" && typeClic(e.link) === "replay"),
+        clicsTemoignages: qui((e) => e.event === "clicks" && typeClic(e.link) === "temoignage"),
+        desinscriptions: qui((e) => e.event === "unsubscribed" || (e.event === "clicks" && typeClic(e.link) === "desinscription")),
+        echecs: qui((e) => ["hardBounces", "softBounces", "blocked", "invalid", "error", "spam"].includes(e.event))
+      });
+      for (const e of ev as { email: string; event: string; link?: string; date?: string }[]) {
+        const email = e.email.toLowerCase();
+        const f = fiche.get(email);
+        const k = contacts.get(email) ?? { email, nom: f ? [f.prenom, f.nom].filter(Boolean).join(" ") : email, telephone: f?.telephone ?? "", recus: [], ouverts: [], clics: [], echec: null, desinscrit: false, derniereActivite: null, rendezVous: null, apresMail: null };
+        if (e.event === "requests" && !k.recus.includes(n)) k.recus.push(n);
+        if (["opened", "uniqueOpened", "proxyOpen"].includes(e.event) && !k.ouverts.includes(n)) k.ouverts.push(n);
+        if (e.event === "clicks") {
+          const t = typeClic(e.link);
+          if (t === "desinscription") k.desinscrit = true;
+          else if (!k.clics.some((x) => x.mail === n && x.type === t)) k.clics.push({ mail: n, type: t, date: e.date ?? "" });
+        }
+        if (e.event === "unsubscribed") k.desinscrit = true;
+        if (["hardBounces", "softBounces", "blocked", "invalid", "error", "spam"].includes(e.event)) k.echec = e.event;
+        if (e.date && e.event !== "requests" && e.event !== "delivered" && (!k.derniereActivite || e.date > k.derniereActivite)) k.derniereActivite = e.date;
+        contacts.set(email, k);
+      }
+    }
+    for (const k of contacts.values()) {
+      k.recus.sort((a, b) => a - b);
+      k.ouverts.sort((a, b) => a - b);
+      const r = rdv.get(k.email);
+      if (r) {
+        k.rendezVous = r;
+        // E-mail à l'origine : le dernier e-mail cliqué (sinon ouvert, sinon reçu) avant la réservation.
+        k.apresMail = k.clics.filter((x) => x.type === "calendly").map((x) => x.mail).pop() ?? k.ouverts[k.ouverts.length - 1] ?? k.recus[k.recus.length - 1] ?? null;
+      }
+    }
+    const liste = [...contacts.values()];
+    const score = (k: Contact) => (k.rendezVous ? 0 : k.clics.some((x) => x.type === "calendly") ? 100 : 0) + k.clics.filter((x) => x.type !== "calendly").length * 10 + k.ouverts.length;
+    const aRappeler = liste
+      .filter((k) => !k.rendezVous && !k.desinscrit && !k.echec && (k.clics.length > 0 || k.ouverts.length >= 3))
+      .sort((a, b) => score(b) - score(a))
+      .map((k) => ({ ...k, raison: k.clics.some((x) => x.type === "calendly") ? "A cliqué sur Calendly sans réserver" : k.clics.some((x) => x.type === "replay") ? "A regardé le replay" : k.clics.some((x) => x.type === "temoignage") ? "A regardé un témoignage" : `A ouvert ${k.ouverts.length} e-mails` }));
+    resultat.push({
+      campagne: c,
+      total: { destinataires: liste.length, rendezVous: liste.filter((k) => k.rendezVous).length, cliqueurs: liste.filter((k) => k.clics.length).length, desinscrits: liste.filter((k) => k.desinscrit).length, echecs: liste.filter((k) => k.echec).length },
+      parMail,
+      rendezVous: liste.filter((k) => k.rendezVous).sort((a, b) => String(b.rendezVous).localeCompare(String(a.rendezVous))),
+      aRappeler,
+      contacts: liste.sort((a, b) => score(b) - score(a))
+    });
+  }
+  return resultat;
 };
 
 export async function GET(request: NextRequest) {
@@ -163,6 +253,12 @@ export async function GET(request: NextRequest) {
         });
       }
     return NextResponse.json({ ok: true, note: "Les ouvertures sont surestimées (Apple Mail) ; les clics sont fiables.", lignes });
+  }
+
+  // Suivi détaillé (page « Relance » du CRM).
+  if (url.searchParams.get("suivi") === "oui") {
+    if (!cfg) return NextResponse.json({ ok: false, error: "brevo_non_configure" }, { status: 503 });
+    return NextResponse.json({ ok: true, calendrier: RELANCE_CALENDRIER, campagnes: await suiviDetaille(cfg.apiKey, campagnes) });
   }
 
   // Envoi test : à Gabriel seul, sans marquage.
