@@ -59,7 +59,7 @@ const offre = (campagne: CampagneRelance, numero: number) =>
     <div style="${F}font-weight:900;color:#c9a84c;font-size:15px;margin:0 0 8px;">🎁 ${numero >= 7 ? "Dernière ligne droite : offre valable jusqu'au 31 décembre" : "Offre de fin d'année, jusqu'au 31 décembre"}</div>
     <div style="${F}font-size:14px;color:#e5ecf6;line-height:1.6;">
       ✓ <strong style="color:#fff;">Votre étude PER personnalisée offerte</strong> : ${campagne === "avocats" ? "votre plafond d'indépendant calculé sur votre bénéfice, " : "votre plafond, "}l'impôt économisé selon le montant versé et une projection de votre épargne à la retraite, remise par écrit après le rendez-vous.<br>
-      ✓ <strong style="color:#fff;">Frais sur versement réduits, très compétitifs</strong>, pour toute ouverture de PER à cette occasion.
+      ✓ <strong style="color:#fff;">Frais sur versement réduits</strong> pour toute ouverture de PER à cette occasion.
     </div>
   </div>`;
 
