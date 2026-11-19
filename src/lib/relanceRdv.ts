@@ -59,7 +59,7 @@ const offre = (campagne: CampagneRelance, numero: number) =>
     <div style="${F}font-weight:900;color:#c9a84c;font-size:15px;margin:0 0 8px;">🎁 ${numero >= 7 ? "Dernière ligne droite : offre valable jusqu'au 31 décembre" : "Offre de fin d'année, jusqu'au 31 décembre"}</div>
     <div style="${F}font-size:14px;color:#e5ecf6;line-height:1.6;">
       ✓ <strong style="color:#fff;">Votre étude PER personnalisée offerte</strong> : ${campagne === "avocats" ? "votre plafond d'indépendant calculé sur votre bénéfice, " : "votre plafond, "}l'impôt économisé selon le montant versé et une projection de votre épargne à la retraite, remise par écrit après le rendez-vous.<br>
-      ✓ <strong style="color:#fff;">Frais sur versement réduits</strong> pour toute ouverture de PER à cette occasion.
+      ✓ <strong style="color:#fff;">Frais sur versement réduits, très compétitifs</strong>, pour toute ouverture de PER à cette occasion.
     </div>
   </div>`;
 
@@ -145,7 +145,8 @@ const PUBLIC: Record<number, Contenu> = {
     titre: "Et maintenant, votre situation à vous",
     contenu: [
       p("Vous vous étiez inscrit(e) à notre webinaire « PER : payer moins d'impôts et préparer sa retraite ». Si vous n'avez pas pu y assister, ou si vous souhaitez revoir un passage, le replay est toujours disponible :"),
-      `<div style="margin:4px 0 14px;">${bouton(REPLAY_PUBLIC, "▶ Voir le replay du webinaire")}</div>`,
+      `<div style="margin:4px 0 14px;text-align:center;">${bouton(REPLAY_PUBLIC, "▶ Voir le replay du webinaire")}</div>`,
+      "%%OFFRE%%",
       p("Un webinaire reste forcément général. La vraie question est : <strong>qu'est-ce que le PER donnerait dans votre situation ?</strong>"),
       encadreOr(
         "En 30 minutes de rendez-vous, nous regardons ensemble :",
@@ -270,7 +271,7 @@ const PUBLIC: Record<number, Contenu> = {
       p("Si vous souhaitez faire le point sur le PER <strong>avant la fin de l'année</strong>, ou plus tard pour préparer 2027 tranquillement, mon agenda reste ouvert :"),
       rdv(),
       p("Merci encore pour votre intérêt pour le webinaire, et très belles fêtes de fin d'année."),
-      `<div style="margin:6px 0 0;">${bouton(REPLAY_PUBLIC, "▶ Revoir le replay")}</div>`
+      `<div style="margin:6px 0 0;text-align:center;">${bouton(REPLAY_PUBLIC, "▶ Revoir le replay")}</div>`
     ].join("")
   }
 };
@@ -282,7 +283,8 @@ const AVOCATS: Record<number, Contenu> = {
     titre: "Votre PER avant la fin de l'année",
     contenu: [
       p("Vous vous étiez inscrit(e) à notre webinaire « PER et optimisation fiscale – Spécial avocats » du 17 septembre. Le replay reste disponible si vous souhaitez revoir un point :"),
-      `<div style="margin:4px 0 14px;">${bouton(REPLAY_AVOCATS, "▶ Voir le replay du webinaire")}</div>`,
+      `<div style="margin:4px 0 14px;text-align:center;">${bouton(REPLAY_AVOCATS, "▶ Voir le replay du webinaire")}</div>`,
+      "%%OFFRE%%",
       p("La fin d'année est le moment où la question se pose concrètement : <strong>un versement sur un PER avant le 31 décembre réduit l'impôt dû au titre de 2026</strong>, dans la limite de votre plafond."),
       encadreOr(
         "En 30 minutes, nous regardons ensemble :",
@@ -404,7 +406,7 @@ const AVOCATS: Record<number, Contenu> = {
       p("Si vous souhaitez faire le point sur votre PER <strong>avant le 31 décembre</strong>, ou plus tard pour organiser vos versements 2027, mon agenda reste ouvert :"),
       rdv(),
       p("Merci encore pour votre participation au webinaire, et très belles fêtes de fin d'année."),
-      `<div style="margin:6px 0 0;">${bouton(REPLAY_AVOCATS, "▶ Revoir le replay")}</div>`
+      `<div style="margin:6px 0 0;text-align:center;">${bouton(REPLAY_AVOCATS, "▶ Revoir le replay")}</div>`
     ].join("")
   }
 };
@@ -415,7 +417,11 @@ export const buildEmailRelance = (campagne: CampagneRelance, numero: number, con
   const salutation = campagne === "avocats" ? "Bonjour Maître," : `Bonjour ${esc(contact.prenom.trim()) || ""},`.replace(" ,", ",");
   const marqueurRdv = `<div style="margin:18px 0 6px;text-align:center;">`;
   const i = c.contenu.indexOf(marqueurRdv);
-  const contenu = i >= 0 ? c.contenu.slice(0, i) + offre(campagne, numero) + c.contenu.slice(i) : c.contenu + offre(campagne, numero);
+  const contenu = c.contenu.includes("%%OFFRE%%")
+    ? c.contenu.replace("%%OFFRE%%", offre(campagne, numero))
+    : i >= 0
+      ? c.contenu.slice(0, i) + offre(campagne, numero) + c.contenu.slice(i)
+      : c.contenu + offre(campagne, numero);
   const html = shell({ campagne, titre: c.titre, salutation, contenu, unsubscribeUrl: contact.unsubscribeUrl, preheader: c.preheader });
   return { subject: c.subject, preheader: c.preheader, html, text: versionTexte(html) };
 };
